@@ -1,0 +1,106 @@
+{
+  "schema": "heroes-of-embryon-generated-art/v1",
+  "version": "0.1.0",
+  "date": "2026-10-23",
+  "artMethod": "Image-generated raster source, extracted and alpha-masked to individually named PNGs; NOT procedural SVG",
+  "primaryCharacterAsset": "web/art/embryon/characters/daysha-approved-key-art.png",
+  "sourceAtlas": {
+    "originalName": "a_vibrant_high_gloss_colorful_concept_branding_a.png",
+    "originalSourceDrive": "https://drive.google.com/file/d/1UX1JTmD0JmUZ_zuUxcT4FQ9pwgGDpJzz/view?usp=drivesdk",
+    "repoReviewJpg": "web/art/embryon/generated/atlases/embryon-concept-atlas.jpg",
+    "repoReviewJpgBlobSha": "6d19c0c5d10b0aaff4925efa57e4108f01324220"
+  },
+  "status": "Generated art DRAFT: transparent sprite extraction verified visually; NOT style-approved final tile set or runtime-integrated",
+  "problems": [
+    "Five upper-row elemental gems share nearly identical faceted silhouette; redesign unique geometry for colorblind access before production integration",
+    "Source atlas is a concept contact sheet, not a game-use texture atlas; individual PNGs must be re-illustrated at higher source resolution before shipping",
+    "Actual browser/device rendering and runtime integration not performed"
+  ],
+  "spriteDimensions": [
+    192,
+    192
+  ],
+  "format": "image/png RGBA",
+  "sprites": [
+    {
+      "id": "ruby",
+      "path": "web/art/embryon/generated/gems/ruby.png",
+      "gitBlobSha": "94c303245acaea42c2f5cc3f40b94715e4b68609",
+      "bytes": 33089,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "sapphire",
+      "path": "web/art/embryon/generated/gems/sapphire.png",
+      "gitBlobSha": "30c751917447d7261bc9ae99fc96d7ea277cf72d",
+      "bytes": 31258,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "emerald",
+      "path": "web/art/embryon/generated/gems/emerald.png",
+      "gitBlobSha": "59c917486c8aaf1d2134bb749bca7697b7b6189b",
+      "bytes": 32691,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "topaz",
+      "path": "web/art/embryon/generated/gems/topaz.png",
+      "gitBlobSha": "da3eca58c58932a9b6c2748e52fccae1b709216c",
+      "bytes": 33950,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "amethyst",
+      "path": "web/art/embryon/generated/gems/amethyst.png",
+      "gitBlobSha": "fc08bc72864799fd962bdad6ff599834cbd2ade4",
+      "bytes": 35220,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "rose-heart",
+      "path": "web/art/embryon/generated/gems/rose-heart.png",
+      "gitBlobSha": "7e0537a84781593765f0746cbb9da1e4d1156c1c",
+      "bytes": 40151,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "sun-star",
+      "path": "web/art/embryon/generated/gems/sun-star.png",
+      "gitBlobSha": "7a1fab4ef65f5b8fdb2533844aaa9b73ec4c6b74",
+      "bytes": 35519,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "aquamarine",
+      "path": "web/art/embryon/generated/gems/aquamarine.png",
+      "gitBlobSha": "e68d5c898c864c7f40dc08f25d3e39484a3fcb2f",
+      "bytes": 29968,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "sunstone",
+      "path": "web/art/embryon/generated/gems/sunstone.png",
+      "gitBlobSha": "48d5a75eb411a1c1253690ff8bde7ceed908774a",
+      "bytes": 33847,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    },
+    {
+      "id": "prismatic",
+      "path": "web/art/embryon/generated/gems/prismatic.png",
+      "gitBlobSha": "bb885017be498977efaa89cb846d64f24ad153cf",
+      "bytes": 37575,
+      "origin": "image-generation crop",
+      "approvedForGameplay": false
+    }
+  ]
+}
