@@ -149,3 +149,24 @@ All **new** images must be filed in their proper `web/art/embryon/characters|gem
 ### 12. Change control
 
 This document is the master authority for Rupee Rush's **art direction**. Any intentional visual redesign requires updating this guide, the token files and the affected asset manifest in the same verified change. Gameplay integration requires a separate implementation and QA step. Do not change Nut Buster itself for a Rupee Rush art run.
+
+
+## Approved master composite board — 2026-10-23
+
+The owner explicitly approved the new **Rupee Rush — Heroes of Embryon master composite style-guide board**, distinct from the earlier individual Daysha key-art portrait. Its image identity is recorded in `web/art/embryon/master-style-board.json`; that record is the change-controlled pointer for **all future character, gem, power-up, button, environment, typography and framing art**.
+
+The composition presents Daysha at the left, luxurious beveled golden Rupee Rush lettering and Heroes of Embryon subtitle across the top, and clear labeled production-reference panels on the right: Daysha expression/wardrobe studies, six primary faceted gem colors, special pieces/boosters, jewel-box UI examples, and original crystal-world environments. **Use the accepted master composite board as the unified visual authority for a family of assets**; do not substitute the previously rejected blonde/green-eyed fantasy mockups. Her visual identity is silver-blue flowing hair, violet eyes, long pointed ears, and gold/blue/ivory crystalline regal wear; dark scale armor remains an alternate adventure outfit.
+
+### Master-board-specific production discipline
+
+- Main character: soft yet crisp premium-casual rendering, dimensional highlights and distinct face/ears even when reduced; use the exact approved master character as the appearance target, rather than generating a generic elf.
+- Logo and metallic trim: deep navy jewel-box grounding, vivid champagne-gold extruded serif lettering, tiny sapphire ornaments; any usable logo must be its own isolated layer, not a crop containing the neighboring portrait.
+- Core tile set: *ruby red*, *sapphire blue*, *emerald green*, *topaz gold*, *amethyst violet* and *rose-pink*. All require isolated transparent sprites and independent silhouettes; polished facets should echo the **same specular/occlusion treatment** seen in the approved board. Do not recycle icons by relabeling them.
+- Specials: metallic rocket, star bomb, prismatic color-wild and jeweled crown are **mood references**, not implementation-ready IDs. Match the existing gameplay IDs and visual meaning before creating production sprites.
+- HUD and buttons: an embossed gold/sapphire **Play** control, individual ornate navigation icons, clean inset panels. Functional text lives in the DOM; do not crop text out of the style-board collage and treat it as a button.
+- Worlds: bright pearl-and-gold crystal palace, cloud-borne sky ruins, blue cavern mines and blossom-filled gardens. Their background readability must survive actual board overlays.
+- Never use the composite artwork itself as a sheet for arbitrary rectangular crops. Generate each source atlas with deliberate padded regions; **no bleed from adjacent panels**, no clipped glow or half-icons, and validate against crop coordinates before publishing.
+- This approval authorizes art *direction*, not automatic replacement of live game assets or release/package certification.
+
+**Important source availability:** the full master PNG was approved in chat, and its exact dimensions and SHA-256 are preserved in the manifest. Until the original binary is copied to GitHub via a supported binary upload, `sourceImageCommitted` must stay `false`. Do not claim the PNG is checked into GitHub merely because this style guide, manifest and existing Daysha art are committed.
+

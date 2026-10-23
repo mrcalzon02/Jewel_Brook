@@ -1,0 +1,27 @@
+{
+  "schema": "rupee-rush.art.master-style-board/v1",
+  "game": "Rupee Rush",
+  "universe": "Heroes of Embryon",
+  "approval": "user-approved 2026-10-23",
+  "sourceFileName": "rupee_rush_heroes_of_embryon_style_guide.png",
+  "originalSizeBytes": 3201748,
+  "originalWidth": 1448,
+  "originalHeight": 1086,
+  "originalMode": "RGB",
+  "originalSha256": "a52ee540550da517a745776a778628ba338deb1e021f8c51de44887f2085310c",
+  "approvedVisualScope": [
+    "Daysha",
+    "logo",
+    "gemstones",
+    "special pieces",
+    "user interface",
+    "worlds",
+    "palette",
+    "materials",
+    "composition"
+  ],
+  "requiredAppearance": "Same owner-approved glossy silver-blue-haired violet-eyed Daysha and same luminous gold-and-sapphire Embryon visual language",
+  "sourceImageCommitted": false,
+  "previousCanonicalDayshaAsset": "web/art/embryon/characters/daysha-approved-key-art.png",
+  "note": "The exact approved 3.2 MB image cannot be transferred from this conversation's sandbox to the connected GitHub binary API in this run. Metadata and detailed style lock are committed; this object explicitly does not certify the binary as published."
+}
