@@ -13,6 +13,10 @@ Open `web/index.html` in a browser, or serve the `web/` folder using `python3 -m
 - **Saves:** `rupeerush.save.v1` in localStorage, independent of `nutbuster.v1`. Settings → Advanced Settings → Account Reset has two confirmations.
 - **Monetization:** no real-money payment handler, tracking SDK, cloud account, ad provider, updater or social profile.
 
+## Heroes of Embryon — master art direction
+
+The owner-approved **Daysha** visual identity and **Rupee Rush** high-gloss production rules are maintained in [Master Art Style Guide](docs/ART_STYLE_MASTER.md), [Daysha Art Contract](docs/DAYSHA_ART_CONTRACT.md), and [Art Production Contract](docs/EMBRYON_ART_PRODUCTION.md). Visual palette and UI component specimens live in `web/art/embryon/`. These are design references, not assertions of gameplay integration or a packaged visual update.
+
 ## Art ownership and migration
 
 The original Nut Buster **rocks, pickaxes and gloves** are allowed as visual assets in Rupee Rush and intentionally retain the owner-authored image files, 40+40 equipment tier identities and asset paths. Other Rupee Rush art uses a temporary procedural vector treatment pending dedicated gemstone/background/UI art runs; it is **not** finished production artwork. Do not add new nut-themed sprites as stand-ins.
