@@ -3,7 +3,7 @@
 
 **Status:** APPROVED VISUAL DIRECTION. This document governs subsequent illustration, tile, UI, world, character, animation and marketing art. “Approved” describes the style direction, not readiness of every runtime sprite.
 
-**The visual lock:** the owner-approved illustration **`crystal_princess_of_the_sky_palace.png`** is Rupee Rush's primary character-and-material reference. Its full-size original is 1122 × 1402 RGB PNG, SHA-256 `667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30`. This source has been approved in the project conversation; an in-repository full-resolution binary copy is **not yet confirmed**. Check `web/art/embryon/approved-reference.json` for the machine-readable provenance record. **Never substitute earlier rejected blonde/green-eyed mockups.**
+**The visual lock:** the owner-approved illustration **`crystal_princess_of_the_sky_palace.png`** is Rupee Rush's primary character-and-material reference. Its full-size original is 1122 × 1402 RGB PNG, SHA-256 `667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30`. This source has been approved in the project conversation; the original full-resolution binary is now committed at **`web/art/embryon/characters/daysha-approved-key-art.png`**. Check `web/art/embryon/approved-reference.json` for the machine-readable provenance record. **Never substitute earlier rejected blonde/green-eyed mockups.**
 
 ### 1. Creative direction: how Embryon should feel
 

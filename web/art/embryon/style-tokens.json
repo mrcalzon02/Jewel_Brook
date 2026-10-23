@@ -7,8 +7,9 @@
     "sha256": "667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30",
     "imageWidth": 1122,
     "imageHeight": 1402,
-    "productionFileInRepo": false,
-    "characterStatus": "approved style anchor"
+    "productionFileInRepo": true,
+    "characterStatus": "approved style anchor",
+    "repoPath": "web/art/embryon/characters/daysha-approved-key-art.png"
   },
   "colors": {
     "night": "#11162E",

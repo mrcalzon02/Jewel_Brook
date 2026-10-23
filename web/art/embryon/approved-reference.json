@@ -6,12 +6,13 @@
   "height": 1402,
   "format": "PNG/RGB",
   "sha256": "667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30",
-  "availableSource": "Approved image generated in conversation (full-resolution source retained as conversation output). Source bytes not verified uploaded to Rupee-rush GitHub; external art binary must be imported in a separate verified commit.",
+  "availableSource": "Original 1122x1402 approved PNG, SHA-256 667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30, uploaded via Google Drive and committed as Git blob 047531052aff1dde21126280f52f46dd29e60e61.",
   "variants": [
     "dark navy scale armor (alternate)",
     "royal formal wear (future)"
   ],
   "supersedes": "Any blonde/green-eyed generic-elf mockups and green tunic interpretations",
-  "productionAssetInRepo": false,
-  "readme": "docs/ART_STYLE_MASTER.md"
+  "productionAssetInRepo": true,
+  "readme": "docs/ART_STYLE_MASTER.md",
+  "repoPath": "web/art/embryon/characters/daysha-approved-key-art.png"
 }
