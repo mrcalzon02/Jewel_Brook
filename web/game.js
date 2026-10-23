@@ -154,15 +154,15 @@ function settings(){
 function render(){
  P.migrate(saved);Mining.ensure(saved);bank();
  wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);
- root.innerHTML=page==='home'?home():page==='campaign'?campaign():page==='trials'?trials():page==='game'?gameplay():
-  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='rewards'?rewards():settings();
+ root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='trials'?trials():page==='game'?gameplay():
+  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
 }
 function finishMining(result,success){if(result?.valid){save();render();message(success);}else message('Cannot complete: '+(result?.reason||'unknown')); }
 function handle(b){
  const a=b.dataset.action,info=b.dataset,now=Date.now();
  if(info.nav){nav(info.nav);return;}
- if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
+ if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
  if(a==='play-next'){start(saved.unlocked);return;}
  if(a==='play-level'){start(Number(info.level));return;}
  if(a==='campaign-prev'){campaignPage=Math.max(0,campaignPage-1);render();return;}
