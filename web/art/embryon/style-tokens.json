@@ -1,0 +1,62 @@
+{
+  "schema": "rupee-rush-style-tokens/v1",
+  "version": "1.0.0",
+  "setting": "Heroes of Embryon",
+  "approvedCharacterReference": {
+    "file": "crystal_princess_of_the_sky_palace.png",
+    "sha256": "667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30",
+    "imageWidth": 1122,
+    "imageHeight": 1402,
+    "productionFileInRepo": false,
+    "characterStatus": "approved style anchor"
+  },
+  "colors": {
+    "night": "#11162E",
+    "royal": "#1F3D91",
+    "sapphire": "#207CFA",
+    "crystal": "#52E0FF",
+    "amethyst": "#A567E9",
+    "lilac": "#C7B0F3",
+    "gold": "#F6C55C",
+    "cream": "#FFF2C9",
+    "ivory": "#F8F4F5",
+    "ruby": "#F23E67",
+    "emerald": "#2CD18A",
+    "amber": "#FFAA3B",
+    "hair": "#B8CEFA",
+    "iris": "#9455D9"
+  },
+  "ui": {
+    "targetMinCssPx": 44,
+    "gemReadabilityCssPx": [
+      32,
+      44,
+      56,
+      72
+    ],
+    "primaryGloss": "upper-left white highlight, middle vibrant lacquer, lower dark inset",
+    "panelFinish": "deep navy glass with thin gold corner trim"
+  },
+  "exports": {
+    "gemMasterPx": 512,
+    "gemExportPx": 192,
+    "effectFramePx": 256,
+    "transparentSpriteFormat": "RGBA PNG or WebP"
+  },
+  "reservedGemNames": [
+    "Ruby",
+    "Sapphire",
+    "Emerald",
+    "Topaz",
+    "Amethyst",
+    "Aquamarine"
+  ],
+  "styleKeywords": [
+    "high gloss",
+    "bright royal fantasy",
+    "jewel-box luxury",
+    "distinct materials",
+    "readable silhouette",
+    "polished casual game"
+  ]
+}
