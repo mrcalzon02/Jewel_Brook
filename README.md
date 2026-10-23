@@ -17,6 +17,10 @@ Open `web/index.html` in a browser, or serve the `web/` folder using `python3 -m
 
 The owner-approved **Daysha** visual identity and **Rupee Rush** high-gloss production rules are maintained in [Master Art Style Guide](docs/ART_STYLE_MASTER.md), [Daysha Art Contract](docs/DAYSHA_ART_CONTRACT.md), and [Art Production Contract](docs/EMBRYON_ART_PRODUCTION.md). Visual palette and UI component specimens live in `web/art/embryon/`. These are design references, not assertions of gameplay integration or a packaged visual update.
 
+## Shared asset family
+
+Portable, visually screened blocker/status/booster/reward art is tracked in [the asset-family audit](docs/SHARED_ASSET_FAMILY.md) and [source-hash manifest](web/art/shared-family.json). The audit rejects acorn/walnut-bearing art even when its filename sounds generic. All 16 status overlays are drawn above gems with transparent-center masks in browser and Android WebView CSS. Run `node tests/agnostic-art.test.js` to check image binaries, art paths and rendering contracts.
+
 ## Art ownership and migration
 
 The original Nut Buster **rocks, pickaxes and gloves** are allowed as visual assets in Rupee Rush and intentionally retain the owner-authored image files, 40+40 equipment tier identities and asset paths. Other Rupee Rush art uses a temporary procedural vector treatment pending dedicated gemstone/background/UI art runs; it is **not** finished production artwork. Do not add new nut-themed sprites as stand-ins.
@@ -32,4 +36,4 @@ The original Nut Buster **rocks, pickaxes and gloves** are allowed as visual ass
 
 ## Validation
 
-Run the standalone gameplay tests in `tests/rupee-rush.test.js` with Node.js 18+. Browser/device rendering and packaging still require their own end-to-end checks. No claim of release readiness is implied.
+Run the standalone gameplay tests with `node tests/rupee-rush.test.js` and shared-art checks with `node tests/agnostic-art.test.js` (Node.js 18+). Browser/device rendering and packaging still require their own end-to-end checks. No claim of release readiness is implied.
