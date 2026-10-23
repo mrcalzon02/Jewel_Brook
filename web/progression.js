@@ -22,23 +22,24 @@ const LADDER=Object.freeze([
 ]);
 
 /* Gameplay icon catalog. NUTDEX mirrors active controls, never "uses up" an asset. */
+/* Art catalog: explicit null = custom Rupee art still needed, not a broken URL. */
 const BOOSTER_ART=Object.freeze({
- 'hammer':'assets/boosters/hammer.svg',
- 'row':'assets/boosters/row.svg',
- 'column':'assets/boosters/column.svg',
- 'cross':'assets/boosters/cross.svg',
- 'blast':'assets/boosters/blast.svg',
- 'color':'assets/boosters/color.svg',
- 'shuffle':'assets/boosters/shuffle.svg',
- 'extra':'assets/boosters/extra.svg',
- 'drill':'assets/boosters/drill.svg',
- 'unlock':'assets/boosters/unlock.svg',
- 'quake':'assets/boosters/quake.svg',
- 'triple-row':'assets/boosters/triple-row.svg',
- 'triple-column':'assets/boosters/triple-column.svg',
- 'starburst':'assets/boosters/starburst.svg',
- 'spectrum':'assets/boosters/spectrum.svg',
- 'frostbreaker':'assets/boosters/frostbreaker.svg'
+ 'hammer':"art/primary/powerups/hammer.png",
+ 'extra':"art/additions/economy/hourglass.png",
+ 'row':"art/primary/powerups/row-clear.png",
+ 'shuffle':"art/additions/effects/rainbow-pulse.png",
+ 'column':"art/additions/effects/vertical-clear.png",
+ 'blast':"art/additions/effects/match-burst.png",
+ 'cross':null,
+ 'color':"art/primary/powerups/rainbow.png",
+ 'drill':null,
+ 'unlock':"art/additions/effects/chain-break.png",
+ 'quake':null,
+ 'triple-row':null,
+ 'triple-column':null,
+ 'starburst':"art/additions/effects/sparkle-burst.png",
+ 'spectrum':null,
+ 'frostbreaker':"art/additions/effects/ice-shatter.png"
 });
 const BOOSTER_BADGES=Object.freeze({'triple-row':'×3','triple-column':'×3',spectrum:'×2'});
 const CHALLENGE_STEPS=Object.freeze([1,2,3,4,5,7,10,12,15,18,21,25]);

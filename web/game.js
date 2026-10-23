@@ -2,8 +2,8 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
@@ -13,7 +13,7 @@ if(!root)throw Error('Missing #screen');
 function save(){try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){message('Unable to save on this device');}}
 function number(x){return Number(x||0).toLocaleString('en-US');}
 function escape(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function icon(id,size=30){return '<img class="icon" width="'+size+'" height="'+size+'" alt="" src="'+Art.icon(id)+'">';}
+function icon(id,size=30){return '<img class="icon" width="'+size+'" height="'+size+'" alt="" src="'+(Shared.icons[id]||Art.icon(id))+'">';}
 function gem(id){return '<img class="gem" alt="'+escape(E.TYPES[id])+'" draggable="false" src="'+Art.gem(id)+'">';}
 function button(action,label,cls='secondary',opts=''){return '<button class="btn '+cls+'" data-action="'+action+'" '+opts+'>'+label+'</button>';}
 function nav(to){page=to;selected=-1;resetStep=0;advanced=false;render();}
@@ -53,11 +53,20 @@ function start(id){
 }
 function piece(cell,index){
  if(!cell||cell.type===null)return '<span class="void"></span>';
- let badges=[];if(cell.ice)badges.push('❄'+cell.ice);
- if(cell.lock)badges.push('🔒');if(cell.chest)badges.push('▣');if(cell.jam)badges.push('◆');
- if(cell.fuse)badges.push('!'+cell.fuse);if(cell.rock)badges.push('▥');
- if(cell.special)badges.push('✦');if(cell.elemental)badges.push('⚡');
- return gem(cell.type)+(badges.length?'<small class="piece-badges">'+badges.join(' ')+'</small>':'');
+ // Status effects occupy their own see-through layer. Never substitute a nut
+ // blocker image for the gemstone identity stored by the deterministic engine.
+ const layers=Shared.layers(cell),fixed=Shared.anchor(cell);
+ const status=layers.map(x=>'<span class="tile-status '+x.id+'" data-effect="'+x.id+'"><img class="status-art" src="'+x.src+'" alt="" aria-hidden="true"></span>').join('');
+ const anchor=fixed?'<img class="tile-anchor" src="'+fixed.src+'" alt="" aria-hidden="true">':'';
+ const readouts=[
+  ['ice',cell.ice],['lock',cell.lock],['chest',cell.chest],
+  ['resin',cell.jam],['fuse',cell.fuse],['rock',cell.rock],
+  ['frozen',cell.frozen],['poison',cell.poison],['ward',cell.ward]
+ ].filter(([,n])=>Number(n)>0);
+ const counters=readouts.length?'<span class="tile-counts">'+readouts.map(([id,n])=>
+  '<b class="status-count" data-status="'+id+'" data-strength="'+Math.trunc(n)+'">'+id.slice(0,1).toUpperCase()+n+'</b>').join('')+'</span>':'';
+ const special=cell.special||cell.elemental?'<small class="piece-badges">'+(cell.special?'✦':'')+(cell.elemental?'⚡':'')+'</small>':'';
+ return gem(cell.type)+status+anchor+counters+special;
 }
 function gameplay(){
  const g=active;if(!g)return home();
@@ -65,7 +74,7 @@ function gameplay(){
  return header('Level '+g.level+' · '+escape(g.cfg.stageTitle),escape(g.cfg.hint))+
  stats()+'<div class="game-progress"><b>Score '+number(g.score)+' / '+number(g.cfg.goal)+'</b><b>Moves '+g.moves+'</b></div>'+
  '<div class="objectives">'+objectives.map(o=>'<span class="'+(o.done?'done':'')+'">'+escape(o.label)+' '+number(o.value)+'/'+number(o.target)+'</span>').join('')+'</div>'+
- '<div class="board-frame"><div class="board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]:' empty')+'">'+piece(c,i)+'</button>').join('')+'</div></div>'+
+ '<div class="board-frame"><div class="board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+'</button>').join('')+'</div></div>'+
  '<p class="hint">Tap two adjacent gems to swap them. Non-matching swaps still use a move. Select a gem before using targeted tools.</p>'+
  '<div class="booster-grid">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+icon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div>'+
  button('abandon','LEAVE BOARD','quiet');
