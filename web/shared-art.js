@@ -7,23 +7,16 @@ const overlaySet=new Set(overlayNames);
 const tileOverlay=id=>overlaySet.has(id)?'art/primary/overlays/'+id+'.png':null;
 const blocker=Object.freeze({
  ice1:'art/primary/blockers/ice-1.png',ice2:'art/primary/blockers/ice-2.png',
- chain1:'art/primary/blockers/chain-1.png',chain2:'art/primary/blockers/chain-2.png',
  chest:'art/primary/blockers/chest.png',crate:'art/primary/blockers/crate.png',
  lock:'art/primary/blockers/lock.png',rock:'art/primary/blockers/rock.png'
 });
+// Visually inspected: no walnut/acorn inside these assets. All other icons use
+// the unique, original procedural Embryon vectors until art production approves them.
 const icons=Object.freeze({
- home:'art/additions/ui/home.png',settings:'art/additions/ui/settings.png',
- gift:'art/additions/ui/gift.png',help:'art/additions/ui/help.png',
- back:'art/additions/ui/back.png',next:'art/additions/ui/next.png',
- play:'art/additions/ui/play.png',restart:'art/additions/ui/restart.png',
- trophy:'art/additions/ui/trophy.png',heart:'art/additions/economy/energy-heart.png',
- extra:'art/additions/economy/hourglass.png',timer:'art/additions/ui/timer.png',
- 'daily-calendar':'art/additions/economy/daily-calendar.png',
- 'booster-pack':'art/additions/economy/booster-pack.png',
- hammer:'art/primary/powerups/hammer.png',row:'art/primary/powerups/row-clear.png',
- column:'art/additions/effects/vertical-clear.png',
- color:'art/primary/powerups/rainbow.png',shuffle:'art/additions/effects/rainbow-pulse.png',
- blast:'art/additions/effects/match-burst.png',unlock:'art/additions/effects/chain-break.png',
+ heart:'art/additions/economy/energy-heart.png',
+ extra:'art/additions/economy/hourglass.png',
+ hammer:'art/primary/powerups/hammer.png',
+ unlock:'art/additions/effects/chain-break.png',
  starburst:'art/additions/effects/sparkle-burst.png',
  frostbreaker:'art/additions/effects/ice-shatter.png'
 });
@@ -45,7 +38,7 @@ function layers(c){
 function anchor(c){
  if(!c||c.type===null)return null;
  if(c.chest>0)return {src:blocker.chest,label:'Treasure chest',count:c.chest};
- if(c.lock>0)return {src:c.lock>1?blocker.chain2:blocker.chain1,label:'Chain anchor',count:c.lock};
+ if(c.lock>0)return {src:blocker.lock,label:'Chain anchor',count:c.lock};
  if(c.ice>0)return {src:c.ice>1?blocker.ice2:blocker.ice1,label:'Ice anchor',count:c.ice};
  if(c.rock>0)return {src:blocker.rock,label:'Stone seal',count:c.rock};
  return null;

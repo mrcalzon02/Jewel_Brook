@@ -1,0 +1,223 @@
+{
+  "schema": 1,
+  "name": "Rupee Rush Portable Art Family",
+  "source_repository": "mrcalzon02/NUTBUSTER-R",
+  "source_tree_sha": "31f48434be0005cd20e8a24a49b9145a5f972575",
+  "source_art_owner": "Project owner; retain original source attribution and inspect any future third-party assets",
+  "assets": [
+    {
+      "path": "web/art/primary/overlays/arcane.png",
+      "source_git_blob": "e403d7d7e10892c1b93d0106ea7902196854cfc9",
+      "bytes": 58761,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/bomb.png",
+      "source_git_blob": "d3a8d2705ceb707cade9c0cdea885e56dbf79770",
+      "bytes": 63994,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/chain-lock.png",
+      "source_git_blob": "a1a699c15aeaad667c15ddac2e5d985a63c619a6",
+      "bytes": 78594,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/crystal.png",
+      "source_git_blob": "77f76d8f43abbd452d6aaade6a6d00cff2b3d1e1",
+      "bytes": 64115,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/fire.png",
+      "source_git_blob": "6b80133b2abcc800cbd2731cb41cba575e39f65c",
+      "bytes": 62925,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/frost.png",
+      "source_git_blob": "3fd7f83b51476368b5cc35cb16dc14a191ecce02",
+      "bytes": 72683,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/lightning.png",
+      "source_git_blob": "4d63b02960ff2abb83c0a6b18fdc49852c74ae8a",
+      "bytes": 64044,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/magma.png",
+      "source_git_blob": "3dbadf60c70f151e654493bc052d44b028ab008e",
+      "bytes": 72005,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/nature-vines.png",
+      "source_git_blob": "b8172062671fb7e050a49d35be3582f6cd8a6833",
+      "bytes": 61419,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/poison.png",
+      "source_git_blob": "919a0a2c57b9989774f80e470ff1aa0e5aa16a67",
+      "bytes": 59292,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/radiance.png",
+      "source_git_blob": "f8b8ea31490d2fadfb40f26fc80c0775eb3ee191",
+      "bytes": 63704,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/shadow.png",
+      "source_git_blob": "3e4cc2d98f3ce467c7119605e55b23442b2d1df7",
+      "bytes": 68269,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/sticky-butter.png",
+      "source_git_blob": "4a1d8e8a3f8ac9d096e77af1cc022069a2d2ddea",
+      "bytes": 60663,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/storm.png",
+      "source_git_blob": "032129c51cae66520efe9c6cb3f3047a968a1a62",
+      "bytes": 61452,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/void-rock.png",
+      "source_git_blob": "40aadda8d444297cbbd1a668e0a801d5f88581e1",
+      "bytes": 69744,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/overlays/water.png",
+      "source_git_blob": "7459ef8765b065eec8632d12d50a461100f6731e",
+      "bytes": 61043,
+      "category": "overlay",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/blockers/chest.png",
+      "source_git_blob": "f48fef3e443bc94f5a57bd6794eef961f58a9713",
+      "bytes": 4547,
+      "category": "blocker",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/blockers/crate.png",
+      "source_git_blob": "19b403a20b00151775e1d0ac3bac670485b7f857",
+      "bytes": 4590,
+      "category": "blocker",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/blockers/ice-1.png",
+      "source_git_blob": "4ec25097d7253f75fdcd0b4838a26c5c965c8591",
+      "bytes": 37028,
+      "category": "blocker",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/blockers/ice-2.png",
+      "source_git_blob": "bde0d0d24e9b10038f8265f76fb845ea2e151da3",
+      "bytes": 37028,
+      "category": "blocker",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/primary/blockers/lock.png",
+      "source_git_blob": "32075f5f29d87c65f7dfe10c4a13c1774c853184",
+      "bytes": 4056,
+      "category": "blocker",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/additions/effects/chain-break.png",
+      "source_git_blob": "19c6864474dfe2e4aa5555636411e856f9d3bd64",
+      "bytes": 83388,
+      "category": "effect",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/additions/effects/ice-shatter.png",
+      "source_git_blob": "f1f8b0799b672715a8d81e09ba00688d85aa00d1",
+      "bytes": 104918,
+      "category": "effect",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/additions/effects/sparkle-burst.png",
+      "source_git_blob": "a0a952fa66f42cbc1443f965f66f70bb779419c5",
+      "bytes": 58132,
+      "category": "effect",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/additions/economy/energy-heart.png",
+      "source_git_blob": "e55ffbcddaa875a9a05fe3e8dc0eb2e62df9362a",
+      "bytes": 81684,
+      "category": "economy",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/additions/economy/hourglass.png",
+      "source_git_blob": "71019e209910c10a22255c712ed15b749460dcfc",
+      "bytes": 79383,
+      "category": "economy",
+      "placement": "live_or_supported"
+    },
+    {
+      "path": "web/art/additions/economy/mystery-gift.png",
+      "source_git_blob": "8efb149ff6b7be8c5c40ebb40f356ce341e9de51",
+      "bytes": 100607,
+      "category": "economy",
+      "placement": "staged_for_matching_feature"
+    },
+    {
+      "path": "web/art/additions/economy/timed-chest.png",
+      "source_git_blob": "f0a675b063e8448b8e186b9394021a256942e2f7",
+      "bytes": 88766,
+      "category": "economy",
+      "placement": "staged_for_matching_feature"
+    },
+    {
+      "path": "web/art/primary/powerups/hammer.png",
+      "source_git_blob": "4595be23273f24b230381ec00708bc4f964c9f05",
+      "bytes": 4927,
+      "category": "powerup",
+      "placement": "live_or_supported"
+    }
+  ],
+  "retained_previously": [
+    "web/art/primary/blockers/rock.png",
+    "web/art/nutvale/mining-tools/pickaxes/*",
+    "web/art/nutvale/mining-tools/gloves/*"
+  ],
+  "rules": {
+    "overlay": "RGBA status ring. Match gemstone remains underneath. Use transparent-center masks in WebView and Firefox.",
+    "blocker": "Use standalone ice/lock/chest/crate sprites only. Exclude whole-nut anchored variants.",
+    "mobileQA": "File checks and mocked DOM do not replace Android WebView render, opacity/cropping, or touch tests.",
+    "branding": "No walnuts, acorns, nut-shaped VFX, woodland currency/UI glyphs, or Nutvale characters."
+  }
+}

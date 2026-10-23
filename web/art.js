@@ -3,6 +3,11 @@
 const HUES=[355,215,145,42,275,51,191,169,10,290,161,231,175,24,320,46,92,202,65];
 const NAMES=['Ruby','Sapphire','Emerald','Topaz','Amethyst','Citrine','Diamond','Moonstone','Garnet','Sunstone','Onyx','Opal','Aquamarine','Jade','Peridot','Turquoise','Lapis','Alexandrite','Tanzanite'];
 const icons={
+ home:'M3 10l9-7 9 7v11H3z M9 21v-8h6v8',
+ levels:'M4 3h16v18H4z M8 8h8 M8 12h8 M8 16h5',
+ gift:'M3 10h18v11H3z M2 6h20v4H2z M12 6v15 M7 6c-4 0-4-4 0-4 3 0 5 4 5 4 0-4 2-4 5-4 4 0 4 4 0 4',
+ shop:'M3 9h18l-2 12H5z M6 9V5h12v4',
+
  hammer:'M8 3v3l8 8 3-3 2 2-7 7-2-2 2-2-7-2 2-4-4-2-3 3 3z M4 20l9-9',
  extra:'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18 M12 7v10m-5-5h10',
  row:'M2 12h20 M17 7l5 5-5 5 M7 7l-5 5 5 5',

@@ -166,6 +166,16 @@ function render(){
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='trials'?trials():page==='game'?gameplay():
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
+ const navArt={
+  home:Art.icon('home'),campaign:Art.icon('levels'),
+  mine:G.entry('pickaxe',Mining.stats(saved).pickTier).image,
+  shop:Art.icon('shop'),rewards:Art.icon('gift'),settings:Art.icon('gear')
+ };
+ // Brand-neutral local glyphs and the genuine pickaxe, never old woodland icons.
+ document.querySelectorAll('.bottom .nav-art').forEach(img=>{
+  const section=img.closest('[data-nav]')?.dataset.nav;
+  if(section&&navArt[section])img.src=navArt[section];
+ });
 }
 function finishMining(result,success){if(result?.valid){save();render();message(success);}else message('Cannot complete: '+(result?.reason||'unknown')); }
 function handle(b){
