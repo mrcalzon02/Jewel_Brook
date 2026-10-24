@@ -1,0 +1,79 @@
+plugins { id 'com.android.application' }
+
+// One permanent LOCAL Rupee Rush APK signer. Never use the Nut Buster,
+// ReverieVR or future Google Play upload keys for sideloaded updates.
+def keystorePath = (project.findProperty('rupeeKeystorePath') ?: '').toString()
+def rrStorePass = (project.findProperty('rupeeStorePassword') ?: '').toString()
+def rrKeyAlias = (project.findProperty('rupeeKeyAlias') ?: '').toString()
+def rrKeyPass = (project.findProperty('rupeeKeyPassword') ?: '').toString()
+def versionNumber = (project.findProperty('rupeeVersionCode') ?: '1').toString().toInteger()
+def expectedAlias = 'rupeerush-local-apk-v1'
+def signerAvailable = keystorePath && rrStorePass && rrKeyPass &&
+    rrKeyAlias == expectedAlias && file(keystorePath).isFile()
+if (versionNumber < 1 || versionNumber > 2100000000) {
+    throw new GradleException('Invalid Rupee Rush versionCode')
+}
+
+android {
+    namespace 'io.github.mrcalzon02.rupeerush'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'io.github.mrcalzon02.rupeerush'
+        minSdk 26
+        targetSdk 36
+        versionCode versionNumber
+        versionName '0.1.0-local.' + versionNumber
+    }
+
+    // Embedded current web game, including its complete asset family.
+    // android/ -> ../web. Never silently stage an unrelated game project.
+    sourceSets {
+        main { assets.srcDirs = [rootProject.file('../web')] }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    signingConfigs {
+        if (signerAvailable) {
+            rupeeLocal {
+                storeFile file(keystorePath)
+                storePassword = rrStorePass
+                keyAlias = rrKeyAlias
+                keyPassword = rrKeyPass
+                storeType = 'PKCS12'
+            }
+        }
+    }
+    buildTypes {
+        debug { debuggable true }
+        release {
+            debuggable false
+            minifyEnabled false
+            shrinkResources false
+            if (signerAvailable) signingConfig signingConfigs.rupeeLocal
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.16.0'
+}
+
+tasks.register('requirePermanentLocalSigner') {
+    doLast {
+        if (!signerAvailable) {
+            throw new GradleException(
+                'Refusing an unsigned or debug-signed update APK. ' +
+                'Run scripts/build-android-apk.ps1 to create/reuse the permanent Rupee Rush local signer.'
+            )
+        }
+    }
+}
+tasks.configureEach { task ->
+    if (task.name == 'assembleRelease' || task.name == 'bundleRelease') {
+        task.dependsOn('requirePermanentLocalSigner')
+    }
+}

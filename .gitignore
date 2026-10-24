@@ -10,3 +10,10 @@
 android/.gradle/
 android/**/build/
 android/local.properties
+
+# Rupee Rush generated APKs and local signing files
+release/
+android/**/build/
+android/local.properties
+*.p12
+**/store-password.txt
