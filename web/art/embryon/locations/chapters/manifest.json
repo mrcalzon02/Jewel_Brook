@@ -1,0 +1,121 @@
+{
+  "schema": "rupee-rush.embryon.chapter-environments/v1",
+  "title": "Heroes of Embryon \u2014 Five underground campaign chapters",
+  "status": "approved artwork, committed image library; runtime map integration separate",
+  "approvedBy": "user",
+  "chapterCount": 5,
+  "chapters": [
+    {
+      "chapter": 1,
+      "id": "goblin-caves",
+      "title": "Goblin Caves",
+      "sourceFile": "glowing_crystal_mine_cavern.png",
+      "sourceSha256": "ef625ec61fa323af915e485f98ea74da72abada06497609790398f13f45312d3",
+      "sourceSizeBytes": 2985258,
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "runtimeFile": "01-goblin-caves.webp",
+      "runtimeRepoPath": "web/art/embryon/locations/chapters/01-goblin-caves.webp",
+      "runtimeSha256": "1b883f2656c636dd39c2f6d6634e6e577037d4fdbe2b0d67e47d1eaef99882e1",
+      "runtimeSizeBytes": 301958,
+      "runtimeDimensions": [
+        1280,
+        720
+      ],
+      "originalPreservedInDrive": true,
+      "artDirection": "second-pass-high-gloss-Nut-Buster-inspired-casual-game"
+    },
+    {
+      "chapter": 2,
+      "id": "troll-caverns",
+      "title": "Troll Caverns",
+      "sourceFile": "troll_stronghold_mine_cavern.png",
+      "sourceSha256": "fb11ba6e869c25a2322bd9ed70aad1a1e9ea9368ea1ed60dabc2d71ea9654780",
+      "sourceSizeBytes": 2990659,
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "runtimeFile": "02-troll-caverns.webp",
+      "runtimeRepoPath": "web/art/embryon/locations/chapters/02-troll-caverns.webp",
+      "runtimeSha256": "1a5f9a14daf5aff696d20db58d7ee4002e502d8c54342fe5dd835d13b160ed03",
+      "runtimeSizeBytes": 303428,
+      "runtimeDimensions": [
+        1280,
+        720
+      ],
+      "originalPreservedInDrive": true,
+      "artDirection": "second-pass-high-gloss-Nut-Buster-inspired-casual-game"
+    },
+    {
+      "chapter": 3,
+      "id": "sulfur-sumps",
+      "title": "Sulfur Sumps",
+      "sourceFile": "toxic_cavern_mining_swamp.png",
+      "sourceSha256": "46f19994169f61c0c055776e610dc0c6fdce986c8bda18c984cbb58ded669d69",
+      "sourceSizeBytes": 3048312,
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "runtimeFile": "03-sulfur-sumps.webp",
+      "runtimeRepoPath": "web/art/embryon/locations/chapters/03-sulfur-sumps.webp",
+      "runtimeSha256": "11a94e80f65ed5736d9f795dc2374f9f6c7476683886e9c6e0a7640bf81d64f9",
+      "runtimeSizeBytes": 327374,
+      "runtimeDimensions": [
+        1280,
+        720
+      ],
+      "originalPreservedInDrive": true,
+      "artDirection": "second-pass-high-gloss-Nut-Buster-inspired-casual-game"
+    },
+    {
+      "chapter": 4,
+      "id": "mushroom-mire",
+      "title": "Mushroom Mire",
+      "sourceFile": "bioluminescent_mushroom_swamp_village.png",
+      "sourceSha256": "f173693fbf9142d267187c1a31133990b21a559f40ede92bb922ee4ec96e64ee",
+      "sourceSizeBytes": 3163393,
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "runtimeFile": "04-mushroom-mire.webp",
+      "runtimeRepoPath": "web/art/embryon/locations/chapters/04-mushroom-mire.webp",
+      "runtimeSha256": "9c2507cbc146ec165fa52e82c61a6abe53ba350c7b9637fb58d689101b1d6e75",
+      "runtimeSizeBytes": 331856,
+      "runtimeDimensions": [
+        1280,
+        720
+      ],
+      "originalPreservedInDrive": true,
+      "artDirection": "second-pass-high-gloss-Nut-Buster-inspired-casual-game"
+    },
+    {
+      "chapter": 5,
+      "id": "ghost-mines",
+      "title": "Ghost Mines",
+      "sourceFile": "haunted_crystal_mine_cavern.png",
+      "sourceSha256": "fd1ef6e1701c454dfb6d1b23635e3b9888f22ea51b72a8be49af890a8e336be8",
+      "sourceSizeBytes": 3187073,
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "runtimeFile": "05-ghost-mines.webp",
+      "runtimeRepoPath": "web/art/embryon/locations/chapters/05-ghost-mines.webp",
+      "runtimeSha256": "568bc0d4e71b882bb0214689535d2a35f979c976511af9dfa855be943a6749a5",
+      "runtimeSizeBytes": 339048,
+      "runtimeDimensions": [
+        1280,
+        720
+      ],
+      "originalPreservedInDrive": true,
+      "artDirection": "second-pass-high-gloss-Nut-Buster-inspired-casual-game"
+    }
+  ],
+  "driveSourceFolderName": "Embryon Adventure Chapters",
+  "note": "These landscape artworks are individual chapter backgrounds, NOT replacements for the existing portrait 941x1672 road-coordinate chapter map system. Do not substitute them into campaign-maps.js without remapping coordinates and explicit testing."
+}
