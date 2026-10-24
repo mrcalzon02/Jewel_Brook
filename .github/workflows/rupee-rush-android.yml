@@ -1,0 +1,124 @@
+name: Rupee Rush signed Android APK
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: rupeerush-apk-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      RUPEE_APK_KEYSTORE_BASE64: ${{ secrets.RUPEE_APK_KEYSTORE_BASE64 }}
+      RUPEE_APK_STORE_PASSWORD: ${{ secrets.RUPEE_APK_STORE_PASSWORD }}
+      RUPEE_APK_KEY_ALIAS: ${{ secrets.RUPEE_APK_KEY_ALIAS }}
+      RUPEE_APK_KEY_PASSWORD: ${{ secrets.RUPEE_APK_KEY_PASSWORD }}
+      RUPEE_APK_CERT_SHA256: ${{ secrets.RUPEE_APK_CERT_SHA256 }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run all Rupee Rush source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          for t in tests/*.test.js; do node "$t"; done
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.1'
+      - name: Ensure Android API 36 SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$ANDROID_SDK_ROOT"
+          "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Build disposable Android debug preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          gradle -p android --no-daemon :app:assembleDebug
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+          mkdir -p preview
+          cp android/app/build/outputs/apk/debug/app-debug.apk preview/RupeeRush-UNSTABLE-DEBUG.apk
+          echo 'Temporary debug certificate; do not rely on this APK for subsequent in-place upgrades.' > preview/README-DEBUG-UNSTABLE.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RupeeRush-debug-preview-${{ github.run_number }}-${{ github.run_attempt }}
+          path: preview/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Verify permanent publisher signer
+        id: signer
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$RUPEE_APK_KEYSTORE_BASE64" || -z "$RUPEE_APK_STORE_PASSWORD" || -z "$RUPEE_APK_KEY_ALIAS" || -z "$RUPEE_APK_KEY_PASSWORD" || -z "$RUPEE_APK_CERT_SHA256" ]]; then
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo '::warning::Signed release is gated until scripts/provision-github-apk-signing.ps1 registers the permanent Rupee Rush key. Debug preview only.'
+            exit 0
+          fi
+          [[ "$RUPEE_APK_KEY_ALIAS" == 'rupeerush-local-apk-v1' ]] || { echo '::error::Wrong signing alias'; exit 1; }
+          [[ "$RUPEE_APK_CERT_SHA256" =~ ^[0-9a-f]{64}$ ]] || { echo '::error::Bad signer fingerprint'; exit 1; }
+          mkdir -p "$RUNNER_TEMP/rupee-signing"
+          printf '%s' "$RUPEE_APK_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/rupee-signing/rupee.p12"
+          chmod 600 "$RUNNER_TEMP/rupee-signing/rupee.p12"
+          keytool -exportcert -storetype PKCS12 -keystore "$RUNNER_TEMP/rupee-signing/rupee.p12" -alias "$RUPEE_APK_KEY_ALIAS" -storepass "$RUPEE_APK_STORE_PASSWORD" -file "$RUNNER_TEMP/rupee-signing/cert.der" >/dev/null
+          actual="$(sha256sum "$RUNNER_TEMP/rupee-signing/cert.der" | cut -d' ' -f1)"
+          [[ "$actual" == "$RUPEE_APK_CERT_SHA256" ]] || { echo '::error::Wrong signing certificate'; exit 1; }
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+      - name: Assemble and verify signed Rupee Rush APK
+        if: steps.signer.outputs.ready == 'true'
+        id: release
+        shell: bash
+        env:
+          ORG_GRADLE_PROJECT_rupeeKeystorePath: ${{ runner.temp }}/rupee-signing/rupee.p12
+          ORG_GRADLE_PROJECT_rupeeStorePassword: ${{ secrets.RUPEE_APK_STORE_PASSWORD }}
+          ORG_GRADLE_PROJECT_rupeeKeyAlias: ${{ secrets.RUPEE_APK_KEY_ALIAS }}
+          ORG_GRADLE_PROJECT_rupeeKeyPassword: ${{ secrets.RUPEE_APK_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          (( GITHUB_RUN_ATTEMPT < 100 )) || exit 1
+          version=$((500000000 + GITHUB_RUN_NUMBER * 100 + GITHUB_RUN_ATTEMPT))
+          (( version < 2100000000 )) || exit 1
+          export ORG_GRADLE_PROJECT_rupeeVersionCode="$version"
+          gradle -p android --no-daemon :app:assembleRelease
+          apk=android/app/build/outputs/apk/release/app-release.apk
+          test -s "$apk"
+          "$ANDROID_SDK_ROOT/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$apk" | tee "$RUNNER_TEMP/certificate.txt"
+          grep -Fi "Signer #1 certificate SHA-256 digest: $RUPEE_APK_CERT_SHA256" "$RUNNER_TEMP/certificate.txt"
+          "$ANDROID_SDK_ROOT/build-tools/36.0.0/aapt" dump badging "$apk" | tee "$RUNNER_TEMP/package.txt"
+          grep -F "name='io.github.mrcalzon02.rupeerush'" "$RUNNER_TEMP/package.txt"
+          grep -F "versionCode='$version'" "$RUNNER_TEMP/package.txt"
+          for a in assets/index.html assets/game.js assets/mining.js assets/style.css assets/art/embryon/generated/gems/ruby.png assets/art/primary/blockers/rock.png; do
+            unzip -Z -1 "$apk" | grep -Fx "$a"
+          done
+          mkdir -p release
+          cp "$apk" release/RupeeRush-Android.apk
+          sha256sum release/RupeeRush-Android.apk > release/SHA256SUMS.txt
+          printf '{"commit":"%s","versionCode":%s,"package":"io.github.mrcalzon02.rupeerush","signerSha256":"%s"}\n' "$GITHUB_SHA" "$version" "$RUPEE_APK_CERT_SHA256" > release/BUILD-EVIDENCE.json
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Upload verified signed build
+        if: steps.signer.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: RupeeRush-signed-${{ github.run_number }}-${{ github.run_attempt }}
+          path: release/
+          retention-days: 30
+          if-no-files-found: error
+      - name: Publish signed APK to GitHub Releases
+        if: steps.signer.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="rupeerush-phone-test-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT"
+          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Rupee Rush Android ${{ steps.release.outputs.version }}" --notes 'Persistent-signer offline APK. Install over the previous same-signer Rupee Rush app to retain saves. Do not uninstall first. Development prerelease, independent of Google Play.'
