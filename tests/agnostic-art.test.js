@@ -78,7 +78,7 @@ for(const [id,p] of Object.entries(Shared.icons))assert.ok(used.has('web/'+p),'U
 for(const [id,p] of Object.entries(Progress.BOOSTER_ART))if(p)assert.ok(used.has('web/'+p),'Broken booster art reference: '+id);
 const E=require('../web/engine.js'),D=require('../web/daily-moves.js'),B=require('../web/benefits.js'),
  Trial=require('../web/elemental-challenges.js'),R=require('../web/elemental-rewards.js'),
- M=require('../web/mining.js'),Gear=require('../web/mining-gear.js'),Bridge=require('../web/mine-bridge.js');
+ Gear=require('../web/mining-gear.js'),M=require('../web/mining.js'),Bridge=require('../web/mine-bridge.js');
 const proxy=Object.assign({},E,{create(level,seed){
  const g=E.create(level,seed),filled=g.cells.filter(c=>c&&c.type!==null);
  assert.ok(filled.length>=4);
