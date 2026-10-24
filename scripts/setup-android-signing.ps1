@@ -134,17 +134,27 @@ foreach ($name in @('nutbuster-publisher.p12','store-password')) {
         throw "Original Nut Buster signing material missing from $nutDir. Restore the existing key from a private backup; never generate a replacement."
     }
 }
+# A missing ReverieVR recovery file must NEVER block the independent Rupee Rush signer.
+# Preserve a partial backup rather than misleadingly claiming that both identities were saved.
 if (-not $ReverieRoot) {
     if ($env:REVERIEVR_ROOT) { $ReverieRoot = $env:REVERIEVR_ROOT }
     else { $ReverieRoot = Join-Path $root '../ReverieVR' }
 }
-if (-not (Test-Path -LiteralPath $ReverieRoot -PathType Container)) {
-    throw "Cannot locate ReverieVR checkout. Reinvoke with -ReverieRoot 'C:\path\to\ReverieVR'."
+$reverieReady = $false
+if (Test-Path -LiteralPath $ReverieRoot -PathType Container) {
+    $ReverieRoot = (Resolve-Path -LiteralPath $ReverieRoot).Path
+    $revDir = Join-Path $ReverieRoot '.local/reverievr-signing'
+    $revSecrets = Join-Path $revDir 'github-secrets.txt'
+    $revStores = @(@(
+        (Join-Path $revDir 'reverievr-phone-test.keystore'),
+        (Join-Path $revDir 'reverievr-phone-test.jks')
+    ) | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf })
+    $reverieReady = (Test-Path -LiteralPath $revSecrets -PathType Leaf) -and ($revStores.Count -eq 1)
 }
-$ReverieRoot = (Resolve-Path -LiteralPath $ReverieRoot).Path
-$reverieSecrets = Join-Path $ReverieRoot '.local/reverievr-signing/github-secrets.txt'
-if (-not (Test-Path -LiteralPath $reverieSecrets -PathType Leaf)) {
-    throw "Existing ReverieVR signing secrets file missing: $reverieSecrets. Do not generate a replacement identity."
+if (-not $reverieReady) {
+    Write-Warning 'ReverieVR original signer recovery files not found at the expected location. Its backup is INCOMPLETE.'
+    Write-Host "Checked ReverieVR root: $ReverieRoot"
+    Write-Host 'Continuing Rupee Rush with verified Nut Buster signing only; no new keys will be created.'
 }
 
 & gh auth status *> $null
@@ -177,9 +187,19 @@ if (-not $EncryptOnly) {
 
 Write-Host '[1/3] Verify existing Nut Buster/Rupee Rush signing certificate'
 & $provision
-Write-Host '[2/3] Encrypt and verify Nut Buster plus ReverieVR backups'
-& $backup -ReverieRoot $ReverieRoot -DriveRemote $DriveRemote -EncryptOnly:$EncryptOnly
+Write-Host '[2/3] Encrypt and verify all currently available original signing sources'
+$backupParams = @{
+    ReverieRoot = $ReverieRoot
+    DriveRemote = $DriveRemote
+    EncryptOnly = $EncryptOnly
+    SkipReverie = (-not $reverieReady)
+}
+& $backup @backupParams
 Write-Host '[3/3] Register original signer in Rupee Rush GitHub secrets'
 & $provision -SetGitHubSecrets -AllowExistingSecrets:$AllowExistingSecrets
-Write-Host 'Done: signing secret names registered; backup workflow completed.'
+if ($reverieReady) {
+    Write-Host 'Rupee Rush signer registered and BOTH key profiles included in encrypted backup.'
+} else {
+    Write-Warning 'Rupee Rush signer registered and Nut Buster key backed up; ReverieVR recovery remains NOT BACKED UP.'
+}
 Write-Host 'No APK was compiled, signed or published by this script.'

@@ -14,9 +14,9 @@ In GitKraken's embedded PowerShell, from C:\GITS\Rupee-rush, paste this one line
 
     git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\setup-android-signing.ps1 }
 
-The fast-forward-only pull never discards local changes. The launcher defaults to C:\GITS\ReverieVR as the sibling checkout (or REVERIEVR_ROOT); use -ReverieRoot if the checkout is elsewhere. It verifies the existing Nut Buster key, encrypts both original signing profiles, uploads ciphertext using your authenticated rclone Google Drive remote, checks the uploaded ciphertext, then provisions the exact Nut Buster key into Rupee Rush's GitHub secret store. It stops on missing dependencies or keys. It does not generate a new signing key, create an APK, or install anything.
+The fast-forward-only pull never discards local changes. The launcher defaults to C:\GITS\ReverieVR as the sibling checkout (or REVERIEVR_ROOT); use -ReverieRoot if the checkout is elsewhere. It verifies the existing Nut Buster key, encrypts the recoverable publisher identities (both when ReverieVR originals are available, otherwise Nut Buster only with a PARTIAL warning), uploads ciphertext using your authenticated rclone Google Drive remote, checks the uploaded ciphertext, then provisions the exact Nut Buster key into Rupee Rush's GitHub secret store. It stops on missing dependencies or keys. It does not generate a new signing key, create an APK, or install anything.
 
-This is **one command to initiate**, not unattended execution: the script discovers installed tools, offers WinGet installation of missing tools after consent, then ensures GitHub CLI/gh authentication and a configured Google Drive rclone remote. The backup prompts for four encryption passphrases. Save these separately, offline, and verify a private restore. If some Rupee Rush signing secrets already exist, the launcher safely refuses to overwrite them; investigate identity before any explicit override.
+This is **one command to initiate**, not unattended execution: the script discovers installed tools, offers WinGet installation of missing tools after consent, then ensures GitHub CLI/gh authentication and a configured Google Drive rclone remote. The backup prompts for two encryption passphrases when only Nut Buster is available, or four when both signing profiles exist. Save these separately, offline, and verify a private restore. If some Rupee Rush signing secrets already exist, the launcher safely refuses to overwrite them; investigate identity before any explicit override.
 
 
 ### Missing local prerequisites
@@ -24,6 +24,13 @@ This is **one command to initiate**, not unattended execution: the script discov
 The one-command launcher now first checks the existing PATH and common Java locations (including Android Studio's bundled jbr\bin\keytool.exe and installed JDKs). It will not install a second JDK when a working keytool already exists at a recognized location. If a tool truly is missing, it displays the exact official WinGet IDs and **asks permission before installation**: Microsoft.OpenJDK.17, GitHub.cli, FiloSottile.age and Rclone.Rclone. Installations may require Windows elevation and a terminal restart before commands become available. Re-run the exact same one-line GitKraken command after reopening the terminal, without generating any new signing key.
 
 If GitHub CLI is not authenticated, the launcher starts its interactive login. If the Google Drive rclone remote named gdrive is missing, it offers to open interactive rclone config; connect the same private Google account and name the remote exactly gdrive. Installing the tools is not equivalent to authenticating them. The backup prompts for encryption passphrases that must be stored OFFLINE. If existing Rupee Rush signing secrets are detected, the launcher deliberately refuses to overwrite them unless the prior publisher identity was independently checked and -AllowExistingSecrets explicitly supplied.
+
+
+### ReverieVR key is absent from its checkout
+
+The ReverieVR Windows provisioner normally kept .local/reverievr-signing/github-secrets.txt beside its private keystore. This folder is gitignored and cannot be restored with git pull. GitHub Actions secrets are write-only and cannot be retrieved via the GitHub API. Absence at C:\GITS\ReverieVR is **not proof the signer is lost**; it may exist on another computer or trusted backup.
+
+The single-command launcher now **does not require the unrelated ReverieVR file** to provision Rupee Rush. If both original ReverieVR files are present in the specified checkout it verifies and backs them up alongside Nut Buster. Otherwise it encrypts and uploads **only the verified Nut Buster/Rupee Rush key**, and clearly marks the outcome PARTIAL, with ReverieVR NOT BACKED UP. It never guesses, generates, replaces, or silently marks a missing key as recovered. Restore the original ReverieVR key/password privately from the original machine or offline backup and rerun the same command to include it. A remote GitHub secret *name* is not a recoverable private signing key.
 
 ## Verify and provision Rupee Rush
 
