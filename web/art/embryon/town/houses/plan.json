@@ -1,0 +1,471 @@
+{
+  "schema": "rupee-rush-town-house-art-plan/v1",
+  "status": "planned \u2014 do not resolve assets at runtime",
+  "camera": {
+    "view": "3/4 isometric front-right",
+    "basePixelWidth": 1024,
+    "basePixelHeight": 1024,
+    "doorAnchor": [
+      0.5,
+      0.8
+    ],
+    "houseBaselineY": 0.9
+  },
+  "output": {
+    "source": "transparent RGBA 1024x1024",
+    "runtime": "transparent 512x512 WebP/PNG",
+    "atlas": "four independent 2x5 preview boards, plaques via UI"
+  },
+  "plotUnlockLevels": [
+    1,
+    6,
+    11,
+    16,
+    21,
+    26,
+    31,
+    36
+  ],
+  "entries": [
+    {
+      "level": 1,
+      "name": "Hawseed Hovel",
+      "band": 1,
+      "appearance": "patched straw roof, bent timber, mud hearth",
+      "plots": 1,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 2,
+      "name": "Dry Roof",
+      "band": 1,
+      "appearance": "fresh straw patch, timber brace and a window shutter",
+      "plots": 1,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 3,
+      "name": "First Repairs",
+      "band": 1,
+      "appearance": "square door frame, new wall planks and a stone doorstep",
+      "plots": 1,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 4,
+      "name": "Stone Hearth",
+      "band": 1,
+      "appearance": "first brick chimney, second window, tidy doorstep",
+      "plots": 1,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 5,
+      "name": "Blue Shingles",
+      "band": 1,
+      "appearance": "part thatch replaced by blue tiles, sturdy lintel",
+      "plots": 1,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 6,
+      "name": "Fenced Yard",
+      "band": 1,
+      "appearance": "low timber fence and garden tool hook (plot 2 unlocked)",
+      "plots": 2,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 7,
+      "name": "Warm Cottage",
+      "band": 1,
+      "appearance": "complete blue-shingle roof, planter beneath windows",
+      "plots": 2,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 8,
+      "name": "Bright Windows",
+      "band": 1,
+      "appearance": "glass panes, flower boxes and renewed walls",
+      "plots": 2,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 9,
+      "name": "Hawseed Garden Cottage",
+      "band": 1,
+      "appearance": "small covered porch and decorated stone path",
+      "plots": 2,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 10,
+      "name": "Hawseed Homestead",
+      "band": 1,
+      "appearance": "finished modest one-story cottage, trimmed roof, no tower",
+      "plots": 2,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 11,
+      "name": "Garden Cottage",
+      "band": 2,
+      "appearance": "plaster walls, a tool shed (plot 3 unlocked)",
+      "plots": 3,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 12,
+      "name": "Kitchen Extension",
+      "band": 2,
+      "appearance": "small side kitchen, brick oven chimney",
+      "plots": 3,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 13,
+      "name": "Glazed Porch",
+      "band": 2,
+      "appearance": "porch glazing, raised flower beds",
+      "plots": 3,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 14,
+      "name": "Garden Lanterns",
+      "band": 2,
+      "appearance": "lamps flanking doorway, polished stone path",
+      "plots": 3,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 15,
+      "name": "Rural Homestead",
+      "band": 2,
+      "appearance": "neat cross-gable cottage with robust stone base",
+      "plots": 3,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 16,
+      "name": "Working Garden House",
+      "band": 2,
+      "appearance": "larger kitchen and greenhouse frame (plot 4 unlocked)",
+      "plots": 4,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 17,
+      "name": "Walled Orchard",
+      "band": 2,
+      "appearance": "short walls, climbing trellis and little arbor",
+      "plots": 4,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 18,
+      "name": "Half-Glass Conservatory",
+      "band": 2,
+      "appearance": "glass garden room shell attached to house",
+      "plots": 4,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 19,
+      "name": "Cottage Residence",
+      "band": 2,
+      "appearance": "clipped hedges, blue tile roof and full veranda",
+      "plots": 4,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 20,
+      "name": "Master Garden House",
+      "band": 2,
+      "appearance": "complete working garden house, still no manor towers",
+      "plots": 4,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 21,
+      "name": "Prosperous Townhouse",
+      "band": 3,
+      "appearance": "proper masonry townhouse footprint (plot 5 unlocked)",
+      "plots": 5,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 22,
+      "name": "Merchant Awning",
+      "band": 3,
+      "appearance": "small market awning and brick terrace",
+      "plots": 5,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 23,
+      "name": "Upper Dormer",
+      "band": 3,
+      "appearance": "second floor dormer and tiled awning",
+      "plots": 5,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 24,
+      "name": "Pantry House",
+      "band": 3,
+      "appearance": "stone-walled pantry wing and herb-drying lattice",
+      "plots": 5,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 25,
+      "name": "Sunlit Residence",
+      "band": 3,
+      "appearance": "well-proportioned townhouse with bright upper windows",
+      "plots": 5,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 26,
+      "name": "Conservatory Residence",
+      "band": 3,
+      "appearance": "glazed conservatory and paved planting aisle (plot 6 unlocked)",
+      "plots": 6,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 27,
+      "name": "Carved Balustrades",
+      "band": 3,
+      "appearance": "ornamental balcony, silver trim and stone steps",
+      "plots": 6,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 28,
+      "name": "Merchant Courtyard",
+      "band": 3,
+      "appearance": "formal courtyard gate and small topiary planters",
+      "plots": 6,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 29,
+      "name": "Refined Blue Estate",
+      "band": 3,
+      "appearance": "sunlit blue roof, polished silver house details",
+      "plots": 6,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 30,
+      "name": "Prosperous Manorlet",
+      "band": 3,
+      "appearance": "prosperous three-wing manorlet, not yet royal",
+      "plots": 6,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 31,
+      "name": "Noble Residence",
+      "band": 4,
+      "appearance": "pale stone and vaulted entry (plot 7 unlocked)",
+      "plots": 7,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 32,
+      "name": "Pearl Gallery",
+      "band": 4,
+      "appearance": "long covered colonnade on south wing",
+      "plots": 7,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 33,
+      "name": "Upper Balconies",
+      "band": 4,
+      "appearance": "sapphire roofs, elegantly turned balconies",
+      "plots": 7,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 34,
+      "name": "Luminous Hall",
+      "band": 4,
+      "appearance": "blue crystal lanterns on matching silver pedestals",
+      "plots": 7,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 35,
+      "name": "Noble Gardens",
+      "band": 4,
+      "appearance": "marble paths and symmetrical flowering planters",
+      "plots": 7,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 36,
+      "name": "Royal Garden Estate",
+      "band": 4,
+      "appearance": "first manor wing added (plot 8 unlocked)",
+      "plots": 8,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 37,
+      "name": "Silver Roof Manor",
+      "band": 4,
+      "appearance": "two-story stone house, silver gutters and blue gables",
+      "plots": 8,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 38,
+      "name": "Crystal Conservatory",
+      "band": 4,
+      "appearance": "tall crystal greenhouse and elaborate arched glass",
+      "plots": 8,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 39,
+      "name": "Royal Court Residence",
+      "band": 4,
+      "appearance": "large symmetrical stone manor, sapphire banners",
+      "plots": 8,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    },
+    {
+      "level": 40,
+      "name": "Royal Manor of Embryon",
+      "band": 4,
+      "appearance": "grand non-fortified manor with blue spires, crystal skylight and estate gardens",
+      "plots": 8,
+      "houseArt": "pending_review",
+      "runtimeFile": null,
+      "orientation": "isometric-front-right",
+      "groundAnchor": "separate"
+    }
+  ]
+}
