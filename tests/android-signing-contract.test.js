@@ -27,7 +27,7 @@ assert.match(backup, /age -p -o/);
 assert.match(backup, /rclone check/);
 assert.match(backup, /--one-way --checksum/);
 assert.match(read('.gitignore'), /^\.local\/$/m);
-// The old provision/backup files remain historical; the DEFAULT one-line entry point is NEW Play generation.
-assert.match(launcher, /generate-new-play-upload-keys\.ps1/);
+// Historical signer recovery remains archived. Default entry point now uses new Rupee Rush GitHub APK signing.
+assert.match(launcher, /provision-github-apk-signing\.ps1/);
 assert.doesNotMatch(launcher, /provision-rupee-signing\.ps1|backup-android-signing-to-drive\.ps1/);
-console.log('Legacy signing material is archived and default launcher routes to new Play key generation.');
+console.log('Legacy signing scripts remain archived; default launcher provisions Rupee Rush GitHub APK releases.');

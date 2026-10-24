@@ -3,7 +3,7 @@
 **Android APK delivery:** [GitHub-built signed Releases](docs/GITHUB_ANDROID_RELEASES.md) are the normal workflow; no local Android build is needed. [Download APK releases](https://github.com/mrcalzon02/Rupee-rush/releases).
 
 
-**New Google Play signing generation:** use [the new-key runbook](docs/GOOGLE_PLAY_NEW_KEYS.md). The old APK publisher signing workflow is retired for new Play releases; never reuse old Nut Buster or ReverieVR APK signing keys for Play uploads. No actual keystores are stored in Git.
+**Google Play publication is deferred.** Its separate [future upload-key runbook](docs/GOOGLE_PLAY_NEW_KEYS.md) is not required for the playable GitHub APK channel. No keystores are committed to Git.
 
 Offline-first gemstone match-3 and independent crystal-mining economy, based on adapted, separately maintained gameplay systems from [NUTBUSTER-R](https://github.com/mrcalzon02/NUTBUSTER-R). This repository is a standalone game, not a Nut Buster update channel or shared save database.
 

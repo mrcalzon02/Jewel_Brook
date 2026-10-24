@@ -1,14 +1,14 @@
 # 2026 Google Play publishing: NEW signing generation
 
-This supersedes the legacy publisher-key recovery workflow. The familiar one-command Rupee Rush script now generates three **new and separate** Google Play upload keys; no previous private signing keys are needed or reused.
+This supersedes the legacy publisher-key recovery workflow. Google Play key generation is DEFERRED. The normal Rupee Rush setup-android-signing.ps1 command now registers the permanent GitHub APK signing key; it does not generate Play upload keys. The historical three-app generator remains available only when explicitly requested.
 
 From the Rupee Rush checkout in Windows GitKraken PowerShell:
 
 ```powershell
-git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\setup-android-signing.ps1 }
+.\scripts\generate-new-play-upload-keys.ps1
 ```
 
-The one-command launcher first discovers the required `age` encryption program, and if missing installs the verified `FiloSottile.age` WinGet package. It searches the WinGet package directory and injects the executable path for the CURRENT GitKraken PowerShell session. Failed installation stops BEFORE generating keys. The generator then creates three RSA-4096 PKCS12 upload keys on the owner's PC in:
+The separate Play generator requires the `age` encryption program to be installed; it does not run as part of normal APK signing. When explicitly invoked in the future, the generator creates three RSA-4096 PKCS12 upload keys on the owner's PC in:
 
 `%LOCALAPPDATA%\Embryon\play-upload-v1\keys\reverievr`
 `%LOCALAPPDATA%\Embryon\play-upload-v1\keys\nutbuster`
