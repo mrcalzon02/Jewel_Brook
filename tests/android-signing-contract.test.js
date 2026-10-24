@@ -27,22 +27,7 @@ assert.match(backup, /age -p -o/);
 assert.match(backup, /rclone check/);
 assert.match(backup, /--one-way --checksum/);
 assert.match(read('.gitignore'), /^\.local\/$/m);
-assert.match(launcher, /Android Studio\/jbr\/bin\/keytool\.exe/);
-for (const id of ['Microsoft.OpenJDK.17', 'GitHub.cli', 'FiloSottile.age', 'Rclone.Rclone']) {
-  assert.ok(launcher.includes(id), 'unrecognized WinGet dependency ' + id);
-}
-assert.match(launcher, /Read-Host 'Install these missing tools/);
-assert.match(launcher, /rclone config/);
-assert.match(launcher, /gh auth login/);
-assert.match(launcher, /-SetGitHubSecrets/);
-assert.match(launcher, /\[1\/3\]/);
-assert.match(launcher, /& \$backup @backupParams/);
-assert.match(launcher, /SkipReverie = \(-not \$reverieReady\)/);
-assert.ok(launcher.indexOf('& $backup @backupParams') < launcher.indexOf('& $provision -SetGitHubSecrets'));
-assert.doesNotMatch(launcher, /throw "Existing ReverieVR signing secrets file missing/);
-assert.match(launcher, /ReverieVR recovery remains NOT BACKED UP/);
-assert.match(backup, /\[switch\]\$SkipReverie/);
-assert.match(backup, /if \(-not \$SkipReverie\) \{/);
-assert.match(backup, /PARTIAL BACKUP VERIFIED/);
-assert.doesNotMatch(launcher, /-genkeypair|New-SelfSignedCertificate|git reset|git push/);
-console.log('Source-only Android signing and dependency-bootstrap contracts passed.');
+// The old provision/backup files remain historical; the DEFAULT one-line entry point is NEW Play generation.
+assert.match(launcher, /generate-new-play-upload-keys\.ps1/);
+assert.doesNotMatch(launcher, /provision-rupee-signing\.ps1|backup-android-signing-to-drive\.ps1/);
+console.log('Legacy signing material is archived and default launcher routes to new Play key generation.');
