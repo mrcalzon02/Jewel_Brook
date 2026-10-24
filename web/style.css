@@ -26,3 +26,22 @@
 .home-actions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;width:100%}
 .home-actions .btn{font-size:clamp(11px,2vw,13px);min-height:44px;box-shadow:0 5px 10px #070e2db5}
 @media(max-width:620px){.home-kingdom{min-height:330px;background-position:center 45%}.home-kingdom-content{gap:9px;padding:12px 8px 16px}.home-brand{width:min(100%,350px)}.home-title-art{max-height:198px}.home-tagline{font-size:12px}.home-actions{gap:5px}.home-actions .btn{margin:1px;font-size:11px;padding:8px 10px}}
+
+/* Original Embryon chapter map; HTML hotspots, no painted interaction text. */
+.embryon-map{position:relative;aspect-ratio:1672/940;overflow:hidden;isolation:isolate;border:2px solid #d8ae62;border-radius:16px;background:#0d1233;box-shadow:0 10px 24px #04051d99;margin:0 0 12px}
+.embryon-overview-art{width:100%;height:100%;display:block;object-fit:cover}
+.chapter-hotspot{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);min-width:44px;min-height:44px;width:7%;aspect-ratio:1;border-radius:50%;border:3px solid #ffe8ac;background:radial-gradient(#6b46a3,#20233a);color:#fff;font-size:clamp(15px,3vw,25px);font-weight:1000;text-shadow:0 1px 2px #06061e;box-shadow:0 0 0 3px #080d2a8c,0 0 14px #ffe1a1a3;cursor:pointer}
+.chapter-hotspot.pending{border-color:#ab9da5;background:#332d42aa}.chapter-hotspot.open:hover{filter:brightness(1.25)}
+.chapter-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:10px;margin-bottom:16px}
+.chapter-card{display:flex;flex-direction:column;overflow:hidden;border:2px solid #9773b1;border-radius:12px;padding:0;text-align:left;color:#fff8e8;background:#25213c}
+.chapter-card img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.chapter-card span{display:flex;flex-direction:column;padding:9px;gap:4px}
+.chapter-card small{font-size:11px;color:#d9bedf}
+.chapter-banner{min-height:210px;padding:30px 20px;display:flex;flex-direction:column;align-items:flex-start;justify-content:end;gap:8px;margin:0 0 14px;border:2px solid #bf9d6b;border-radius:16px;background-position:center;background-size:cover;text-shadow:0 2px 5px #050514}
+.chapter-banner p{font-weight:700;color:#f7ecdc}
+.location-banner{padding:25px 16px;min-height:175px;border-radius:16px;border:2px solid #d3b781;margin:0 0 14px;background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:end;text-shadow:0 2px 7px #050720}
+.location-banner .heading{margin:0}.location-banner .heading p{color:#f7efdf;font-weight:700}
+.location-mine{background-image:linear-gradient(90deg,#090d2ad9,#080c295a),url('art/embryon/locations/embryon-mine.webp')}
+.location-market{background-image:linear-gradient(90deg,#090d2ad9,#080c295a),url('art/embryon/locations/embryon-market.webp')}
+.sound-controls{margin-bottom:14px}.sound-controls p{margin-top:8px}
+@media(max-width:620px){.chapter-hotspot{width:44px;height:44px;border-width:2px;font-size:17px}.embryon-map{margin:0 -5px 12px}.chapter-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.chapter-card b{font-size:12px}.chapter-card small{font-size:10px}.chapter-banner{min-height:160px;padding:16px}.location-banner{min-height:150px}}

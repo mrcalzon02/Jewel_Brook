@@ -2,35 +2,19 @@
    Explicit lessons teach booster purpose; all 500 levels retain deterministic seeds. */
 (function(root){'use strict';
 const CHAPTER_ACTS=[
- [
-  'Morning in the Meadows','Crackling Creek','Jewel Orchard','Bramble Trail',
-  'Sweet Crystal Hollow','Sapling Switchbacks','Buttercup Crossing',
-  'Guardian Lookout','Harvest Hollow','The Great Canopy'
- ],
- [
-  'Receiving Bay','Roasting Floor','Grinding Hall','Mixing Line','Jarworks',
-  'Conveyor Annex','Quality Control','Packing Floor','Shipping Deck','Executive Vatroom'
- ],
- [
-  'Foothill Cache','Granite Switchbacks','Buried Pantry','Jewel Watch','Hoarder Pass',
-  'Chestbreaker Ridge','Fusefield','Cliffside Vaults','Crown Cache','Summit Hoard'
- ],
- [
-  'Copperleaf Road','Millrace Crossing','Gale Orchard','Sailhouse Row','Harvest Gusts',
-  'Cider Switchbacks','Turbine Fields','Storm Barns','Twilight Millworks','Maelstrom Hill'
- ],
- [
-  'Lantern Causeway','Mooncourt','Gilded Gallery','Royal Vaultwalk','Silver Gardens',
-  'Portal Court','Crown Hall','Midnight Treasury','Throne Approaches','Golden Apex'
- ],
- ['Lantern Jetty','Pebble Crescent','Moonlit Pier','Mistwater Grove','Fishermans Causeway','Starfall Inlet','Reedbank Locks','Mirrorwater Grotto','Midnight Wharf','Lunar Headland'],
- ['Seaweed Stair','Clamshell Terrace','Reef of Lanterns','Tideglass Bridges','Coral Switchbacks','Pearl Gate','Sunken Court','Nautilus Arch','Trident Pass','Crystal Throne'],
- ['Broken Jetty','Palmwatch','Brigantine Reach','Ropebridge Gauntlet','Corsair Cove','Powder Deck','Stormtide Narrows','Black Sail Fort','Thunder Reef','Stormbreaker Keep'],
- ['Glowvent Approach','Gearreef Station','Pressure Gate','Coral Boilerworks','Tidal Turbines','Amber Condensers','Brasslight Crossing','Deepwheel Control','Blackwater Foundry','Abyssal Core'],
- ['Broken Crown Causeway','Moonpearl Bastion','Trench Cathedral','Abyss Observatory','Colossus Gate','Crowned Current','Starless Vault','Tidemaw Crossing','Imperial Crystaldome','Leviathan Throne']
+ ['The Timber Entrance','Mossy Hoist','Crystal Pickings','Broken Cartway','Lantern Hollows','Goblins Watch','Splinter Gate','Ore Cavern','Stolen Cache','Lower Works'],
+ ['Hanging Catwalks','Crystal Survey','Chain Winch','Rope Switchback','Prospector Quarters','Rockfall Crossing','Hidden Ore','Deep Timberworks','Goblin Treasury','Chiefs Gate'],
+ ['Stonebound Trail','Guardian Fangs','Troll Stair','Chain Bridge','Thunder Quarry','Spiked Galleries','Broken Portcullis','Stone Watch','Fortified Vault','High Bastion'],
+ ['Bonehook Junction','Boulder Yard','Brass Mine Rails','Troll Shallows','Iron Pillars','Cave Snares','Rumble Shafts','Broken Carts','Deep Gates','The Troll Keep'],
+ ['Smoking Entrance','Yellow Runoff','Sulfur Spires','Rusty Pipes','Caustic Pools','Steam Walkway','Cracking Stone','Poisoned Hoists','Sumpworks','Sulfur Crown'],
+ ['Brimstone Shafts','Fume Crossing','Pipe Gallery','Amber Furnace','Glass Slag','Pressure Valves','Toxic Vault','Scalding Bridges','The Sump Heart','Sulfur Core'],
+ ['Damp Descent','Blue Spores','Sunken Timbers','Violet Grove','Fungal Hollow','Spongy Bridge','Gloomcaps','Dripping Vault','Rootbound Crossing','Mire Crown'],
+ ['Shimmermarsh','Lantern Mycelium','Soft Ground','Mushroom Ring','Bluecap Passage','Flooded Fungus','Root Chamber','Sporefall','Mire Deep','Queen of Caps'],
+ ['Forgotten Rails','Cobweb Gate','Restless Lanterns','Grave Cartway','The Whisper Shaft','Phantom Crystals','Collapsed Watch','Wraith Bridge','Abandoned Works','Ghost Vault'],
+ ['Silver Haunt','The Long Tunnel','Unquiet Stones','Specter Junction','Soul Lanterns','Forgotten Treasury','Final Shaft','Echo Chamber','Last Rails','The Deep Heart']
 ];
 const ACTS=CHAPTER_ACTS[0];
-const CHAPTERS=['Gemwood Meadows','Crystal Resin Factory','Sapphire Highlands','Autumn Windmill Vale','Moonlit Golden Palace','Moonnut Lake Shores','Sunken Crystal Kingdom','Stormbreaker Archipelago','The Abyssal Gemworks',"Leviathan's Crown"];
+const CHAPTERS=['Goblin Caves','Goblin Caves','Troll Caverns','Troll Caverns','Sulfur Sumps','Sulfur Sumps','Mushroom Mire','Mushroom Mire','Ghost Mines','Ghost Mines'];
 // These are lessons, not purchases. The listed tool is earned on CLEAR of its milestone.
 // The next challenge demonstrates why the newly earned tool is helpful, but never required.
 const LESSONS=Object.freeze({
@@ -58,22 +42,22 @@ const LESSONS=Object.freeze({
  99:{name:'The Canopy Gate',kind:'dual',secondaryKind:'locks',secondaryTarget:3,locks:5,formation:'cross',hint:'The chapter finale is next. Collect the quota and crack the gate locks in the same run.'},
  100:{name:'The Great Meadow Finale',kind:'dual',hint:'Combine color collection with lock removal to complete the first campaign.'},
  101:{name:'Receiving Bay Orientation',kind:'collect',target:5,formation:'row',hint:'The Factory introduces a new gem type. Watch the collection color before clearing the conveyor floor.'},
- 110:{name:'Sticky Situation',kind:'jam',jam:3,target:3,formation:'cluster',hint:'Peanut butter spreads. Clear sticky layers before they multiply.'},
- 111:{name:'The Butter Trap',kind:'jam',jam:4,target:4,formation:'cluster',hint:'A Crystal Bomb or Hammer can remove concentrated ruby butter quickly.'},
+ 110:{name:'Sticky Situation',kind:'jam',jam:3,target:3,formation:'cluster',hint:'Peanut resin spreads. Clear sticky layers before they multiply.'},
+ 111:{name:'The Resin Trap',kind:'jam',jam:4,target:4,formation:'cluster',hint:'A Crystal Bomb or Hammer can remove concentrated crystal resin quickly.'},
  210:{name:'Ticking Jewels',kind:'collect',bombs:2,formation:'scatter',hint:'Timed jewels detonate after several moves unless you clear their cells.'},
  211:{name:'Five Seconds to Gems',kind:'collect',bombs:3,formation:'cross',hint:'Precision tools defuse countdown jewels before they steal your moves.'},
- 116:{name:'Spreading Spread',kind:'jam',target:3,jam:4,formation:'cluster',hint:'Peanut butter sticks to tiles and can spread. Attack the source before clearing distant matches.'},
+ 116:{name:'Spreading Spread',kind:'jam',target:3,jam:4,formation:'cluster',hint:'Peanut resin sticks to tiles and can spread. Attack the source before clearing distant matches.'},
  125:{name:'Conveyor Initiation',kind:'collect',hint:'A conveyor rotates gems after every second turn; blockers stay in place.'},
  126:{name:'Production Rotation',kind:'ice',hint:'Try a Row Rocket before the belt rearranges your gems.'},
  139:{name:'Assembly Belt Frost',kind:'ice',target:6,ice:7,formation:'row',hint:'The conveyor shifts gems but not the ice. Break the fixed frozen row before the belt cycles again.'},
- 151:{name:'Sticky Shipping Quota',kind:'dual',secondaryKind:'jam',secondaryTarget:5,jam:6,formation:'row',hint:'Collect the shipment and remove the butter. The conveyor changes your matches, not your goals.'},
+ 151:{name:'Sticky Shipping Quota',kind:'dual',secondaryKind:'jam',secondaryTarget:5,jam:6,formation:'row',hint:'Collect the shipment and remove the resin. The conveyor changes your matches, not your goals.'},
  164:{name:'Portal Puzzles',kind:'collect',hint:'Portal cells exchange gems every three turns.'},
  165:{name:'Through the Gem Gate',kind:'locks',hint:'Portals transport gems; the chain locks stay attached to their cells.'},
  175:{name:'Portal Assembly Line',kind:'dual',secondaryKind:'locks',secondaryTarget:6,locks:7,formation:'cross',hint:'Conveyors and portals move gem payloads while chained cells stay fixed. Plan for both systems.'},
  177:{name:'Portal Lockdown',kind:'locks',target:6,locks:8,formation:'scatter',hint:'Portals swap gem payloads across the floor; lock layers stay put. Strike the pinned lock tiles.'},
- 190:{name:'Butter on the Belt',kind:'jam',jam:7,target:7,formation:'row',hint:'Clear the sticky line before ruby butter spreads and the conveyor shifts your setup.'},
+ 190:{name:'Resin on the Belt',kind:'jam',jam:7,target:7,formation:'row',hint:'Clear the sticky line before crystal resin spreads and the conveyor shifts your setup.'},
  199:{name:'Factory Final Inspection',kind:'dual',secondaryKind:'jam',secondaryTarget:7,jam:9,formation:'cross',hint:'Last inspection: meet the color quota while cleaning the central spread before the Factory finale.'},
- 200:{name:'Factory Shutdown',kind:'dual',secondaryKind:'jam',secondaryTarget:8,jam:8,formation:'cross',hint:'Factory finale: collect the quota and scrub the butter while belts and portals keep moving the floor.'},
+ 200:{name:'Factory Shutdown',kind:'dual',secondaryKind:'jam',secondaryTarget:8,jam:8,formation:'cross',hint:'Factory finale: collect the quota and scrub the resin while belts and portals keep moving the floor.'},
  201:{name:'The Highland Arrival',kind:'collect',target:7,formation:'scatter',hint:'The Highlands introduce another gem type. Start with the new color before chasing treasure.'},
  218:{name:'Locked Countdown',kind:'dual',secondaryKind:'locks',secondaryTarget:5,locks:7,bombs:2,formation:'cross',hint:'Keep the collection and lock counters moving while timed jewels threaten the route.'},
  225:{name:'Fuse in the Hoard',kind:'dual',secondaryKind:'locks',secondaryTarget:6,locks:8,bombs:3,formation:'scatter',hint:'Timed jewels force a route through the locked hoard. Precision tools buy breathing room.'},
@@ -87,7 +71,7 @@ const LESSONS=Object.freeze({
  320:{name:'The Crosswind Challenge',kind:'dual',hint:'A gust can set up a cascade or spoil your carefully planned matches.'},
  330:{name:'Crosswind Frostline',kind:'dual',secondaryKind:'ice',secondaryTarget:9,ice:11,formation:'row',hint:'Collect the color and strip horizontal ice while alternating gusts rebuild your setup.'},
  350:{name:'Gale-Locked Gallery',kind:'dual',secondaryKind:'locks',secondaryTarget:8,locks:10,formation:'cross',hint:'Break the locked gallery while the wind keeps moving the gems you meant to use.'},
- 360:{name:'Butter in the Turbine',kind:'jam',target:6,jam:8,formation:'cluster',hint:'The mill keeps turning even as ruby butter spreads. Clear the cluster before chasing side matches.'},
+ 360:{name:'Resin in the Turbine',kind:'jam',target:6,jam:8,formation:'cluster',hint:'The mill keeps turning even as crystal resin spreads. Clear the cluster before chasing side matches.'},
  375:{name:'Vaults in the Wind',kind:'dual',secondaryKind:'chests',secondaryTarget:10,chests:8,formation:'column',hint:'Open deep vaults while reversing gusts repeatedly rebuild the board around them.'},
  389:{name:'The Maelstrom Lockworks',kind:'dual',secondaryKind:'locks',secondaryTarget:9,locks:12,bombs:4,formation:'cross',hint:'Collect the quota while wind, locks and countdowns fight for your remaining turns.'},
  400:{name:'The Great Windmill Maelstrom',kind:'dual',secondaryKind:'locks',secondaryTarget:10,locks:12,bombs:4,formation:'cross',hint:'Windmill finale: conveyors, portals, gusts, locks and countdowns all compete for the same moves.'},
@@ -95,15 +79,15 @@ const LESSONS=Object.freeze({
  402:{name:'Two Winds, No Mercy',kind:'dual',hint:'Two reversing wind lanes combine with conveyors, portals and blockers.'},
  410:{name:'Moonlit Vault Columns',kind:'chests',target:9,chests:8,formation:'column',hint:'Two wind lanes move gems every turn, but the layered royal chests stay where they were placed.'},
  425:{name:'Palace Portal Court',kind:'dual',secondaryKind:'chests',secondaryTarget:10,chests:8,formation:'column',hint:'Two wind lanes and palace portals keep the route unstable while the vaults stay put.'},
- 435:{name:'Gilded Butter Crisis',kind:'dual',secondaryKind:'jam',secondaryTarget:7,jam:9,formation:'cluster',hint:'Clean the palace spread and collect the quota while conveyors, portals and double wind lanes cycle.'},
- 450:{name:'Royal Butterworks',kind:'dual',secondaryKind:'jam',secondaryTarget:8,jam:9,formation:'cluster',hint:'Scrub the royal ruby-butter spill while every turn rearranges the gems around it.'},
+ 435:{name:'Gilded Resin Crisis',kind:'dual',secondaryKind:'jam',secondaryTarget:7,jam:9,formation:'cluster',hint:'Clean the palace spread and collect the quota while conveyors, portals and double wind lanes cycle.'},
+ 450:{name:'Royal Resinworks',kind:'dual',secondaryKind:'jam',secondaryTarget:8,jam:9,formation:'cluster',hint:'Scrub the royal ruby-resin spill while every turn rearranges the gems around it.'},
  460:{name:'The Frosted Crown Hall',kind:'dual',secondaryKind:'ice',secondaryTarget:11,ice:14,formation:'cross',hint:'Break the reinforced ice while meeting the color quota across the two royal wind lanes.'},
  475:{name:'Crown Countdown',kind:'dual',secondaryKind:'locks',secondaryTarget:10,locks:12,bombs:5,formation:'scatter',hint:'Break the crown locks under the Palace’s fastest countdown pressure.'},
  490:{name:'Last Vault Before the Throne',kind:'dual',secondaryKind:'chests',secondaryTarget:12,chests:10,bombs:5,formation:'cross',hint:'The final vault demands color collection, layered chest damage and survival of five active fuses.'},
 
  // Earlier advanced boosters now have explicit unlock and immediately following practice lessons.
- 120:{name:'Nutquake Graduation',kind:'ice',ice:9,formation:'cluster',hint:'Clear this stage to earn Nutquake, which strikes a five-by-five patch around a selected tile.'},
- 121:{name:'The Wide Blast',kind:'ice',ice:10,formation:'cluster',hint:'Aim Nutquake at the center of a dense ice formation for maximum coverage.'},
+ 120:{name:'Crystal Quake Graduation',kind:'ice',ice:9,formation:'cluster',hint:'Clear this stage to earn Crystal Quake, which strikes a five-by-five patch around a selected tile.'},
+ 121:{name:'The Wide Blast',kind:'ice',ice:10,formation:'cluster',hint:'Aim Crystal Quake at the center of a dense ice formation for maximum coverage.'},
  160:{name:'Triple Row Graduation',kind:'ice',ice:10,formation:'row',hint:'Clear this stage to earn Triple Row, striking the selected row and the two beside it.'},
  161:{name:'Three Belts Wide',kind:'ice',ice:11,formation:'row',hint:'Triple Row reaches adjacent frozen conveyor lanes in one activation.'},
  205:{name:'Triple Column Graduation',kind:'locks',locks:9,formation:'column',hint:'Clear this stage to earn Triple Column, which strikes three neighboring columns.'},
@@ -114,7 +98,7 @@ const LESSONS=Object.freeze({
  420:{name:'Frostbreaker Graduation',kind:'ice',ice:15,formation:'scatter',hint:'Clear this stage to earn Frostbreaker, which strikes ice across the board.'},
  421:{name:'Across the Frozen Palace',kind:'ice',ice:16,formation:'scatter',hint:'Frostbreaker damages all ice layers, including separated pockets.'},
  500:{name:'The Final Gem',kind:'dual',secondaryKind:'chests',secondaryTarget:12,chests:8,jam:9,bombs:5,formation:'cross',hint:'Finale: finish the collection and open the royal vault while every late-game system is active.'},
- 501:{name:'Moonnut Shore Landing',kind:'collect',hint:'The lake introduces the next journey: keep the collection moving while old hazards return.'},
+ 501:{name:'Moonstone Shore Landing',kind:'collect',hint:'The lake introduces the next journey: keep the collection moving while old hazards return.'},
  520:{name:'Frost on the Jetty',kind:'ice',ice:12,formation:'row',hint:'Reinforced ice blocks the lakeside causeway. Strike it before the moving gems drift away.'},
  540:{name:'Mirrorwater Locks',kind:'locks',locks:12,formation:'column',hint:'Unlock the fixed lakeshore tiles while the wind changes the gem positions.'},
  560:{name:'Reedbank Treasury',kind:'dual',secondaryKind:'chests',chests:9,formation:'scatter',hint:'Collect gems while cracking chests along the hidden lakeside path.'},
@@ -123,7 +107,7 @@ const LESSONS=Object.freeze({
  601:{name:'Through the Seaweed Gate',kind:'locks',locks:12,formation:'column',hint:'Follow the kelp passages by breaking locks fixed to the reef.'},
  620:{name:'Pearl Reef Freeze',kind:'ice',ice:14,formation:'row',hint:'Coral corridors conceal layers of unbroken ice.'},
  640:{name:'The Nautilus Vault',kind:'dual',secondaryKind:'chests',chests:10,formation:'cluster',hint:'Collect the required color while breaking layered treasury shells.'},
- 660:{name:'Coral Butter Bloom',kind:'jam',jam:9,formation:'cluster',hint:'Clear spreading butter patches before they fill the reef.'},
+ 660:{name:'Coral Resin Bloom',kind:'jam',jam:9,formation:'cluster',hint:'Clear spreading resin patches before they fill the reef.'},
  680:{name:'Tideglass Crosswind',kind:'dual',secondaryKind:'locks',locks:13,formation:'cross',hint:'Fixed lock gates, shifting winds and portals all overlap in the tideglass pass.'},
  700:{name:'The Pearl Throne',kind:'dual',secondaryKind:'chests',chests:11,bombs:5,formation:'cross',hint:'Kingdom finale: break the royal shells while timed jewels demand careful planning.'},
  701:{name:'The Broken Gangplank',kind:'collect',bombs:3,formation:'scatter',hint:'Stormbreaker begins with a hazardous crossing under a running fuse clock.'},
@@ -136,7 +120,7 @@ const LESSONS=Object.freeze({
  820:{name:'Clockwork Brine',kind:'dual',secondaryKind:'locks',locks:14,formation:'cross',hint:'Release the fixed machinery locks while the conveyors and wind lanes spin.'},
  840:{name:'Foundry Frostworks',kind:'ice',ice:17,formation:'row',hint:'Strip the cooling ice from the old underwater assembly line.'},
  860:{name:'Sealed Boiler Vault',kind:'dual',secondaryKind:'chests',chests:12,bombs:6,formation:'cluster',hint:'Break multiple chest layers while fuses threaten the pressure chamber.'},
- 880:{name:'Abyssal Spillway',kind:'jam',jam:12,formation:'scatter',hint:'Remove spreading butter before the moving machinery carries the gems away.'},
+ 880:{name:'Abyssal Spillway',kind:'jam',jam:12,formation:'scatter',hint:'Remove spreading resin before the moving machinery carries the gems away.'},
  900:{name:'Heart of the Gemworks',kind:'dual',secondaryKind:'locks',locks:15,bombs:7,formation:'cross',hint:'Gemworks finale: collect the output and crack the deep pressure locks.'},
  901:{name:'Leviathan Approach',kind:'dual',secondaryKind:'ice',ice:17,bombs:6,formation:'column',hint:'The final sea begins with a barrier of ancient frost and two furious wind lanes.'},
  920:{name:'Moonpearl Bastion',kind:'dual',secondaryKind:'chests',chests:12,formation:'cluster',hint:'Break the moonpearl treasury while securing the required gem color.'},
@@ -177,7 +161,7 @@ function profile(level){
   id:n,chapter,local,act:act+1,beat:beat+1,
   name:lesson?.name||CHAPTER_ACTS[chapter-1][act]+' · '+['Trail','Clearing','Crossing','Hollow','Challenge','Switchback','Cache','Scramble','Vault','Finale'][beat],
   hint:lesson?.hint||(
-   kind==='jam'?'Clear sticky ruby butter before it spreads to more tiles.':
+   kind==='jam'?'Clear sticky crystal resin before it spreads to more tiles.':
    kind==='ice'?'Break the layered frost before your moves run out.':
    kind==='locks'?'Unlock trapped gems to free the route.':
    kind==='chests'?'Open every required chest layer to claim the hoard.':

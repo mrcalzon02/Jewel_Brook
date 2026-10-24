@@ -1,0 +1,39 @@
+{
+  "schema": "rupeerush/new-screens/1",
+  "note": "Approved originals supplied in conversation; optimized WebP runtime; no painted markers inferred",
+  "files": [
+    {
+      "source": "underground_mine_adventure_map.png",
+      "sourceSha256": "2bf174a1f000190a739032e31ff79062be3d7549d515a8f87bdb1d20db6cdf4b",
+      "runtime": "art/embryon/locations/embryon-chapter-overview.webp",
+      "sha256": "c58d182e3d4b1aa2ace581c008fe3f767ed9d60449e3a5811ea625f313d299ea",
+      "bytes": 406448,
+      "size": [
+        1439,
+        810
+      ]
+    },
+    {
+      "source": "luminous_crystal_cavern_citadel.png",
+      "sourceSha256": "01f55b1ae39245fc753733a0515cdf99964df51d5f135cee646f98c01f713d65",
+      "runtime": "art/embryon/locations/embryon-mine.webp",
+      "sha256": "f80af653984b021bff6281ef8f5c5580f5906aa8bbd37b421075afd5e597b3fa",
+      "bytes": 340434,
+      "size": [
+        1439,
+        810
+      ]
+    },
+    {
+      "source": "luminous_crystal_palace_marketplace.png",
+      "sourceSha256": "13124ddb18c35b48135bc6c1e712bae2234ad9679631e26cb86be9a867fdd1a1",
+      "runtime": "art/embryon/locations/embryon-market.webp",
+      "sha256": "e144ed345cd3caa45c70aa59035a166a0d706aea36d0e6becfb5a35c80e3a891",
+      "bytes": 338916,
+      "size": [
+        1439,
+        810
+      ]
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schema": "embryon-sfx-v1",
+  "provenance": "Original synthetic PCM effects; no Nut Buster announcer or recordings",
+  "sampleRate": 22050,
+  "files": [
+    {
+      "id": "tap",
+      "path": "audio/sfx/tap.wav",
+      "sha256": "62e5bbaa3a927b4b035975d7b85e7ea0dfaf12622ade0b7e57f1839bd385136d",
+      "bytes": 2910
+    },
+    {
+      "id": "swap",
+      "path": "audio/sfx/swap.wav",
+      "sha256": "19115119456520c658e5f7e28cac9db4f1b87004c19030ea4c8a67b32f8a2267",
+      "bytes": 6218
+    },
+    {
+      "id": "match",
+      "path": "audio/sfx/match.wav",
+      "sha256": "1d45aea017b028f325417e8c2b91eb0f9a4e2d443789432e59f49f380194146a",
+      "bytes": 11510
+    },
+    {
+      "id": "cascade",
+      "path": "audio/sfx/cascade.wav",
+      "sha256": "4bec6b7053b9d1915cdc140804e27bdbc94d02d1de821172bf7ace55b9ecfb19",
+      "bytes": 19888
+    },
+    {
+      "id": "blocked",
+      "path": "audio/sfx/blocked.wav",
+      "sha256": "9c621f6d62997523b96e36188aa6e559e9ae353b1edf0f7a689bd794ad6c6223",
+      "bytes": 8864
+    },
+    {
+      "id": "booster",
+      "path": "audio/sfx/booster.wav",
+      "sha256": "d4da05ce840136302e9b71792ce7059b5e1d984a9b45ba33042eb156970b5053",
+      "bytes": 24300
+    },
+    {
+      "id": "victory",
+      "path": "audio/sfx/victory.wav",
+      "sha256": "cef073e95f00c0a55a4303edebe47815d24440ec2a3428c9777ecb488b80981b",
+      "bytes": 50758
+    },
+    {
+      "id": "defeat",
+      "path": "audio/sfx/defeat.wav",
+      "sha256": "d02709b29c0589b47ab39475eefdb1fdeb7b3748bd7dd0b4463cf03be5628b39",
+      "bytes": 24300
+    },
+    {
+      "id": "purchase",
+      "path": "audio/sfx/purchase.wav",
+      "sha256": "91a1d3f9bea366edb47733fd80acfa4a7bcd8fb3351c9f8785868fc8d6b583c5",
+      "bytes": 18566
+    },
+    {
+      "id": "mine-hit",
+      "path": "audio/sfx/mine-hit.wav",
+      "sha256": "8aa10cf1123eea4a02513b1519029b089a20cad34308aa8b22fdf53bee4e7294",
+      "bytes": 9746
+    },
+    {
+      "id": "ore-find",
+      "path": "audio/sfx/ore-find.wav",
+      "sha256": "11223a23778ad6dc3a989c30018a67f42297bf298faebe259cf334a4de207caf",
+      "bytes": 28708
+    },
+    {
+      "id": "refine",
+      "path": "audio/sfx/refine.wav",
+      "sha256": "94aa31c57997dd9e150569584b2338e1127069c320a1179a035b14f1095b1538",
+      "bytes": 22976
+    },
+    {
+      "id": "chapter-enter",
+      "path": "audio/sfx/chapter-enter.wav",
+      "sha256": "2f16cd8bebc4711e2b6b789040526505a124bc66524e4c9882a2e85479fcd9d4",
+      "bytes": 37528
+    },
+    {
+      "id": "reward",
+      "path": "audio/sfx/reward.wav",
+      "sha256": "5670807b18f7252ab8748b442b2c2cc71886016e32872606c5be5a7abcd45599",
+      "bytes": 26504
+    }
+  ]
+}

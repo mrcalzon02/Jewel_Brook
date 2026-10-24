@@ -69,14 +69,14 @@ const BOOSTER_META=Object.freeze({
  extra:{label:'+5 Moves',targeted:false,tip:'Five extra chances to finish'},
  drill:{label:'Deep Drill',targeted:true,tip:'Strike three layers down an entire column'},
  unlock:{label:'Master Key',targeted:false,tip:'Release every locked sapphire'},
- quake:{label:'Nutquake',targeted:true,tip:'Hit a 5×5 area around the chosen gem'},
+ quake:{label:'Crystal Quake',targeted:true,tip:'Hit a 5×5 area around the chosen gem'},
  'triple-row':{label:'Triple Row',targeted:true,tip:'Clear the selected row and one above and below'},
  'triple-column':{label:'Triple Column',targeted:true,tip:'Clear the chosen column and its neighbors'},
  starburst:{label:'Starburst',targeted:true,tip:'Blast both diagonals crossing a chosen gem'},
  spectrum:{label:'Double Rainbow',targeted:true,tip:'Hit the chosen gem color and the next gem color'},
  frostbreaker:{label:'Frostbreaker',targeted:false,tip:'Shatter ice layers across the entire board'}
 });
-function rng(seed){let x=(seed>>>0)||0x9e3779b9;return function(){x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296;};}
+function rng(seed){let x=(seed>>>0)||0x9e3779b9;const next=function(){x^=x<<13;x^=x>>>17;x^=x<<5;return (x>>>0)/4294967296;};next.state=()=>x>>>0;return next;}
 function shape(level,x,y,w,h){
  const cx=(w-1)/2, cy=(h-1)/2;
  if(w<=4)return true; // Intro grids must support three-gem matches.
@@ -696,6 +696,15 @@ function booster(g,type,index){
  return {...r,valid:true,type,removed:r.removed+summary.removed,cracked:r.cracked+summary.cracked,
   won:g.won,lost:g.lost,stages:[stage,...r.stages],objectives:objectiveState(g)};
 }
-function snapshot(g){return {level:g.level,seed:g.seed,moves:g.moves,score:g.score,won:g.won,lost:g.lost,boosterUsed:g.boosterUsed,turns:g.turns,progress:{...g.progress,colors:[...g.progress.colors]},uses:{...g.uses},objectives:objectiveState(g),cells:g.cells.map(c=>c?{type:c.type,ice:c.ice,lock:c.lock,chest:c.chest,jam:c.jam,fuse:c.fuse,special:c.special,hold:c.hold||0,elemental:c.elemental||null,frozen:c.frozen||0,poison:c.poison||0,ward:c.ward||0,rock:c.rock||0,aura:c.aura||null,auraTurns:c.auraTurns||0}:null)};}
-const api={TYPES,ORIGINAL,NEW,RETIRED_NUTS,NEW_INTRODUCTIONS,TILE_OVERLAY_UNLOCKS,overlayPlan,ELEMENTAL_ABILITIES:POWERS.ABILITIES,rosterForLevel,difficultyAt,BOOSTERS,BOOSTER_META,HOLD_DROPS,makeLevel,create,matches,adjacent,hasMove,gravity,shuffle,repairMove,objectiveState,expandSpecials,specialComboHits,advanceBoardFeatures,advanceHazards,swap,booster,applyHold,snapshot,rng};if(typeof module!=='undefined'&&module.exports)module.exports=api;root.RupeeEngine=api;
+function snapshot(g){return {version:1,level:g.level,seed:g.seed,rngState:g.rand.state(),moves:g.moves,score:g.score,won:g.won,lost:g.lost,boosterUsed:g.boosterUsed,turns:g.turns,combos:g.combos,crystalCharge:g.crystalCharge,elementalQueue:g.elementalQueue,elementalActivations:g.elementalActivations,elementalRefunds:g.elementalRefunds,magmaQueue:g.magmaQueue,progress:{...g.progress,colors:[...g.progress.colors]},uses:{...g.uses},objectives:objectiveState(g),cells:g.cells.map(c=>c?{type:c.type,ice:c.ice,lock:c.lock,chest:c.chest,jam:c.jam,fuse:c.fuse,special:c.special,hold:c.hold||0,elemental:c.elemental||null,frozen:c.frozen||0,poison:c.poison||0,ward:c.ward||0,rock:c.rock||0,aura:c.aura||null,auraTurns:c.auraTurns||0}:null)};}
+function restore(s){
+ if(!s||s.version!==1||!Number.isInteger(s.level)||s.level<1||s.level>1300||!Number.isInteger(s.seed)||!Number.isInteger(s.rngState)||!Number.isInteger(s.moves)||s.moves<0||!Number.isFinite(s.score)||s.score<0||s.won||s.lost||!Number.isInteger(s.turns)||s.turns<0)return null;
+ const g=create(s.level,s.seed);if(!Array.isArray(s.cells)||s.cells.length!==g.cells.length||!s.cells.every((c,i)=>!g.cells[i]?c===null:c&&Number.isInteger(c.type)&&c.type>=0&&c.type<TYPES.length))return null;
+ if(!s.progress||!Array.isArray(s.progress.colors)||s.progress.colors.length!==TYPES.length)return null;
+ g.cells=s.cells.map(c=>c?{...c}:null);g.rand=rng(s.rngState);g.moves=s.moves;g.score=s.score;g.turns=s.turns;g.boosterUsed=s.boosterUsed||0;g.combos=s.combos||0;g.progress={...s.progress,colors:[...s.progress.colors]};g.uses={...s.uses};g.crystalCharge=s.crystalCharge||0;
+ g.elementalQueue=Array.isArray(s.elementalQueue)?s.elementalQueue:[];g.elementalActivations=Array.isArray(s.elementalActivations)?s.elementalActivations:[];g.elementalRefunds=s.elementalRefunds||0;g.magmaQueue=Array.isArray(s.magmaQueue)?s.magmaQueue:[];
+ return g;
+}
+
+const api={TYPES,ORIGINAL,NEW,RETIRED_NUTS,NEW_INTRODUCTIONS,TILE_OVERLAY_UNLOCKS,overlayPlan,ELEMENTAL_ABILITIES:POWERS.ABILITIES,rosterForLevel,difficultyAt,BOOSTERS,BOOSTER_META,HOLD_DROPS,makeLevel,create,matches,adjacent,hasMove,gravity,shuffle,repairMove,objectiveState,expandSpecials,specialComboHits,advanceBoardFeatures,advanceHazards,swap,booster,applyHold,snapshot,restore,rng};if(typeof module!=='undefined'&&module.exports)module.exports=api;root.RupeeEngine=api;
 })(typeof window!=='undefined'?window:globalThis);

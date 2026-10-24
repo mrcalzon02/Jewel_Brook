@@ -1,0 +1,13 @@
+# Rupee Rush — Five chapter runtime integration
+
+This release adds the approved **five-chapter** campaign presentation while preserving the 1,000 seeded match-3 levels and 300 optional elemental trials. Display chapters contain **200 sequential stages each**: Goblin Caves (1–200), Troll Caverns (201–400), Sulfur Sumps (401–600), Mushroom Mire (601–800), Ghost Mines (801–1000). The underlying ten 100-level *difficulty bands* and level-seed identities remain unchanged to protect difficulty scaling, game saves and milestone booster unlocks. Do not treat those internal bands as ten playable chapters.
+
+The map is `art/embryon/locations/embryon-chapter-overview.webp` and overlays real focusable chapter buttons; accessible chapter cards below the artwork support smaller devices. Every chapter has a distinct landscape header and 30-level pages, never enabling locked stages. Map navigation and in-progress matches are independent of mining, which remains available from first launch.
+
+The mine and shop use original approved environment art behind existing clickable DOM controls. Seven base/advanced gems now use the repository's individually isolated dedicated PNG images; other gemstone IDs retain procedural fallbacks until additional reviewed sprite mapping. All Nut Buster account IDs, save keys and voice recordings remain outside this game.
+
+A versioned `E.snapshot`/`E.restore` preserves cells, RNG, turn count, objectives, elemental queues, booster-use state and moves so an unfinished board can resume after restart. Old saves migrate without changing the `rupeerush.save.v1` key. Malformed/complete snapshots are rejected without deleting earned resources. Abandon and completed states clear board snapshots. Saved game/booster IDs never change.
+
+**Audio** uses original generated short PCM effects (`web/audio/sfx/`) with hashes in `manifest.json`; sound effects start enabled and can be disabled from settings. The Embryon Wayfinder's unique, complete 109-line recording script is in `web/audio/embryon-announcer-lines.json`. Narration is opt-in device TTS *preview only*, not a professionally recorded character voice. Do not use Nut Buster voice recordings or claim those lines have been recorded. No external audio network dependencies.
+
+**Verification:** Run `node tests/embryon-integration.test.js` and the preexisting `tests/*.test.js`, then perform the actual APK smoke on an Android device. Source tests and browser harnesses do not certify signing, layout on all screens, or recorded voice quality. Signed APKs must be verified against the GitHub Releases publisher before they are called released.

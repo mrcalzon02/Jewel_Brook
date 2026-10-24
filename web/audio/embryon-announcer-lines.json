@@ -1,0 +1,541 @@
+{
+  "schema": "heroes-of-embryon-announcer-v1",
+  "character": "The Embryon Wayfinder",
+  "performance": "Friendly, wry and capable explorer-guide; grounded mining vocabulary; low-drama delivery, warm alto/tenor, never the Nut Buster announcer and never copied catchphrases",
+  "production": "Written recording script; professional narration audio not yet recorded. Device text-to-speech is optional user-enabled preview.",
+  "deliveryRules": {
+    "noOvertalk": true,
+    "cooldownMs": 3500,
+    "chancePerOrdinaryMatch": 0.05,
+    "avoidRepeatedPhrases": true,
+    "duckSfxOnDialogue": false
+  },
+  "lines": {
+    "startup": [
+      {
+        "id": "startup-01",
+        "text": "The roads of Embryon are yours to explore."
+      },
+      {
+        "id": "startup-02",
+        "text": "There are treasures beneath this kingdom."
+      },
+      {
+        "id": "startup-03",
+        "text": "A new expedition begins."
+      }
+    ],
+    "enter1": [
+      {
+        "id": "enter1-01",
+        "text": "The Goblin Caves. Keep an eye on the rafters."
+      },
+      {
+        "id": "enter1-02",
+        "text": "Watch the loose stones. The goblins have been digging."
+      },
+      {
+        "id": "enter1-03",
+        "text": "Those lanterns are still warm."
+      }
+    ],
+    "enter2": [
+      {
+        "id": "enter2-01",
+        "text": "Troll Caverns ahead. Choose your footing."
+      },
+      {
+        "id": "enter2-02",
+        "text": "Ancient stone, and something heavier beyond it."
+      },
+      {
+        "id": "enter2-03",
+        "text": "There is more than ore beneath those gates."
+      }
+    ],
+    "enter3": [
+      {
+        "id": "enter3-01",
+        "text": "Sulfur Sumps. Mind the fumes."
+      },
+      {
+        "id": "enter3-02",
+        "text": "A spark could wake the whole sump."
+      },
+      {
+        "id": "enter3-03",
+        "text": "Stay above the yellow water, if you can."
+      }
+    ],
+    "enter4": [
+      {
+        "id": "enter4-01",
+        "text": "Mushroom Mire. Not every glowing thing is a gem."
+      },
+      {
+        "id": "enter4-02",
+        "text": "The Mire breathes. Best not to linger."
+      },
+      {
+        "id": "enter4-03",
+        "text": "Follow the dry planks through the spore fog."
+      }
+    ],
+    "enter5": [
+      {
+        "id": "enter5-01",
+        "text": "Ghost Mines. Listen before you dig."
+      },
+      {
+        "id": "enter5-02",
+        "text": "These tracks remember their last journey."
+      },
+      {
+        "id": "enter5-03",
+        "text": "The lanterns move, even without a hand to carry them."
+      }
+    ],
+    "levelStart": [
+      {
+        "id": "levelStart-01",
+        "text": "Crystals at the ready."
+      },
+      {
+        "id": "levelStart-02",
+        "text": "There is a path through this puzzle."
+      },
+      {
+        "id": "levelStart-03",
+        "text": "Set your sights on the objective."
+      }
+    ],
+    "match3": [
+      {
+        "id": "match3-01",
+        "text": "A clean cut."
+      },
+      {
+        "id": "match3-02",
+        "text": "Well placed."
+      },
+      {
+        "id": "match3-03",
+        "text": "Bright work."
+      },
+      {
+        "id": "match3-04",
+        "text": "A neat fit."
+      }
+    ],
+    "match4": [
+      {
+        "id": "match4-01",
+        "text": "A fine chain."
+      },
+      {
+        "id": "match4-02",
+        "text": "Four stones in harmony."
+      },
+      {
+        "id": "match4-03",
+        "text": "That opened a path."
+      }
+    ],
+    "match5": [
+      {
+        "id": "match5-01",
+        "text": "A brilliant alignment."
+      },
+      {
+        "id": "match5-02",
+        "text": "Five stones, one perfect line."
+      },
+      {
+        "id": "match5-03",
+        "text": "A radiant combination."
+      }
+    ],
+    "cascade": [
+      {
+        "id": "cascade-01",
+        "text": "The stones keep falling!"
+      },
+      {
+        "id": "cascade-02",
+        "text": "A crystal chain reaction!"
+      },
+      {
+        "id": "cascade-03",
+        "text": "Now that is momentum."
+      },
+      {
+        "id": "cascade-04",
+        "text": "Watch the cascade."
+      }
+    ],
+    "combo": [
+      {
+        "id": "combo-01",
+        "text": "Your rhythm is building."
+      },
+      {
+        "id": "combo-02",
+        "text": "Keep that current flowing."
+      },
+      {
+        "id": "combo-03",
+        "text": "Another perfect connection."
+      }
+    ],
+    "boosterUsed": [
+      {
+        "id": "boosterUsed-01",
+        "text": "A little crystalcraft."
+      },
+      {
+        "id": "boosterUsed-02",
+        "text": "Let the magic do its work."
+      },
+      {
+        "id": "boosterUsed-03",
+        "text": "That should clear a path."
+      }
+    ],
+    "hammer": [
+      {
+        "id": "hammer-01",
+        "text": "One stubborn stone, no more."
+      },
+      {
+        "id": "hammer-02",
+        "text": "A well-placed strike."
+      }
+    ],
+    "rocket": [
+      {
+        "id": "rocket-01",
+        "text": "Clear the passage!"
+      },
+      {
+        "id": "rocket-02",
+        "text": "A streak of light!"
+      }
+    ],
+    "bomb": [
+      {
+        "id": "bomb-01",
+        "text": "Brace for the burst!"
+      },
+      {
+        "id": "bomb-02",
+        "text": "Crystals incoming!"
+      }
+    ],
+    "shuffle": [
+      {
+        "id": "shuffle-01",
+        "text": "Let us try another arrangement."
+      },
+      {
+        "id": "shuffle-02",
+        "text": "A fresh pattern."
+      }
+    ],
+    "color": [
+      {
+        "id": "color-01",
+        "text": "One color, swept away."
+      },
+      {
+        "id": "color-02",
+        "text": "Follow the spectrum."
+      }
+    ],
+    "lowMoves": [
+      {
+        "id": "lowMoves-01",
+        "text": "Make these last moves count."
+      },
+      {
+        "id": "lowMoves-02",
+        "text": "Only a few chances remain."
+      }
+    ],
+    "noMoves": [
+      {
+        "id": "noMoves-01",
+        "text": "The crystal current has gone still."
+      },
+      {
+        "id": "noMoves-02",
+        "text": "Time to regroup."
+      }
+    ],
+    "levelVictory": [
+      {
+        "id": "levelVictory-01",
+        "text": "The way forward is open!"
+      },
+      {
+        "id": "levelVictory-02",
+        "text": "Another passage reclaimed."
+      },
+      {
+        "id": "levelVictory-03",
+        "text": "Embryon grows brighter."
+      },
+      {
+        "id": "levelVictory-04",
+        "text": "A fine expedition, indeed."
+      }
+    ],
+    "levelDefeat": [
+      {
+        "id": "levelDefeat-01",
+        "text": "A setback. The tunnels will still be here."
+      },
+      {
+        "id": "levelDefeat-02",
+        "text": "Even the finest prospector meets a wall."
+      },
+      {
+        "id": "levelDefeat-03",
+        "text": "Return when you are ready."
+      }
+    ],
+    "firstClear": [
+      {
+        "id": "firstClear-01",
+        "text": "A first victory worth remembering."
+      },
+      {
+        "id": "firstClear-02",
+        "text": "A new marker on the expedition map."
+      }
+    ],
+    "chapterClear": [
+      {
+        "id": "chapterClear-01",
+        "text": "One cavern conquered. Another waits."
+      },
+      {
+        "id": "chapterClear-02",
+        "text": "That chapter of the journey is yours."
+      }
+    ],
+    "gameComplete": [
+      {
+        "id": "gameComplete-01",
+        "text": "The deep roads of Embryon shine again."
+      },
+      {
+        "id": "gameComplete-02",
+        "text": "A thousand trials, and you endured them all."
+      }
+    ],
+    "mineEnter": [
+      {
+        "id": "mineEnter-01",
+        "text": "The ore will not dig itself."
+      },
+      {
+        "id": "mineEnter-02",
+        "text": "Back into the mine we go."
+      },
+      {
+        "id": "mineEnter-03",
+        "text": "Listen for the hollow stone."
+      }
+    ],
+    "mineHit": [
+      {
+        "id": "mineHit-01",
+        "text": "Stone by stone."
+      },
+      {
+        "id": "mineHit-02",
+        "text": "A solid strike."
+      },
+      {
+        "id": "mineHit-03",
+        "text": "Steady hands."
+      }
+    ],
+    "mineEmpty": [
+      {
+        "id": "mineEmpty-01",
+        "text": "Nothing but stone this time."
+      },
+      {
+        "id": "mineEmpty-02",
+        "text": "An empty seam. Keep searching."
+      }
+    ],
+    "oreFound": [
+      {
+        "id": "oreFound-01",
+        "text": "There is the good stuff!"
+      },
+      {
+        "id": "oreFound-02",
+        "text": "A promising vein!"
+      },
+      {
+        "id": "oreFound-03",
+        "text": "Fresh ore for the refinery."
+      }
+    ],
+    "oreCart": [
+      {
+        "id": "oreCart-01",
+        "text": "Load it carefully."
+      },
+      {
+        "id": "oreCart-02",
+        "text": "Another cart ready."
+      }
+    ],
+    "refine": [
+      {
+        "id": "refine-01",
+        "text": "A beautiful polish."
+      },
+      {
+        "id": "refine-02",
+        "text": "From stone to splendor."
+      }
+    ],
+    "parcel": [
+      {
+        "id": "parcel-01",
+        "text": "Pack it well."
+      },
+      {
+        "id": "parcel-02",
+        "text": "A merchant will take that."
+      }
+    ],
+    "mineUpgrade": [
+      {
+        "id": "mineUpgrade-01",
+        "text": "Fine equipment. Treat it well."
+      },
+      {
+        "id": "mineUpgrade-02",
+        "text": "A sturdier tool for darker tunnels."
+      }
+    ],
+    "shopEnter": [
+      {
+        "id": "shopEnter-01",
+        "text": "Welcome to the Crystal Market."
+      },
+      {
+        "id": "shopEnter-02",
+        "text": "Something useful for the road?"
+      }
+    ],
+    "shopPurchase": [
+      {
+        "id": "shopPurchase-01",
+        "text": "A wise acquisition."
+      },
+      {
+        "id": "shopPurchase-02",
+        "text": "A fair trade."
+      },
+      {
+        "id": "shopPurchase-03",
+        "text": "May it serve you well."
+      }
+    ],
+    "shopInsufficient": [
+      {
+        "id": "shopInsufficient-01",
+        "text": "Your purse is a touch light."
+      },
+      {
+        "id": "shopInsufficient-02",
+        "text": "We may need more Rupees for that."
+      }
+    ],
+    "rewardReady": [
+      {
+        "id": "rewardReady-01",
+        "text": "There is a gift waiting for you."
+      },
+      {
+        "id": "rewardReady-02",
+        "text": "A little help for the road."
+      }
+    ],
+    "rewardClaimed": [
+      {
+        "id": "rewardClaimed-01",
+        "text": "A welcome reward."
+      },
+      {
+        "id": "rewardClaimed-02",
+        "text": "That should help the expedition."
+      }
+    ],
+    "unlock": [
+      {
+        "id": "unlock-01",
+        "text": "Another passage has opened."
+      },
+      {
+        "id": "unlock-02",
+        "text": "A new route beckons."
+      }
+    ],
+    "pause": [
+      {
+        "id": "pause-01",
+        "text": "The tunnels can wait."
+      },
+      {
+        "id": "pause-02",
+        "text": "Take your bearings."
+      }
+    ],
+    "resume": [
+      {
+        "id": "resume-01",
+        "text": "Welcome back, explorer."
+      },
+      {
+        "id": "resume-02",
+        "text": "Shall we finish what we started?"
+      }
+    ],
+    "settings": [
+      {
+        "id": "settings-01",
+        "text": "Choose the sound of your adventure."
+      }
+    ],
+    "saveRecovered": [
+      {
+        "id": "saveRecovered-01",
+        "text": "Your unfinished puzzle is safe."
+      },
+      {
+        "id": "saveRecovered-02",
+        "text": "The crystals are just as you left them."
+      }
+    ],
+    "soundOff": [
+      {
+        "id": "soundOff-01",
+        "text": "The caverns fall quiet."
+      }
+    ],
+    "soundOn": [
+      {
+        "id": "soundOn-01",
+        "text": "The caverns sing again."
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+# Embryon Wayfinder — Announcer recording contract
+
+A distinct character from Nut Buster's announcer: a warm, slightly mischievous expedition guide who knows mines, trade and old stone. Gender or performer is not fixed; prioritize nimble adult tone and legible vowels over booming arcade bravado. No imitation of specific characters, brands, celebrities, or Nut Buster recordings.
+
+**Recording source:** `web/audio/embryon-announcer-lines.json` (109 indexed lines in 45 trigger groups). Every line is production copy, not a synthesized file. The settings voice toggle currently provides **optional device TTS preview**. For the production voice set: record 48 kHz / 24-bit mono, dry without room echo, consistent mic placement, 200 ms pre-roll and 300 ms post-roll, normalize after editing, no hard limiting. Export individual WAV masters and compressed OGG/AAC appropriate for the WebView target. Name files by stable script ID, not by localized text. Add localization metadata and avoid repeated, overlapping calls.
+
+**Event taxonomy:** startup and level entry; each of five cave introductions; score/match-3/4/5; cascading chains, special tools and color magic; low moves, victory/defeat and chapter completion; mining excavation/empty stone/ore/refinery/carts/upgrades; shop greeting/transaction/shortfall; daily rewards, unlocking, pause/resume, recovery and sound state.
+
+**Runtime rules:** Never announce every match. Cooldown is 3.5 seconds, with no interrupting currently spoken lines; randomization/repetition avoidance belongs in the final recorded implementation. Respect sound/voice toggles and browser autoplay requirements. A screen reader can use DOM labels without waiting for narration; spoken audio is not a prerequisite to progress. On a failed TTS voice lookup, retain gameplay silently.
