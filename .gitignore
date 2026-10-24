@@ -1,0 +1,12 @@
+# Private Android signing identities, recovery secrets and local encrypted backup staging.
+.local/
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.age
+**/github-secrets.txt
+**/store-password
+android/.gradle/
+android/**/build/
+android/local.properties
