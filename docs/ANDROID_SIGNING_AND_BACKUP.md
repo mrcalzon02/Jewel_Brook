@@ -16,7 +16,14 @@ In GitKraken's embedded PowerShell, from C:\GITS\Rupee-rush, paste this one line
 
 The fast-forward-only pull never discards local changes. The launcher defaults to C:\GITS\ReverieVR as the sibling checkout (or REVERIEVR_ROOT); use -ReverieRoot if the checkout is elsewhere. It verifies the existing Nut Buster key, encrypts both original signing profiles, uploads ciphertext using your authenticated rclone Google Drive remote, checks the uploaded ciphertext, then provisions the exact Nut Buster key into Rupee Rush's GitHub secret store. It stops on missing dependencies or keys. It does not generate a new signing key, create an APK, or install anything.
 
-This is **one command to initiate**, not unattended execution: Windows must have JDK/keytool, GitHub CLI/gh authenticated, age installed, and rclone configured with the Google Drive remote gdrive. The backup prompts for four encryption passphrases. Save these separately, offline, and verify a private restore. If some Rupee Rush signing secrets already exist, the launcher safely refuses to overwrite them; investigate identity before any explicit override.
+This is **one command to initiate**, not unattended execution: the script discovers installed tools, offers WinGet installation of missing tools after consent, then ensures GitHub CLI/gh authentication and a configured Google Drive rclone remote. The backup prompts for four encryption passphrases. Save these separately, offline, and verify a private restore. If some Rupee Rush signing secrets already exist, the launcher safely refuses to overwrite them; investigate identity before any explicit override.
+
+
+### Missing local prerequisites
+
+The one-command launcher now first checks the existing PATH and common Java locations (including Android Studio's bundled jbr\bin\keytool.exe and installed JDKs). It will not install a second JDK when a working keytool already exists at a recognized location. If a tool truly is missing, it displays the exact official WinGet IDs and **asks permission before installation**: Microsoft.OpenJDK.17, GitHub.cli, FiloSottile.age and Rclone.Rclone. Installations may require Windows elevation and a terminal restart before commands become available. Re-run the exact same one-line GitKraken command after reopening the terminal, without generating any new signing key.
+
+If GitHub CLI is not authenticated, the launcher starts its interactive login. If the Google Drive rclone remote named gdrive is missing, it offers to open interactive rclone config; connect the same private Google account and name the remote exactly gdrive. Installing the tools is not equivalent to authenticating them. The backup prompts for encryption passphrases that must be stored OFFLINE. If existing Rupee Rush signing secrets are detected, the launcher deliberately refuses to overwrite them unless the prior publisher identity was independently checked and -AllowExistingSecrets explicitly supplied.
 
 ## Verify and provision Rupee Rush
 
