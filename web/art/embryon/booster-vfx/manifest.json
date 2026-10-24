@@ -1,0 +1,2599 @@
+{
+  "name": "Rupee Rush \u2014 Heroes of Embryon \u2014 6 booster/effect atlas slicing batch",
+  "format": "4x4 source atlases, dynamic alpha gutter isolation; 384px masters + 192px runtime exports",
+  "version": "1.0",
+  "sheets": [
+    {
+      "id": "01_powerup_gems",
+      "source": "fantasy_jewel_power_up_icon_grid.png",
+      "source_sha256": "c8ff91757adadf1efd77597d685fdda9d31ea1617be886267a6cb1458c3f9cae",
+      "source_mode": "RGBA",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "cut_seam_metrics": {
+        "vertical": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 8,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 12,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 12,
+            "median_x": 940
+          }
+        ],
+        "horizontal": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 8,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 34,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 19,
+            "opaque_alpha_cut_pixels": 17,
+            "samples": 1254,
+            "worst_alpha": 251,
+            "median_x": 940
+          }
+        ]
+      },
+      "sprites": [
+        {
+          "id": "01_powerup_gems-01",
+          "label": "ruby-stripe",
+          "r": 1,
+          "c": 1,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            16,
+            15,
+            307,
+            300
+          ],
+          "master_png": "sprites/01_powerup_gems/01_r1c1_ruby-stripe.png",
+          "master_sha256": "7719f347996b053397fe58b513840a02fd86f0028eb1eee74548386dddd90584",
+          "master_bytes": 180216,
+          "runtime192_png": "sprites/01_powerup_gems/01_r1c1_ruby-stripe__192.png",
+          "runtime192_sha256": "bdda4e6616569a27fe7c1e778218229d066f95b3df7f7c05885b9db6c4d08f90",
+          "runtime192_bytes": 51868,
+          "solid_pixel_count": 59681,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-02",
+          "label": "sapphire-column",
+          "r": 1,
+          "c": 2,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            329,
+            14,
+            617,
+            298
+          ],
+          "master_png": "sprites/01_powerup_gems/02_r1c2_sapphire-column.png",
+          "master_sha256": "e2b0f3791b45b2fe553837b76654ab6a22d807bd6e3a608944a85e517cbd6098",
+          "master_bytes": 186991,
+          "runtime192_png": "sprites/01_powerup_gems/02_r1c2_sapphire-column__192.png",
+          "runtime192_sha256": "805fa0aa31da6466d2dae7767da03b67524ad6c42d58265934c87d3653c90392",
+          "runtime192_bytes": 53676,
+          "solid_pixel_count": 62265,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-03",
+          "label": "emerald-gift",
+          "r": 1,
+          "c": 3,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            641,
+            14,
+            919,
+            305
+          ],
+          "master_png": "sprites/01_powerup_gems/03_r1c3_emerald-gift.png",
+          "master_sha256": "81531e285f87f35cae9debb6486da42c14912a919e1be741128577d30c490e9a",
+          "master_bytes": 208020,
+          "runtime192_png": "sprites/01_powerup_gems/03_r1c3_emerald-gift__192.png",
+          "runtime192_sha256": "89890cf66606f25f60b4a36618f438920b1da69184e3c1492a75a5dd3cf57343",
+          "runtime192_bytes": 59396,
+          "solid_pixel_count": 68916,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 5,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-04",
+          "label": "amethyst-gift",
+          "r": 1,
+          "c": 4,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            948,
+            13,
+            1239,
+            301
+          ],
+          "master_png": "sprites/01_powerup_gems/04_r1c4_amethyst-gift.png",
+          "master_sha256": "25c26a4cd1ff965c3c5b2104a8ce88b0866350d45b47d1d0ddbcd717121e9a8b",
+          "master_bytes": 223219,
+          "runtime192_png": "sprites/01_powerup_gems/04_r1c4_amethyst-gift__192.png",
+          "runtime192_sha256": "fc76989353ad10d78f8f81994dd6f0dee18190e954ad36e12075849a68ffe4cf",
+          "runtime192_bytes": 63170,
+          "solid_pixel_count": 74484,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 123,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-05",
+          "label": "rainbow-star",
+          "r": 2,
+          "c": 1,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            14,
+            317,
+            305,
+            607
+          ],
+          "master_png": "sprites/01_powerup_gems/05_r2c1_rainbow-star.png",
+          "master_sha256": "fe88c42f825487165ab3ab8dd376214ed0c0ae6c50cbeab5347f43de3fd81933",
+          "master_bytes": 215951,
+          "runtime192_png": "sprites/01_powerup_gems/05_r2c1_rainbow-star__192.png",
+          "runtime192_sha256": "71266fc71353b98e2ae9760e5cf9ef4c123a6f6799f4d3cbf5d8c06635cf1d8c",
+          "runtime192_bytes": 61122,
+          "solid_pixel_count": 67233,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-06",
+          "label": "prismatic-heart",
+          "r": 2,
+          "c": 2,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            322,
+            315,
+            622,
+            604
+          ],
+          "master_png": "sprites/01_powerup_gems/06_r2c2_prismatic-heart.png",
+          "master_sha256": "3b7fbe484512b77003c932c7c29fe552dec1b12ae45c33755d61ecbb660c117e",
+          "master_bytes": 223461,
+          "runtime192_png": "sprites/01_powerup_gems/06_r2c2_prismatic-heart__192.png",
+          "runtime192_sha256": "0de1ac216b00c3db5a520db9b16080076bbee1b1d7eceda0ce624e3e9b0a6f18",
+          "runtime192_bytes": 62802,
+          "solid_pixel_count": 70186,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-07",
+          "label": "golden-star",
+          "r": 2,
+          "c": 3,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            627,
+            313,
+            936,
+            613
+          ],
+          "master_png": "sprites/01_powerup_gems/07_r2c3_golden-star.png",
+          "master_sha256": "4dc3b1196a8d16a7411892dcb95e5185993256421edf22cfe2ba690b7631c45f",
+          "master_bytes": 163514,
+          "runtime192_png": "sprites/01_powerup_gems/07_r2c3_golden-star__192.png",
+          "runtime192_sha256": "38f37494aef3f48dd1d20653c04f0911e217733430aeaa275dfbab2a738610ae",
+          "runtime192_bytes": 46310,
+          "solid_pixel_count": 42952,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 71,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-08",
+          "label": "sunstone-orb",
+          "r": 2,
+          "c": 4,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            948,
+            315,
+            1243,
+            615
+          ],
+          "master_png": "sprites/01_powerup_gems/08_r2c4_sunstone-orb.png",
+          "master_sha256": "b3498e2026f91b524bfdf2a14994ff02fc11a696526941f349e4ac3562b683da",
+          "master_bytes": 194406,
+          "runtime192_png": "sprites/01_powerup_gems/08_r2c4_sunstone-orb__192.png",
+          "runtime192_sha256": "1a29235f73fd5d23544ebbf99948b333d919c0e478d1228f3953feaf6d86338d",
+          "runtime192_bytes": 54842,
+          "solid_pixel_count": 61005,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-09",
+          "label": "moon-crescent",
+          "r": 3,
+          "c": 1,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            25,
+            623,
+            295,
+            909
+          ],
+          "master_png": "sprites/01_powerup_gems/09_r3c1_moon-crescent.png",
+          "master_sha256": "6328ce4952e35aeb5b8ffaf9351398695c27c4f9f09e3cb1c7eb4ed4ff868fb9",
+          "master_bytes": 181902,
+          "runtime192_png": "sprites/01_powerup_gems/09_r3c1_moon-crescent__192.png",
+          "runtime192_sha256": "fc1e64e9bae3982d58b027acfd120c96a0f9958bd0e66e61850b89a0f25974ad",
+          "runtime192_bytes": 52542,
+          "solid_pixel_count": 56094,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 50,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-10",
+          "label": "lightning-bolt",
+          "r": 3,
+          "c": 2,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            328,
+            613,
+            615,
+            925
+          ],
+          "master_png": "sprites/01_powerup_gems/10_r3c2_lightning-bolt.png",
+          "master_sha256": "8f715f026f36cc16aca7e1fb93ca9c795b1418ce25f4c5c84c3e7d3e48c2342e",
+          "master_bytes": 189037,
+          "runtime192_png": "sprites/01_powerup_gems/10_r3c2_lightning-bolt__192.png",
+          "runtime192_sha256": "26ed4c1e541d0bf15d2d6dd20731b022911502600a78fac02b4d9e46df6387be",
+          "runtime192_bytes": 53666,
+          "solid_pixel_count": 57403,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-11",
+          "label": "frost-star",
+          "r": 3,
+          "c": 3,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            642,
+            620,
+            921,
+            920
+          ],
+          "master_png": "sprites/01_powerup_gems/11_r3c3_frost-star.png",
+          "master_sha256": "80bb10a1be7ba502f98bb757afd46e9f7351b7ebf32e2acbd23dd2cfc06b02c8",
+          "master_bytes": 209195,
+          "runtime192_png": "sprites/01_powerup_gems/11_r3c3_frost-star__192.png",
+          "runtime192_sha256": "8fe4ad8f10b4a984d4cd4d8c13772b9e3c09a92c982f73ad2443a385a70d413b",
+          "runtime192_bytes": 59175,
+          "solid_pixel_count": 61242,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-12",
+          "label": "nature-emblem",
+          "r": 3,
+          "c": 4,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            951,
+            620,
+            1230,
+            916
+          ],
+          "master_png": "sprites/01_powerup_gems/12_r3c4_nature-emblem.png",
+          "master_sha256": "4d4ae5436ac4e17817605ff4ebcb0a2c9795fa34a775b382cfa75780a6d70ed3",
+          "master_bytes": 227697,
+          "runtime192_png": "sprites/01_powerup_gems/12_r3c4_nature-emblem__192.png",
+          "runtime192_sha256": "17033a611c1259e4c1bda5577009f6a8153bbe6595a4fe80b671a4c601dbfe3c",
+          "runtime192_bytes": 64513,
+          "solid_pixel_count": 68425,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-13",
+          "label": "fire-shard",
+          "r": 4,
+          "c": 1,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            18,
+            916,
+            305,
+            1240
+          ],
+          "master_png": "sprites/01_powerup_gems/13_r4c1_fire-shard.png",
+          "master_sha256": "4cf366eaafe4b107502b058c39880bdcbaa1eba9ccd7ff86548a149d6311444f",
+          "master_bytes": 191398,
+          "runtime192_png": "sprites/01_powerup_gems/13_r4c1_fire-shard__192.png",
+          "runtime192_sha256": "3df4d02a9cf770a62ca40c12db3fb5b245a376381cac5fed8960b312d90ca399",
+          "runtime192_bytes": 54200,
+          "solid_pixel_count": 59576,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 144,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-14",
+          "label": "void-shard",
+          "r": 4,
+          "c": 2,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            318,
+            915,
+            616,
+            1238
+          ],
+          "master_png": "sprites/01_powerup_gems/14_r4c2_void-shard.png",
+          "master_sha256": "107b3794d20400c69ed7923a58311163ad85316c2b1ec4576d980898f8293a87",
+          "master_bytes": 209171,
+          "runtime192_png": "sprites/01_powerup_gems/14_r4c2_void-shard__192.png",
+          "runtime192_sha256": "dd97957027f0bf4d2f07337c89920692ebc805f00a21fe17dd1d9f3f159a3d2a",
+          "runtime192_bytes": 58867,
+          "solid_pixel_count": 58976,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 4,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-15",
+          "label": "royal-emblem",
+          "r": 4,
+          "c": 3,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            639,
+            917,
+            930,
+            1239
+          ],
+          "master_png": "sprites/01_powerup_gems/15_r4c3_royal-emblem.png",
+          "master_sha256": "f9d70144757b6c9af0bbc70aac3ed49fac9ead85d9346e22c1a4b23f69582ae4",
+          "master_bytes": 198790,
+          "runtime192_png": "sprites/01_powerup_gems/15_r4c3_royal-emblem__192.png",
+          "runtime192_sha256": "1f61ce611ce29bee247bdd83484f7d736258fd851829337703db99a2be3e3976",
+          "runtime192_bytes": 55748,
+          "solid_pixel_count": 58612,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "01_powerup_gems-16",
+          "label": "cosmic-orb",
+          "r": 4,
+          "c": 4,
+          "source": "fantasy_jewel_power_up_icon_grid.png",
+          "source_bbox": [
+            938,
+            930,
+            1242,
+            1228
+          ],
+          "master_png": "sprites/01_powerup_gems/16_r4c4_cosmic-orb.png",
+          "master_sha256": "5a9d2a5272a1b1303efff71ebce91a42f3bd5c27ebf2fcf0f591ed66a26c16f2",
+          "master_bytes": 225407,
+          "runtime192_png": "sprites/01_powerup_gems/16_r4c4_cosmic-orb__192.png",
+          "runtime192_sha256": "84c3684a65e6b8c5acf54179b5b092b57a2e75211a0aa203e263ff177e34de8d",
+          "runtime192_bytes": 63440,
+          "solid_pixel_count": 71501,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        }
+      ],
+      "qa_preview": "qa/01_powerup_gems-qa.jpg",
+      "pack_file": "packs/01_powerup_gems-sprites.zip",
+      "pack_sha256": "7b6326a7c9d6d76ebaf4f039843bf997e432466ee07c92468b6ce70a4f207b06"
+    },
+    {
+      "id": "02_booster_tools",
+      "source": "glowing_fantasy_booster_icon_collection.png",
+      "source_sha256": "6babbd8e248c721d745fd142886f12dc75ba5e2004a30eec3648faf878554dfb",
+      "source_mode": "RGBA",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "cut_seam_metrics": {
+        "vertical": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 17,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 12,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 12,
+            "median_x": 940
+          }
+        ],
+        "horizontal": [
+          {
+            "high_alpha_cut_pixels": 113,
+            "opaque_alpha_cut_pixels": 109,
+            "samples": 1254,
+            "worst_alpha": 251,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 29,
+            "opaque_alpha_cut_pixels": 11,
+            "samples": 1254,
+            "worst_alpha": 244,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 222,
+            "opaque_alpha_cut_pixels": 199,
+            "samples": 1254,
+            "worst_alpha": 255,
+            "median_x": 939
+          }
+        ]
+      },
+      "sprites": [
+        {
+          "id": "02_booster_tools-01",
+          "label": "royal-hammer",
+          "r": 1,
+          "c": 1,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            57,
+            19,
+            338,
+            305
+          ],
+          "master_png": "sprites/02_booster_tools/01_r1c1_royal-hammer.png",
+          "master_sha256": "ddc9b716b27e8fc3033aad7eee5547a3d58be2ec681912daf380971cce9cdd82",
+          "master_bytes": 193429,
+          "runtime192_png": "sprites/02_booster_tools/01_r1c1_royal-hammer__192.png",
+          "runtime192_sha256": "d683d5ed7557549dc7b24122c74a22bff453904b46a31652714d7d3172c9c16c",
+          "runtime192_bytes": 56320,
+          "solid_pixel_count": 60713,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-02",
+          "label": "crystal-pickaxe",
+          "r": 1,
+          "c": 2,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            353,
+            35,
+            621,
+            305
+          ],
+          "master_png": "sprites/02_booster_tools/02_r1c2_crystal-pickaxe.png",
+          "master_sha256": "9300aa86241ddc3d9cfe1392d902c629bb240089233015d4879c9d61cd541bb3",
+          "master_bytes": 172449,
+          "runtime192_png": "sprites/02_booster_tools/02_r1c2_crystal-pickaxe__192.png",
+          "runtime192_sha256": "a632d04aee80408c6e61b2f73f70c5d863c07c1a94474017daac3bc9367c2800",
+          "runtime192_bytes": 50674,
+          "solid_pixel_count": 49238,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-03",
+          "label": "arcane-rockets",
+          "r": 1,
+          "c": 3,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            644,
+            67,
+            967,
+            290
+          ],
+          "master_png": "sprites/02_booster_tools/03_r1c3_arcane-rockets.png",
+          "master_sha256": "28fa75d8fc6ebb947bdfc595ffc4d68d058821ab7204b275e9435daceb8d8121",
+          "master_bytes": 140911,
+          "runtime192_png": "sprites/02_booster_tools/03_r1c3_arcane-rockets__192.png",
+          "runtime192_sha256": "5e756624f2fe25cdfea6ab217fbbbc5ee4f293830c764155d74017732849e6ea",
+          "runtime192_bytes": 40521,
+          "solid_pixel_count": 46358,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-04",
+          "label": "gem-rocket",
+          "r": 1,
+          "c": 4,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            1000,
+            10,
+            1195,
+            328
+          ],
+          "master_png": "sprites/02_booster_tools/04_r1c4_gem-rocket.png",
+          "master_sha256": "515bfbc1953a883dac47a080347cfb59720ad138848b0a08ce6bf12994e5f632",
+          "master_bytes": 127419,
+          "runtime192_png": "sprites/02_booster_tools/04_r1c4_gem-rocket__192.png",
+          "runtime192_sha256": "db620c7463e247cad9b8c5b34199cb2136526dfa64d24d145409c7c1995638a5",
+          "runtime192_bytes": 36851,
+          "solid_pixel_count": 38946,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-05",
+          "label": "star-bomb",
+          "r": 2,
+          "c": 1,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            43,
+            314,
+            311,
+            591
+          ],
+          "master_png": "sprites/02_booster_tools/05_r2c1_star-bomb.png",
+          "master_sha256": "f7d48d11d52e9860c7c96ebdd011543680c74f5c5783faa923853f86c7442366",
+          "master_bytes": 180375,
+          "runtime192_png": "sprites/02_booster_tools/05_r2c1_star-bomb__192.png",
+          "runtime192_sha256": "4ad83e60b8c05efc9ec703f70d695b736cb78ad49e50b6ac41b1f9604d710dec",
+          "runtime192_bytes": 53235,
+          "solid_pixel_count": 64046,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-06",
+          "label": "royal-star",
+          "r": 2,
+          "c": 2,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            333,
+            320,
+            625,
+            602
+          ],
+          "master_png": "sprites/02_booster_tools/06_r2c2_royal-star.png",
+          "master_sha256": "027e5a086f7c7f98ddccf47602c87e542c2e9214508e74ebacf424840f24f640",
+          "master_bytes": 207959,
+          "runtime192_png": "sprites/02_booster_tools/06_r2c2_royal-star__192.png",
+          "runtime192_sha256": "1b2971ed1e27d40e3efd62dc9db7c9166229cee23104f40f86adab2d02595c8b",
+          "runtime192_bytes": 59128,
+          "solid_pixel_count": 65677,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-07",
+          "label": "color-sphere",
+          "r": 2,
+          "c": 3,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            647,
+            326,
+            926,
+            603
+          ],
+          "master_png": "sprites/02_booster_tools/07_r2c3_color-sphere.png",
+          "master_sha256": "1434b7a63dd6b6f44e04dd5fea500c290e860ac645de8216b7e1e0b63ef41454",
+          "master_bytes": 221163,
+          "runtime192_png": "sprites/02_booster_tools/07_r2c3_color-sphere__192.png",
+          "runtime192_sha256": "e127f273a5e9cbe581aeced9d62f932a5107417ddf3ac56bb6d526abb70fb2ae",
+          "runtime192_bytes": 63928,
+          "solid_pixel_count": 72749,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-08",
+          "label": "royal-crown",
+          "r": 2,
+          "c": 4,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            952,
+            339,
+            1240,
+            589
+          ],
+          "master_png": "sprites/02_booster_tools/08_r2c4_royal-crown.png",
+          "master_sha256": "a23e68acedadfb64cec9bb3a311de98783b67876c68f27734ae2289bc0a6ce15",
+          "master_bytes": 193767,
+          "runtime192_png": "sprites/02_booster_tools/08_r2c4_royal-crown__192.png",
+          "runtime192_sha256": "b3edf1351912f052fd626f3bb229b4421cc2da1cc8022f5983867a5c15506ae3",
+          "runtime192_bytes": 55279,
+          "solid_pixel_count": 64535,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-09",
+          "label": "crystal-drill",
+          "r": 3,
+          "c": 1,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            33,
+            619,
+            309,
+            897
+          ],
+          "master_png": "sprites/02_booster_tools/09_r3c1_crystal-drill.png",
+          "master_sha256": "8751bdaf35dd6fbe5590309e2f4289a5a8789bd4e81cae275c99fccb05ec252d",
+          "master_bytes": 222028,
+          "runtime192_png": "sprites/02_booster_tools/09_r3c1_crystal-drill__192.png",
+          "runtime192_sha256": "c5235ca27a649108def6f187b7fcd46fc43d754f6f1ed7a17ba6cf470b8b8fcc",
+          "runtime192_bytes": 63899,
+          "solid_pixel_count": 66479,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-10",
+          "label": "scepter",
+          "r": 3,
+          "c": 2,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            329,
+            611,
+            628,
+            917
+          ],
+          "master_png": "sprites/02_booster_tools/10_r3c2_scepter.png",
+          "master_sha256": "8812df5826c4c7c5e08976dd71a3d6715c6a53a0404eb6833ca6c96e9aa9fd45",
+          "master_bytes": 185197,
+          "runtime192_png": "sprites/02_booster_tools/10_r3c2_scepter__192.png",
+          "runtime192_sha256": "c1752bee3c74c094090dd16a8d93511bd69e90f8dd0a524801604140f1a7ffeb",
+          "runtime192_bytes": 53810,
+          "solid_pixel_count": 44866,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 88,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-11",
+          "label": "swap-glove",
+          "r": 3,
+          "c": 3,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            649,
+            628,
+            946,
+            909
+          ],
+          "master_png": "sprites/02_booster_tools/11_r3c3_swap-glove.png",
+          "master_sha256": "7f9b6390032b2e359c912d6da4caad4e86372ac27cf25b78caf3a580cb9d9d5d",
+          "master_bytes": 198573,
+          "runtime192_png": "sprites/02_booster_tools/11_r3c3_swap-glove__192.png",
+          "runtime192_sha256": "9670588ce125c30597f01cb5301447ec0625b5e06cb20c8f532f5013e1e37e7c",
+          "runtime192_bytes": 57545,
+          "solid_pixel_count": 64104,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-12",
+          "label": "shuffle-orb",
+          "r": 3,
+          "c": 4,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            962,
+            618,
+            1236,
+            902
+          ],
+          "master_png": "sprites/02_booster_tools/12_r3c4_shuffle-orb.png",
+          "master_sha256": "aa3e00f1f2d6d1533d328b5023c54c0d64964e634d84b58ef2277e87dc35a52a",
+          "master_bytes": 220732,
+          "runtime192_png": "sprites/02_booster_tools/12_r3c4_shuffle-orb__192.png",
+          "runtime192_sha256": "e41b33d66441ab465d59dfc684c53f985bc13f598c0114456b36b50b2ed81252",
+          "runtime192_bytes": 63550,
+          "solid_pixel_count": 73878,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-13",
+          "label": "hourglass",
+          "r": 4,
+          "c": 1,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            23,
+            913,
+            291,
+            1220
+          ],
+          "master_png": "sprites/02_booster_tools/13_r4c1_hourglass.png",
+          "master_sha256": "aee71d5df239b19f4835505c9b920eca43bfb469db177ce83f5d1fd22f7a7b53",
+          "master_bytes": 175358,
+          "runtime192_png": "sprites/02_booster_tools/13_r4c1_hourglass__192.png",
+          "runtime192_sha256": "8afb1457018bed06c991e6e8c8852f9ec17fc883c8b11ebb5305f981411a495e",
+          "runtime192_bytes": 50504,
+          "solid_pixel_count": 51909,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-14",
+          "label": "magnet",
+          "r": 4,
+          "c": 2,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            327,
+            928,
+            628,
+            1217
+          ],
+          "master_png": "sprites/02_booster_tools/14_r4c2_magnet.png",
+          "master_sha256": "3fc41c6d78cd80522d06b1959fe847d56cf298bb5d50caeef74ea781c2c07614",
+          "master_bytes": 193886,
+          "runtime192_png": "sprites/02_booster_tools/14_r4c2_magnet__192.png",
+          "runtime192_sha256": "eb0454e3dd0c128ae532fef1326ff79eb798c9a5574163d6af7515301a247076",
+          "runtime192_bytes": 56172,
+          "solid_pixel_count": 54433,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 327,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-15",
+          "label": "shatter-hammer",
+          "r": 4,
+          "c": 3,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            649,
+            918,
+            949,
+            1209
+          ],
+          "master_png": "sprites/02_booster_tools/15_r4c3_shatter-hammer.png",
+          "master_sha256": "e120c7c0e30b24421491b439158ab08b93a503e8ca17d6369ab2b0232446a001",
+          "master_bytes": 232120,
+          "runtime192_png": "sprites/02_booster_tools/15_r4c3_shatter-hammer__192.png",
+          "runtime192_sha256": "8d18b1618843b0188de156b8f03036a640950d9cc17bdb7cb8038c52fedb57f3",
+          "runtime192_bytes": 66738,
+          "solid_pixel_count": 70705,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 240,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "02_booster_tools-16",
+          "label": "ward-shield",
+          "r": 4,
+          "c": 4,
+          "source": "glowing_fantasy_booster_icon_collection.png",
+          "source_bbox": [
+            953,
+            913,
+            1245,
+            1224
+          ],
+          "master_png": "sprites/02_booster_tools/16_r4c4_ward-shield.png",
+          "master_sha256": "811d5485a73834a905505dd74acad7f8736df2fa6d175f736cca232671de50a6",
+          "master_bytes": 196440,
+          "runtime192_png": "sprites/02_booster_tools/16_r4c4_ward-shield__192.png",
+          "runtime192_sha256": "4b9a7d67dbc132cac06c7ad0500a5ee6c089789ff9f03b693ba3f3bd53a92301",
+          "runtime192_bytes": 55509,
+          "solid_pixel_count": 63489,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        }
+      ],
+      "qa_preview": "qa/02_booster_tools-qa.jpg",
+      "pack_file": "packs/02_booster_tools-sprites.zip",
+      "pack_sha256": "7dd179ad648da5ca4501a2376ea4c252bde246e20eb36f9cd11b68aa85737153"
+    },
+    {
+      "id": "03_arcane_relics",
+      "source": "fantasy_rpg_icon_collection.png",
+      "source_sha256": "5b1b04325a42a1408bee59d8709bd75a78e31dea28e5a375600ddc8fac0c4e89",
+      "source_mode": "RGBA",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "cut_seam_metrics": {
+        "vertical": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 26,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 19,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 10,
+            "median_x": 940
+          }
+        ],
+        "horizontal": [
+          {
+            "high_alpha_cut_pixels": 151,
+            "opaque_alpha_cut_pixels": 81,
+            "samples": 1254,
+            "worst_alpha": 249,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 63,
+            "opaque_alpha_cut_pixels": 18,
+            "samples": 1254,
+            "worst_alpha": 240,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 150,
+            "opaque_alpha_cut_pixels": 123,
+            "samples": 1254,
+            "worst_alpha": 250,
+            "median_x": 940
+          }
+        ]
+      },
+      "sprites": [
+        {
+          "id": "03_arcane_relics-01",
+          "label": "prismatic-comet",
+          "r": 1,
+          "c": 1,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            8,
+            0,
+            354,
+            317
+          ],
+          "master_png": "sprites/03_arcane_relics/01_r1c1_prismatic-comet.png",
+          "master_sha256": "9e306cf0b9580fddbf998c3c182794754bfabaf8eae3fb0e906b632dee3ffd84",
+          "master_bytes": 186340,
+          "runtime192_png": "sprites/03_arcane_relics/01_r1c1_prismatic-comet__192.png",
+          "runtime192_sha256": "8230de76d86cc784a4262b70ce0a3745f06c8819cb87b5a02dcaed4128c39d7a",
+          "runtime192_bytes": 52899,
+          "solid_pixel_count": 56001,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 58,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-02",
+          "label": "dragon-flame",
+          "r": 1,
+          "c": 2,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            318,
+            18,
+            629,
+            313
+          ],
+          "master_png": "sprites/03_arcane_relics/02_r1c2_dragon-flame.png",
+          "master_sha256": "3320a9d9c88ecbffe992c393c3aabc65560b849f4b74e619ca8651de5e539e0c",
+          "master_bytes": 235254,
+          "runtime192_png": "sprites/03_arcane_relics/02_r1c2_dragon-flame__192.png",
+          "runtime192_sha256": "5e3d691bb0ed6981c18722614cfbe12566fe1ae81c56e18a7463347d8480bbad",
+          "runtime192_bytes": 66063,
+          "solid_pixel_count": 70299,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 194,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-03",
+          "label": "ice-citadel",
+          "r": 1,
+          "c": 3,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            633,
+            17,
+            938,
+            320
+          ],
+          "master_png": "sprites/03_arcane_relics/03_r1c3_ice-citadel.png",
+          "master_sha256": "d56c510f958ecd9f6b25a734c2b846c1fe687421455378d64a889eeeb0150a7f",
+          "master_bytes": 212904,
+          "runtime192_png": "sprites/03_arcane_relics/03_r1c3_ice-citadel__192.png",
+          "runtime192_sha256": "7aa610aecf9755e8b18fbc47f94d9d42b102a88d2b39c5809dc7ad7a88922269",
+          "runtime192_bytes": 60633,
+          "solid_pixel_count": 65933,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 220,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-04",
+          "label": "storm-orb",
+          "r": 1,
+          "c": 4,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            940,
+            21,
+            1248,
+            315
+          ],
+          "master_png": "sprites/03_arcane_relics/04_r1c4_storm-orb.png",
+          "master_sha256": "478e313bf17228a078e1e3ab4660c81b2476bfd10f88000aa9b1bdd27f91c639",
+          "master_bytes": 219182,
+          "runtime192_png": "sprites/03_arcane_relics/04_r1c4_storm-orb__192.png",
+          "runtime192_sha256": "d3f3b6f0cf3fc3f8ee4c6b43b9353c243c05e18d2984381c9b1b9b46eecf68e8",
+          "runtime192_bytes": 62718,
+          "solid_pixel_count": 74165,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 114,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-05",
+          "label": "ocean-heart",
+          "r": 2,
+          "c": 1,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            8,
+            319,
+            322,
+            626
+          ],
+          "master_png": "sprites/03_arcane_relics/05_r2c1_ocean-heart.png",
+          "master_sha256": "b2fcebb65ccb6b095a4a74b0b547a57dbf9c5bd2611b951308669f89d1064d2b",
+          "master_bytes": 215549,
+          "runtime192_png": "sprites/03_arcane_relics/05_r2c1_ocean-heart__192.png",
+          "runtime192_sha256": "6d4e91c91940f829276bdc9b34b97f7f99df13ecf0e96c212b46e970dc681ea9",
+          "runtime192_bytes": 61589,
+          "solid_pixel_count": 66561,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 425,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-06",
+          "label": "nature-heart",
+          "r": 2,
+          "c": 2,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            326,
+            327,
+            625,
+            627
+          ],
+          "master_png": "sprites/03_arcane_relics/06_r2c2_nature-heart.png",
+          "master_sha256": "fa2171b691d31a81ecf1cbe4f5d501bbf4b7cf06232cc6da13c1d487c6467fdd",
+          "master_bytes": 244657,
+          "runtime192_png": "sprites/03_arcane_relics/06_r2c2_nature-heart__192.png",
+          "runtime192_sha256": "898b6a99061ccbe7829028626c423bf4bc7b3d1611630a8d7b0e9a8a136c9ed7",
+          "runtime192_bytes": 69523,
+          "solid_pixel_count": 74682,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 12,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-07",
+          "label": "void-moon",
+          "r": 2,
+          "c": 3,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            635,
+            322,
+            944,
+            627
+          ],
+          "master_png": "sprites/03_arcane_relics/07_r2c3_void-moon.png",
+          "master_sha256": "631d8b2f5e458f4b23e351b01650b42898401240d59bc43d55ee3fa62e628a87",
+          "master_bytes": 227552,
+          "runtime192_png": "sprites/03_arcane_relics/07_r2c3_void-moon__192.png",
+          "runtime192_sha256": "c0c6db42b180391da0896bf82ff6e503c7f2ff06588a6da1b793ab4bd0a1c32e",
+          "runtime192_bytes": 65703,
+          "solid_pixel_count": 71302,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 593,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-08",
+          "label": "radiant-sun",
+          "r": 2,
+          "c": 4,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            949,
+            312,
+            1251,
+            627
+          ],
+          "master_png": "sprites/03_arcane_relics/08_r2c4_radiant-sun.png",
+          "master_sha256": "e2be108dce2d092a6ce5759ccfd13ae66b47485cafff54758b87dcdb4a6f8030",
+          "master_bytes": 203551,
+          "runtime192_png": "sprites/03_arcane_relics/08_r2c4_radiant-sun__192.png",
+          "runtime192_sha256": "e488a41c89419fa43e64cb9671179704c67345f64ba935b9d89f5b7dcf338210",
+          "runtime192_bytes": 56987,
+          "solid_pixel_count": 55931,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 3,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-09",
+          "label": "astral-vortex",
+          "r": 3,
+          "c": 1,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            0,
+            625,
+            319,
+            925
+          ],
+          "master_png": "sprites/03_arcane_relics/09_r3c1_astral-vortex.png",
+          "master_sha256": "02698ac57d2961a3df31e9898e7d455ff4832d5f671551b526f9d69c94e87ddd",
+          "master_bytes": 221142,
+          "runtime192_png": "sprites/03_arcane_relics/09_r3c1_astral-vortex__192.png",
+          "runtime192_sha256": "cfcece607ab5d233f2b2c50cafdc7b323186d7736a34651415122c12552c7599",
+          "runtime192_bytes": 62403,
+          "solid_pixel_count": 73123,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-10",
+          "label": "prismatic-star",
+          "r": 3,
+          "c": 2,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            331,
+            627,
+            640,
+            929
+          ],
+          "master_png": "sprites/03_arcane_relics/10_r3c2_prismatic-star.png",
+          "master_sha256": "34406a15e896c8840b19f2595bb44d1ca76651a436114dd75730b6b790be4ab2",
+          "master_bytes": 217666,
+          "runtime192_png": "sprites/03_arcane_relics/10_r3c2_prismatic-star__192.png",
+          "runtime192_sha256": "7bea2b0379b9ec7eb1a226e0bd5a34dd6f19fe8626675b05109b154633985a49",
+          "runtime192_bytes": 61651,
+          "solid_pixel_count": 69511,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 2,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-11",
+          "label": "phoenix-burst",
+          "r": 3,
+          "c": 3,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            645,
+            625,
+            954,
+            932
+          ],
+          "master_png": "sprites/03_arcane_relics/11_r3c3_phoenix-burst.png",
+          "master_sha256": "a303f6658e11b24a4fa8912f51ee7300f27b5d0fdc72a08e48be15c5ccefab69",
+          "master_bytes": 246990,
+          "runtime192_png": "sprites/03_arcane_relics/11_r3c3_phoenix-burst__192.png",
+          "runtime192_sha256": "0b2a4396e03008b777185fddb1ba0479487883f7030a07a1e64bb26e49361b09",
+          "runtime192_bytes": 69945,
+          "solid_pixel_count": 72617,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 475,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-12",
+          "label": "royal-scroll",
+          "r": 3,
+          "c": 4,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            956,
+            627,
+            1246,
+            923
+          ],
+          "master_png": "sprites/03_arcane_relics/12_r3c4_royal-scroll.png",
+          "master_sha256": "6ea5b94cdda1e939f8eff8c63987c362221b9cb6c2e83a6fa77eeea5afc3ff58",
+          "master_bytes": 231223,
+          "runtime192_png": "sprites/03_arcane_relics/12_r3c4_royal-scroll__192.png",
+          "runtime192_sha256": "f2aaae1b05764366a1e01587efedaa998556510b7ffb3741f440e07abe9e7569",
+          "runtime192_bytes": 66206,
+          "solid_pixel_count": 77172,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-13",
+          "label": "arcane-gate",
+          "r": 4,
+          "c": 1,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            16,
+            919,
+            323,
+            1227
+          ],
+          "master_png": "sprites/03_arcane_relics/13_r4c1_arcane-gate.png",
+          "master_sha256": "5fb0bfa1741aaa3be956bcafec37067882acf5abe7fa1720fe0bd8805ae6d032",
+          "master_bytes": 237982,
+          "runtime192_png": "sprites/03_arcane_relics/13_r4c1_arcane-gate__192.png",
+          "runtime192_sha256": "22f414c00936dff8e892401cf251f934b143e7a14ed2cd19c8fb53ee9dab5c36",
+          "runtime192_bytes": 67378,
+          "solid_pixel_count": 78931,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-14",
+          "label": "star-compass",
+          "r": 4,
+          "c": 2,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            330,
+            931,
+            633,
+            1233
+          ],
+          "master_png": "sprites/03_arcane_relics/14_r4c2_star-compass.png",
+          "master_sha256": "fd18312dea824e01ea767989a4ea89fb1ee9ce1e35f60b42ca4537b20883e322",
+          "master_bytes": 231358,
+          "runtime192_png": "sprites/03_arcane_relics/14_r4c2_star-compass__192.png",
+          "runtime192_sha256": "cd8e1e520fc65a778605baa15f7411b3893d9a83661021c8744f4c112a2f755c",
+          "runtime192_bytes": 65469,
+          "solid_pixel_count": 71982,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 8,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-15",
+          "label": "treasure-chest",
+          "r": 4,
+          "c": 3,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            640,
+            930,
+            939,
+            1235
+          ],
+          "master_png": "sprites/03_arcane_relics/15_r4c3_treasure-chest.png",
+          "master_sha256": "404f49fa6fbcc353bacf477c10ada2ab20d85a0f16590761d55a1767a3466738",
+          "master_bytes": 253401,
+          "runtime192_png": "sprites/03_arcane_relics/15_r4c3_treasure-chest__192.png",
+          "runtime192_sha256": "071bbb02b9a6804cc0a8e530c9286f4164992374857efcad777f744db0ac59ba",
+          "runtime192_bytes": 71418,
+          "solid_pixel_count": 81706,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 91,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "03_arcane_relics-16",
+          "label": "angel-heart",
+          "r": 4,
+          "c": 4,
+          "source": "fantasy_rpg_icon_collection.png",
+          "source_bbox": [
+            947,
+            933,
+            1249,
+            1232
+          ],
+          "master_png": "sprites/03_arcane_relics/16_r4c4_angel-heart.png",
+          "master_sha256": "6e0d346513f411af3f23892a54f9d15e7c80f41636a2ef311be0d29bb6dc60ac",
+          "master_bytes": 238690,
+          "runtime192_png": "sprites/03_arcane_relics/16_r4c4_angel-heart__192.png",
+          "runtime192_sha256": "ddbc640b0742abfe41bf84b7d05c56e5596bfeaea26d94d2001fa44bd9f461f7",
+          "runtime192_bytes": 68048,
+          "solid_pixel_count": 70150,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 9,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        }
+      ],
+      "qa_preview": "qa/03_arcane_relics-qa.jpg",
+      "pack_file": "packs/03_arcane_relics-sprites.zip",
+      "pack_sha256": "108c71920b25d4f564e829e6a91e88ebdebc341523e6d9cdf9ca3b8d0c26358b"
+    },
+    {
+      "id": "04_impact_vfx",
+      "source": "fantasy_vfx_icon_grid.png",
+      "source_sha256": "83c31fe2f62b7eff8c2d7e3d80140cd83985e2348fd9b8b3c42fd2108781bbc7",
+      "source_mode": "RGBA",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "cut_seam_metrics": {
+        "vertical": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 19,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 82,
+            "opaque_alpha_cut_pixels": 56,
+            "samples": 1254,
+            "worst_alpha": 251,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 12,
+            "median_x": 940
+          }
+        ],
+        "horizontal": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 88,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 121,
+            "opaque_alpha_cut_pixels": 83,
+            "samples": 1254,
+            "worst_alpha": 251,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 14,
+            "opaque_alpha_cut_pixels": 9,
+            "samples": 1254,
+            "worst_alpha": 236,
+            "median_x": 940
+          }
+        ]
+      },
+      "sprites": [
+        {
+          "id": "04_impact_vfx-01",
+          "label": "gem-explosion",
+          "r": 1,
+          "c": 1,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            13,
+            24,
+            316,
+            305
+          ],
+          "master_png": "sprites/04_impact_vfx/01_r1c1_gem-explosion.png",
+          "master_sha256": "9f925c5ff823a883025bb1a3699d2b7cdb04249abcfd0064cf07f43ce884b027",
+          "master_bytes": 204712,
+          "runtime192_png": "sprites/04_impact_vfx/01_r1c1_gem-explosion__192.png",
+          "runtime192_sha256": "c39a3d91a765778fa23dcfafa4091f96489ee270905f4913eeeb6f89ca2358f5",
+          "runtime192_bytes": 59703,
+          "solid_pixel_count": 62788,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 398,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-02",
+          "label": "horizontal-beam",
+          "r": 1,
+          "c": 2,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            338,
+            104,
+            632,
+            249
+          ],
+          "master_png": "sprites/04_impact_vfx/02_r1c2_horizontal-beam.png",
+          "master_sha256": "49c3511f16cedb2ff62bbb83a44872f80ba8ec318c054677da7aeedd731b8d3e",
+          "master_bytes": 111008,
+          "runtime192_png": "sprites/04_impact_vfx/02_r1c2_horizontal-beam__192.png",
+          "runtime192_sha256": "9a1d229ff280ec677dd67a1d7f26900968ebdf0dede170a370633a7d8f1a05c6",
+          "runtime192_bytes": 32682,
+          "solid_pixel_count": 31140,
+          "source_edge_high_alpha_count": 104,
+          "discarded_source_noise_pixels": 125,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-03",
+          "label": "vertical-beam",
+          "r": 1,
+          "c": 3,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            601,
+            0,
+            914,
+            326
+          ],
+          "master_png": "sprites/04_impact_vfx/03_r1c3_vertical-beam.png",
+          "master_sha256": "8da651cce79a6742afa9eb8e7460f42915cb36d42255a76d351fb86b253ad025",
+          "master_bytes": 156839,
+          "runtime192_png": "sprites/04_impact_vfx/03_r1c3_vertical-beam__192.png",
+          "runtime192_sha256": "712308ea0c43f5477fa5975fb7ea617c34b32e3760106994e22f385841eefae2",
+          "runtime192_bytes": 45285,
+          "solid_pixel_count": 43328,
+          "source_edge_high_alpha_count": 102,
+          "discarded_source_noise_pixels": 151,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-04",
+          "label": "radiant-starburst",
+          "r": 1,
+          "c": 4,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            948,
+            3,
+            1248,
+            320
+          ],
+          "master_png": "sprites/04_impact_vfx/04_r1c4_radiant-starburst.png",
+          "master_sha256": "d93e5b32d30455a340ba0ec1533427d31758a57c0d61ec62ea2510a3737ecc44",
+          "master_bytes": 168029,
+          "runtime192_png": "sprites/04_impact_vfx/04_r1c4_radiant-starburst__192.png",
+          "runtime192_sha256": "c43f2bf428bb2bcf6e389bb91ffb0026a678ccdc274614faae5f9a6917426d11",
+          "runtime192_bytes": 48490,
+          "solid_pixel_count": 45747,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 96,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-05",
+          "label": "prismatic-ring",
+          "r": 2,
+          "c": 1,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            11,
+            327,
+            309,
+            620
+          ],
+          "master_png": "sprites/04_impact_vfx/05_r2c1_prismatic-ring.png",
+          "master_sha256": "d6e2245f17d7c8f893685648040e311742820bc911c2f3cab86bf7a4e76ebb00",
+          "master_bytes": 210918,
+          "runtime192_png": "sprites/04_impact_vfx/05_r2c1_prismatic-ring__192.png",
+          "runtime192_sha256": "3bcd9967c79bc5de2d5a6554fbcb84c7ca55bc403259c387debd99ca60efa453",
+          "runtime192_bytes": 60513,
+          "solid_pixel_count": 60600,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 5,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-06",
+          "label": "lightning-impact",
+          "r": 2,
+          "c": 2,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            331,
+            320,
+            621,
+            618
+          ],
+          "master_png": "sprites/04_impact_vfx/06_r2c2_lightning-impact.png",
+          "master_sha256": "4cf22d4c5d61985436271acb862fceaccf4246f0ff954d6da1f21be738cb77c2",
+          "master_bytes": 191512,
+          "runtime192_png": "sprites/04_impact_vfx/06_r2c2_lightning-impact__192.png",
+          "runtime192_sha256": "8b87f19b36a8a6f216d16cdc0943ee4f5db6164a3366c535747e69f12a28958a",
+          "runtime192_bytes": 55922,
+          "solid_pixel_count": 46961,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 34,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-07",
+          "label": "gem-shrapnel",
+          "r": 2,
+          "c": 3,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            651,
+            327,
+            932,
+            617
+          ],
+          "master_png": "sprites/04_impact_vfx/07_r2c3_gem-shrapnel.png",
+          "master_sha256": "1443af655c29c497088abb2d68b9809aa38313b794ca56059458797c215900e3",
+          "master_bytes": 203184,
+          "runtime192_png": "sprites/04_impact_vfx/07_r2c3_gem-shrapnel__192.png",
+          "runtime192_sha256": "81a8ed449a6ca22fee2e184f2d82ca812c78b8336a8b65400a5b52f45a28ec27",
+          "runtime192_bytes": 59433,
+          "solid_pixel_count": 59075,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 381,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-08",
+          "label": "snowflake-burst",
+          "r": 2,
+          "c": 4,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            950,
+            324,
+            1244,
+            623
+          ],
+          "master_png": "sprites/04_impact_vfx/08_r2c4_snowflake-burst.png",
+          "master_sha256": "44aad524d22c97718a5842d0ebd70bc4ae3a5e3d400929118fbcff1602fb5b67",
+          "master_bytes": 208036,
+          "runtime192_png": "sprites/04_impact_vfx/08_r2c4_snowflake-burst__192.png",
+          "runtime192_sha256": "fa48cd45cfd6dcbaf66c171a99eef469e10a5e95ff2d4364426e4ddecd259c27",
+          "runtime192_bytes": 59032,
+          "solid_pixel_count": 67169,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-09",
+          "label": "fire-vortex",
+          "r": 3,
+          "c": 1,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            11,
+            634,
+            318,
+            932
+          ],
+          "master_png": "sprites/04_impact_vfx/09_r3c1_fire-vortex.png",
+          "master_sha256": "0f3a1b9bf502f6784211ccb6306f6f23e6ae55a843989dc1440347a7ccace859",
+          "master_bytes": 220877,
+          "runtime192_png": "sprites/04_impact_vfx/09_r3c1_fire-vortex__192.png",
+          "runtime192_sha256": "edf6e942cc28c47b2204df9db11e2a9875e42e6c1dd10cd03a868eaa4fd9f2e4",
+          "runtime192_bytes": 63678,
+          "solid_pixel_count": 72330,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 15,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-10",
+          "label": "nature-vortex",
+          "r": 3,
+          "c": 2,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            333,
+            639,
+            632,
+            926
+          ],
+          "master_png": "sprites/04_impact_vfx/10_r3c2_nature-vortex.png",
+          "master_sha256": "f2c3b994415fad15c012724bfcffc81d1bfb20a8c991ffaad33f90715408b602",
+          "master_bytes": 240123,
+          "runtime192_png": "sprites/04_impact_vfx/10_r3c2_nature-vortex__192.png",
+          "runtime192_sha256": "28b1d0804117cf9656326e61ea1eb18c64dd12dcff6bb29dc9d38011fbdb9216",
+          "runtime192_bytes": 69895,
+          "solid_pixel_count": 70553,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 555,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-11",
+          "label": "void-smoke",
+          "r": 3,
+          "c": 3,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            645,
+            634,
+            946,
+            925
+          ],
+          "master_png": "sprites/04_impact_vfx/11_r3c3_void-smoke.png",
+          "master_sha256": "de3324e4c13cd663f70b86f2e9894d733f1b8f0ebe499e4c36dc496583553ce5",
+          "master_bytes": 220551,
+          "runtime192_png": "sprites/04_impact_vfx/11_r3c3_void-smoke__192.png",
+          "runtime192_sha256": "4b70ef6af29a4840664c13eff488e805a83f4bde5e96e197c2078882c985793b",
+          "runtime192_bytes": 64133,
+          "solid_pixel_count": 69912,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 20,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-12",
+          "label": "gem-reward-fountain",
+          "r": 3,
+          "c": 4,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            964,
+            621,
+            1241,
+            920
+          ],
+          "master_png": "sprites/04_impact_vfx/12_r3c4_gem-reward-fountain.png",
+          "master_sha256": "11224f1100006a273f0744a430665dda405780adb2d7506c148bef593e0e6131",
+          "master_bytes": 206057,
+          "runtime192_png": "sprites/04_impact_vfx/12_r3c4_gem-reward-fountain__192.png",
+          "runtime192_sha256": "2c8a4f9d3a8bf1e5d53da5805e52585dc545fa3aa40d63aaa8a43a8705d23ecc",
+          "runtime192_bytes": 58972,
+          "solid_pixel_count": 65421,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 219,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-13",
+          "label": "heart-healing",
+          "r": 4,
+          "c": 1,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            8,
+            939,
+            317,
+            1244
+          ],
+          "master_png": "sprites/04_impact_vfx/13_r4c1_heart-healing.png",
+          "master_sha256": "786ecc62510c51733e477c6a7cf1fb116acb3db370ffd6962936544728f35f8f",
+          "master_bytes": 219492,
+          "runtime192_png": "sprites/04_impact_vfx/13_r4c1_heart-healing__192.png",
+          "runtime192_sha256": "2259c1ddcb4edba92d2dbed0bd55d0cf5fe2673dc17ea62acd781b25ac8f654e",
+          "runtime192_bytes": 62735,
+          "solid_pixel_count": 77803,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-14",
+          "label": "time-warp",
+          "r": 4,
+          "c": 2,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            339,
+            944,
+            633,
+            1232
+          ],
+          "master_png": "sprites/04_impact_vfx/14_r4c2_time-warp.png",
+          "master_sha256": "2afc1433efc174e74f4ad7f491954f635ba4feb680e4e779add9ac4e7827887d",
+          "master_bytes": 220700,
+          "runtime192_png": "sprites/04_impact_vfx/14_r4c2_time-warp__192.png",
+          "runtime192_sha256": "cc436574c38b5201be4199340ab48675d6e3720b5578069bc5546e39ed56b7c0",
+          "runtime192_bytes": 62881,
+          "solid_pixel_count": 67947,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 16,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-15",
+          "label": "portal-spire",
+          "r": 4,
+          "c": 3,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            658,
+            935,
+            926,
+            1245
+          ],
+          "master_png": "sprites/04_impact_vfx/15_r4c3_portal-spire.png",
+          "master_sha256": "90246ce05b7e39c0c70f0a2de09e74a8ee5385d69cdb70082e7a321b7572c181",
+          "master_bytes": 172812,
+          "runtime192_png": "sprites/04_impact_vfx/15_r4c3_portal-spire__192.png",
+          "runtime192_sha256": "dbd41b1f4b6a07da830cbbfac897f07337dadb0cd195dd216fcd471d9d41ab2e",
+          "runtime192_bytes": 49420,
+          "solid_pixel_count": 52383,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "04_impact_vfx-16",
+          "label": "crown-reward",
+          "r": 4,
+          "c": 4,
+          "source": "fantasy_vfx_icon_grid.png",
+          "source_bbox": [
+            940,
+            933,
+            1252,
+            1244
+          ],
+          "master_png": "sprites/04_impact_vfx/16_r4c4_crown-reward.png",
+          "master_sha256": "6aeda6d804286a18336e91f78bd00d3174c2a451da683b1b4d9cb498a7933ce8",
+          "master_bytes": 225224,
+          "runtime192_png": "sprites/04_impact_vfx/16_r4c4_crown-reward__192.png",
+          "runtime192_sha256": "500e06ef34189ee212a256c3e20cdc167f9cef68bdb8658a2bfa5f18948646da",
+          "runtime192_bytes": 63507,
+          "solid_pixel_count": 74230,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 154,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        }
+      ],
+      "qa_preview": "qa/04_impact_vfx-qa.jpg",
+      "pack_file": "packs/04_impact_vfx-sprites.zip",
+      "pack_sha256": "d3cde1215fd7ac85d73a3632cd6984a0f225db9dd74f491eb1c3b19d4b8d1fe2"
+    },
+    {
+      "id": "05_action_vfx",
+      "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+      "source_sha256": "81b897b0f1b51eeddc441b6ca1e540dfba0516fbb577887e91600b59ec24c12c",
+      "source_mode": "RGBA",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "cut_seam_metrics": {
+        "vertical": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 23,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 79,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 9,
+            "median_x": 940
+          }
+        ],
+        "horizontal": [
+          {
+            "high_alpha_cut_pixels": 137,
+            "opaque_alpha_cut_pixels": 111,
+            "samples": 1254,
+            "worst_alpha": 251,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 147,
+            "opaque_alpha_cut_pixels": 54,
+            "samples": 1254,
+            "worst_alpha": 242,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 22,
+            "opaque_alpha_cut_pixels": 13,
+            "samples": 1254,
+            "worst_alpha": 238,
+            "median_x": 940
+          }
+        ]
+      },
+      "sprites": [
+        {
+          "id": "05_action_vfx-01",
+          "label": "rocket-launch",
+          "r": 1,
+          "c": 1,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            3,
+            27,
+            289,
+            315
+          ],
+          "master_png": "sprites/05_action_vfx/01_r1c1_rocket-launch.png",
+          "master_sha256": "32ca20e9411c27fa68c9eb5bec70395cfafe4edd402d353b2dbed51d21bccec7",
+          "master_bytes": 186270,
+          "runtime192_png": "sprites/05_action_vfx/01_r1c1_rocket-launch__192.png",
+          "runtime192_sha256": "6fdf522ced1df9cca71199808a1d4f2f3b7ecfa218261d24ee7813c133230bc0",
+          "runtime192_bytes": 54817,
+          "solid_pixel_count": 59327,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 7,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-02",
+          "label": "bomb-detonation",
+          "r": 1,
+          "c": 2,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            345,
+            10,
+            614,
+            301
+          ],
+          "master_png": "sprites/05_action_vfx/02_r1c2_bomb-detonation.png",
+          "master_sha256": "142141b12c2bf2dcb2ce9b5eabe07af193128d41fd018d7be0e2422508ec8938",
+          "master_bytes": 166783,
+          "runtime192_png": "sprites/05_action_vfx/02_r1c2_bomb-detonation__192.png",
+          "runtime192_sha256": "232b4e2c01689b2352f321a22a9ff311a02088c18cc2e78c6f9301af5a490eec",
+          "runtime192_bytes": 48959,
+          "solid_pixel_count": 43587,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 645,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-03",
+          "label": "prism-comet",
+          "r": 1,
+          "c": 3,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            610,
+            20,
+            945,
+            304
+          ],
+          "master_png": "sprites/05_action_vfx/03_r1c3_prism-comet.png",
+          "master_sha256": "8dc55ecb5dedd05f0953c7d6d6d3b9cb1608573460a977c9718e0e168720d93c",
+          "master_bytes": 137045,
+          "runtime192_png": "sprites/05_action_vfx/03_r1c3_prism-comet__192.png",
+          "runtime192_sha256": "fee214fe4b8336c91a066d9d0fe53861082f4feb9f9a7ac671e14cd54ca0785a",
+          "runtime192_bytes": 39313,
+          "solid_pixel_count": 36663,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 549,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-04",
+          "label": "meteor-impact",
+          "r": 1,
+          "c": 4,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            966,
+            0,
+            1254,
+            324
+          ],
+          "master_png": "sprites/05_action_vfx/04_r1c4_meteor-impact.png",
+          "master_sha256": "7b3ce145c71f610b283629c2ac404aa5b1bfe4d5383ee8abf754701735030be5",
+          "master_bytes": 170819,
+          "runtime192_png": "sprites/05_action_vfx/04_r1c4_meteor-impact__192.png",
+          "runtime192_sha256": "28450ca67429a33def38c0e2eae19749bcf754562bf34836f1897b56dcb41c33",
+          "runtime192_bytes": 50115,
+          "solid_pixel_count": 55636,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 708,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-05",
+          "label": "drill-impact",
+          "r": 2,
+          "c": 1,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            13,
+            336,
+            311,
+            623
+          ],
+          "master_png": "sprites/05_action_vfx/05_r2c1_drill-impact.png",
+          "master_sha256": "0d2f6066622ccacbe703ef90b36bdff9ab310808e8ce468402e6e61c957dded3",
+          "master_bytes": 240299,
+          "runtime192_png": "sprites/05_action_vfx/05_r2c1_drill-impact__192.png",
+          "runtime192_sha256": "146c9f7776c545b7799058f7aac35dfc588eb3706f88780072ddf05488bf09e1",
+          "runtime192_bytes": 70132,
+          "solid_pixel_count": 75153,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 459,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-06",
+          "label": "hammer-impact",
+          "r": 2,
+          "c": 2,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            321,
+            336,
+            629,
+            624
+          ],
+          "master_png": "sprites/05_action_vfx/06_r2c2_hammer-impact.png",
+          "master_sha256": "bbd6accadf27b8cafe1cc58403cb483a4400b95752b3cd56066af3b653d9a1d3",
+          "master_bytes": 219959,
+          "runtime192_png": "sprites/05_action_vfx/06_r2c2_hammer-impact__192.png",
+          "runtime192_sha256": "90da228ca5234f1dabe73b8f8895f17a1e8122c30157a0bb5e4a2d3889a88684",
+          "runtime192_bytes": 63618,
+          "solid_pixel_count": 67813,
+          "source_edge_high_alpha_count": 2,
+          "discarded_source_noise_pixels": 414,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-07",
+          "label": "pickaxe-impact",
+          "r": 2,
+          "c": 3,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            632,
+            348,
+            944,
+            624
+          ],
+          "master_png": "sprites/05_action_vfx/07_r2c3_pickaxe-impact.png",
+          "master_sha256": "6eccf422e5d7001c70c300b5bb8bdbb549f180fe326e411e344e7d0d346a9a9b",
+          "master_bytes": 170944,
+          "runtime192_png": "sprites/05_action_vfx/07_r2c3_pickaxe-impact__192.png",
+          "runtime192_sha256": "40189c60f5851b10e38a94e64c97913a0571cf239260a98451cc9990a91f6a8b",
+          "runtime192_bytes": 50473,
+          "solid_pixel_count": 48486,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 471,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-08",
+          "label": "gem-swirl",
+          "r": 2,
+          "c": 4,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            965,
+            338,
+            1240,
+            622
+          ],
+          "master_png": "sprites/05_action_vfx/08_r2c4_gem-swirl.png",
+          "master_sha256": "e5c0a2f1aacc86527a1449a6c5d9a28ebdde7d190cbbe09fa9bd422931c95fdb",
+          "master_bytes": 191106,
+          "runtime192_png": "sprites/05_action_vfx/08_r2c4_gem-swirl__192.png",
+          "runtime192_sha256": "9cfc9aaf4bd1891df1cc0dbb68d8df29e0edd384d84f9739581955da0e86875e",
+          "runtime192_bytes": 55813,
+          "solid_pixel_count": 54622,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 58,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-09",
+          "label": "magical-shuffle",
+          "r": 3,
+          "c": 1,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            4,
+            627,
+            340,
+            945
+          ],
+          "master_png": "sprites/05_action_vfx/09_r3c1_magical-shuffle.png",
+          "master_sha256": "bd5949feb157966cf915bc72cca68822306c2d158c7ce1f96cd78d68bf779c87",
+          "master_bytes": 199884,
+          "runtime192_png": "sprites/05_action_vfx/09_r3c1_magical-shuffle__192.png",
+          "runtime192_sha256": "c9af157bd4af59f81f55f8b09e42dd8370595f0c4721989038a67c7ef4270cff",
+          "runtime192_bytes": 57849,
+          "solid_pixel_count": 67288,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 41,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-10",
+          "label": "gem-magnet",
+          "r": 3,
+          "c": 2,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            354,
+            655,
+            629,
+            926
+          ],
+          "master_png": "sprites/05_action_vfx/10_r3c2_gem-magnet.png",
+          "master_sha256": "33fe609f1a548ba9b730cf65370b851f1c6de11ea030a561f2b3f010ea120239",
+          "master_bytes": 181437,
+          "runtime192_png": "sprites/05_action_vfx/10_r3c2_gem-magnet__192.png",
+          "runtime192_sha256": "9cd911d3cf8003a4db4f4ac1ff7e325e82bdb7984379550afbb3559eb50b46c4",
+          "runtime192_bytes": 53525,
+          "solid_pixel_count": 54759,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 151,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-11",
+          "label": "shield-bubble",
+          "r": 3,
+          "c": 3,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            614,
+            633,
+            946,
+            936
+          ],
+          "master_png": "sprites/05_action_vfx/11_r3c3_shield-bubble.png",
+          "master_sha256": "370530da7973b4964b5f008a78961646ce1c545a2a043d670c35bb810b05df46",
+          "master_bytes": 183752,
+          "runtime192_png": "sprites/05_action_vfx/11_r3c3_shield-bubble__192.png",
+          "runtime192_sha256": "a43caf20e68f227c161f6ff743e35add913e00397dac271d404118391c2f1ccb",
+          "runtime192_bytes": 52912,
+          "solid_pixel_count": 66846,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-12",
+          "label": "royal-awakening",
+          "r": 3,
+          "c": 4,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            943,
+            629,
+            1250,
+            928
+          ],
+          "master_png": "sprites/05_action_vfx/12_r3c4_royal-awakening.png",
+          "master_sha256": "b822102b8954e977df28a952048c6213055d4175392f53962d754bf725d9d23c",
+          "master_bytes": 192815,
+          "runtime192_png": "sprites/05_action_vfx/12_r3c4_royal-awakening__192.png",
+          "runtime192_sha256": "c370bc6a944e9862638c699b8b54dd0131bc20188e75c6f86821ccf45d3c7f59",
+          "runtime192_bytes": 55152,
+          "solid_pixel_count": 64596,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-13",
+          "label": "star-scepter",
+          "r": 4,
+          "c": 1,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            18,
+            962,
+            339,
+            1242
+          ],
+          "master_png": "sprites/05_action_vfx/13_r4c1_star-scepter.png",
+          "master_sha256": "7ea702b4c6be2c44be4fdf87cc7278c7650059c3b4235ec531d4d20e9e1f4031",
+          "master_bytes": 155736,
+          "runtime192_png": "sprites/05_action_vfx/13_r4c1_star-scepter__192.png",
+          "runtime192_sha256": "0cb312a2627994f68d03544266e6637a76a0a19546e7907a3278bba3ce916117",
+          "runtime192_bytes": 44970,
+          "solid_pixel_count": 46261,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 178,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-14",
+          "label": "time-extension",
+          "r": 4,
+          "c": 2,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            341,
+            942,
+            648,
+            1248
+          ],
+          "master_png": "sprites/05_action_vfx/14_r4c2_time-extension.png",
+          "master_sha256": "d43598daff53ab977a5595915fe12d262ada327442fa26124fd0222f1f1f90bd",
+          "master_bytes": 231354,
+          "runtime192_png": "sprites/05_action_vfx/14_r4c2_time-extension__192.png",
+          "runtime192_sha256": "ac03295ebc5a70c1b9b3f760704e0e1866aab1897cb22ec82a282ef1f6df5be4",
+          "runtime192_bytes": 66683,
+          "solid_pixel_count": 60061,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 212,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-15",
+          "label": "shattered-crystals",
+          "r": 4,
+          "c": 3,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            657,
+            958,
+            940,
+            1237
+          ],
+          "master_png": "sprites/05_action_vfx/15_r4c3_shattered-crystals.png",
+          "master_sha256": "9740a75875323cfc65d77e344bfb3448037ec69954ead17d7095148a43fcc303",
+          "master_bytes": 222769,
+          "runtime192_png": "sprites/05_action_vfx/15_r4c3_shattered-crystals__192.png",
+          "runtime192_sha256": "03b8216f5f4f853145d42319444e03ee2677441c239140af1e640902eb40a3ff",
+          "runtime192_bytes": 65724,
+          "solid_pixel_count": 67385,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1250,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "05_action_vfx-16",
+          "label": "snowflake-burst",
+          "r": 4,
+          "c": 4,
+          "source": "glossy_crystal_magic_effects_sprite_sheet.png",
+          "source_bbox": [
+            949,
+            931,
+            1251,
+            1242
+          ],
+          "master_png": "sprites/05_action_vfx/16_r4c4_snowflake-burst.png",
+          "master_sha256": "3cc66bad9ff6732755ee38fb3a9334bbd954c9978971531774826f46bc970669",
+          "master_bytes": 184509,
+          "runtime192_png": "sprites/05_action_vfx/16_r4c4_snowflake-burst__192.png",
+          "runtime192_sha256": "37482aa32e98e621d1b254eda73ecf6536f60bcaa4c1cf09d2da0e82c9dc37c3",
+          "runtime192_bytes": 54209,
+          "solid_pixel_count": 47197,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 418,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        }
+      ],
+      "qa_preview": "qa/05_action_vfx-qa.jpg",
+      "pack_file": "packs/05_action_vfx-sprites.zip",
+      "pack_sha256": "4d3b5e9d4056c702f64eec22975bad3a58a6a376f50eb3412c8c188da3465ef8"
+    },
+    {
+      "id": "06_equippable_boosters",
+      "source": "fantasy_rpg_booster_icon_set.png",
+      "source_sha256": "e424d6819d27804dd31c33bb2785de5dd05df66a402849c51fcd15fca5784c89",
+      "source_mode": "RGBA",
+      "source_dimensions": [
+        1254,
+        1254
+      ],
+      "cut_seam_metrics": {
+        "vertical": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 2,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 1,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 2,
+            "median_x": 940
+          }
+        ],
+        "horizontal": [
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 2,
+            "median_x": 314
+          },
+          {
+            "high_alpha_cut_pixels": 0,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 1,
+            "median_x": 627
+          },
+          {
+            "high_alpha_cut_pixels": 6,
+            "opaque_alpha_cut_pixels": 0,
+            "samples": 1254,
+            "worst_alpha": 205,
+            "median_x": 940
+          }
+        ]
+      },
+      "sprites": [
+        {
+          "id": "06_equippable_boosters-01",
+          "label": "rocket-booster",
+          "r": 1,
+          "c": 1,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            32,
+            35,
+            290,
+            304
+          ],
+          "master_png": "sprites/06_equippable_boosters/01_r1c1_rocket-booster.png",
+          "master_sha256": "547dff16967a220d051d90d769e3338e102c43e01c109507711b4544d9870435",
+          "master_bytes": 205773,
+          "runtime192_png": "sprites/06_equippable_boosters/01_r1c1_rocket-booster__192.png",
+          "runtime192_sha256": "65dd7e5d76c7e9d7d504188b7b9a987a13e915cd77dcad92fd11c631764ccb2c",
+          "runtime192_bytes": 60411,
+          "solid_pixel_count": 69843,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-02",
+          "label": "star-bomb",
+          "r": 1,
+          "c": 2,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            330,
+            21,
+            602,
+            302
+          ],
+          "master_png": "sprites/06_equippable_boosters/02_r1c2_star-bomb.png",
+          "master_sha256": "874778a9a41d1997e78a4c121f917806072523a42f9389eea20ae4fe26282f83",
+          "master_bytes": 209897,
+          "runtime192_png": "sprites/06_equippable_boosters/02_r1c2_star-bomb__192.png",
+          "runtime192_sha256": "a4239fc8a049ace90c5d24979a6f2474e7808082329d2e65ab39b80ebeb9b1c5",
+          "runtime192_bytes": 60828,
+          "solid_pixel_count": 71758,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 9,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-03",
+          "label": "prism-cube",
+          "r": 1,
+          "c": 3,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            647,
+            35,
+            927,
+            298
+          ],
+          "master_png": "sprites/06_equippable_boosters/03_r1c3_prism-cube.png",
+          "master_sha256": "a6e6e3bea49c60a4a4a66054b93542545be38cedd5365ebc8d7738dc3a1b9958",
+          "master_bytes": 206356,
+          "runtime192_png": "sprites/06_equippable_boosters/03_r1c3_prism-cube__192.png",
+          "runtime192_sha256": "d7c83a33f5ff72d86c1e032ea0a8f86be4f2cbabcc490ff5ba70964162f54db9",
+          "runtime192_bytes": 59746,
+          "solid_pixel_count": 74183,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-04",
+          "label": "royal-hammer",
+          "r": 1,
+          "c": 4,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            971,
+            24,
+            1232,
+            311
+          ],
+          "master_png": "sprites/06_equippable_boosters/04_r1c4_royal-hammer.png",
+          "master_sha256": "7dba6b59c0b63196a44489d66c0e66d14c09e9111ae4a7d60d9f634373261e08",
+          "master_bytes": 209387,
+          "runtime192_png": "sprites/06_equippable_boosters/04_r1c4_royal-hammer__192.png",
+          "runtime192_sha256": "452aa000316ef5b474ae68268654492c02fc87b3e9a23e0a029f9301a07ed232",
+          "runtime192_bytes": 60123,
+          "solid_pixel_count": 62795,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-05",
+          "label": "heart-key",
+          "r": 2,
+          "c": 1,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            29,
+            332,
+            282,
+            604
+          ],
+          "master_png": "sprites/06_equippable_boosters/05_r2c1_heart-key.png",
+          "master_sha256": "ab6cf1247fbc0d2a2a2c42545bd83ce4a21b825049bfc06f3799619dea8502b5",
+          "master_bytes": 206542,
+          "runtime192_png": "sprites/06_equippable_boosters/05_r2c1_heart-key__192.png",
+          "runtime192_sha256": "2f040af67980689c1278c2b2b6deb14665402e2083b2f82cbdbbf58668c803bc",
+          "runtime192_bytes": 60069,
+          "solid_pixel_count": 60001,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 57,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-06",
+          "label": "shuffle-token",
+          "r": 2,
+          "c": 2,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            327,
+            338,
+            612,
+            601
+          ],
+          "master_png": "sprites/06_equippable_boosters/06_r2c2_shuffle-token.png",
+          "master_sha256": "3bfebbfeb19f74b2c5e82576f9a4edd401258027601c81bca2a4b1e9e20743c7",
+          "master_bytes": 217611,
+          "runtime192_png": "sprites/06_equippable_boosters/06_r2c2_shuffle-token__192.png",
+          "runtime192_sha256": "74a78f15896fa5c244703ee515ab9976726dabbbc22059d8cf939039469a2b08",
+          "runtime192_bytes": 62797,
+          "solid_pixel_count": 75276,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-07",
+          "label": "heart-protection",
+          "r": 2,
+          "c": 3,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            644,
+            347,
+            927,
+            605
+          ],
+          "master_png": "sprites/06_equippable_boosters/07_r2c3_heart-protection.png",
+          "master_sha256": "378ef70fb1c55b469d4e84070a322e04584efc0e7ef72d00a3d80b7f858b0f3f",
+          "master_bytes": 202226,
+          "runtime192_png": "sprites/06_equippable_boosters/07_r2c3_heart-protection__192.png",
+          "runtime192_sha256": "3abb27f172ca44855aa4737baaeef48d8386280e2670782a45a7a654f8bfb440",
+          "runtime192_bytes": 58707,
+          "solid_pixel_count": 66467,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 410,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-08",
+          "label": "time-boost",
+          "r": 2,
+          "c": 4,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            963,
+            322,
+            1221,
+            611
+          ],
+          "master_png": "sprites/06_equippable_boosters/08_r2c4_time-boost.png",
+          "master_sha256": "b96dc99948fc71fcf0d5dc58889ea7d9d83eb64f9f7b3f68f64ed0bdae44d1b2",
+          "master_bytes": 218134,
+          "runtime192_png": "sprites/06_equippable_boosters/08_r2c4_time-boost__192.png",
+          "runtime192_sha256": "f1daf6b513c834c6a7321df5e9c0c47a5ebc74cb0dbc427c4d01ef4bad9f86c3",
+          "runtime192_bytes": 62894,
+          "solid_pixel_count": 63946,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 2,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-09",
+          "label": "star-cross",
+          "r": 3,
+          "c": 1,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            18,
+            627,
+            300,
+            905
+          ],
+          "master_png": "sprites/06_equippable_boosters/09_r3c1_star-cross.png",
+          "master_sha256": "72be2e5e83e6c285d4bf83b023903c2f9c32a2bb0d74fc748a229eedb872ec22",
+          "master_bytes": 202059,
+          "runtime192_png": "sprites/06_equippable_boosters/09_r3c1_star-cross__192.png",
+          "runtime192_sha256": "a0244ed20f5e215bd1027d526c7c15e64921551b1bc1fa2098d0cbf39541bb93",
+          "runtime192_bytes": 58435,
+          "solid_pixel_count": 65946,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-10",
+          "label": "earth-bomb",
+          "r": 3,
+          "c": 2,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            329,
+            628,
+            603,
+            897
+          ],
+          "master_png": "sprites/06_equippable_boosters/10_r3c2_earth-bomb.png",
+          "master_sha256": "ec2048e4d055201e46df811ea3079d2752e204f177df9aaefd221192b45a7f55",
+          "master_bytes": 226064,
+          "runtime192_png": "sprites/06_equippable_boosters/10_r3c2_earth-bomb__192.png",
+          "runtime192_sha256": "87fd6403b3bc5374d00d0c092ce5d9e429c2db216b051e73183fa4c4f7abfa27",
+          "runtime192_bytes": 65910,
+          "solid_pixel_count": 75696,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 417,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-11",
+          "label": "lightning-bolt",
+          "r": 3,
+          "c": 3,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            657,
+            628,
+            910,
+            906
+          ],
+          "master_png": "sprites/06_equippable_boosters/11_r3c3_lightning-bolt.png",
+          "master_sha256": "f018b676cb72b6f0dd1aacc644a3ed82238c58e0f1cf51d23694af0ca733c708",
+          "master_bytes": 186457,
+          "runtime192_png": "sprites/06_equippable_boosters/11_r3c3_lightning-bolt__192.png",
+          "runtime192_sha256": "cfd38353342afec640c2190217a672c7857d81bbe19601a4e0a625305a57fb35",
+          "runtime192_bytes": 54535,
+          "solid_pixel_count": 59627,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-12",
+          "label": "royal-shield",
+          "r": 3,
+          "c": 4,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            950,
+            634,
+            1234,
+            904
+          ],
+          "master_png": "sprites/06_equippable_boosters/12_r3c4_royal-shield.png",
+          "master_sha256": "463780c59eeb67fbd09dc40dc830632ea6e0ea77996931822600d90d1b8bc939",
+          "master_bytes": 223405,
+          "runtime192_png": "sprites/06_equippable_boosters/12_r3c4_royal-shield__192.png",
+          "runtime192_sha256": "77d707e7c256123ec793f4d8eb020c2792fd4aec1eecc95e4f0e9ae9575252bc",
+          "runtime192_bytes": 64521,
+          "solid_pixel_count": 74377,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-13",
+          "label": "royal-crown",
+          "r": 4,
+          "c": 1,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            24,
+            928,
+            304,
+            1219
+          ],
+          "master_png": "sprites/06_equippable_boosters/13_r4c1_royal-crown.png",
+          "master_sha256": "fe304842c273b6cb2d1592eaca744770ff94123b6661a1bca6738acba70d13d9",
+          "master_bytes": 228198,
+          "runtime192_png": "sprites/06_equippable_boosters/13_r4c1_royal-crown__192.png",
+          "runtime192_sha256": "ce8ac02daa668856db537b17630db4cb4f6b3ccf7006d1a837641b22e5d3d0f0",
+          "runtime192_bytes": 64638,
+          "solid_pixel_count": 78860,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 1,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-14",
+          "label": "dragon-flame",
+          "r": 4,
+          "c": 2,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            324,
+            924,
+            613,
+            1221
+          ],
+          "master_png": "sprites/06_equippable_boosters/14_r4c2_dragon-flame.png",
+          "master_sha256": "7f4cbbc34901b205e2673f6bd7f735f1fc54516232a8feb9ae6a0e8e4dd4d2f6",
+          "master_bytes": 211864,
+          "runtime192_png": "sprites/06_equippable_boosters/14_r4c2_dragon-flame__192.png",
+          "runtime192_sha256": "f5c01e1a6515d53e9b35cf3e559248ff23b4e6386662948b5ae60d5475a2058a",
+          "runtime192_bytes": 61191,
+          "solid_pixel_count": 72628,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 4,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-15",
+          "label": "moon-portal",
+          "r": 4,
+          "c": 3,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            640,
+            932,
+            935,
+            1222
+          ],
+          "master_png": "sprites/06_equippable_boosters/15_r4c3_moon-portal.png",
+          "master_sha256": "2dd7f154b1031a959aaf9f101273bc459b691ce133c03db64936c4a4c26ea72f",
+          "master_bytes": 237566,
+          "runtime192_png": "sprites/06_equippable_boosters/15_r4c3_moon-portal__192.png",
+          "runtime192_sha256": "713d7f9ea4f33aba931cb2b4cb3e7fbf876cb7a21a35ab9590335fa16232d657",
+          "runtime192_bytes": 67786,
+          "solid_pixel_count": 84737,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 4,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        },
+        {
+          "id": "06_equippable_boosters-16",
+          "label": "radiant-sun",
+          "r": 4,
+          "c": 4,
+          "source": "fantasy_rpg_booster_icon_set.png",
+          "source_bbox": [
+            945,
+            924,
+            1236,
+            1221
+          ],
+          "master_png": "sprites/06_equippable_boosters/16_r4c4_radiant-sun.png",
+          "master_sha256": "1a5b3a240af2a46d30ecbd1e73bbef511e0660bbf37aeafeeaeb7e9992ba341c",
+          "master_bytes": 206530,
+          "runtime192_png": "sprites/06_equippable_boosters/16_r4c4_radiant-sun__192.png",
+          "runtime192_sha256": "b0d3e9b19e9d1f044381992f1160c7e6ffe242476a5b3f1dc2836961a61fc5e9",
+          "runtime192_bytes": 58905,
+          "solid_pixel_count": 72545,
+          "source_edge_high_alpha_count": 0,
+          "discarded_source_noise_pixels": 0,
+          "state": "isolated_sliced_source; manual game-device and semantic check pending"
+        }
+      ],
+      "qa_preview": "qa/06_equippable_boosters-qa.jpg",
+      "pack_file": "packs/06_equippable_boosters-sprites.zip",
+      "pack_sha256": "535722a5ef519899b22edc3c8b6df7f6e2dd1b063a1f180fb222db4b0486dd4f"
+    }
+  ],
+  "sheets_count": 6,
+  "sprite_count": 96,
+  "assets_are_original_work": true,
+  "manual_semantic_review_required": true,
+  "source_overlap_caveat": "No slicing method can restore subject detail already occluded/overlapped within a generated atlas. source_edge_high_alpha_count and cut seam metrics identify at-risk locations.",
+  "produced_utc": "2026-10-24"
+}
