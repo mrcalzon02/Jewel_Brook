@@ -23,9 +23,10 @@ function bank(){return D.ensure(saved,Date.now(),dailyCap());}
 function header(name,description=''){return '<div class="heading"><h1>'+name+'</h1>'+(description?'<p>'+description+'</p>':'')+'</div>';}
 function stats(){return '<div class="stats"><div>'+icon('rupee',24)+' <strong>'+number(saved.coins)+'</strong><small>Rupees</small></div><div>'+icon('crystal',24)+' <strong>'+number(saved.gems)+'</strong><small>Star Gems</small></div><div>'+icon('heart',24)+' <strong>'+saved.hearts+'/5</strong><small>Lives</small></div><div>'+icon('extra',24)+' <strong>'+number(bank().remaining)+'</strong><small>Moves today</small></div></div>';}
 function home(){
- return header('Welcome to Rupee Rush','Gather gemstones, uncover lost treasures, and match your way through a thousand stages.')+
- '<div class="hero"><div class="hero-art">'+[0,1,2,3,4,5,6].map(i=>gem(i)).join('')+'</div><h2>Match a world of gems</h2><p>Play the main campaign or explore the crystal mines whenever you need extra supplies.</p>'+
- button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+'</div>'+
+ return '<section class="home-kingdom" aria-label="Embryon Kingdom">'+
+ '<div class="home-kingdom-content"><h1 class="home-brand"><img class="home-title-art" src="art/embryon/branding/rupee-rush-title.webp" alt="Rupee Rush — Heroes of Embryon" width="1200" height="674" decoding="async"></h1>'+
+ '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p>'+
+ '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+'</div></div></section>'+
  '<div class="panels"><section class="panel"><h2>Current expedition</h2><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
  '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section></div>';
 }

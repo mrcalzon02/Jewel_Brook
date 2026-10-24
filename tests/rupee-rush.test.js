@@ -77,7 +77,10 @@ const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
 vm.runInNewContext(fs.readFileSync(path.join(root,'game.js'),'utf8'),ctx,{filename:'game.js'});
-assert.match(views.screen.innerHTML,/Welcome to Rupee Rush/);
+assert.match(views.screen.innerHTML,/art\/embryon\/branding\/rupee-rush-title\.webp/,'approved main-menu title is rendered');
+assert.match(views.screen.innerHTML,/Rupee Rush — Heroes of Embryon/,'title provides readable alternative text');
+assert.match(views.screen.innerHTML,/data-action="play-next"/,'Play action remains available');
+assert.match(views.screen.innerHTML,/data-action="go-mine"/,'Mining action remains available from home');
 function click(action,rest={}){assert.equal(typeof handler,'function');handler({target:{closest:()=>({dataset:{action,...rest},disabled:false})}});}
 function navigate(nav){click('',{nav});}
 navigate('mine');

@@ -1,0 +1,58 @@
+{
+  "schema": "rupee-rush.home-art/v1",
+  "approved": "2026-10-23",
+  "sourceArchive": "https://drive.google.com/drive/folders/17U5ERWAB1u2xSPB0aCwsf2O8ryEpIIWk",
+  "use": "Approved menu branding and home Kingdom landscape; screen-only implementation",
+  "assets": [
+    {
+      "role": "home-logo",
+      "sourceName": "a_high_quality_colorful_polished_fantasy_game_lo.png",
+      "sourceSha256": "e2e7fa09d89acc5b8ab6b0cdfed66cc023916be050d1055966d1cf8ce916a749",
+      "sourceDimensions": [
+        1673,
+        940
+      ],
+      "sourceMime": "image/png",
+      "runtimePath": "web/art/embryon/branding/rupee-rush-title.webp",
+      "runtimeSha256": "d6870627c0953684c02cea4cfc9a5b83acd79bf82462959cddf14c7b2823dcc6",
+      "runtimeDimensions": [
+        1200,
+        674
+      ],
+      "runtimeBytes": 301308,
+      "sourcePreservedOnDrive": true
+    },
+    {
+      "role": "home-background",
+      "sourceName": "luminous_crystal_kingdom_vista.png",
+      "sourceSha256": "acb32ea75f25082b91d7c48b28190c1a89a47b7fe0d13eae9e3c38bf8f3d3eb1",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "sourceMime": "image/png",
+      "runtimePath": "web/art/embryon/locations/embryon-kingdom.webp",
+      "runtimeSha256": "2f64ea100d98c149b27a1d3eaaf5bd77075b589eb9c06c4b404246cbc1f01bfe",
+      "runtimeDimensions": [
+        1279,
+        720
+      ],
+      "runtimeBytes": 289326,
+      "sourcePreservedOnDrive": true
+    }
+  ],
+  "integration": {
+    "screen": "home",
+    "modulesModified": [
+      "web/game.js",
+      "web/style.css"
+    ],
+    "nonGoals": [
+      "mine",
+      "shop",
+      "gameplay",
+      "economy",
+      "other project assets"
+    ]
+  }
+}
