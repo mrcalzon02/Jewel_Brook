@@ -1,0 +1,600 @@
+{
+  "schema": "rupee-rush/town-avatar-manifest/v1",
+  "world": "Heroes of Embryon",
+  "location": "Town",
+  "avatar": "Daysha",
+  "range": {
+    "first": 1,
+    "last": 40
+  },
+  "levelsPerSheet": 10,
+  "source": {
+    "file": null,
+    "sha256": "eb2ed182056ecc70fe0d411edcbcfe486c50ecf469fb060f792ac25db42763cc",
+    "grid": {
+      "columns": 10,
+      "rows": 4
+    },
+    "driveUrl": "https://drive.google.com/file/d/1OCAyiEwIEpE2x05jYFPcA8KbiQQiDfXz/view?usp=drivesdk",
+    "retainedInRepository": false,
+    "note": "Unmodified 10x4 original retained on the project Google Drive; per-level sprites, four atlases, and source slicing recipe are in GitHub."
+  },
+  "quality": "reference-grade generated sprite candidates; check in-engine and improve edge cleanup before final production approval",
+  "identity": "Silver/ice-blue hair, violet eyes, pointed elven ears; white/silver/blue royal and gemstone outfits; navy and gold level plaques.",
+  "avatarPixels": [
+    288,
+    480
+  ],
+  "sheets": [
+    {
+      "levels": [
+        1,
+        10
+      ],
+      "file": "sheets/daysha_levels_01-10.png",
+      "sha256": "03603e53ca6f627c6b82d6b8b9b70a878722ae2cf066b67b0c5d4b3c3185af06",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "levels": [
+        11,
+        20
+      ],
+      "file": "sheets/daysha_levels_11-20.png",
+      "sha256": "dd0be1a0d1e22dab093f2bbf5074960ca39632ca041ba3e88284ecac7a69884e",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "levels": [
+        21,
+        30
+      ],
+      "file": "sheets/daysha_levels_21-30.png",
+      "sha256": "9aed1134600ab91a3832108a88f00387c5000ce8e52cfc83639a175006264cc7",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "levels": [
+        31,
+        40
+      ],
+      "file": "sheets/daysha_levels_31-40.png",
+      "sha256": "4770c9db66e1fc9fd2713bcc6f94aaaeda4dc468c0279beb4cf2e018a06db19e",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    }
+  ],
+  "avatars": [
+    {
+      "level": 1,
+      "id": "town.daysha.01",
+      "sprite": "avatars/daysha_lv_01.png",
+      "sha256": "7dad62f50ab41cde6f1133c0c2a04f4ebd0cb915e69e1efa3e6bbded5112f8ff",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 0
+    },
+    {
+      "level": 2,
+      "id": "town.daysha.02",
+      "sprite": "avatars/daysha_lv_02.png",
+      "sha256": "9def1b4454634be68390f0cbeb0a472766020e21ec50f9cda22277763b170a11",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 1
+    },
+    {
+      "level": 3,
+      "id": "town.daysha.03",
+      "sprite": "avatars/daysha_lv_03.png",
+      "sha256": "97c03418770b8e055bde705208187ef1cf0864406cb2af6754c82fbb7a90adee",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 2
+    },
+    {
+      "level": 4,
+      "id": "town.daysha.04",
+      "sprite": "avatars/daysha_lv_04.png",
+      "sha256": "d9b50358941c6eefe7efabf53d383586fb0955738049365d4b97e2e02bb33018",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 3
+    },
+    {
+      "level": 5,
+      "id": "town.daysha.05",
+      "sprite": "avatars/daysha_lv_05.png",
+      "sha256": "bc01af1465863180c41b41745d0df017edf400bb19f5e0084535f7cde168bdae",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 4
+    },
+    {
+      "level": 6,
+      "id": "town.daysha.06",
+      "sprite": "avatars/daysha_lv_06.png",
+      "sha256": "b9ae901c7ba3f9ea9f081422f4679b7c2b1fda11fe4c75652e934097c02391eb",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 5
+    },
+    {
+      "level": 7,
+      "id": "town.daysha.07",
+      "sprite": "avatars/daysha_lv_07.png",
+      "sha256": "b0015c28a74aa1f54a19b32e218d161f680108eca6b763870c6daa0d0f12fee5",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 6
+    },
+    {
+      "level": 8,
+      "id": "town.daysha.08",
+      "sprite": "avatars/daysha_lv_08.png",
+      "sha256": "77dd49b92bae4fd3cf2bc067e8c2ac372351ce1d8f396d8a7cf7dbec3ef08044",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 7
+    },
+    {
+      "level": 9,
+      "id": "town.daysha.09",
+      "sprite": "avatars/daysha_lv_09.png",
+      "sha256": "31cf1e0326103f8e07936279c603340aac06152a1288c1b6629b8519ad680196",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 8
+    },
+    {
+      "level": 10,
+      "id": "town.daysha.10",
+      "sprite": "avatars/daysha_lv_10.png",
+      "sha256": "d7dd5eb5e819d838075316e5f5b60e44e25c858605a0aaf0d079a8b72787f7fd",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_01-10.png",
+      "sourceIndex": 9
+    },
+    {
+      "level": 11,
+      "id": "town.daysha.11",
+      "sprite": "avatars/daysha_lv_11.png",
+      "sha256": "e7eaf16684aa5542e52a9c2a4954927ec7585dd0f0b5b4134942a2e5cac880ee",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 10
+    },
+    {
+      "level": 12,
+      "id": "town.daysha.12",
+      "sprite": "avatars/daysha_lv_12.png",
+      "sha256": "075112450a62d67156b33c75dba99313bdc6010ae5690e9b7b521bc18aa0dcc4",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 11
+    },
+    {
+      "level": 13,
+      "id": "town.daysha.13",
+      "sprite": "avatars/daysha_lv_13.png",
+      "sha256": "3bf4a801f9d6a58d60fd09278983c18e77589b714290687a9db0d6dec368fb73",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 12
+    },
+    {
+      "level": 14,
+      "id": "town.daysha.14",
+      "sprite": "avatars/daysha_lv_14.png",
+      "sha256": "c691fcd2726c434ff4211a5c7fc695019c36c122d1a4eaf131eb57f4b75812fc",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 13
+    },
+    {
+      "level": 15,
+      "id": "town.daysha.15",
+      "sprite": "avatars/daysha_lv_15.png",
+      "sha256": "222d8dcc1490f3b52be9cac0150bf8f86e82fea0405aaf9b85c77866194aee69",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 14
+    },
+    {
+      "level": 16,
+      "id": "town.daysha.16",
+      "sprite": "avatars/daysha_lv_16.png",
+      "sha256": "2aa12037c6c834f736f034356ac24a8f1ad8ceff45545100c950641260b7ae64",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 15
+    },
+    {
+      "level": 17,
+      "id": "town.daysha.17",
+      "sprite": "avatars/daysha_lv_17.png",
+      "sha256": "7f5fd8f611466402d6f716b021515147930562f49cae2e245e669ffafe54a08a",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 16
+    },
+    {
+      "level": 18,
+      "id": "town.daysha.18",
+      "sprite": "avatars/daysha_lv_18.png",
+      "sha256": "e1921fe434bad988d12e374c7c8af9937448e04b0a34f53d8f5aa063f5387614",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 17
+    },
+    {
+      "level": 19,
+      "id": "town.daysha.19",
+      "sprite": "avatars/daysha_lv_19.png",
+      "sha256": "23385988ba91aa77885db746973838174ec2b6d7235f918a1005c95c9c46c28a",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 18
+    },
+    {
+      "level": 20,
+      "id": "town.daysha.20",
+      "sprite": "avatars/daysha_lv_20.png",
+      "sha256": "66f65b0be2ba615871da2de5788deb810e12eca1c86b660a1f14f156fa975be4",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_11-20.png",
+      "sourceIndex": 19
+    },
+    {
+      "level": 21,
+      "id": "town.daysha.21",
+      "sprite": "avatars/daysha_lv_21.png",
+      "sha256": "b8d512cb474396cd598157a16bb72aaf438ba63cacae56328313eeb201a8a437",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 20
+    },
+    {
+      "level": 22,
+      "id": "town.daysha.22",
+      "sprite": "avatars/daysha_lv_22.png",
+      "sha256": "977db7ab7a3d98ed806a45a3c936e0100ecdc951a101c973962f16421f361951",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 21
+    },
+    {
+      "level": 23,
+      "id": "town.daysha.23",
+      "sprite": "avatars/daysha_lv_23.png",
+      "sha256": "11e81d0def333184670f277ee6a23d47c27f84969c88de3832a83bb85fdde0d1",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 22
+    },
+    {
+      "level": 24,
+      "id": "town.daysha.24",
+      "sprite": "avatars/daysha_lv_24.png",
+      "sha256": "e288a5c1c7da626ecc7d02843a3aed4bdb5c7f7235f4888fc1ba33adc3a741ac",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 23
+    },
+    {
+      "level": 25,
+      "id": "town.daysha.25",
+      "sprite": "avatars/daysha_lv_25.png",
+      "sha256": "8952773e2f45d9b5cc23b7f3a44dc0de85a8296a77f789898cbf0985947c4f47",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 24
+    },
+    {
+      "level": 26,
+      "id": "town.daysha.26",
+      "sprite": "avatars/daysha_lv_26.png",
+      "sha256": "3394becf658ae826d2219f3daf76cb3acff0e2a0c452a12d8f2225e5d16467fe",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 25
+    },
+    {
+      "level": 27,
+      "id": "town.daysha.27",
+      "sprite": "avatars/daysha_lv_27.png",
+      "sha256": "5893c79eb2cc3852b6e9e4e12e8117ede7833f656fecfaa0145426b8f3dc5e48",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 26
+    },
+    {
+      "level": 28,
+      "id": "town.daysha.28",
+      "sprite": "avatars/daysha_lv_28.png",
+      "sha256": "4f668e651da34cd3ac11d9daab5edf90ee0f6b0fe3154d90cd69c67f7884d577",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 27
+    },
+    {
+      "level": 29,
+      "id": "town.daysha.29",
+      "sprite": "avatars/daysha_lv_29.png",
+      "sha256": "f9413e549537d1c3788d96b772db1f66cfd58346e258b5d6d5279ae84b19d841",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 28
+    },
+    {
+      "level": 30,
+      "id": "town.daysha.30",
+      "sprite": "avatars/daysha_lv_30.png",
+      "sha256": "499c9c371a88e4c49f8e829d4e65811d6906c98a431b5088b761e2724e409f78",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_21-30.png",
+      "sourceIndex": 29
+    },
+    {
+      "level": 31,
+      "id": "town.daysha.31",
+      "sprite": "avatars/daysha_lv_31.png",
+      "sha256": "5c62ff9d6409023e00be5aa51b55de4b3888b4543e2ede542395ef806a208051",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 30
+    },
+    {
+      "level": 32,
+      "id": "town.daysha.32",
+      "sprite": "avatars/daysha_lv_32.png",
+      "sha256": "6a97e73fe86f43251aa5b94f8bd97094973d20004d48a0077361f66e68c9d132",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 31
+    },
+    {
+      "level": 33,
+      "id": "town.daysha.33",
+      "sprite": "avatars/daysha_lv_33.png",
+      "sha256": "1f24b9c159ddb4e2459a1334c9cd92eb4943cc30cb8c505299782aa8c54557da",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 32
+    },
+    {
+      "level": 34,
+      "id": "town.daysha.34",
+      "sprite": "avatars/daysha_lv_34.png",
+      "sha256": "98458701da10cdf616d53566a1c4cf428cd338cad083bc46d0aa4ac32fd5e5f7",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 33
+    },
+    {
+      "level": 35,
+      "id": "town.daysha.35",
+      "sprite": "avatars/daysha_lv_35.png",
+      "sha256": "dc992bfcc958603e53f0333095589a5171afb5e212dbce62cdc4185c5c4c4aeb",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 34
+    },
+    {
+      "level": 36,
+      "id": "town.daysha.36",
+      "sprite": "avatars/daysha_lv_36.png",
+      "sha256": "78743b3a0a00b463a6e21672d494df8aec6c215f1e758059d03963c77f88943a",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 35
+    },
+    {
+      "level": 37,
+      "id": "town.daysha.37",
+      "sprite": "avatars/daysha_lv_37.png",
+      "sha256": "4a4cf7fefb7dd18dc7cfa672c7c2ce6741e9e17f7563a8daa0085b0933373c6d",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 36
+    },
+    {
+      "level": 38,
+      "id": "town.daysha.38",
+      "sprite": "avatars/daysha_lv_38.png",
+      "sha256": "590981c23a5c937ac01fabd15e750916acc763f697ab36011cb9b6b23550ad73",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 37
+    },
+    {
+      "level": 39,
+      "id": "town.daysha.39",
+      "sprite": "avatars/daysha_lv_39.png",
+      "sha256": "0ea1af5c00ccda1b7da73cf8e06a365b6ae0c47588abf5ea80343814743731c1",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 38
+    },
+    {
+      "level": 40,
+      "id": "town.daysha.40",
+      "sprite": "avatars/daysha_lv_40.png",
+      "sha256": "9946ebc9c6fe8574ac20a1e6d322e2a825518bae8004f8a8a918d03b08c5f9d3",
+      "dimensions": [
+        288,
+        480
+      ],
+      "alpha": true,
+      "sheet": "sheets/daysha_levels_31-40.png",
+      "sourceIndex": 39
+    }
+  ]
+}
