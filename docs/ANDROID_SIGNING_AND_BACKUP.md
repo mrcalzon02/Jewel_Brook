@@ -7,6 +7,17 @@ Canonical existing Nut Buster Windows signing files:
 %USERPROFILE%\.local\share\nutbuster-signing\store-password
 Alias: nutbuster.
 
+
+## Single-command Windows workflow (recommended)
+
+In GitKraken's embedded PowerShell, from C:\GITS\Rupee-rush, paste this one line:
+
+    git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\setup-android-signing.ps1 }
+
+The fast-forward-only pull never discards local changes. The launcher defaults to C:\GITS\ReverieVR as the sibling checkout (or REVERIEVR_ROOT); use -ReverieRoot if the checkout is elsewhere. It verifies the existing Nut Buster key, encrypts both original signing profiles, uploads ciphertext using your authenticated rclone Google Drive remote, checks the uploaded ciphertext, then provisions the exact Nut Buster key into Rupee Rush's GitHub secret store. It stops on missing dependencies or keys. It does not generate a new signing key, create an APK, or install anything.
+
+This is **one command to initiate**, not unattended execution: Windows must have JDK/keytool, GitHub CLI/gh authenticated, age installed, and rclone configured with the Google Drive remote gdrive. The backup prompts for four encryption passphrases. Save these separately, offline, and verify a private restore. If some Rupee Rush signing secrets already exist, the launcher safely refuses to overwrite them; investigate identity before any explicit override.
+
 ## Verify and provision Rupee Rush
 
 Install JDK 17 or newer. In Windows PowerShell from the Rupee Rush checkout:

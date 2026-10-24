@@ -2,11 +2,21 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 assert.equal(read('config/nutbuster-publisher.sha256').trim(),'cdde49a6d72b49e50d1cf3454ebb0a1e63444640719e4afa40c6c74bd5c8b0b9');
-const signer=read('scripts/provision-rupee-signing.ps1'),backup=read('scripts/backup-android-signing-to-drive.ps1');
+const signer=read('scripts/provision-rupee-signing.ps1'),backup=read('scripts/backup-android-signing-to-drive.ps1'),launcher=read('scripts/setup-android-signing.ps1');
 assert.match(signer,/Assert-OriginalSigner/);assert.match(signer,/Refusing to overwrite/i);
 assert.match(signer,/PHONE_TEST_KEYSTORE_BASE64/);assert.match(signer,/AllowExistingSecrets/);
 assert.doesNotMatch(signer,/-genkeypair|New-SelfSignedCertificate/);
 for(const name of ['nutbuster-publisher.p12.age','nutbuster-store-password.txt.age','reverievr-phone-test.keystore.age','reverievr-github-secrets.txt.age'])assert.ok(backup.includes(name));
 assert.match(backup,/age -p -o/);assert.match(backup,/rclone check/);
 assert.match(backup,/--one-way --checksum/);assert.match(read('.gitignore'),/^\.local\/$/m);
-console.log('Source-only signing/backup safety assertions passed; no Windows execution or APK claim.');
+assert.equal((signer.match(/function Set-Secret\(/g)||[]).length,1,'duplicate/corrupted signing writer');
+assert.equal((signer.match(/if \(\$SetGitHubSecrets\) \{/g)||[]).length,1,'duplicate signing block');
+assert.match(signer,/Where-Object \{ \$_ -match '\^PHONE_TEST_\(KEYSTORE_BASE64\|STORE_PASSWORD\|KEY_ALIAS\|KEY_PASSWORD\)\
+ \}/);
+assert.match(launcher,/provision-rupee-signing\.ps1/);
+assert.match(launcher,/backup-android-signing-to-drive\.ps1/);
+assert.match(launcher,/-SetGitHubSecrets/);
+assert.match(launcher,/rclone listremotes/);
+assert.match(launcher,/\[1\/3\]/);
+assert.doesNotMatch(launcher,/-genkeypair|New-SelfSignedCertificate|git reset|git push/);
+console.log('Source-only signing/backup safety assertions passed; Windows execution/Drive upload not verified.');

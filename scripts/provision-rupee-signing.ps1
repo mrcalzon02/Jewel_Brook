@@ -60,46 +60,17 @@ if ($SetGitHubSecrets) {
     if (-not $gh) { throw 'GitHub CLI gh missing. Authenticate with gh auth login.' }
     & $gh.Source auth status *> $null
     if ($LASTEXITCODE -ne 0) { throw 'Not logged in to gh. Run gh auth login.' }
-    # GitHub secrets are write-only: do not silently rotate an existing, unverifiable signer.
+
+    # GitHub secrets are write-only. Do not silently replace an existing signing lineage.
     $already = @(& $gh.Source secret list --repo $repo --json name --jq '.[].name')
     if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect existing Rupee Rush secret names.' }
-    $clashing = @($already | Where-Object { $_ -match '^PHONE_TEST_(KEYSTORE_BASE64|STORE_PASSWORD|KEY_ALIAS|KEY_PASSWORD)
-        # Secret values only through stdin; never through command arguments or Git.
-        $info = New-Object Diagnostics.ProcessStartInfo
-        $info.FileName = $gh.Source
-        $info.Arguments = "secret set $name --repo $repo"
-        $info.UseShellExecute = $false
-        $info.CreateNoWindow = $true
-        $info.RedirectStandardInput = $true
-        $info.RedirectStandardOutput = $true
-        $info.RedirectStandardError = $true
-        $p = [Diagnostics.Process]::Start($info)
-        try {
-            $p.StandardInput.Write($value)
-            $p.StandardInput.Close()
-            $null = $p.StandardOutput.ReadToEnd()
-            $null = $p.StandardError.ReadToEnd()
-            $p.WaitForExit()
-            if ($p.ExitCode -ne 0) { throw "GitHub refused $name; some earlier secrets might already be set." }
-        } finally { $p.Dispose() }
-    }
-    Set-Secret 'PHONE_TEST_KEYSTORE_BASE64' ([Convert]::ToBase64String([IO.File]::ReadAllBytes($keystore)))
-    Set-Secret 'PHONE_TEST_STORE_PASSWORD' $password
-    Set-Secret 'PHONE_TEST_KEY_ALIAS' $keyAlias
-    Set-Secret 'PHONE_TEST_KEY_PASSWORD' $password
-    $names = @(& $gh.Source secret list --repo $repo --json name --jq '.[].name')
-    if ($LASTEXITCODE -ne 0) { throw 'Cannot read back signing secret names.' }
-    foreach ($required in @('PHONE_TEST_KEYSTORE_BASE64','PHONE_TEST_STORE_PASSWORD','PHONE_TEST_KEY_ALIAS','PHONE_TEST_KEY_PASSWORD')) {
-        if ($names -notcontains $required) { throw "Unverified secret name: $required" }
-    }
-    Write-Host 'Four GitHub signing secret names verified. No build or release triggered.'
-} else { Write-Host 'Verification only; use -SetGitHubSecrets to provision Rupee Rush.' }
- })
+    $clashing = @($already | Where-Object { $_ -match '^PHONE_TEST_(KEYSTORE_BASE64|STORE_PASSWORD|KEY_ALIAS|KEY_PASSWORD)$' })
     if ($clashing.Count -gt 0 -and -not $AllowExistingSecrets) {
-        throw 'One or more signing secrets already exist. Refusing silent replacement; rerun with -AllowExistingSecrets only after verifying prior publisher lineage.'
+        throw 'Signing secret names already exist. Refusing replacement; verify the prior publisher lineage before using -AllowExistingSecrets.'
     }
+
     function Set-Secret([string]$name,[string]$value) {
-        # Secret values only through stdin; never through command arguments or Git.
+        # Pass credentials only through stdin, never command arguments or source files.
         $info = New-Object Diagnostics.ProcessStartInfo
         $info.FileName = $gh.Source
         $info.Arguments = "secret set $name --repo $repo"
@@ -108,16 +79,21 @@ if ($SetGitHubSecrets) {
         $info.RedirectStandardInput = $true
         $info.RedirectStandardOutput = $true
         $info.RedirectStandardError = $true
-        $p = [Diagnostics.Process]::Start($info)
+        $process = [Diagnostics.Process]::Start($info)
         try {
-            $p.StandardInput.Write($value)
-            $p.StandardInput.Close()
-            $null = $p.StandardOutput.ReadToEnd()
-            $null = $p.StandardError.ReadToEnd()
-            $p.WaitForExit()
-            if ($p.ExitCode -ne 0) { throw "GitHub refused $name; some earlier secrets might already be set." }
-        } finally { $p.Dispose() }
+            $process.StandardInput.Write($value)
+            $process.StandardInput.Close()
+            $output = $process.StandardOutput.ReadToEnd()
+            $errorOutput = $process.StandardError.ReadToEnd()
+            $process.WaitForExit()
+            if ($process.ExitCode -ne 0) {
+                throw "GitHub refused $name. Some earlier secrets may have been uploaded; check secret names before retrying."
+            }
+        } finally {
+            $process.Dispose()
+        }
     }
+
     Set-Secret 'PHONE_TEST_KEYSTORE_BASE64' ([Convert]::ToBase64String([IO.File]::ReadAllBytes($keystore)))
     Set-Secret 'PHONE_TEST_STORE_PASSWORD' $password
     Set-Secret 'PHONE_TEST_KEY_ALIAS' $keyAlias
@@ -125,7 +101,9 @@ if ($SetGitHubSecrets) {
     $names = @(& $gh.Source secret list --repo $repo --json name --jq '.[].name')
     if ($LASTEXITCODE -ne 0) { throw 'Cannot read back signing secret names.' }
     foreach ($required in @('PHONE_TEST_KEYSTORE_BASE64','PHONE_TEST_STORE_PASSWORD','PHONE_TEST_KEY_ALIAS','PHONE_TEST_KEY_PASSWORD')) {
-        if ($names -notcontains $required) { throw "Unverified secret name: $required" }
+        if ($names -notcontains $required) { throw "Unverified secret name after upload: $required" }
     }
     Write-Host 'Four GitHub signing secret names verified. No build or release triggered.'
-} else { Write-Host 'Verification only; use -SetGitHubSecrets to provision Rupee Rush.' }
+} else {
+    Write-Host 'Original signer verified only; use -SetGitHubSecrets to provision Rupee Rush.'
+}
