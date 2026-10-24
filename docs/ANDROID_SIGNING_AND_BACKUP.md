@@ -21,7 +21,7 @@ An existing key is never overwritten. For Rupee Rush's own GitHub Actions secret
 
     .\scripts\provision-rupee-signing.ps1 -SetGitHubSecrets
 
-Four PHONE_TEST_* secrets are sent over stdin to mrcalzon02/Rupee-rush only. No secrets are printed/committed. Names are read back, but GitHub does not disclose secret values. No workflow, APK or release is triggered.
+If any of the four signing secrets already exist, the script refuses to overwrite them. After verifying that Rupee Rush has not published a different signing identity, explicitly opt into re-provisioning with -SetGitHubSecrets -AllowExistingSecrets. Four PHONE_TEST_* secrets are sent over stdin to mrcalzon02/Rupee-rush only. No secrets are printed/committed. Names are read back, but GitHub does not disclose secret values. No workflow, APK or release is triggered.
 
 ## Encrypted backup of both original signing profiles
 
