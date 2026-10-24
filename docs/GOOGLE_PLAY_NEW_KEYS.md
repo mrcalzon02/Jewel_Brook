@@ -8,7 +8,7 @@ From the Rupee Rush checkout in Windows GitKraken PowerShell:
 git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\setup-android-signing.ps1 }
 ```
 
-The generator creates three RSA-4096 PKCS12 upload keys on the owner's PC in:
+The one-command launcher first discovers the required `age` encryption program, and if missing installs the verified `FiloSottile.age` WinGet package. It searches the WinGet package directory and injects the executable path for the CURRENT GitKraken PowerShell session. Failed installation stops BEFORE generating keys. The generator then creates three RSA-4096 PKCS12 upload keys on the owner's PC in:
 
 `%LOCALAPPDATA%\Embryon\play-upload-v1\keys\reverievr`
 `%LOCALAPPDATA%\Embryon\play-upload-v1\keys\nutbuster`

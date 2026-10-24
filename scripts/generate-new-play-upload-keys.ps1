@@ -35,6 +35,18 @@ function Find-Tool([string]$Name) {
             }
         }
     }
+    if ($Name -eq 'age') {
+        $paths+=Join-Path $HOME 'scoop\apps\age\current\age.exe'
+        if ($env:LOCALAPPDATA) {
+            $packages=Join-Path $env:LOCALAPPDATA 'Microsoft\WinGet\Packages'
+            if (Test-Path -LiteralPath $packages -PathType Container) {
+                foreach ($folder in @(Get-ChildItem -Path (Join-Path $packages 'FiloSottile.age_*') -Directory -ErrorAction SilentlyContinue)) {
+                    $paths+=Join-Path $folder.FullName 'age.exe'
+                    $paths+=@(Get-ChildItem -LiteralPath $folder.FullName -Filter age.exe -File -Recurse -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName })
+                }
+            }
+        }
+    }
     if ($Name -eq 'gh' -and $env:ProgramFiles) { $paths+=Join-Path $env:ProgramFiles 'GitHub CLI\gh.exe' }
     foreach ($p in $paths) { if ($p -and (Test-Path -LiteralPath $p -PathType Leaf)) { return (Resolve-Path -LiteralPath $p).Path } }
     return $null

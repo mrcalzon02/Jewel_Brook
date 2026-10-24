@@ -18,4 +18,13 @@ assert.match(x,/\$clashing.Count -gt 0/);
 assert.doesNotMatch(x,/PHONE_TEST_KEYSTORE_BASE64|nutbuster-publisher\.p12|reverievr-phone-test\.keystore/);
 assert.match(s,/generate-new-play-upload-keys\.ps1/);
 assert.doesNotMatch(s,/provision-rupee-signing\.ps1|backup-android-signing-to-drive\.ps1/);
+
+assert.match(s, /winget\.Source install --id FiloSottile\.age --exact --source winget/);
+assert.match(s, /function Find-Age/);
+assert.match(s, /FiloSottile\.age_\*/);
+assert.match(s, /Encryption prerequisite verified/);
+assert.ok(s.indexOf('Encryption prerequisite verified') < s.indexOf('& $generator -SkipDrive'));
+assert.match(x, /if \(\$Name -eq 'age'\)/);
+assert.match(x, /FiloSottile\.age_\*/);
+assert.match(x, /No unprotected keys generated/);
 console.log('New Google Play upload-key generation source contracts passed.');
