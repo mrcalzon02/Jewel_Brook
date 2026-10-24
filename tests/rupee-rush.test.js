@@ -16,6 +16,7 @@ const Art=require('../web/art.js');
 const Shared=require('../web/shared-art.js');
 const Chapters=require('../web/embryon-chapters.js');
 const Audio=require('../web/embryon-audio.js');
+const EmbryonAssets=require('../web/embryon-assets.js');
 const root=path.resolve(__dirname,'../web');
 assert.equal(E.TYPES.length,19);
 assert.deepEqual(E.TYPES.slice(0,7),['ruby','sapphire','emerald','topaz','amethyst','citrine','diamond']);
@@ -74,7 +75,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeEmbryonAssets:EmbryonAssets};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};

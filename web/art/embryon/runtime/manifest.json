@@ -1,0 +1,633 @@
+{
+  "schema": "heroes-of-embryon-runtime-art/v1",
+  "selection": "hand-curated function-matched selections from previously approved sliced packs",
+  "notes": [
+    "All files independent transparent WebP sprites; no atlas crops or adjacent bleed",
+    "Booster IDs, costs, effects, unlocks and save keys remain unchanged",
+    "No images substituted for narrated audio; Wayfinder voice is separate",
+    "Turquoise and lapis retain vector fallback until dedicated approved gemstone art exists",
+    "Peridot is retired and never assigned a runtime sprite"
+  ],
+  "boosters": {
+    "hammer": {
+      "file": "art/embryon/runtime/boosters/hammer.webp",
+      "bytes": 21592,
+      "sha256": "6f53f9bca14491a27ba29791bfe671b64b253ac562b794d696fc6b229c430408",
+      "source_archive": "02_booster_tools",
+      "source_image": "01_r1c1_royal-hammer__192.png",
+      "source_sha256": "d683d5ed7557549dc7b24122c74a22bff453904b46a31652714d7d3172c9c16c",
+      "alpha_bbox": [
+        14,
+        13,
+        180,
+        181
+      ]
+    },
+    "row": {
+      "file": "art/embryon/runtime/boosters/row.webp",
+      "bytes": 17926,
+      "sha256": "b2d00e250aa0ec3547682f91c4c09a03309ced5e7f24670650e19c2175984276",
+      "source_archive": "01_powerup_gems",
+      "source_image": "01_r1c1_ruby-stripe__192.png",
+      "source_sha256": "bdda4e6616569a27fe7c1e778218229d066f95b3df7f7c05885b9db6c4d08f90",
+      "alpha_bbox": [
+        12,
+        12,
+        181,
+        178
+      ]
+    },
+    "column": {
+      "file": "art/embryon/runtime/boosters/column.webp",
+      "bytes": 19506,
+      "sha256": "da333019d7a52f33132463ad2daf4f01e14af2b6c0f065f4a3521032cb8fea35",
+      "source_archive": "01_powerup_gems",
+      "source_image": "02_r1c2_sapphire-column__192.png",
+      "source_sha256": "805fa0aa31da6466d2dae7767da03b67524ad6c42d58265934c87d3653c90392",
+      "alpha_bbox": [
+        11,
+        12,
+        180,
+        178
+      ]
+    },
+    "cross": {
+      "file": "art/embryon/runtime/boosters/cross.webp",
+      "bytes": 22238,
+      "sha256": "c9cb05fd323a35cda67eb6a6edac1027ab06a182dd0a35639bd57ffe5fd2d81e",
+      "source_archive": "06_equippable_boosters",
+      "source_image": "09_r3c1_star-cross__192.png",
+      "source_sha256": "a0244ed20f5e215bd1027d526c7c15e64921551b1bc1fa2098d0cbf39541bb93",
+      "alpha_bbox": [
+        11,
+        12,
+        181,
+        180
+      ]
+    },
+    "blast": {
+      "file": "art/embryon/runtime/boosters/blast.webp",
+      "bytes": 18256,
+      "sha256": "bc78a6f9fce763e8f99671fea1b62a67f5ac76ca911220a67b29099f56d3a9e4",
+      "source_archive": "02_booster_tools",
+      "source_image": "05_r2c1_star-bomb__192.png",
+      "source_sha256": "4ad83e60b8c05efc9ec703f70d695b736cb78ad49e50b6ac41b1f9604d710dec",
+      "alpha_bbox": [
+        14,
+        13,
+        176,
+        181
+      ]
+    },
+    "color": {
+      "file": "art/embryon/runtime/boosters/color.webp",
+      "bytes": 21280,
+      "sha256": "ffcf069801d05e964e80176ee9b5d0bab6fcb74f92a08d0cd287386da12bf94c",
+      "source_archive": "02_booster_tools",
+      "source_image": "07_r2c3_color-sphere__192.png",
+      "source_sha256": "e127f273a5e9cbe581aeced9d62f932a5107417ddf3ac56bb6d526abb70fb2ae",
+      "alpha_bbox": [
+        12,
+        13,
+        180,
+        179
+      ]
+    },
+    "shuffle": {
+      "file": "art/embryon/runtime/boosters/shuffle.webp",
+      "bytes": 22870,
+      "sha256": "6c731411a1b8b68bc129d674707784edaa15feb6ac4bee7402c5380bf9386eb3",
+      "source_archive": "02_booster_tools",
+      "source_image": "12_r3c4_shuffle-orb__192.png",
+      "source_sha256": "e41b33d66441ab465d59dfc684c53f985bc13f598c0114456b36b50b2ed81252",
+      "alpha_bbox": [
+        15,
+        12,
+        176,
+        179
+      ]
+    },
+    "extra": {
+      "file": "art/embryon/runtime/boosters/extra.webp",
+      "bytes": 20172,
+      "sha256": "c132c1dab4d86af9ad11ce23b70b2b614061159d781111c865de34431fd28ca2",
+      "source_archive": "02_booster_tools",
+      "source_image": "13_r4c1_hourglass__192.png",
+      "source_sha256": "8afb1457018bed06c991e6e8c8852f9ec17fc883c8b11ebb5305f981411a495e",
+      "alpha_bbox": [
+        23,
+        11,
+        169,
+        181
+      ]
+    },
+    "drill": {
+      "file": "art/embryon/runtime/boosters/drill.webp",
+      "bytes": 23714,
+      "sha256": "4f2ca63d4350ca04f454d9411f4df375b821adfb57cb65c4c89b31ddfe180e67",
+      "source_archive": "02_booster_tools",
+      "source_image": "09_r3c1_crystal-drill__192.png",
+      "source_sha256": "c5235ca27a649108def6f187b7fcd46fc43d754f6f1ed7a17ba6cf470b8b8fcc",
+      "alpha_bbox": [
+        13,
+        12,
+        181,
+        180
+      ]
+    },
+    "unlock": {
+      "file": "art/embryon/runtime/boosters/unlock.webp",
+      "bytes": 24352,
+      "sha256": "1ae998d077b07c4a697ca6f98f4e04e1b2adbc725e7a209a95627279db4b614e",
+      "source_archive": "06_equippable_boosters",
+      "source_image": "05_r2c1_heart-key__192.png",
+      "source_sha256": "2f040af67980689c1278c2b2b6deb14665402e2083b2f82cbdbbf58668c803bc",
+      "alpha_bbox": [
+        18,
+        11,
+        175,
+        181
+      ]
+    },
+    "quake": {
+      "file": "art/embryon/runtime/boosters/quake.webp",
+      "bytes": 24764,
+      "sha256": "e97c0179b904fef4d2827f41d40d0fe744bcc47bcf4a90bbf82cc7563e32fa0f",
+      "source_archive": "06_equippable_boosters",
+      "source_image": "10_r3c2_earth-bomb__192.png",
+      "source_sha256": "87fd6403b3bc5374d00d0c092ce5d9e429c2db216b051e73183fa4c4f7abfa27",
+      "alpha_bbox": [
+        11,
+        12,
+        181,
+        179
+      ]
+    },
+    "triple-row": {
+      "file": "art/embryon/runtime/boosters/triple-row.webp",
+      "bytes": 14884,
+      "sha256": "418f6d24e4aaf759d8d64d1e9f4da10422d4bfef589eb84dc137e1348621435f",
+      "source_archive": "02_booster_tools",
+      "source_image": "03_r1c3_arcane-rockets__192.png",
+      "source_sha256": "5e756624f2fe25cdfea6ab217fbbbc5ee4f293830c764155d74017732849e6ea",
+      "alpha_bbox": [
+        11,
+        36,
+        181,
+        155
+      ]
+    },
+    "triple-column": {
+      "file": "art/embryon/runtime/boosters/triple-column.webp",
+      "bytes": 22792,
+      "sha256": "adbc7b5ff6d4ee73ef80cd9f5e6ddcd3223203ef26a4b6cb61f49f1307e70248",
+      "source_archive": "06_equippable_boosters",
+      "source_image": "01_r1c1_rocket-booster__192.png",
+      "source_sha256": "65dd7e5d76c7e9d7d504188b7b9a987a13e915cd77dcad92fd11c631764ccb2c",
+      "alpha_bbox": [
+        16,
+        11,
+        176,
+        181
+      ]
+    },
+    "starburst": {
+      "file": "art/embryon/runtime/boosters/starburst.webp",
+      "bytes": 20612,
+      "sha256": "8637b8215caa004801d92f83f0c92ea2ac65b4dc57540aed762ebba701000d44",
+      "source_archive": "04_impact_vfx",
+      "source_image": "04_r1c4_radiant-starburst__192.png",
+      "source_sha256": "c43f2bf428bb2bcf6e389bb91ffb0026a678ccdc274614faae5f9a6917426d11",
+      "alpha_bbox": [
+        17,
+        13,
+        175,
+        179
+      ]
+    },
+    "spectrum": {
+      "file": "art/embryon/runtime/boosters/spectrum.webp",
+      "bytes": 21750,
+      "sha256": "adc364c0e6f1e87c730d3dbb41e5468af1eccd737665a8cd4d0a7f438ee2c951",
+      "source_archive": "06_equippable_boosters",
+      "source_image": "03_r1c3_prism-cube__192.png",
+      "source_sha256": "d7c83a33f5ff72d86c1e032ea0a8f86be4f2cbabcc490ff5ba70964162f54db9",
+      "alpha_bbox": [
+        13,
+        16,
+        181,
+        176
+      ]
+    },
+    "frostbreaker": {
+      "file": "art/embryon/runtime/boosters/frostbreaker.webp",
+      "bytes": 25220,
+      "sha256": "d45791d20054793f9187a3fb8e59a37baf4e8f6dfdb5f51a7311e73608f05680",
+      "source_archive": "03_arcane_relics",
+      "source_image": "03_r1c3_ice-citadel__192.png",
+      "source_sha256": "7aa610aecf9755e8b18fbc47f94d9d42b102a88d2b39c5809dc7ad7a88922269",
+      "alpha_bbox": [
+        13,
+        11,
+        180,
+        180
+      ]
+    }
+  },
+  "effects": {
+    "match": {
+      "file": "art/embryon/runtime/effects/match.webp",
+      "bytes": 23590,
+      "sha256": "04206e7c82fb52bea7a2bca2ddc18878a7f8a92ada23a3fdad821675a9fba46b",
+      "source_archive": "04_impact_vfx",
+      "source_image": "01_r1c1_gem-explosion__192.png",
+      "source_sha256": "c39a3d91a765778fa23dcfafa4091f96489ee270905f4913eeeb6f89ca2358f5",
+      "alpha_bbox": [
+        12,
+        17,
+        179,
+        174
+      ]
+    },
+    "cascade": {
+      "file": "art/embryon/runtime/effects/cascade.webp",
+      "bytes": 24458,
+      "sha256": "22ba735743682129dcfac2c9d3dfaa3ad170c46227d82b9ddf50e64cd05acb7d",
+      "source_archive": "04_impact_vfx",
+      "source_image": "05_r2c1_prismatic-ring__192.png",
+      "source_sha256": "3bcd9967c79bc5de2d5a6554fbcb84c7ca55bc403259c387debd99ca60efa453",
+      "alpha_bbox": [
+        13,
+        14,
+        180,
+        178
+      ]
+    },
+    "hammer": {
+      "file": "art/embryon/runtime/effects/hammer.webp",
+      "bytes": 24348,
+      "sha256": "ce18f7315f1c2c28bfe14c391803fe002162b46f2e0508493f37dda12d46adf3",
+      "source_archive": "05_action_vfx",
+      "source_image": "06_r2c2_hammer-impact__192.png",
+      "source_sha256": "90da228ca5234f1dabe73b8f8895f17a1e8122c30157a0bb5e4a2d3889a88684",
+      "alpha_bbox": [
+        11,
+        18,
+        181,
+        175
+      ]
+    },
+    "row": {
+      "file": "art/embryon/runtime/effects/row.webp",
+      "bytes": 14004,
+      "sha256": "82c12fd1ae939d85ef38dd376ec3f8cd02b6b4515f847012d8c7b423169990ed",
+      "source_archive": "04_impact_vfx",
+      "source_image": "02_r1c2_horizontal-beam__192.png",
+      "source_sha256": "9a1d229ff280ec677dd67a1d7f26900968ebdf0dede170a370633a7d8f1a05c6",
+      "alpha_bbox": [
+        13,
+        53,
+        181,
+        138
+      ]
+    },
+    "column": {
+      "file": "art/embryon/runtime/effects/column.webp",
+      "bytes": 20044,
+      "sha256": "79d89c943f5e001a227112ecd030039d37c08485dc56ed87c7dcdd09eecf6edf",
+      "source_archive": "04_impact_vfx",
+      "source_image": "03_r1c3_vertical-beam__192.png",
+      "source_sha256": "712308ea0c43f5477fa5975fb7ea617c34b32e3760106994e22f385841eefae2",
+      "alpha_bbox": [
+        13,
+        13,
+        176,
+        181
+      ]
+    },
+    "cross": {
+      "file": "art/embryon/runtime/effects/cross.webp",
+      "bytes": 20612,
+      "sha256": "8637b8215caa004801d92f83f0c92ea2ac65b4dc57540aed762ebba701000d44",
+      "source_archive": "04_impact_vfx",
+      "source_image": "04_r1c4_radiant-starburst__192.png",
+      "source_sha256": "c43f2bf428bb2bcf6e389bb91ffb0026a678ccdc274614faae5f9a6917426d11",
+      "alpha_bbox": [
+        17,
+        13,
+        175,
+        179
+      ]
+    },
+    "blast": {
+      "file": "art/embryon/runtime/effects/blast.webp",
+      "bytes": 20106,
+      "sha256": "772a5b78516e23c62d2640b25ae42df504e48f575e7ad928a748718b89a5c26f",
+      "source_archive": "05_action_vfx",
+      "source_image": "02_r1c2_bomb-detonation__192.png",
+      "source_sha256": "232b4e2c01689b2352f321a22a9ff311a02088c18cc2e78c6f9301af5a490eec",
+      "alpha_bbox": [
+        17,
+        13,
+        173,
+        180
+      ]
+    },
+    "color": {
+      "file": "art/embryon/runtime/effects/color.webp",
+      "bytes": 24458,
+      "sha256": "22ba735743682129dcfac2c9d3dfaa3ad170c46227d82b9ddf50e64cd05acb7d",
+      "source_archive": "04_impact_vfx",
+      "source_image": "05_r2c1_prismatic-ring__192.png",
+      "source_sha256": "3bcd9967c79bc5de2d5a6554fbcb84c7ca55bc403259c387debd99ca60efa453",
+      "alpha_bbox": [
+        13,
+        14,
+        180,
+        178
+      ]
+    },
+    "shuffle": {
+      "file": "art/embryon/runtime/effects/shuffle.webp",
+      "bytes": 23102,
+      "sha256": "b2d5f99b43c05ffe2dacae13b632fbddc5f0f16aa813f9ca6b3e0f029b75d6ee",
+      "source_archive": "05_action_vfx",
+      "source_image": "09_r3c1_magical-shuffle__192.png",
+      "source_sha256": "c9af157bd4af59f81f55f8b09e42dd8370595f0c4721989038a67c7ef4270cff",
+      "alpha_bbox": [
+        11,
+        17,
+        181,
+        176
+      ]
+    },
+    "extra": {
+      "file": "art/embryon/runtime/effects/extra.webp",
+      "bytes": 27462,
+      "sha256": "d6015f62808d507de454cfb4bba78b817eb007e4c27585ea0c0324f4df42dc42",
+      "source_archive": "05_action_vfx",
+      "source_image": "14_r4c2_time-extension__192.png",
+      "source_sha256": "ac03295ebc5a70c1b9b3f760704e0e1866aab1897cb22ec82a282ef1f6df5be4",
+      "alpha_bbox": [
+        13,
+        12,
+        180,
+        179
+      ]
+    },
+    "drill": {
+      "file": "art/embryon/runtime/effects/drill.webp",
+      "bytes": 26834,
+      "sha256": "be3aecd9b64bd8ecac9af9681901d24dd0ade537aa83c189c09659b66e8881cd",
+      "source_archive": "05_action_vfx",
+      "source_image": "05_r2c1_drill-impact__192.png",
+      "source_sha256": "146c9f7776c545b7799058f7aac35dfc588eb3706f88780072ddf05488bf09e1",
+      "alpha_bbox": [
+        11,
+        14,
+        181,
+        177
+      ]
+    },
+    "unlock": {
+      "file": "art/embryon/runtime/effects/unlock.webp",
+      "bytes": 21384,
+      "sha256": "3ad2a99a3f24814c6433b96d67f9ee98b2ac6fbeceb10a3817a3ae8d048ee1f9",
+      "source_archive": "05_action_vfx",
+      "source_image": "12_r3c4_royal-awakening__192.png",
+      "source_sha256": "c370bc6a944e9862638c699b8b54dd0131bc20188e75c6f86821ccf45d3c7f59",
+      "alpha_bbox": [
+        12,
+        15,
+        180,
+        177
+      ]
+    },
+    "quake": {
+      "file": "art/embryon/runtime/effects/quake.webp",
+      "bytes": 19692,
+      "sha256": "7cb53de0716811ce6156770dc44e473dd56e49abec98db52be39d95649d8f404",
+      "source_archive": "05_action_vfx",
+      "source_image": "04_r1c4_meteor-impact__192.png",
+      "source_sha256": "28450ca67429a33def38c0e2eae19749bcf754562bf34836f1897b56dcb41c33",
+      "alpha_bbox": [
+        21,
+        10,
+        172,
+        181
+      ]
+    },
+    "triple-row": {
+      "file": "art/embryon/runtime/effects/triple-row.webp",
+      "bytes": 14004,
+      "sha256": "82c12fd1ae939d85ef38dd376ec3f8cd02b6b4515f847012d8c7b423169990ed",
+      "source_archive": "04_impact_vfx",
+      "source_image": "02_r1c2_horizontal-beam__192.png",
+      "source_sha256": "9a1d229ff280ec677dd67a1d7f26900968ebdf0dede170a370633a7d8f1a05c6",
+      "alpha_bbox": [
+        13,
+        53,
+        181,
+        138
+      ]
+    },
+    "triple-column": {
+      "file": "art/embryon/runtime/effects/triple-column.webp",
+      "bytes": 20044,
+      "sha256": "79d89c943f5e001a227112ecd030039d37c08485dc56ed87c7dcdd09eecf6edf",
+      "source_archive": "04_impact_vfx",
+      "source_image": "03_r1c3_vertical-beam__192.png",
+      "source_sha256": "712308ea0c43f5477fa5975fb7ea617c34b32e3760106994e22f385841eefae2",
+      "alpha_bbox": [
+        13,
+        13,
+        176,
+        181
+      ]
+    },
+    "starburst": {
+      "file": "art/embryon/runtime/effects/starburst.webp",
+      "bytes": 20612,
+      "sha256": "8637b8215caa004801d92f83f0c92ea2ac65b4dc57540aed762ebba701000d44",
+      "source_archive": "04_impact_vfx",
+      "source_image": "04_r1c4_radiant-starburst__192.png",
+      "source_sha256": "c43f2bf428bb2bcf6e389bb91ffb0026a678ccdc274614faae5f9a6917426d11",
+      "alpha_bbox": [
+        17,
+        13,
+        175,
+        179
+      ]
+    },
+    "spectrum": {
+      "file": "art/embryon/runtime/effects/spectrum.webp",
+      "bytes": 16924,
+      "sha256": "715143f776b13284dae6b25c396a6c04cc06e52cc45941e974379969e95cb060",
+      "source_archive": "05_action_vfx",
+      "source_image": "03_r1c3_prism-comet__192.png",
+      "source_sha256": "fee214fe4b8336c91a066d9d0fe53861082f4feb9f9a7ac671e14cd54ca0785a",
+      "alpha_bbox": [
+        13,
+        25,
+        180,
+        167
+      ]
+    },
+    "frostbreaker": {
+      "file": "art/embryon/runtime/effects/frostbreaker.webp",
+      "bytes": 24212,
+      "sha256": "01008a911706e376b4dadb4453e63767ad8683dff145f8ad4db0158f98724871",
+      "source_archive": "04_impact_vfx",
+      "source_image": "08_r2c4_snowflake-burst__192.png",
+      "source_sha256": "fa48cd45cfd6dcbaf66c171a99eef469e10a5e95ff2d4364426e4ddecd259c27",
+      "alpha_bbox": [
+        14,
+        13,
+        178,
+        179
+      ]
+    },
+    "victory": {
+      "file": "art/embryon/runtime/effects/victory.webp",
+      "bytes": 23312,
+      "sha256": "aea1726cefd268594b0455021b9ba1d89d9a273b34548dcf505e8761caf78a3e",
+      "source_archive": "04_impact_vfx",
+      "source_image": "12_r3c4_gem-reward-fountain__192.png",
+      "source_sha256": "2c8a4f9d3a8bf1e5d53da5805e52585dc545fa3aa40d63aaa8a43a8705d23ecc",
+      "alpha_bbox": [
+        17,
+        12,
+        174,
+        179
+      ]
+    }
+  },
+  "gems": {
+    "citrine": {
+      "file": "art/embryon/runtime/gems/citrine.webp",
+      "bytes": 14358,
+      "sha256": "b65d7c0773904a8c328656c65dfd0f7a23097ae5bdc6d56fffc4f37cabcfa8cd",
+      "source_archive": "01_cut_gemstones",
+      "source_image": "sprites/01_cut_gemstones/08_r2c4_citrine__192.png",
+      "source_sha256": "af3b941e8bef559fb433f56bd81539ba6b552e7d6911c7f563bf5d340c98e432",
+      "alpha_bbox": [
+        31,
+        11,
+        161,
+        181
+      ]
+    },
+    "diamond": {
+      "file": "art/embryon/runtime/gems/diamond.webp",
+      "bytes": 13324,
+      "sha256": "f2897518192bb00aa4dab18824e34d19958305fad9a4376a36146fc13cd623dc",
+      "source_archive": "01_cut_gemstones",
+      "source_image": "sprites/01_cut_gemstones/01_r1c1_diamond__192.png",
+      "source_sha256": "757daed5c740056b0514af62d1400a2827fcc809f8e3714c2232328cc58d3a01",
+      "alpha_bbox": [
+        11,
+        24,
+        181,
+        169
+      ]
+    },
+    "moonstone": {
+      "file": "art/embryon/runtime/gems/moonstone.webp",
+      "bytes": 14634,
+      "sha256": "b34e37ff46bf95089664cc6911d242e2fdf9fc385a758983f420bd60eef4e64c",
+      "source_archive": "08_polished_cut_stones",
+      "source_image": "sprites/08_polished_cut_stones/10_r3c2_moonstone-oval__192.png",
+      "source_sha256": "54650ce0535063a46eac18f7f09e8598afdbe0ad6f433968b88154af992c5b21",
+      "alpha_bbox": [
+        25,
+        11,
+        167,
+        181
+      ]
+    },
+    "garnet": {
+      "file": "art/embryon/runtime/gems/garnet.webp",
+      "bytes": 17970,
+      "sha256": "a53408080edbc6b7204953070fde5a975e4e9daae5a6d29d6599a3fd37dcc836",
+      "source_archive": "08_polished_cut_stones",
+      "source_image": "sprites/08_polished_cut_stones/08_r2c4_garnet-cushion__192.png",
+      "source_sha256": "8d956c09a5a82f98758f2de3ccc99d1dc7271d1176504a45f687e023c29180f6",
+      "alpha_bbox": [
+        12,
+        11,
+        179,
+        181
+      ]
+    },
+    "onyx": {
+      "file": "art/embryon/runtime/gems/onyx.webp",
+      "bytes": 11336,
+      "sha256": "8caaf03866a04b11cc008de7775d976b05a6c15f1f1c598209b14fad7e62031d",
+      "source_archive": "01_cut_gemstones",
+      "source_image": "sprites/01_cut_gemstones/12_r3c4_onyx__192.png",
+      "source_sha256": "19559261fe9af9f08ca5cfdebd66b907beb71710431c19debd0842f472b8d3eb",
+      "alpha_bbox": [
+        28,
+        11,
+        165,
+        181
+      ]
+    },
+    "opal": {
+      "file": "art/embryon/runtime/gems/opal.webp",
+      "bytes": 15058,
+      "sha256": "418101bfac04e81ffe0f195e1192305a0569ed63b5e882b4b9fad16e4472adc9",
+      "source_archive": "01_cut_gemstones",
+      "source_image": "sprites/01_cut_gemstones/11_r3c3_opal__192.png",
+      "source_sha256": "8ccec298b512e10875f2ce426723b42c8a36853c9fdca812cf8a1755b3378f0e",
+      "alpha_bbox": [
+        29,
+        11,
+        163,
+        181
+      ]
+    },
+    "jade": {
+      "file": "art/embryon/runtime/gems/jade.webp",
+      "bytes": 13192,
+      "sha256": "650a76aa792dc57e6a5d5470d7f4c528e15d9b77e8edbca7323893214c3d6946",
+      "source_archive": "08_polished_cut_stones",
+      "source_image": "sprites/08_polished_cut_stones/12_r3c4_jade-teardrop__192.png",
+      "source_sha256": "0fce396f86ea21f6617b54d1b4b6a0a96a66ac2e92233e16a9b8019d122fef79",
+      "alpha_bbox": [
+        30,
+        11,
+        162,
+        181
+      ]
+    },
+    "tanzanite": {
+      "file": "art/embryon/runtime/gems/tanzanite.webp",
+      "bytes": 16906,
+      "sha256": "ce95812d42ee3974bb0757579fbe2b23dfbdb955622a6e202e8d5ea80d44acb6",
+      "source_archive": "01_cut_gemstones",
+      "source_image": "sprites/01_cut_gemstones/16_r4c4_tanzanite__192.png",
+      "source_sha256": "0b132b59f33048db17901a35bf8cf769d329497ac458110343a8bd022862f32e",
+      "alpha_bbox": [
+        11,
+        13,
+        181,
+        179
+      ]
+    },
+    "alexandrite": {
+      "file": "art/embryon/runtime/gems/alexandrite.webp",
+      "bytes": 17056,
+      "sha256": "bf6914227330708f3c3aaeb1ae6b77213d8cf848df2949a9c71fdba561849aee",
+      "source_archive": "08_polished_cut_stones",
+      "source_image": "sprites/08_polished_cut_stones/14_r4c2_alexandrite-oval__192.png",
+      "source_sha256": "74b4a8b3a4827c451a511ab69de1b90c65f815a1383ff189a3dc4d4d542c935e",
+      "alpha_bbox": [
+        24,
+        11,
+        168,
+        181
+      ]
+    }
+  }
+}

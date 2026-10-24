@@ -2,11 +2,12 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Assets=window.RupeeEmbryonAssets;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Assets].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
+let visualImpact=null;
 let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems');
 if(!root)throw Error('Missing #screen');
@@ -16,8 +17,11 @@ function save(){try{if(active&&!active.won&&!active.lost)saved.activeBoard=E.sna
 function number(x){return Number(x||0).toLocaleString('en-US');}
 function escape(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function icon(id,size=30){return '<img class="icon" width="'+size+'" height="'+size+'" alt="" src="'+(Shared.icons[id]||Art.icon(id))+'">';}
-const GEM_IMAGES=Object.freeze({ruby:'ruby',sapphire:'sapphire',emerald:'emerald',topaz:'topaz',amethyst:'amethyst',sunstone:'sunstone',aquamarine:'aquamarine'});
-function gem(id){const key=E.TYPES[id],img=GEM_IMAGES[key],src=img?'art/embryon/generated/gems/'+img+'.png':Art.gem(id);return '<img class="gem" alt="'+escape(key)+'" draggable="false" src="'+src+'">';}
+function gem(id){const key=E.TYPES[id],src=Assets.gem(key)||Art.gem(id);return '<img class="gem" alt="'+escape(key)+'" draggable="false" src="'+src+'">';}
+function boosterIcon(id,size=36){const src=Assets.booster(id);return src?'<img class="booster-art" width="'+size+'" height="'+size+'" alt="" src="'+src+'" decoding="async">':icon(id,size);}
+function impact(kind,index){visualImpact={kind,index:Number.isInteger(index)?index:-1};}
+function impactMarkup(g){if(!visualImpact)return '';const art=Assets.effect(visualImpact.kind);if(!art)return '';const at=visualImpact.index;const col=at>=0?at%g.cfg.width:(g.cfg.width-1)/2,row=at>=0?Math.floor(at/g.cfg.width):(g.cfg.height-1)/2;return '<img class="board-impact" aria-hidden="true" alt="" src="'+art+'" style="left:'+((col+.5)/g.cfg.width*100)+'%;top:'+((row+.5)/g.cfg.height*100)+'%">';}
+
 function button(action,label,cls='secondary',opts=''){return '<button class="btn '+cls+'" data-action="'+action+'" '+opts+'>'+label+'</button>';}
 function nav(to){page=to;selected=-1;resetStep=0;advanced=false;Audio.play('tap');if(to==='mine')Audio.speak('mineEnter');else if(to==='shop')Audio.speak('shopEnter');render();}
 function message(s){toast=s;const el=document.getElementById('toast');if(el){el.textContent=s;el.classList.add('visible');}if(toastT)clearTimeout(toastT);toastT=setTimeout(()=>{const t=document.getElementById('toast');if(t)t.classList.remove('visible');},4000);}
@@ -65,7 +69,7 @@ function start(id){
  if(bank().remaining<1)return message('No moves left. Mine or claim your next free refill.');
  if(id>=T.FIRST&&!T.available(saved,id))return message('That elemental trial is still locked.');
  if(id<T.FIRST&&(id>saved.unlocked||id<1))return message('Stage locked.');
- active=E.create(id,id*7919+saved.unlocked*17);selected=-1;outcome=null;page='game';save();Audio.play('chapter-enter');Audio.speak('levelStart');render();
+ active=E.create(id,id*7919+saved.unlocked*17);selected=-1;visualImpact=null;outcome=null;page='game';save();Audio.play('chapter-enter');Audio.speak('levelStart');render();
 }
 function piece(cell,index){
  if(!cell||cell.type===null)return '<span class="void"></span>';
@@ -90,9 +94,9 @@ function gameplay(){
  return header('Level '+g.level+' · '+escape(g.cfg.stageTitle),escape(g.cfg.hint))+
  stats()+'<div class="game-progress"><b>Score '+number(g.score)+' / '+number(g.cfg.goal)+'</b><b>Moves '+g.moves+'</b></div>'+
  '<div class="objectives">'+objectives.map(o=>'<span class="'+(o.done?'done':'')+'">'+escape(o.label)+' '+number(o.value)+'/'+number(o.target)+'</span>').join('')+'</div>'+
- '<div class="board-frame"><div class="board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+'</button>').join('')+'</div></div>'+
+ '<div class="board-frame"><div class="board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+'</button>').join('')+'</div>'+impactMarkup(g)+'</div>'+
  '<p class="hint">Tap two adjacent gems to swap them. Non-matching swaps still use a move. Select a gem before using targeted tools.</p>'+
- '<div class="booster-grid">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+icon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div>'+
+ '<div class="booster-grid">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+boosterIcon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div>'+
  button('abandon','LEAVE BOARD','quiet');
 }
 function settle(){
@@ -117,7 +121,7 @@ function settle(){
 function results(){
  const x=outcome;if(!x)return home();
  return header(x.won?'Brilliant!':'Try again',x.won?'The vault yields its treasures.':'The crystal board held firm this time.')+
- '<div class="hero"><div class="hero-art">'+[0,1,6].map(i=>gem(i)).join('')+'</div><h2>Score: '+number(x.score)+'</h2>'+
+ '<div class="hero"><div class="hero-art">'+(x.won?'<img class="result-vfx" src="'+Assets.effect('victory')+'" alt="">':'')+[0,1,6].map(i=>gem(i)).join('')+'</div><h2>Score: '+number(x.score)+'</h2>'+
  (x.won?'<p>+'+number(x.earned)+' Rupees · +'+number(x.bonus)+' Star Gems</p>':'<p>One life used. Mine resources or claim a refill to keep playing.</p>')+
  button('result-next',x.won?'NEXT LEVEL':'RETRY LEVEL','primary')+button('go-mine','VISIT THE MINES')+button('go-campaign','LEVEL MAP','quiet')+'</div>';
 }
@@ -129,7 +133,7 @@ function offerCard(id,o){
 function shop(){
  return '<div class="location-banner location-market">'+header('Crystal Market','Spend earned Rupees or Star Gems. Every exchange grants real in-game supplies; no cash checkout is required.')+'</div>'+stats()+
  '<h2 class="subhead">Lives &amp; moves</h2><div class="shop-grid">'+Object.entries(P.SHOP_EXCHANGES).map(([id,o])=>offerCard(id,o)).join('')+'</div>'+
- '<h2 class="subhead">Booster supplies</h2><div class="shop-grid">'+E.BOOSTERS.map(id=>'<div class="shop-item">'+icon(id,39)+'<strong>'+escape(E.BOOSTER_META[id].label)+'</strong><small>Stock ×'+P.count(saved,id)+'</small>'+
+ '<h2 class="subhead">Booster supplies</h2><div class="shop-grid">'+E.BOOSTERS.map(id=>'<div class="shop-item">'+boosterIcon(id,39)+'<strong>'+escape(E.BOOSTER_META[id].label)+'</strong><small>Stock ×'+P.count(saved,id)+'</small>'+
  button('buy-booster','1 · '+number(P.BOOSTER_PRICES[id])+' RUPEES','secondary','data-booster="'+id+'" '+(!P.unlocked(saved,id)||saved.coins<P.BOOSTER_PRICES[id]?'disabled':''))+
  button('buy-gem-booster','4 · '+P.GEM_BOOSTER_PRICES[id]+' STAR GEMS','primary','data-booster="'+id+'" '+(!P.unlocked(saved,id)||saved.gems<P.GEM_BOOSTER_PRICES[id]?'disabled':''))+'</div>').join('')+'</div>';
 }
@@ -206,7 +210,7 @@ function handle(b){
  if(a==='campaign-prev'){campaignPage=Math.max(0,campaignPage-1);render();return;}
  if(a==='campaign-next'){campaignPage=Math.min(6,campaignPage+1);render();return;}
  if(a==='result-next'){const id=outcome?.won?(outcome.id>=T.FIRST?saved.unlocked:Math.min(1000,outcome.id+1)):outcome?.id;outcome=null;start(id||saved.unlocked);return;}
- if(a==='abandon'){active=null;save();nav('campaign');return;}
+ if(a==='abandon'){active=null;visualImpact=null;save();nav('campaign');return;}
  if(a==='cell'){
   if(!active)return;const n=Number(info.cell);
   if(selected<0){selected=n;render();return;}
@@ -215,7 +219,7 @@ function handle(b){
   if(bank().remaining<1)return message('Daily moves exhausted. Mine for a move pack.');
   const result=E.swap(active,selected,n);selected=-1;
   if(!result.valid){render();return message('That pair cannot be swapped.');}
-  D.spend(saved,1,now,dailyCap());Audio.play(result.removed>0?'match':'swap');if(result.loops>=3)Audio.speak('cascade');save();settle();render();return;
+  D.spend(saved,1,now,dailyCap());if(result.removed>0||result.cracked>0){impact(result.loops>=2?'cascade':'match',n);Audio.play(result.loops>=2?'cascade':'match');}else{visualImpact=null;Audio.play('swap');}if(result.loops>=3)Audio.speak('cascade');save();settle();render();return;
  }
  if(a==='booster'){
   if(!active)return;
@@ -224,7 +228,7 @@ function handle(b){
   const r=E.booster(active,id,meta.targeted?selected:undefined);
   if(!r.valid)return message('Booster unavailable: '+(r.reason||'not applicable'));
   P.spend(saved,id);if(id==='extra')D.topUp(saved,5,now,dailyCap());
-  selected=-1;Audio.play('booster');Audio.speak('boosterUsed');save();settle();render();return;
+  impact(id,meta.targeted?selected:-1);selected=-1;Audio.play('booster');Audio.speak(({hammer:'hammer',row:'rocket',column:'rocket',blast:'bomb',shuffle:'shuffle',color:'color',spectrum:'color'})[id]||'boosterUsed');save();settle();render();return;
  }
  if(a==='buy-currency'){const r=P.buyCurrencyOffer(saved,info.offer,D,now,dailyCap());return finishMining(r,'Supplies added to inventory.');}
  if(a==='buy-booster')return finishMining(P.buyBooster(saved,info.booster),'Booster purchased.');

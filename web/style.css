@@ -45,3 +45,14 @@
 .location-market{background-image:linear-gradient(90deg,#090d2ad9,#080c295a),url('art/embryon/locations/embryon-market.webp')}
 .sound-controls{margin-bottom:14px}.sound-controls p{margin-top:8px}
 @media(max-width:620px){.chapter-hotspot{width:44px;height:44px;border-width:2px;font-size:17px}.embryon-map{margin:0 -5px 12px}.chapter-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.chapter-card b{font-size:12px}.chapter-card small{font-size:10px}.chapter-banner{min-height:160px;padding:16px}.location-banner{min-height:150px}}
+
+/* Approved isolated casual-game booster art and transient in-board VFX. */
+.booster-art{display:block;width:42px;height:42px;max-width:100%;object-fit:contain;filter:drop-shadow(0 2px 3px #070b2380)}
+.booster .booster-art{width:48px;height:48px}
+.shop-item .booster-art{width:52px;height:52px}
+.board-frame{position:relative;overflow:hidden;isolation:isolate}
+.board-impact{position:absolute;z-index:8;left:50%;top:50%;width:clamp(64px,34%,160px);height:auto;max-height:40%;object-fit:contain;transform:translate(-50%,-50%) scale(.6);pointer-events:none;opacity:0;animation:embryon-impact .75s ease-out forwards;filter:drop-shadow(0 0 9px #e8d7ff88)}
+.result-vfx{width:clamp(70px,16vw,114px);height:auto;object-fit:contain;animation:embryon-reward 1.15s ease-out both}
+@keyframes embryon-impact{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}22%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}}
+@keyframes embryon-reward{0%{opacity:0;transform:scale(.6)}40%{opacity:1}100%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.board-impact{animation:none;opacity:.8;transform:translate(-50%,-50%) scale(1)}.result-vfx{animation:none}}

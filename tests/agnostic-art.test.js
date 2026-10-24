@@ -54,7 +54,7 @@ for(const p of banned){
  }
  assert.ok(!fs.existsSync(path.join(root,p)),'Disallowed source artwork shipped: '+p);
 }
-assert.match(html,/<script src="shared-art\.js"><\/script><script src="embryon-chapters\.js"><\/script><script src="embryon-audio\.js"><\/script><script src="game\.js"><\/script>/);
+assert.match(html,/<script src="shared-art\.js"><\/script><script src="embryon-assets\.js"><\/script><script src="embryon-chapters\.js"><\/script><script src="embryon-audio\.js"><\/script><script src="game\.js"><\/script>/);
 assert.match(styles,/-webkit-mask-image:radial-gradient\(circle closest-side at center,transparent 0 63%,#000 80%\)/);
 assert.match(styles,/[^-]mask-image:radial-gradient\(circle closest-side at center,transparent 0 63%,#000 80%\)/);
 assert.match(styles,/\.cell \.gem\{position:relative;z-index:1\}/);
@@ -94,7 +94,7 @@ const document={getElementById:id=>({
  addEventListener:(id,cb)=>{if(id==='click')click=cb;}};
 const win={RupeeEngine:proxy,RupeeProgress:Progress,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trial,RupeeElementalRewards:R,RupeeMining:M,RupeeMiningGear:Gear,
- RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js')};
+ RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeEmbryonAssets:require('../web/embryon-assets.js'),RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js')};
 vm.runInNewContext(src,{window:win,document,localStorage:{getItem(){return null;},setItem(){}},
  setTimeout(){return 1;},clearTimeout(){},console},{filename:'game.js'});
 assert.ok(click,'Game click dispatch must initialize');
