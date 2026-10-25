@@ -1,6 +1,10 @@
 package io.github.mrcalzon02.rupeerush;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.ActivityNotFoundException;
+import android.webkit.JavascriptInterface;
+import org.json.JSONObject;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +23,7 @@ public final class MainActivity extends Activity {
     private static final String ORIGIN = "https://appassets.androidplatform.net";
     private static final String ENTRY = ORIGIN + "/assets/index.html";
     private WebView game;
+    private RupeeUpdateService updater;
 
     private boolean isPackagedAsset(Uri uri) {
         return "https".equals(uri.getScheme())
@@ -29,6 +34,7 @@ public final class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
+        updater = new RupeeUpdateService(this, this::showUpdateStatus);
 
         final WebViewAssetLoader loader = new WebViewAssetLoader.Builder()
             .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
@@ -62,9 +68,37 @@ public final class MainActivity extends Activity {
                 return !isPackagedAsset(request.getUrl());
             }
         });
+        // Only native Android code accesses the network. Packaged WebView gameplay stays offline.
+        game.addJavascriptInterface(new Object() {
+            @JavascriptInterface public void checkForUpdates() {
+                updater.checkForUpdates();
+            }
+            @JavascriptInterface public void checkForUpdatesAutomatically() {
+                updater.checkForUpdatesAutomatically();
+            }
+            @JavascriptInterface public void openReleases() {
+                runOnUiThread(() -> {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
+                            "https://github.com/mrcalzon02/Rupee-rush/releases")));
+                    } catch (ActivityNotFoundException unavailable) {
+                        showUpdateStatus("No browser available to open GitHub Releases.");
+                    }
+                });
+            }
+        }, "RUPEE_UPDATE_BRIDGE");
         game.setOverScrollMode(View.OVER_SCROLL_NEVER);
         setContentView(game);
         game.loadUrl(ENTRY);
+        updater.checkForUpdatesAutomatically();
+    }
+
+    private void showUpdateStatus(String message) {
+        runOnUiThread(() -> {
+            if (game != null) game.evaluateJavascript(
+                "window.RupeeUpdates && window.RupeeUpdates.receive(" +
+                JSONObject.quote(message) + ")", null);
+        });
     }
 
     @Override public void onBackPressed() {
@@ -79,6 +113,7 @@ public final class MainActivity extends Activity {
     }
 
     @Override protected void onDestroy() {
+        if (updater != null) updater.close();
         if (game != null) {
             game.stopLoading();
             game.destroy();
