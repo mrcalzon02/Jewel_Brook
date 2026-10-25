@@ -86,7 +86,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -96,6 +96,7 @@ assert.match(views.screen.innerHTML,/Rupee Rush — Heroes of Embryon/,'title pr
 assert.match(views.screen.innerHTML,/data-action="play-next"/,'Play action remains available');
 assert.match(views.screen.innerHTML,/data-action="go-mine"/,'Mining action remains available from home');
 assert.match(views.screen.innerHTML,/data-action="go-farm"/,'Farming action available from home');
+assert.match(views.screen.innerHTML,/daysha_lv_01\.png/,'Home actually displays the recovered first Town avatar');
 function click(action,rest={}){assert.equal(typeof handler,'function');handler({target:{closest:()=>({dataset:{action,...rest},disabled:false})}});}
 function navigate(nav){click('',{nav});}
 navigate('mine');
@@ -109,6 +110,7 @@ click('mine-tab',{tab:'exchange'});
 assert.match(views.screen.innerHTML,/Five extra moves/);
 navigate('farm');
 assert.match(views.screen.innerHTML,/Embryon Garden/,'farm renders');
+assert.match(views.screen.innerHTML,/daysha_lv_01\.png/,'Farm displays recovered Daysha Town art without altering house level');
 assert.match(views.screen.innerHTML,/data-action="farm-plant"/,'plant actions available');
 assert.match(views.screen.innerHTML,/Farming Power-Ups/,'farming booster shelf renders');
 assert.match(views.screen.innerHTML,/Kitchen Pantry/,'kitchen pantry preview renders');
