@@ -62,3 +62,13 @@ test('crop visuals are wired into the Farm DOM without replacing item icons or f
  assert.match(game,/Array\.from\(\{length:8\}/);
  assert.match(css,/prefers-reduced-motion:reduce/);
 });
+
+test('fifteen crop sprites have a three-by-five transparent review gallery',()=>{
+ const html=fs.readFileSync(path.join(dir,'town-crop-art-review.html'),'utf8');
+ assert.match(html,/for\(const crop of cropArt\.CROPS\)/);
+ assert.match(html,/for\(const stage of cropArt\.STAGES\)/);
+ assert.match(html,/cropArt\.image\(crop,stage\)/);
+ assert.match(html,/inspect\.showModal\(\)/);
+ assert.match(html,/Check alpha/);
+ assert.match(html,/15 loaded/);
+});

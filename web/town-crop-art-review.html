@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rupee Rush | Crop Growth Art Review</title>
+<style>
+:root{font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;color:#f4eee4;background:#151a2c}
+*{box-sizing:border-box}body{margin:0}main{margin:auto;max-width:1200px;padding:clamp(12px,3vw,36px)}
+h1{font-size:clamp(24px,4vw,40px);line-height:1.18}h2{font-size:22px}
+p{color:#e2d9e5;max-width:850px}
+.state{display:inline-block;background:#694150;border:1px solid #ac7789;color:#ffe9b3;padding:5px 11px;border-radius:99px;font-weight:700;font-size:11px;letter-spacing:.06em}
+.controls{display:flex;gap:9px;flex-wrap:wrap}
+button{font:inherit;color:inherit;cursor:pointer}
+.controls button,.back-link{display:inline-block;border:1px solid #b6a0c7;border-radius:8px;background:#323e64;padding:9px 13px}
+.controls button[aria-pressed="true"]{background:#c7a56d;color:#1a2436}
+.collection{margin-top:25px;background:#252e46;border:1px solid #7c7396;border-radius:17px;padding:clamp(10px,2vw,19px)}
+.sprite-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.tile{border:1px solid #697894;border-radius:12px;background:#313b53;padding:0;overflow:hidden;text-align:left;min-width:0}
+.img-frame{height:auto;aspect-ratio:1;display:grid;place-items:center;background:#e5e0d2}
+.checker .img-frame{background-color:#f8f8f8;background-image:linear-gradient(45deg,#bfc2c9 25%,transparent 25%),linear-gradient(-45deg,#bfc2c9 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#bfc2c9 75%),linear-gradient(-45deg,transparent 75%,#bfc2c9 75%);background-size:22px 22px;background-position:0 0,0 11px,11px -11px,-11px 0}
+.dark .img-frame{background:#1c2138}
+.img-frame img{width:100%;height:100%;object-fit:contain}
+.tile b{display:block;font-size:clamp(11px,1.5vw,15px);padding:8px 10px}
+.note{font-size:13px;color:#ffdbac}.loading{font-variant-numeric:tabular-nums}
+dialog{background:#202c44;color:#fff7ea;border:2px solid #e0bb86;border-radius:16px;max-width:580px;width:calc(100% - 28px);padding:14px}
+dialog::backdrop{background:#070d1bbd}dialog img{display:block;width:min(100%,430px);margin:auto;background:repeating-conic-gradient(#e8e8e8 0% 25%,#c4c4c4 0% 50%) 50%/22px 22px}
+dialog button{padding:8px 14px;background:#455982;border-radius:8px;border:1px solid #bccde4}
+@media(max-width:640px){.sprite-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:390px){.sprite-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style></head><body class="checker"><main>
+<span class="state">ILLUSTRATED STAGE ASSETS · PAINTED MASTER QA PENDING</span>
+<h1>Rupee Rush · Farm Growth Artwork</h1>
+<p>Fifteen independent transparent assets, three farm crops by five real elapsed-time stages. Each sprite is a separate image, not a cropped section of a sprite sheet. Garden beds, fertilizers and harvests are separately composed in the actual game.</p>
+<p><a class="back-link" href="town-house-art-review.html">View 40 house tiers</a></p>
+<div class="controls"><button type="button" data-bg="checker" aria-pressed="true">Check alpha</button>
+<button type="button" data-bg="light" aria-pressed="false">Warm light</button>
+<button type="button" data-bg="dark" aria-pressed="false">Dark game UI</button>
+<span class="loading" id="loaded" role="status" aria-live="polite">Loading crop illustrations</span></div>
+<div id="collections"></div>
+<p class="note">Visual checklist: true transparency; stage-to-stage plant morphology, stable root anchor, distinct carrot/wheat/bluebell fruit, no cropped stems or berries, readable on phone-sized garden plots. Vector candidates are not the final high-resolution painted masters.</p>
+<dialog id="inspect"><button id="close" type="button">Close</button><h2 id="inspect-title"></h2><img id="inspect-image" alt=""><p id="inspect-detail"></p></dialog>
+</main>
+<script src="crop-growth-art.js"></script><script>
+(function(){
+ 'use strict';
+ const names={carrot:'Hawseed Carrot',wheat:'Sunwheat',berry:'Bluebell Berry'};
+ const stages={seed:'Seeded Soil',sprout:'Germination',growing:'Young Plant',maturing:'Flowering / Ripening',ready:'Harvest Ready'};
+ const cropArt=window.RupeeCropGrowthArt,root=document.getElementById('collections'),loaded=document.getElementById('loaded');
+ const inspect=document.getElementById('inspect');let ok=0,bad=0;
+ for(const crop of cropArt.CROPS){
+  const section=document.createElement('section');section.className='collection';
+  const h=document.createElement('h2');h.textContent=names[crop];section.append(h);
+  const grid=document.createElement('div');grid.className='sprite-grid';
+  for(const stage of cropArt.STAGES){
+   const path=cropArt.image(crop,stage);
+   const button=document.createElement('button');button.type='button';button.className='tile';
+   const frame=document.createElement('div');frame.className='img-frame';
+   const art=document.createElement('img');art.loading='lazy';art.alt=names[crop]+' stage: '+stages[stage];art.src=path;
+   art.addEventListener('load',()=>{ok++;loaded.textContent=ok+'/15 loaded'+(bad?' · '+bad+' failures':'');});
+   art.addEventListener('error',()=>{bad++;loaded.textContent=ok+'/15 loaded · '+bad+' failures';});
+   frame.append(art);
+   const label=document.createElement('b');label.textContent=stages[stage];
+   button.append(frame,label);
+   button.addEventListener('click',()=>{
+    document.getElementById('inspect-title').textContent=names[crop]+' — '+stages[stage];
+    const full=document.getElementById('inspect-image');full.src=path;full.alt=names[crop]+' '+stages[stage];
+    document.getElementById('inspect-detail').textContent='Asset: '+path+' · Vector illustrated stage, separate from bed and harvest art';
+    inspect.showModal();
+   });
+   grid.append(button);
+  }
+  section.append(grid);root.append(section);
+ }
+ for(const b of document.querySelectorAll('[data-bg]')){
+  b.addEventListener('click',()=>{
+   document.body.className=b.dataset.bg;
+   document.querySelectorAll('[data-bg]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+  });
+ }
+ document.getElementById('close').addEventListener('click',()=>inspect.close());
+})();
+</script></body></html>
