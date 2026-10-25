@@ -27,7 +27,7 @@ dialog button{padding:8px 14px;background:#455982;border-radius:8px;border:1px s
 </style></head><body class="checker"><main>
 <span class="state">ILLUSTRATED STAGE ASSETS · PAINTED MASTER QA PENDING</span>
 <h1>Rupee Rush · Farm Growth Artwork</h1>
-<p>Fifteen independent transparent assets, three farm crops by five real elapsed-time stages. Each sprite is a separate image, not a cropped section of a sprite sheet. Garden beds, fertilizers and harvests are separately composed in the actual game.</p>
+<p>Two hundred and forty independent transparent assets, forty-eight farm crops by five real elapsed-time stages. Each sprite is a separate image, not a cropped section of a sprite sheet. Garden beds, fertilizers and harvests are separately composed in the actual game.</p>
 <p><a class="back-link" href="town-house-art-review.html">View 40 house tiers</a></p>
 <div class="controls"><button type="button" data-bg="checker" aria-pressed="true">Check alpha</button>
 <button type="button" data-bg="light" aria-pressed="false">Warm light</button>
@@ -53,8 +53,8 @@ dialog button{padding:8px 14px;background:#455982;border-radius:8px;border:1px s
    const button=document.createElement('button');button.type='button';button.className='tile';
    const frame=document.createElement('div');frame.className='img-frame';
    const art=document.createElement('img');art.loading='lazy';art.alt=names[crop]+' stage: '+stages[stage];art.src=path;
-   art.addEventListener('load',()=>{ok++;loaded.textContent=ok+'/15 loaded'+(bad?' · '+bad+' failures':'');});
-   art.addEventListener('error',()=>{bad++;loaded.textContent=ok+'/15 loaded · '+bad+' failures';});
+   art.addEventListener('load',()=>{ok++;loaded.textContent=ok+'/240 loaded'+(bad?' · '+bad+' failures':'');});
+   art.addEventListener('error',()=>{bad++;loaded.textContent=ok+'/240 loaded · '+bad+' failures';});
    frame.append(art);
    const label=document.createElement('b');label.textContent=stages[stage];
    button.append(frame,label);

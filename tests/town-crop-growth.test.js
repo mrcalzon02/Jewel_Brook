@@ -7,7 +7,7 @@ const Generator=require('../scripts/generate-crop-growth.js');
 const Extra=require('../scripts/generate-expanded-crop-growth.js');
 const expanded=require('../web/art/embryon/town/gardening/growth/expanded-manifest.json');
 const manifest=require('../web/art/embryon/town/gardening/growth/manifest.json');
-test('fifteen stage assets exist, use transparent self-contained vectors, and are bit-for-bit reproducible',()=>{
+test('240 stage assets exist, use transparent self-contained vectors, and are bit-for-bit reproducible',()=>{
  assert.equal(Visual.CROPS.length,48);
  assert.deepEqual(Visual.STAGES,['seed','sprout','growing','maturing','ready']);
  assert.equal(manifest.assets.length+expanded.assets.length,240);
@@ -65,12 +65,12 @@ test('crop visuals are wired into the Farm DOM without replacing item icons or f
  assert.match(css,/prefers-reduced-motion:reduce/);
 });
 
-test('fifteen crop sprites have a three-by-five transparent review gallery',()=>{
+test('240 crop sprites have a forty-eight-by-five transparent review gallery',()=>{
  const html=fs.readFileSync(path.join(dir,'town-crop-art-review.html'),'utf8');
  assert.match(html,/for\(const crop of cropArt\.CROPS\)/);
  assert.match(html,/for\(const stage of cropArt\.STAGES\)/);
  assert.match(html,/cropArt\.image\(crop,stage\)/);
  assert.match(html,/inspect\.showModal\(\)/);
  assert.match(html,/Check alpha/);
- assert.match(html,/15 loaded/);
+ assert.match(html,/240 loaded/);
 });

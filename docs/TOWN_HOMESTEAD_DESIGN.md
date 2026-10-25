@@ -1,6 +1,6 @@
 # Rupee Rush — Heroes of Embryon / Town Homestead & Gardening
 
-**Status:** Town/garden and cooking Phase 1 are player-facing. Current cooking uses direct deterministic craft/serve transactions; the optional cooking minigame and many future crops remain unimplemented.  
+**Status:** Town/garden has **48 implemented playable crop species** and **43 deterministic cook-and-serve dishes** across forty house levels. Illustrated growth sprites cover five states for every crop. The optional cooking minigame and final painted crop art remain future tasks.  
 **Authority:** `docs/ART_STYLE_MASTER.md` (approved high-sheen visual identity), `docs/TOWN_AVATAR_ART.md` (existing Town avatar levels 1–40), `web/mining.js` and `web/mining-gear.js` (existing mining and glove state).  
 **World:** Heroes of Embryon. **Location:** Town. **Residence progression:** Hawseed Hovel → Garden Cottage → Prosperous Townhouse → Royal Manor.
 
@@ -50,7 +50,7 @@ All purchases and sales use **Rupees** (`saved.coins`) already shown in the main
 
 From house level `L` to `L+1`, pay `40 + 20L + 8L²` Rupees. Level 40 cannot upgrade again. Unlock plots at levels **1, 6, 11, 16, 21, 26, 31, 36**. House level gives modest growth-time efficiency (0.5% per level, capped to 19.5%), and the store allows crop/fertilizer tiers based on house level. Do not consume existing seeds or empty active plots on house upgrades.
 
-### Starter crop store
+### Original starter crop store (expanded to 48 real species)
 
 | Crop | House level | Seed cost | Growth | Base yield | Sale per harvested unit |
 |---|---:|---:|---:|---:|---:|
@@ -58,7 +58,7 @@ From house level `L` to `L+1`, pay `40 + 20L + 8L²` Rupees. Level 40 cannot upg
 | Sunwheat | 4 | 25 Rupees | 12 min | 3 | 12 Rupees |
 | Bluebell Berry | 8 | 40 Rupees | 30 min | 3 | 18 Rupees |
 
-These are first vertical-slice values, not final production balancing. Later tiers should include onion, squash, healing herbs, crystal pears, royal lavender and starlight grapes with increasing recipe utility; do not silently pretend those crops are implemented already.
+These are the original three starter values, retained in the expanded 48-crop economy. The complete authoritative unlock ladder, 8 categories, prices, growth durations and yields are listed in `docs/TOWN_CROP_CATALOG_V2.md`, and implemented in `web/town-garden.js`. Cooking has 43 active recipes. Art for all 48 crops uses individual five-stage illustrations and exists in the repository; final painted masters remain to be produced.
 
 ### Fertilizer store
 

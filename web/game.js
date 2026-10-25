@@ -308,6 +308,8 @@ function farm(){
   filtered=unlocked.filter(c=>farmCategory==='all'||c.category===farmCategory);
  const cats='<div class="farm-categories" role="group" aria-label="Filter farm crop catalog">'+categories.map(cat=>button('farm-category',(cat==='all'?'All Crops':cat[0].toUpperCase()+cat.slice(1))+' · '+(cat==='all'?unlocked.length:unlocked.filter(c=>c.category===cat).length),farmCategory===cat?'primary':'secondary','data-category="'+cat+'"')).join('')+'</div>';
  const seedSelect=cats+'<div class="farm-seed-grid">'+filtered.map(c=>'<button class="farm-seed-choice '+(farmCrop===c.id?'selected':'')+'" data-action="farm-crop" data-crop="'+c.id+'" aria-pressed="'+(farmCrop===c.id)+'"><img src="'+FarmArt.harvest(c.id)+'" alt="" loading="lazy"><span><strong>'+escape(c.name)+'</strong><small>×'+t.seeds[c.id]+' seeds · '+Math.round(c.growMs/60000)+' min</small><small>Yield '+c.yield+' · '+c.sellEach+' Rupees each</small></span></button>').join('')+'</div>';
+ const coming=seeds.filter(c=>c.house>t.houseLevel).sort((a,b)=>a.house-b.house).slice(0,8);
+ const unlockPreview=coming.length?'<section class="farm-unlock-preview" aria-label="Upcoming seeds and house levels"><h2 class="subhead">Seed Almanac · Coming Soon</h2><p class="hint">More species become available as your residence improves. These are real future seed unlocks, not shop purchases yet.</p><div class="farm-seed-grid">'+coming.map(c=>'<div class="farm-seed-choice farm-seed-locked"><img src="'+FarmArt.harvest(c.id)+'" alt="" loading="lazy"><span><strong>'+escape(c.name)+'</strong><small>Unlock: House '+c.house+'</small><small>'+escape(c.category)+' · '+Math.round(c.growMs/60000)+' min</small></span></div>').join('')+'</div></section>':'';
  const feedSelect='<div class="farm-selector">'+button('farm-feed','No Fertilizer',farmFeed===''?'primary':'secondary','data-feed="none"')+
  feeds.filter(f=>t.houseLevel>=f.house).map(f=>button('farm-feed',f.name+' · '+t.fertilizers[f.id],farmFeed===f.id?'primary':'secondary','data-feed="'+f.id+'"')).join('')+'</div>';
  const plots='<div class="farm-grid">'+Array.from({length:8},(_,i)=>t.slots[i]||{state:'locked'}).map((p,i)=>{
@@ -327,7 +329,7 @@ function farm(){
  '<div class="panel"><h2>'+escape(t.houseBand)+' · House '+t.houseLevel+'/40</h2><p>'+t.plots+' growing plots available. House upgrades unlock more crops, fertilizers, and plots.</p>'+
  button('farm-upgrade',t.nextUpgradeCost===null?'FULLY UPGRADED':'UPGRADE HOUSE · '+number(t.nextUpgradeCost)+' RUPEES','secondary',t.nextUpgradeCost===null||saved.coins<t.nextUpgradeCost?'disabled':'')+'</div>'+
  '<h2 class="subhead">Growing Plots · '+unlocked.length+'/'+seeds.length+' crops unlocked</h2><p class="hint">Choose seeds and optional fertilizer, then plant an empty plot. Select a plot before using targeted garden magic.</p>'+
- seedSelect+feedSelect+plots+
+ seedSelect+feedSelect+plots+unlockPreview+
  '<h2 class="subhead">Buy Seeds &amp; Fertilizer</h2><div class="shop-grid">'+filtered.map(c=>'<div class="shop-item"><img class="powerup-art" src="'+FarmArt.harvest(c.id)+'" loading="lazy" alt=""><strong>'+escape(c.name)+'</strong><small>Unlocks at house '+c.house+' · '+escape(c.category)+'</small><small>Seed stock '+t.seeds[c.id]+' · '+c.seedCost+' Rupees</small>'+
  button('farm-buy-seed','BUY 1','secondary','data-crop="'+c.id+'" data-qty="1" '+(saved.coins<c.seedCost?'disabled':''))+
  button('farm-buy-seed','BUY 5','secondary','data-crop="'+c.id+'" data-qty="5" '+(saved.coins<c.seedCost*5?'disabled':''))+'</div>').join('')+

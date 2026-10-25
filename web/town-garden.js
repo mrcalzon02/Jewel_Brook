@@ -38,8 +38,8 @@
   const slots=Array.isArray(town.plots)?town.plots:[];
   town.plots=Array.from({length:8},(_,index)=>{
    const p=slots[index];if(p===null||p===undefined)return null;
-   if(!p||typeof p!=='object'||Array.isArray(p)||!CROPS[p.crop]||!validInt(p.plantedAt,0,Number.MAX_SAFE_INTEGER)||!validInt(p.readyAt,p.plantedAt+1,Number.MAX_SAFE_INTEGER)||!validInt(p.yield,1,100))return null;
-   return {crop:p.crop,plantedAt:p.plantedAt,readyAt:p.readyAt,yield:p.yield,fertilizer:FERTILIZERS[p.fertilizer]?p.fertilizer:null};
+   if(!p||typeof p!=='object'||Array.isArray(p)||!Object.hasOwn(CROPS,p.crop)||!validInt(p.plantedAt,0,Number.MAX_SAFE_INTEGER)||!validInt(p.readyAt,p.plantedAt+1,Number.MAX_SAFE_INTEGER)||!validInt(p.yield,1,100))return null;
+   return {crop:p.crop,plantedAt:p.plantedAt,readyAt:p.readyAt,yield:p.yield,fertilizer:Object.hasOwn(FERTILIZERS,p.fertilizer)?p.fertilizer:null};
   });
   return town;
  }
@@ -47,7 +47,7 @@
  function pay(save,cost){if(!validInt(cost,1,MAX)||balance(save)<cost)return false;save.coins-=cost;return true;}
  function purchase(save,kind,id,quantity=1){
   const list=kind==='seed'?CROPS:kind==='fertilizer'?FERTILIZERS:null;
-  const item=list&&list[id];
+  const item=list&&Object.hasOwn(list,id)?list[id]:null;
   if(!item)return {valid:false,reason:'item'};
   if(!validInt(quantity,1,MAX_QTY))return {valid:false,reason:'quantity'};
   const town=ensure(save);
@@ -69,7 +69,7 @@
  function gloveTier(save){const e=save&&save.rupeeExpedition;return e&&validInt(e.gloveTier,0,39)?e.gloveTier:0;}
  function plant(save,plot,seedId,fertilizerId=null,at=Date.now()){
   const time=nowValue(at);if(time===null)return {valid:false,reason:'time'};
-  const crop=CROPS[seedId],feed=fertilizerId===null?null:FERTILIZERS[fertilizerId];
+  const crop=Object.hasOwn(CROPS,seedId)?CROPS[seedId]:null,feed=fertilizerId===null?null:(Object.hasOwn(FERTILIZERS,fertilizerId)?FERTILIZERS[fertilizerId]:null);
   if(!crop)return {valid:false,reason:'seed'};
   if(fertilizerId!==null&&!feed)return {valid:false,reason:'fertilizer'};
   const town=ensure(save);
@@ -108,8 +108,8 @@
   return {valid:true,crop:p.crop,quantity:p.yield,plot};
  }
  function sell(save,cropId,quantity=1){
-  const crop=CROPS[cropId];if(!crop)return {valid:false,reason:'crop'};
-  if(!validInt(quantity,1,MAX_QTY))return {valid:false,reason:'quantity'};
+  const crop=Object.hasOwn(CROPS,cropId)?CROPS[cropId]:null;if(!crop)return {valid:false,reason:'crop'};
+  if(!validInt(quantity,1,MAX))return {valid:false,reason:'quantity'};
   const town=ensure(save),earned=quantity*crop.sellEach;
   if(town.harvest[cropId]<quantity)return {valid:false,reason:'inventory'};
   if(balance(save)+earned>MAX)return {valid:false,reason:'capacity'};
