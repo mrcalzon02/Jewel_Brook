@@ -1,0 +1,64 @@
+{
+  "schema": "rupee-music-v1",
+  "title": "Frozen Glow 2",
+  "source": "Rupee Rush Google Drive / Frozen Glow 2.mp3",
+  "originalFileId": "1ZgZSOgfJcRoODkLkfUNfV3z94rRD7csn",
+  "bytes": 5060262,
+  "durationSeconds": 240.024,
+  "sha256": "a4235a9b0797c96fca9ad6d9e870983657bece455f35dfa75f406b8688679fc5",
+  "delivery": "13 byte-exact binary segments, reassembled locally at runtime for offline web and Android APK play; no remote streaming",
+  "parts": [
+    {
+      "path": "audio/music/frozen-glow-2.part-01.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-02.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-03.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-04.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-05.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-06.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-07.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-08.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-09.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-10.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-11.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-12.bin",
+      "bytes": 399999
+    },
+    {
+      "path": "audio/music/frozen-glow-2.part-13.bin",
+      "bytes": 260274
+    }
+  ]
+}
