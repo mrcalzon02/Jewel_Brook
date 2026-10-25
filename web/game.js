@@ -261,7 +261,7 @@ function farmEquipmentPreview(){
  '<div class="farm-art-shelf">'+items.map(([id,label])=>'<div class="farm-art-entry"><img loading="lazy" src="'+FarmArt.equipment(id)+'" alt=""><small>'+label+'</small></div>').join('')+'</div>';
 }
 function kitchenPreview(){
- const holdings=Kitchen.pantry(saved),planned=Kitchen.RECIPES,ready=Cook.list(saved,Date.now(),dailyCap());
+ const holdings=Kitchen.pantry(saved),planned=Kitchen.RECIPES,allRecipes=Cook.list(saved,Date.now(),dailyCap()),ready=allRecipes.filter(r=>r.house<=saved.town.houseLevel),stored=allRecipes.filter(r=>r.stored>0);
  const names={hearts:'1 life',moves:'3 daily moves',strikes:'3 bonus mining strikes',scans:'2 bonus surveys',farmPower:'1 farming power-up',matchBooster:'1 match-3 booster'};
  const pantry='<div class="farm-art-shelf">'+holdings.filter(item=>item.quantity>0).map(item=>
   '<div class="farm-art-entry pantry-entry"><img loading="lazy" src="'+item.art+'" alt=""><strong>'+escape(item.name)+'</strong><small>Stored ×'+number(item.quantity)+'</small></div>').join('')+'</div>';
@@ -281,7 +281,7 @@ function kitchenPreview(){
   }).join('')+'</div></section>';
  const dining='<section class="kitchen-room-section" aria-label="Dining room">'+
   scene('dining','Cozy Dining Room','Serve prepared meals to receive farming, match-three, or mining benefits.')+
-  '<div class="farm-recipe-grid">'+ready.map(r=>
+  '<div class="farm-recipe-grid">'+stored.map(r=>
    '<div class="farm-recipe kitchen-ready"><img loading="lazy" src="'+r.art+'" alt=""><span>'+
    '<b>'+escape(r.name)+'</b><small>Prepared portions: '+r.stored+'</small>'+
    '<small>Serving benefit: '+names[r.reward.kind]+'</small></span>'+
@@ -294,7 +294,7 @@ function kitchenPreview(){
    '<small>Planned: '+recipe.ingredients.map(x=>x.quantity+' × '+escape(Kitchen.get(x.item).name)).join(' + ')+'</small>'+
    '<small>Cooking not yet available</small></span></div>').join('')+'</div></section>';
  return '<section class="farm-kitchen" aria-label="Kitchen and dining"><h2 class="subhead">Kitchen Pantry</h2>'+
-  '<p class="hint">Your existing harvested ingredients. Cooking spends crops and stores meals; serving a meal applies its reward separately. Full lives or capped rewards do not consume stored meals.</p>'+
+  '<p class="hint">'+holdings.length+' farm ingredients · '+ready.length+' recipes available · '+(allRecipes.length-ready.length)+' to unlock. Cooking spends crops and stores meals; serving applies the reward separately. Full lives or capped rewards do not consume stored meals.</p>'+
   pantry+cooking+dining+future+'</section>';
 }
 function modePowerCards(family){

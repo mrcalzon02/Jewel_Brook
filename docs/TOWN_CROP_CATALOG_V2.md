@@ -60,3 +60,6 @@ Existing independent farming-overview image files are reused for 28 crop invento
 
 ## Runtime integration
 Farm selectable seed cards, seed shop, 5× bulk purchase, plot timing, stage art, harvest sale and the kitchen pantry all enumerate the full 48-crop catalog. Families filter the seed picker. Existing separate mining-glove yield bonuses and fertilizer buffs apply to all 48 crops. The 225 new stage sprites are generated under `web/art/embryon/town/gardening/growth`; 15 original crop-stage assets remain. The artwork is programmatic illustration for QA, not final painted master art.
+
+## Kitchen recipe expansion
+37 additional kitchen recipes, bringing actual deterministic craft-and-serve meals to 43. Recipe ingredients draw from the new crop IDs, gated by available house levels. Rewards use the existing canonical life/moves/mining-strikes/mining-surveys/farming power-up/match booster systems. The kitchen now lists craftable-tier recipes and prepared dishes, while preventing future-tier dishes from flooding the current kitchen UI. High-tier cooking cannot activate until the required house and stored harvest are available.
