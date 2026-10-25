@@ -1,0 +1,34 @@
+/* Verify every individually shipped farming sprite against the approved export. */
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const crypto=require('node:crypto');
+const root=path.resolve(__dirname,'../web/art/embryon/town/farming/refined');
+const m=require('../web/art/embryon/town/farming/refined/manifest.json');
+const Art=require('../web/farming-art.js');
+assert.equal(m.schema,'rupee-rush/farming-refined-runtime/v2');
+assert.equal(m.sprites.length,120);
+assert.equal(new Set(m.sprites.map(x=>x.path)).size,120);
+assert.equal(m.sprites.filter(x=>x.collection==='farming-tools').length,41);
+assert.equal(m.sprites.filter(x=>x.collection==='farming-overview').length,79);
+for(const x of m.sprites){
+ assert.match(x.path,/^runtime\/farming-(tools|overview)\/(equipment|goods)\/[a-z0-9-]+\.webp$/);
+ const file=path.resolve(root,x.path);
+ assert(file.startsWith(root+path.sep),'No path escape');
+ const bytes=fs.readFileSync(file);
+ assert.equal(bytes.length,x.bytes,'Byte length: '+x.path);
+ assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),x.sha256,'SHA256: '+x.path);
+ assert.equal(bytes.toString('ascii',0,4),'RIFF');
+ assert.equal(bytes.toString('ascii',8,12),'WEBP');
+ assert.equal(x.width,192);assert.equal(x.height,192);
+ const url=Art.get(x.id,x.collection);
+ assert.equal(url,'art/embryon/town/farming/refined/'+x.path,'Registry URL: '+x.path);
+}
+assert.equal(Art.get('shovel'),Art.get('shovel','farming-tools'),'Clean dedicated set should win');
+assert.equal(Art.get('blueberry'),Art.get('blueberry','farming-overview'));
+assert.equal(Art.get('unknown-farm-item'),null);
+assert(Art.variants('shovel').clean!==Art.variants('shovel').overview,'Two source variants must remain distinct');
+assert(!fs.readFileSync(path.resolve(__dirname,'../web/index.html'),'utf8').includes('<script src="farming-art.js"'),
+ 'Art registration must not silently enable new mechanics');
+console.log('PASS Rupee Rush refined farming art: 120 transparent image files, hashes, registry and no gameplay integration');
