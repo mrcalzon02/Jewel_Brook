@@ -2,8 +2,8 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownHouses=window.RupeeTownHouses,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownHouses,CropGrowth,Kitchen,Cook].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownHouses,TownYards,CropGrowth,Kitchen,Cook].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
@@ -38,8 +38,9 @@ function townAvatarPanel(){
   '</div></section>';
 }
 function townHousePanel(t){
- const art=TownHouses.house(t.houseLevel);
+ const art=TownHouses.house(t.houseLevel),yard=TownYards.yard(t.houseLevel);
  return '<section class="town-house-panel" aria-label="Town residence visual progress"><div class="town-house-frame">'+
+  '<img class="town-yard-layer" src="'+yard.path+'" alt="" width="260" height="260" loading="lazy" decoding="async">'+
   '<img class="town-house-illustration" src="'+art.path+'" alt="Illustrated '+escape(t.houseBand)+' residence at house level '+art.level+' of 40" width="260" height="260" loading="lazy" decoding="async"></div>'+
   '<div class="town-house-summary"><small class="town-house-kicker">YOUR EMBRYON HOMESTEAD</small><h2>'+escape(art.name)+'</h2><p>'+escape(t.houseBand)+'</p>'+
   '<p>Residence level <strong>'+art.level+'/40</strong> · '+t.plots+' functional growing '+(t.plots===1?'plot':'plots')+'.</p>'+
