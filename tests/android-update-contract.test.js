@@ -13,7 +13,7 @@ const html=read('web/index.html');
 const game=read('web/game.js');
 assert.match(service,/https:\/\/api\.github\.com\/repos\/mrcalzon02\/Rupee-rush\/releases\?per_page=30/);
 assert.match(service,/\^rupeerush-phone-test-/);
-assert.doesNotMatch(service,/releases\/latest|optBoolean\("prerelease", false\)/,'Prerelases must not be filtered out');
+assert.doesNotMatch(service,/LATEST_MANIFEST|optBoolean\("prerelease", false\)/,'Prereleases must be included in update checks');
 assert.match(service,/500_000_000L \+ run \* 100L \+ attempt/);
 assert.match(service,/RupeeRush-Android\.apk/);
 assert.match(service,/sha256:\[0-9a-f\]\{64\}/);
