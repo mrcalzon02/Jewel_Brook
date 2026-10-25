@@ -62,7 +62,7 @@ assert.match(styles,/[^-]mask-image:radial-gradient\(circle closest-side at cent
 assert.match(styles,/\.cell \.gem\{position:relative;z-index:1\}/);
 assert.match(styles,/\.cell \.tile-status\{position:absolute;inset:0;z-index:2/);
 assert.match(src,/return payload\(cell\)\+status\+anchor\+counters/,'Gem payload must remain beneath cell-affixed overlay and anchor');
-assert.ok(html.includes('art/embryon/components/crystal-medallion.svg'),'Neutral interim navigator fallback');
+assert.ok(html.includes('art/embryon/system-icons/navigation-economy/home.webp'),'Approved navigation icon is shipped');
 assert.equal(Shared.anchor({type:0,lock:2}).src,'art/primary/blockers/lock.png');
 assert.equal(Shared.anchor({type:0,ice:2}).src,'art/primary/blockers/ice-2.png');
 assert.equal(Shared.anchor({type:0,chest:1}).src,'art/primary/blockers/chest.png');
@@ -96,7 +96,7 @@ const document={getElementById:id=>({
  addEventListener:(id,cb)=>{if(id==='click')click=cb;}};
 const win={RupeeEngine:proxy,RupeeProgress:Progress,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trial,RupeeElementalRewards:R,RupeeMining:M,RupeeMiningGear:Gear,
- RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeEmbryonAssets:require('../web/embryon-assets.js'),RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js'),RupeeMusic:require('../web/embryon-music.js'),RupeeBoardMotion:require('../web/board-motion.js'),RupeeBoardFeatures:require('../web/board-features.js')};
+ RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeEmbryonAssets:require('../web/embryon-assets.js'),RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js'),RupeeMusic:require('../web/embryon-music.js'),RupeeBoardMotion:require('../web/board-motion.js'),RupeeBoardFeatures:require('../web/board-features.js'),RupeeSystemIcons:require('../web/system-icons.js')};
 vm.runInNewContext(src,{window:win,document,localStorage:{getItem(){return null;},setItem(){}},
  setTimeout(){return 1;},clearTimeout(){},console},{filename:'game.js'});
 assert.ok(click,'Game click dispatch must initialize');

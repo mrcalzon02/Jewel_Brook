@@ -2,8 +2,8 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
@@ -16,7 +16,7 @@ try{if(saved.activeBoard){const s=saved.activeBoard;const allowed=s.level>=T.FIR
 function save(){try{if(active&&!active.won&&!active.lost)saved.activeBoard=E.snapshot(active);else delete saved.activeBoard;localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){message('Unable to save on this device');}}
 function number(x){return Number(x||0).toLocaleString('en-US');}
 function escape(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function icon(id,size=30){return '<img class="icon" width="'+size+'" height="'+size+'" alt="" src="'+(Shared.icons[id]||Art.icon(id))+'">';}
+function icon(id,size=30){return '<img class="icon" width="'+size+'" height="'+size+'" alt="" src="'+(Icons.get(id)||Shared.icons[id]||Art.icon(id))+'">';}
 function gem(id){const key=E.TYPES[id],src=Assets.gem(key)||Art.gem(id);return '<img class="gem" alt="'+escape(key)+'" draggable="false" src="'+src+'">';}
 function boosterIcon(id,size=36){const src=Assets.booster(id);return src?'<img class="booster-art" width="'+size+'" height="'+size+'" alt="" src="'+src+'" decoding="async">':icon(id,size);}
 function impact(kind,index){visualImpact={kind,index:Number.isInteger(index)?index:-1};}
@@ -73,8 +73,8 @@ function start(id){
 }
 function payload(c){
  if(!c||c.type===null)return '<span class="void"></span>';
- const special=c.special?'<span class="gem-special '+escape(c.special)+'" aria-hidden="true">'+
-  ({'line-h':'↔','line-v':'↕',blast:'✺',rainbow:'🌈'}[c.special]||'✦')+'</span>':'';
+ const specialArt={'line-h':'row','line-v':'column',blast:'blast',rainbow:'spectrum'}[c.special]||'starburst';
+ const special=c.special?'<span class="gem-special '+escape(c.special)+'" aria-hidden="true"><img class="gem-special-art" alt="" src="'+Assets.booster(specialArt)+'"></span>':'';
  const elemental=c.elemental?'<span class="gem-elemental" title="'+escape(c.elemental)+'">⚡</span>':'';
  const hold=c.hold?'<span class="gem-held" title="Gravity hold">'+c.hold+'↓</span>':'';
  return '<span class="gem-payload">'+gem(c.type)+special+elemental+hold+'</span>';
@@ -84,9 +84,9 @@ function featureMarkup(g,i){
  const belt=(features.conveyors||[]).find(f=>f.indices.includes(i));
  const portal=(features.portals||[]).find(f=>f.indices.includes(i));
  const wind=(features.wind||[]).find(f=>f.indices.includes(i));
- if(belt)list.push('<span class="board-feature conveyor" aria-hidden="true">'+(belt.direction==='right'?'›':'‹')+'</span>');
- if(portal)list.push('<span class="board-feature portal" aria-hidden="true">◎</span>');
- if(wind){const dir=Features.nextWindDirection(wind,g.turns);list.push('<span class="board-feature wind" aria-label="Next wind gust '+dir+'">'+(dir==='up'?'↑':'↓')+'</span>');}
+ if(belt)list.push('<span class="board-feature conveyor" aria-hidden="true"><img class="feature-art" alt="" src="'+Icons.get('conveyor-'+belt.direction)+'"></span>');
+ if(portal)list.push('<span class="board-feature portal" aria-hidden="true"><img class="feature-art" alt="" src="'+Icons.get('portal')+'"></span>');
+ if(wind){const dir=Features.nextWindDirection(wind,g.turns);list.push('<span class="board-feature wind" aria-label="Next wind gust '+dir+'"><img class="feature-art" alt="" src="'+Icons.get('wind-'+dir)+'"></span>');}
  return list.join('');
 }
 function piece(cell,index){
@@ -249,9 +249,9 @@ function render(){
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
  const navArt={
-  home:Art.icon('home'),campaign:Art.icon('levels'),
-  mine:G.entry('pickaxe',Mining.stats(saved).pickTier).image,
-  shop:Art.icon('shop'),rewards:Art.icon('gift'),settings:Art.icon('gear')
+  home:Icons.get('home'),campaign:Icons.get('levels'),
+  mine:Icons.get('mine'),
+  shop:Icons.get('shop'),rewards:Icons.get('rewards'),settings:Icons.get('settings')
  };
  // Brand-neutral local glyphs and the genuine pickaxe, never old woodland icons.
  document.querySelectorAll('.bottom .nav-art').forEach(img=>{
