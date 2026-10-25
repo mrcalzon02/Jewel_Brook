@@ -204,3 +204,24 @@
 .town-avatar-art{display:block;flex:0 0 auto;width:clamp(96px,25vw,144px);height:clamp(160px,42vw,240px);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 10px #0506199c)}
 .town-avatar-copy{min-width:0;flex:1}.town-avatar-copy h2{font-size:clamp(19px,3.5vw,28px);margin:4px 0 8px}.town-avatar-copy p{font-size:clamp(12px,2.7vw,15px);color:#ece4f9;line-height:1.5}.town-avatar-eyebrow{display:block;color:#ffdd93;font-size:11px;font-weight:800;letter-spacing:.12em}
 @media(max-width:390px){.town-avatar-panel{padding:8px;gap:8px}.town-avatar-art{width:94px;height:156px}.town-avatar-copy h2{font-size:18px}.town-avatar-copy p{font-size:12px}}
+
+/* Independent House level display; illustrations are explicitly unapproved art previews. */
+.town-house-panel{display:flex;gap:18px;align-items:center;margin:15px 0;border:1px solid #d7b874;border-radius:17px;overflow:hidden;padding:12px 20px 12px 8px;background:radial-gradient(ellipse at 17% 42%,#495174,#303b55 44%,#232844 92%);box-shadow:0 10px 26px #07071d55}
+.town-house-frame{display:flex;flex:0 0 clamp(152px,34%,260px);align-items:center;justify-content:center;min-width:0}
+.town-house-illustration{display:block;width:min(100%,260px);height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 8px 9px #0b123077)}
+.town-house-summary{flex:1;min-width:0}.town-house-summary h2{margin:4px 0 9px;font-size:clamp(19px,3.2vw,27px)}.town-house-summary p{font-size:clamp(12px,2.4vw,15px);line-height:1.45;color:#e8eaf3}
+.town-house-kicker{font-size:10px;letter-spacing:.12em;color:#ffdea2;font-weight:800}.town-house-summary>small:last-child{font-size:11px;color:#ccc7d1}
+.farm-bed-scene{position:relative;display:block;width:100%;max-width:132px;height:110px;margin:0 auto 4px;isolation:isolate}
+.farm-bed-base{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 5px 6px #0007)}
+.farm-bed-scene.state-locked{opacity:.42;filter:grayscale(.9)}
+.farm-bed-crop{position:absolute;bottom:18px;left:50%;width:76px;height:76px;object-fit:contain;transform:translateX(-50%);filter:drop-shadow(0 4px 5px #101a1b99);pointer-events:none}
+.farm-bed-scene.state-growing .farm-bed-crop{width:44px;height:44px;bottom:20px;filter:saturate(.7) drop-shadow(0 3px 3px #0005)}
+.farm-bed-scene.state-maturing .farm-bed-crop{width:59px;height:59px;bottom:22px}
+.farm-bed-scene.state-ready .farm-bed-crop{filter:drop-shadow(0 0 8px #ffdd8b) drop-shadow(0 4px 5px #0007)}
+.farm-bed-seed{position:absolute;bottom:32px;left:50%;width:10px;height:7px;border-radius:65% 35% 60% 40%;background:#f1d499;box-shadow:0 2px 2px #4a2e14;transform:rotate(-25deg)}
+.farm-bed-sprout{position:absolute;bottom:26px;left:50%;width:4px;height:29px;background:linear-gradient(#a8e999,#487b38);transform:translateX(-50%);border-radius:3px}
+.farm-bed-sprout:before,.farm-bed-sprout:after{content:"";position:absolute;top:3px;width:19px;height:10px;border-radius:90% 0 90% 0;background:linear-gradient(130deg,#d5f8a9,#419a4f)}
+.farm-bed-sprout:before{right:2px;transform:rotate(25deg)}.farm-bed-sprout:after{left:2px;transform:scaleX(-1) rotate(25deg)}
+.farm-bed-fertilized{position:absolute;right:11px;top:5px;display:grid;place-items:center;width:22px;height:22px;color:#e7ffff;background:#4866a999;border:1px solid #c1e6ee;border-radius:50%;font-size:20px;line-height:1}
+.farm-plot-pick .farm-bed-base,.farm-plot-pick .farm-bed-crop{pointer-events:none}
+@media(max-width:430px){.town-house-panel{gap:7px;padding:8px}.town-house-frame{flex-basis:42%}.town-house-summary h2{font-size:17px}.farm-bed-scene{height:90px}.farm-bed-crop{bottom:10px}}
