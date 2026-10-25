@@ -10,10 +10,11 @@ assert.equal(manifest.schema,'rupee-rush-future-powerups/v1');
 assert.equal(Object.keys(manifest.categories).length,2);
 assert.deepEqual(Object.values(manifest.categories).map(a=>a.length),[16,16]);
 assert.equal(manifest.qa.iconCount,32);
-assert.equal(manifest.files.length,32);
+assert.equal(manifest.files.length,36,'32 sprites plus two master PNGs and two reference atlases');
+const spriteFiles=manifest.files.filter(x=>x.role==='individual-icon');
+assert.equal(spriteFiles.length,32);
 const ids=new Set();
-for(const x of manifest.files){
- assert.equal(x.role,'individual-icon');
+for(const x of spriteFiles){
  assert(!ids.has(x.id),'Duplicate icon id '+x.id);ids.add(x.id);
  assert(x.path.startsWith('web/art/embryon/future-powerups/'+x.category+'/'));
  const bytes=fs.readFileSync(path.join(repo,x.path));
@@ -24,6 +25,11 @@ for(const x of manifest.files){
  assert.deepEqual(x.size_px,[192,192]);
  assert.equal(x.transparent,true);
  assert.equal(x.semanticStatus,'concept; not a live booster mechanic');
+}
+for(const x of manifest.files.filter(x=>x.role!=='individual-icon')){
+ const bytes=fs.readFileSync(path.join(repo,x.path));
+ assert.equal(bytes.length,x.size,x.path+' size mismatch');
+ assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),x.sha256,x.path+' hash mismatch');
 }
 for(const x of Object.values(manifest.categories))for(const id of x)assert(ids.has(id),'Lost listed icon '+id);
 assert.equal(manifest.referenceSources.length,4,'Both original sheets and optimized atlases referenced');
