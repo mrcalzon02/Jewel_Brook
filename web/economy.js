@@ -52,10 +52,10 @@ function frameArt(i){
 for(let i=0;i<20;i++){const n=String(i+1).padStart(2,'0'),r=rarity(i+9);CATALOG.push(Object.freeze({id:'frame-'+n,name:['Amethyst','Sapphire','Emerald','Gold','Ruby'][i%5]+' Portrait Frame '+n,type:'frame',rarity:r,image:frameArt(i),cost:RARITIES[r]}));}
 const BY_ID=Object.freeze(Object.fromEntries(CATALOG.map(x=>[x.id,x])));
 const POOLS=Object.freeze({
- basic:Object.freeze([{kind:'coins',weight:24,min:250,max:650},{kind:'gems',weight:10,min:2,max:5},{kind:'styleShards',weight:18,min:35,max:90},{kind:'credits',weight:12,min:100,max:250},{kind:'booster',weight:16,min:1,max:3},{kind:'cosmetic',weight:10},{kind:'character',weight:6},{kind:'upgrade',weight:4}]),
+ basic:Object.freeze([{kind:'coins',weight:24,min:250,max:650},{kind:'gems',weight:10,min:2,max:5},{kind:'styleShards',weight:18,min:35,max:90},{kind:'credits',weight:12,min:100,max:250},{kind:'booster',weight:11,min:1,max:3},{kind:'modePower',weight:5},{kind:'cosmetic',weight:10},{kind:'character',weight:6},{kind:'upgrade',weight:4}]),
  vanity:Object.freeze([{kind:'styleShards',weight:30,min:90,max:180},{kind:'cosmetic',weight:45},{kind:'character',weight:25}]),
- expedition:Object.freeze([{kind:'credits',weight:30,min:300,max:950},{kind:'coins',weight:20,min:350,max:1100},{kind:'booster',weight:20,min:2,max:4},{kind:'upgrade',weight:15},{kind:'styleShards',weight:15,min:45,max:120}]),
- royal:Object.freeze([{kind:'gems',weight:20,min:5,max:12},{kind:'styleShards',weight:25,min:100,max:260},{kind:'cosmetic',weight:25},{kind:'character',weight:15},{kind:'booster',weight:10,min:3,max:5},{kind:'upgrade',weight:5}])
+ expedition:Object.freeze([{kind:'credits',weight:30,min:300,max:950},{kind:'coins',weight:20,min:350,max:1100},{kind:'booster',weight:15,min:2,max:4},{kind:'modePower',weight:5},{kind:'upgrade',weight:15},{kind:'styleShards',weight:15,min:45,max:120}]),
+ royal:Object.freeze([{kind:'gems',weight:20,min:5,max:12},{kind:'styleShards',weight:25,min:100,max:260},{kind:'cosmetic',weight:25},{kind:'character',weight:15},{kind:'booster',weight:8,min:3,max:5},{kind:'modePower',weight:2},{kind:'upgrade',weight:5}])
 });
 const PACKS=Object.freeze({
  satchel:Object.freeze({name:'Prospector Satchel',currency:'coins',cost:350,rolls:2,pool:'basic',description:'Two independent treasure drops'}),
@@ -111,6 +111,11 @@ function grantRoll(save,entry,rng=Math.random,P=root.RupeeProgress){
  ensure(save);
  const kind=entry.kind;
  if(kind==='cosmetic'||kind==='character')return awardCosmetic(save,kind,rng);
+ if(kind==='modePower'){
+  const reward=root.RupeeModePowerups?.grantRandom(save,rng);
+  if(reward?.valid)return {kind,label:reward.label,id:reward.id,amount:1};
+  return {kind:'styleShards',label:'40 Style Shards',amount:credit(save,'styleShards',40)};
+ }
  if(kind==='upgrade')return freeUpgrade(save,rng);
  if(kind==='booster'){
   if(!P||!P.available||!P.grant)return {kind:'styleShards',label:'40 Style Shards',amount:credit(save,'styleShards',40)};

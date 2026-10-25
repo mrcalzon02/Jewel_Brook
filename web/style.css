@@ -138,3 +138,22 @@
 .profile-label .btn{margin:7px 0 0}
 .mine-empty{font-size:clamp(20px,3.5vw,39px);color:#959caa;text-shadow:0 1px 3px #101018}
 @media(max-width:390px){.profile-portrait{width:82px;height:82px;flex-basis:82px}.profile-outfit img{height:82px;width:60px}.profile-label{min-width:120px}}
+
+/* Distinct farming, mining and match-three booster shelves */
+.bottom{grid-template-columns:repeat(7,minmax(0,1fr))}
+.mode-bundle{display:inline-flex;vertical-align:top;width:min(100%,260px);margin:6px;padding:13px;min-height:135px}
+.powerup-art{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 3px 5px #120d2290)}
+.mode-power-card{min-height:176px}
+.mine-tabs{align-items:center}
+.rock.focused{outline:3px solid #ffda7a;outline-offset:-4px;box-shadow:0 0 0 3px #ffe8a780}
+.location-garden{background:linear-gradient(110deg,#294e47,#293854 72%,#332b51);border-radius:16px;padding:15px;margin-bottom:13px}
+.farm-selector{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0}
+.farm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin:13px 0 18px}
+.farm-plot{padding:8px;border-radius:12px;background:linear-gradient(145deg,#34423c,#2b303f);border:2px solid #72836f;display:flex;flex-direction:column;gap:8px;justify-content:space-between}
+.farm-plot.selected{border-color:#eddb88;box-shadow:0 0 9px #e8c97955}
+.farm-plot-pick{color:#f5e8ce;background:transparent;border:0;min-width:0;display:flex;flex-direction:column;gap:4px;align-items:center;width:100%;padding:8px}
+.farm-plot-pick img{height:85px;width:85px;object-fit:contain}
+.farm-plot-pick b{color:#f7d998}
+.farm-plot-pick small{color:#d0ddd4;text-align:center;line-height:1.25}
+.farm-plot>.btn{margin:0;width:100%}
+@media(max-width:620px){.bottom button{font-size:9px}.bottom .nav-art{width:23px;height:23px}.farm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mode-bundle{width:calc(50% - 14px);min-height:158px}}
