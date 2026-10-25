@@ -281,7 +281,7 @@ function kitchenPreview(){
   }).join('')+'</div></section>';
  const dining='<section class="kitchen-room-section" aria-label="Dining room">'+
   scene('dining','Cozy Dining Room','Serve prepared meals to receive farming, match-three, or mining benefits.')+
-  '<div class="farm-recipe-grid">'+stored.map(r=>
+  '<div class="farm-recipe-grid">'+(stored.length?stored:ready.slice(0,3)).map(r=>
    '<div class="farm-recipe kitchen-ready"><img loading="lazy" src="'+r.art+'" alt=""><span>'+
    '<b>'+escape(r.name)+'</b><small>Prepared portions: '+r.stored+'</small>'+
    '<small>Serving benefit: '+names[r.reward.kind]+'</small></span>'+
