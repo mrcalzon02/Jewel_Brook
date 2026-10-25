@@ -115,7 +115,9 @@ assert.match(views.screen.innerHTML,/daysha_lv_01\.png/,'Farm displays recovered
 assert.match(views.screen.innerHTML,/house_lv_01\.svg/,'Farm displays house 1 at default Town level');
 assert.match(views.screen.innerHTML,/farming-tools\/equipment\/garden-plot\.webp/,'Existing real gardening bed art renders');
 assert.match(views.screen.innerHTML,/farm-bed-scene state-empty/,'Available bed is visibly empty');
-assert.match(views.screen.innerHTML,/farm-bed-scene state-locked/,'Locked beds retain disabled visual state');
+assert.match(views.screen.innerHTML,/farm-bed-scene state-locked/,'All eight plot anchors include locked bed art');
+assert.equal((views.screen.innerHTML.match(/class="farm-plot /g)||[]).length,8,'exactly eight visual plot sockets');
+assert.match(views.screen.innerHTML,/farm-plot-pick[^>]+disabled aria-disabled="true"/,'locked beds cannot be selected');
 assert.match(views.screen.innerHTML,/data-action="farm-plant"/,'plant actions available');
 assert.match(views.screen.innerHTML,/Farming Power-Ups/,'farming booster shelf renders');
 assert.match(views.screen.innerHTML,/Kitchen Pantry/,'kitchen pantry preview renders');

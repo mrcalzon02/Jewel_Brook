@@ -41,7 +41,7 @@ function townHousePanel(t){
  const art=TownHouses.house(t.houseLevel);
  return '<section class="town-house-panel" aria-label="Town residence visual progress"><div class="town-house-frame">'+
   '<img class="town-house-illustration" src="'+art.path+'" alt="Illustrated '+escape(t.houseBand)+' residence at house level '+art.level+' of 40" width="260" height="260" loading="lazy" decoding="async"></div>'+
-  '<div class="town-house-summary"><small class="town-house-kicker">YOUR EMBRYON HOMESTEAD</small><h2>'+escape(t.houseBand)+'</h2>'+
+  '<div class="town-house-summary"><small class="town-house-kicker">YOUR EMBRYON HOMESTEAD</small><h2>'+escape(art.name)+'</h2><p>'+escape(t.houseBand)+'</p>'+
   '<p>Residence level <strong>'+art.level+'/40</strong> · '+t.plots+' functional growing '+(t.plots===1?'plot':'plots')+'.</p>'+
   '<small>Illustrated house preview; final painted sprites are pending.</small></div></section>';
 }
@@ -307,7 +307,7 @@ function farm(){
  const seedSelect='<div class="farm-selector">'+seeds.filter(c=>t.houseLevel>=c.house).map(c=>button('farm-crop',c.name+' · '+t.seeds[c.id]+' seeds',farmCrop===c.id?'primary':'secondary','data-crop="'+c.id+'"')).join('')+'</div>';
  const feedSelect='<div class="farm-selector">'+button('farm-feed','No Fertilizer',farmFeed===''?'primary':'secondary','data-feed="none"')+
  feeds.filter(f=>t.houseLevel>=f.house).map(f=>button('farm-feed',f.name+' · '+t.fertilizers[f.id],farmFeed===f.id?'primary':'secondary','data-feed="'+f.id+'"')).join('')+'</div>';
- const plots='<div class="farm-grid">'+t.slots.map((p,i)=>{
+ const plots='<div class="farm-grid">'+Array.from({length:8},(_,i)=>t.slots[i]||{state:'locked'}).map((p,i)=>{
   const isSelected=i===farmPlot,which=p.crop&&Garden.CROPS[p.crop],ready=p.state==='ready',
    picture=which?(FarmArt.harvest(which.id)||'art/embryon/town/gardening/icons/'+art[which.id]):null;
   const detail=p.state==='empty'?'Available':ready?'READY TO HARVEST':p.state==='locked'?'Locked':p.state.toUpperCase()+' · '+Math.ceil(Math.max(0,p.readyAt-time)/60000)+' min';
@@ -315,7 +315,7 @@ function farm(){
   const bed='<span class="farm-bed-scene state-'+phase+'" aria-hidden="true"><img class="farm-bed-base" src="'+FarmArt.equipment('garden-plot')+'" alt="" loading="lazy">'+
     (phase==='seed'?'<span class="farm-bed-seed"></span>':phase==='sprout'?'<span class="farm-bed-sprout"></span>':picture?'<img class="farm-bed-crop" src="'+picture+'" alt="">':'')+
     (p.fertilizer?'<span class="farm-bed-fertilized">✧</span>':'')+'</span>';
-  return '<div class="farm-plot '+(isSelected?'selected':'')+'"><button class="farm-plot-pick" data-action="farm-plot" data-plot="'+i+'" aria-pressed="'+isSelected+'">'+bed+'<b>Plot '+(i+1)+'</b><small>'+detail+'</small>'+
+  return '<div class="farm-plot '+(isSelected?'selected':'')+'"><button class="farm-plot-pick" data-action="farm-plot" data-plot="'+i+'" aria-pressed="'+isSelected+'" '+(p.state==='locked'?'disabled aria-disabled="true"':'')+'>'+bed+'<b>Plot '+(i+1)+'</b><small>'+detail+'</small>'+
    (which?'<small>'+escape(which.name)+' · yield '+p.yield+'</small>':'')+'</button>'+
    (p.state==='empty'?button('farm-plant','PLANT','primary','data-plot="'+i+'" '+(!t.seeds[farmCrop]||(farmFeed&&!t.fertilizers[farmFeed])?'disabled':'')):
     ready?button('farm-harvest','HARVEST +'+p.yield,'primary','data-plot="'+i+'"'):'')+'</div>';

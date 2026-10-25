@@ -10,6 +10,7 @@ test('40 different house illustration files are transparent SVGs reproduced by t
  const seen=new Set();
  for(let i=1;i<=40;i++){
   const e=Houses.house(i);assert.equal(e.level,i);assert.equal(e.approved,false);
+  assert.equal(e.name,require('../web/art/embryon/town/houses/plan.json').entries[i-1].name);
   assert.match(e.path,/house_lv_\d\d\.svg$/);
   const svg=fs.readFileSync(path.join(root,e.path),'utf8');
   assert.equal(svg,draw(i),'level '+i+' is not generator-identical');
