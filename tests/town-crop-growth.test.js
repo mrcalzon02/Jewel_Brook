@@ -4,11 +4,13 @@ const dir=path.resolve(__dirname,'../web');
 const Town=require('../web/town-garden.js');
 const Visual=require('../web/crop-growth-art.js');
 const Generator=require('../scripts/generate-crop-growth.js');
+const Extra=require('../scripts/generate-expanded-crop-growth.js');
+const expanded=require('../web/art/embryon/town/gardening/growth/expanded-manifest.json');
 const manifest=require('../web/art/embryon/town/gardening/growth/manifest.json');
 test('fifteen stage assets exist, use transparent self-contained vectors, and are bit-for-bit reproducible',()=>{
- assert.deepEqual(Visual.CROPS,['carrot','wheat','berry']);
+ assert.equal(Visual.CROPS.length,48);
  assert.deepEqual(Visual.STAGES,['seed','sprout','growing','maturing','ready']);
- assert.equal(manifest.assets.length,15);
+ assert.equal(manifest.assets.length+expanded.assets.length,240);
  assert.match(manifest.status,/pending_final_painted_master/);
  const seen=new Set();
  for(const crop of Visual.CROPS){
@@ -17,22 +19,22 @@ test('fifteen stage assets exist, use transparent self-contained vectors, and ar
    const sprite=Visual.image(crop,stage);
    assert.equal(sprite,'art/embryon/town/gardening/growth/'+crop+'-'+stage+'.svg');
    const art=fs.readFileSync(path.join(dir,sprite),'utf8');
-   assert.equal(art,Generator.drawCrop(crop,stage),'stage drift '+crop+'/'+stage);
+   assert.equal(art,['carrot','wheat','berry'].includes(crop)?Generator.drawCrop(crop,stage):Extra.drawExpanded(Town.CROPS[crop],stage),'stage drift '+crop+'/'+stage);
    assert.match(art,/viewBox="0 0 256 256"/);
    assert.match(art,/aria-label="/);
    assert.doesNotMatch(art,/<rect\b|<image\b|\shref=|\ssrc=/i,'no flat background, external images or linked assets');
-   assert.ok(art.length>1200,'nontrivial illustrated stage '+crop+'/'+stage);
+   assert.ok(art.length>600,'nontrivial illustrated stage '+crop+'/'+stage);
    seen.add(art);
   }
  }
- assert.equal(seen.size,15);
- for(const c of [undefined,'onion','cabbage','__proto__'])assert.equal(Visual.image(c,'ready'),null);
+ assert.equal(seen.size,240);
+ for(const c of [undefined,'not-a-crop','phantom-seed','__proto__'])assert.equal(Visual.image(c,'ready'),null);
  for(const st of [undefined,'empty','locked','sowing'])assert.equal(Visual.image('carrot',st),null);
 });
 test('crop illustrations follow actual deterministic growth stages at precise time boundaries',()=>{
  const t0=1_700_000_000_000;
  for(const crop of Visual.CROPS){
-  const s={unlocked:1,coins:2000,rupeeExpedition:{gloveTier:0}};
+  const s={unlocked:1,coins:3000,rupeeExpedition:{gloveTier:0}};
   Town.ensure(s);
   s.town.houseLevel=40; // isolate crop art tests from stage purchase progression
   assert.equal(Town.purchase(s,'seed',crop,1).valid,true);

@@ -8,7 +8,7 @@ const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,ge
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
 let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null;
-let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
+let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmCategory='all',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems'),styles=document.getElementById('style-shards');
 if(!root)throw Error('Missing #screen');
 // Restore only validated, unfinished Rupee Rush boards. Never touch Nut Buster saves.
@@ -263,7 +263,7 @@ function farmEquipmentPreview(){
 function kitchenPreview(){
  const holdings=Kitchen.pantry(saved),planned=Kitchen.RECIPES,ready=Cook.list(saved,Date.now(),dailyCap());
  const names={hearts:'1 life',moves:'3 daily moves',strikes:'3 bonus mining strikes',scans:'2 bonus surveys',farmPower:'1 farming power-up',matchBooster:'1 match-3 booster'};
- const pantry='<div class="farm-art-shelf">'+holdings.map(item=>
+ const pantry='<div class="farm-art-shelf">'+holdings.filter(item=>item.quantity>0).map(item=>
   '<div class="farm-art-entry pantry-entry"><img loading="lazy" src="'+item.art+'" alt=""><strong>'+escape(item.name)+'</strong><small>Stored ×'+number(item.quantity)+'</small></div>').join('')+'</div>';
  const scene=(room,title,description)=>'<div class="kitchen-room-banner kitchen-room-'+room+'">'+
   '<img class="kitchen-room-art" loading="lazy" decoding="async" src="art/embryon/town/kitchen/'+room+'-room.webp" alt="'+
@@ -304,8 +304,10 @@ function modePowerCards(family){
 }
 function farm(){
  const t=Garden.summary(saved),seeds=Object.values(Garden.CROPS),feeds=Object.values(Garden.FERTILIZERS),time=Date.now();
- const art={carrot:'seeds-carrot.png',wheat:'seeds-wheat.png',berry:'seeds-bluebell-berry.png'};
- const seedSelect='<div class="farm-selector">'+seeds.filter(c=>t.houseLevel>=c.house).map(c=>button('farm-crop',c.name+' · '+t.seeds[c.id]+' seeds',farmCrop===c.id?'primary':'secondary','data-crop="'+c.id+'"')).join('')+'</div>';
+ const unlocked=seeds.filter(c=>t.houseLevel>=c.house),categories=['all',...Garden.CATEGORIES.filter(cat=>unlocked.some(c=>c.category===cat))],
+  filtered=unlocked.filter(c=>farmCategory==='all'||c.category===farmCategory);
+ const cats='<div class="farm-categories" role="group" aria-label="Filter farm crop catalog">'+categories.map(cat=>button('farm-category',(cat==='all'?'All Crops':cat[0].toUpperCase()+cat.slice(1))+' · '+(cat==='all'?unlocked.length:unlocked.filter(c=>c.category===cat).length),farmCategory===cat?'primary':'secondary','data-category="'+cat+'"')).join('')+'</div>';
+ const seedSelect=cats+'<div class="farm-seed-grid">'+filtered.map(c=>'<button class="farm-seed-choice '+(farmCrop===c.id?'selected':'')+'" data-action="farm-crop" data-crop="'+c.id+'" aria-pressed="'+(farmCrop===c.id)+'"><img src="'+FarmArt.harvest(c.id)+'" alt="" loading="lazy"><span><strong>'+escape(c.name)+'</strong><small>×'+t.seeds[c.id]+' seeds · '+Math.round(c.growMs/60000)+' min</small><small>Yield '+c.yield+' · '+c.sellEach+' Rupees each</small></span></button>').join('')+'</div>';
  const feedSelect='<div class="farm-selector">'+button('farm-feed','No Fertilizer',farmFeed===''?'primary':'secondary','data-feed="none"')+
  feeds.filter(f=>t.houseLevel>=f.house).map(f=>button('farm-feed',f.name+' · '+t.fertilizers[f.id],farmFeed===f.id?'primary':'secondary','data-feed="'+f.id+'"')).join('')+'</div>';
  const plots='<div class="farm-grid">'+Array.from({length:8},(_,i)=>t.slots[i]||{state:'locked'}).map((p,i)=>{
@@ -324,13 +326,14 @@ function farm(){
  return '<div class="location-banner location-garden">'+header('Embryon Garden','Grow supplies, expand your homestead, and activate farm-specific power-ups.')+'</div>'+townAvatarPanel()+stats()+townHousePanel(t)+
  '<div class="panel"><h2>'+escape(t.houseBand)+' · House '+t.houseLevel+'/40</h2><p>'+t.plots+' growing plots available. House upgrades unlock more crops, fertilizers, and plots.</p>'+
  button('farm-upgrade',t.nextUpgradeCost===null?'FULLY UPGRADED':'UPGRADE HOUSE · '+number(t.nextUpgradeCost)+' RUPEES','secondary',t.nextUpgradeCost===null||saved.coins<t.nextUpgradeCost?'disabled':'')+'</div>'+
- '<h2 class="subhead">Growing Plots</h2><p class="hint">Choose seeds and optional fertilizer, then plant an empty plot. Select a plot before using targeted garden magic.</p>'+
+ '<h2 class="subhead">Growing Plots · '+unlocked.length+'/'+seeds.length+' crops unlocked</h2><p class="hint">Choose seeds and optional fertilizer, then plant an empty plot. Select a plot before using targeted garden magic.</p>'+
  seedSelect+feedSelect+plots+
- '<h2 class="subhead">Buy Seeds &amp; Fertilizer</h2><div class="shop-grid">'+seeds.filter(c=>t.houseLevel>=c.house).map(c=>'<div class="shop-item"><img class="powerup-art" src="art/embryon/town/gardening/icons/'+art[c.id]+'" alt=""><strong>'+escape(c.name)+'</strong><small>Seed stock '+t.seeds[c.id]+' · '+c.seedCost+' Rupees</small>'+
- button('farm-buy-seed','BUY 1','secondary','data-crop="'+c.id+'" '+(saved.coins<c.seedCost?'disabled':''))+'</div>').join('')+
+ '<h2 class="subhead">Buy Seeds &amp; Fertilizer</h2><div class="shop-grid">'+filtered.map(c=>'<div class="shop-item"><img class="powerup-art" src="'+FarmArt.harvest(c.id)+'" loading="lazy" alt=""><strong>'+escape(c.name)+'</strong><small>Unlocks at house '+c.house+' · '+escape(c.category)+'</small><small>Seed stock '+t.seeds[c.id]+' · '+c.seedCost+' Rupees</small>'+
+ button('farm-buy-seed','BUY 1','secondary','data-crop="'+c.id+'" data-qty="1" '+(saved.coins<c.seedCost?'disabled':''))+
+ button('farm-buy-seed','BUY 5','secondary','data-crop="'+c.id+'" data-qty="5" '+(saved.coins<c.seedCost*5?'disabled':''))+'</div>').join('')+
  feeds.filter(f=>t.houseLevel>=f.house).map(f=>'<div class="shop-item"><img class="powerup-art" src="art/embryon/town/gardening/icons/'+({compost:'fertilizer-compost.png',quality:'fertilizer-enriched.png',royal:'fertilizer-crystal-tonic.png'}[f.id])+'" alt=""><strong>'+escape(f.name)+'</strong><small>Stock '+t.fertilizers[f.id]+' · '+f.cost+' Rupees</small>'+
  button('farm-buy-feed','BUY 1','secondary','data-feed="'+f.id+'" '+(saved.coins<f.cost?'disabled':''))+'</div>').join('')+'</div>'+
- '<h2 class="subhead">Harvest Store</h2><div class="shop-grid">'+seeds.map(c=>'<div class="shop-item"><img class="farm-item-art" loading="lazy" src="'+FarmArt.harvest(c.id)+'" alt=""><strong>'+escape(c.name)+'</strong><small>'+t.harvest[c.id]+' harvested · '+c.sellEach+' Rupees each</small>'+
+ '<h2 class="subhead">Harvest Store</h2><div class="shop-grid">'+seeds.filter(c=>t.harvest[c.id]>0).map(c=>'<div class="shop-item"><img class="farm-item-art" loading="lazy" src="'+FarmArt.harvest(c.id)+'" alt=""><strong>'+escape(c.name)+'</strong><small>'+t.harvest[c.id]+' harvested · '+c.sellEach+' Rupees each</small>'+
  button('farm-sell','SELL ALL','secondary','data-crop="'+c.id+'" '+(!t.harvest[c.id]?'disabled':''))+'</div>').join('')+'</div>'+
  '<h2 class="subhead">Farming Power-Ups</h2><p class="hint">Selected plot: '+(farmPlot+1)+' · Consumables do not replace fertilizers or building upgrades.</p>'+
  modePowerCards('farm')+button('farm-shop','SHOP FOR GARDEN POWER-UPS','secondary')+kitchenPreview()+farmEquipmentPreview();
@@ -442,10 +445,11 @@ function handle(b){
  if(a==='kitchen-serve')return finishMining(Cook.serve(saved,info.recipe,now,dailyCap()),'Meal served; reward granted.');
  if(a==='farm-shop'){shopTab='boosters';nav('shop');return;}
  if(a==='farm-plot'){farmPlot=Number(info.plot);render();return;}
- if(a==='farm-crop'){if(Garden.CROPS[info.crop])farmCrop=info.crop;render();return;}
+ if(a==='farm-category'){farmCategory=info.category==='all'||Garden.CATEGORIES.includes(info.category)?info.category:'all';const choices=Object.values(Garden.CROPS).filter(c=>saved.town.houseLevel>=c.house&&(farmCategory==='all'||c.category===farmCategory));if(!choices.some(c=>c.id===farmCrop)&&choices.length)farmCrop=choices[0].id;render();return;}
+  if(a==='farm-crop'){if(Object.hasOwn(Garden.CROPS,info.crop)&&saved.town.houseLevel>=Garden.CROPS[info.crop].house)farmCrop=info.crop;render();return;}
  if(a==='farm-feed'){if(info.feed==='none'||Garden.FERTILIZERS[info.feed])farmFeed=info.feed==='none'?'':info.feed;render();return;}
  if(a==='farm-upgrade')return finishMining(Garden.upgradeHouse(saved),'Garden home upgraded.');
- if(a==='farm-buy-seed')return finishMining(Garden.purchase(saved,'seed',info.crop,1),'Seeds purchased.');
+ if(a==='farm-buy-seed')return finishMining(Garden.purchase(saved,'seed',info.crop,Number(info.qty||1)),'Seeds purchased.');
  if(a==='farm-buy-feed')return finishMining(Garden.purchase(saved,'fertilizer',info.feed,1),'Fertilizer purchased.');
  if(a==='farm-plant'){farmPlot=Number(info.plot);return finishMining(Garden.plant(saved,farmPlot,farmCrop,farmFeed||null,now),'New crops planted.');}
  if(a==='farm-harvest'){farmPlot=Number(info.plot);return finishMining(Garden.harvest(saved,farmPlot,now),'Crops harvested.');}

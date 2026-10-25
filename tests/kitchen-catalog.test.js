@@ -6,13 +6,13 @@ const root={RupeeTownGarden:Farm,RupeeFarmingArt:Art};
 const code=fs.readFileSync(path.resolve(__dirname,'../web/kitchen-catalog.js'),'utf8');
 vm.runInNewContext(code,{window:root});
 const K=root.RupeeKitchenCatalog;
-assert.equal(K.ACTIVE.length,3);
+assert.equal(K.ACTIVE.length,48);
 assert.equal(K.pantry({town:{harvest:{carrot:5,wheat:2,berry:9}}})[2].quantity,9);
 assert.equal(K.pantry({town:{harvest:{carrot:-9,wheat:Infinity}}})[0].quantity,0);
 assert.equal(K.pantry({})[0].quantity,0,'read-only missing-save behavior');
 assert.equal(K.get('berry').art,Art.goods('blueberry'),'existing Bluebell Berry uses blue berry art');
 assert.equal(K.get('wheat').art,Art.goods('wheat'));
-assert(K.FUTURE_ITEMS.length>=25);
+assert(K.FUTURE_ITEMS.length>=11);
 assert.equal(K.RECIPES.length,4);
 for(const recipe of K.RECIPES){
  assert.equal(recipe.status,'preview-only');assert.equal(recipe.craftable,false);

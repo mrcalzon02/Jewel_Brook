@@ -4,18 +4,9 @@
 (function(root){'use strict';
 const Farm=root.RupeeTownGarden,Art=root.RupeeFarmingArt;
 if(!Farm||!Art)throw Error('Town garden and refined farming art must load before kitchen catalog');
-const ACTIVE=Object.freeze([
- Object.freeze({id:'carrot',name:Farm.CROPS.carrot.name,source:'town.harvest.carrot',artId:'carrot',family:'crop'}),
- Object.freeze({id:'wheat',name:Farm.CROPS.wheat.name,source:'town.harvest.wheat',artId:'wheat',family:'grain'}),
- Object.freeze({id:'berry',name:Farm.CROPS.berry.name,source:'town.harvest.berry',artId:'blueberry',family:'fruit'})
-]);
-const FUTURE=Object.freeze({
- vegetable:['potato','tomato','onion','garlic','cabbage','lettuce','pepper','eggplant','pumpkin','corn','broccoli','cauliflower'],
- fruit:['strawberry','raspberry'],
- crop:['sugarcane','herb-bundle','tea-leaves','coffee-beans','sunflower'],
- animal:['milk','eggs','honey'],
- pantry:['flour','sugar','butter','cheese','bread','jam','pickles','juice']
-});
+const FAMILIES=Object.freeze({"roots":"crop","greens":"vegetable","grains":"grain","fruits":"fruit","herbs":"herb","flowers":"flower","exotics":"specialty","orchard":"fruit"});
+const ACTIVE=Object.freeze(Object.values(Farm.CROPS).map(c=>Object.freeze({id:c.id,name:c.name,source:'town.harvest.'+c.id,artId:c.artId||c.id,family:FAMILIES[c.category]||'crop'})));
+const FUTURE=Object.freeze({animal:['milk','eggs','honey'],pantry:['flour','sugar','butter','cheese','bread','jam','pickles','juice']});
 const future=[];
 for(const [family,ids] of Object.entries(FUTURE))for(const id of ids){
  const art=Art.goods(id);
@@ -40,8 +31,8 @@ function count(save,id){
  return Number.isSafeInteger(value)&&value>=0?Math.min(1_000_000_000,value):0;
 }
 function pantry(save){return ACTIVE.map(x=>Object.freeze({...ITEMS[x.id],quantity:count(save,x.id)}));}
-const get=id=>ITEMS[id]||null;
-const image=id=>ITEMS[id]?.art||Art.goods(id)||null;
+const get=id=>Object.hasOwn(ITEMS,id)?ITEMS[id]:null;
+const image=id=>get(id)?.art||Art.goods(id)||null;
 const api=Object.freeze({ACTIVE,FUTURE_ITEMS,ITEMS,RECIPES,get,image,pantry,count});
 root.RupeeKitchenCatalog=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;

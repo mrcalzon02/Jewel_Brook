@@ -11,13 +11,13 @@ const get=(id,variant)=>{
 };
 const variants=id=>Object.freeze({clean:CLEAN[id]||null,overview:OVERVIEW[id]||null});
 // Art aliases deliberately do not rename the Town's persisted crop IDs.
-const TOWN_CROP_ART=Object.freeze({carrot:'carrot',wheat:'wheat',berry:'blueberry'});
+const TOWN_CROP_ART=Object.freeze({"carrot":"carrot","wheat":"wheat","berry":"blueberry","lettuce":"lettuce","potato":"potato","onion":"onion","strawberry":"strawberry","tomato":"tomato","cabbage":"cabbage","garlic":"garlic","corn":"corn","pepper":"pepper","broccoli":"broccoli","cauliflower":"cauliflower","raspberry":"raspberry","sunflower":"sunflower","eggplant":"eggplant","pumpkin":"pumpkin","cotton":"cotton","sugarcane":"sugarcane","herb-bundle":"herb-bundle","lavender":"lavender","tea-leaves":"tea-leaves","daisy":"daisy","tulip":"tulip","rose":"rose","coffee-beans":"coffee-beans","orchid":"orchid"});
 const MODE_POWER_ART=Object.freeze({
  'farm-sunrise':'growth-elixir','farm-rainfall':'deluxe-sprinkler',
  'farm-bounty':'harvest-boost','farm-seeds':'magic-seeds',
  'farm-compost':'compost-bin','farm-market':'harvest-basket'
 });
-const harvest=id=>get(TOWN_CROP_ART[id], 'overview');
+const harvest=id=>Object.hasOwn(TOWN_CROP_ART,id)?get(TOWN_CROP_ART[id], 'overview'):(["radish","pea","mint","spinach","beet","bean","cucumber","kale","zucchini","barley","rice","grape","melon","watermelon","apple","pear","peach","pineapple","dragonfruit","starfruit"].includes(id)?'art/embryon/town/gardening/growth/'+id+'-ready.svg':null);
 const powerup=id=>get(MODE_POWER_ART[id], 'clean');
 const equipment=id=>get(id,'clean');
 const goods=id=>get(id,'overview');
