@@ -2,13 +2,13 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
-P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
+P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
 let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null;
-let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
+let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems'),styles=document.getElementById('style-shards');
 if(!root)throw Error('Missing #screen');
 // Restore only validated, unfinished Rupee Rush boards. Never touch Nut Buster saves.
@@ -37,9 +37,9 @@ function home(){
  (saved.cosmeticEquipped.frame?'<img class="profile-frame" alt="" src="'+escape(Economy.BY_ID[saved.cosmeticEquipped.frame].image)+'">':'')+'</div>'+
  '<div class="profile-outfit"><img alt="Equipped Daysha wardrobe look" src="'+escape(Economy.BY_ID[saved.cosmeticEquipped.outfit].image)+'"></div>'+
  '<div class="profile-label"><b>'+escape(Economy.BY_ID[saved.cosmeticEquipped.character].name)+'</b><small>'+escape(Economy.BY_ID[saved.cosmeticEquipped.outfit].name)+'</small>'+button('open-wardrobe','CUSTOMIZE CHARACTER','secondary')+'</div></div>'+
- '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+'</div></div></section>'+
+ '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+'</div></div></section>'+
  '<div class="panels"><section class="panel"><h2>Current expedition</h2><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
- '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section></div>';
+ '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section>'+ '<section class="panel"><h2>Garden &amp; Farm</h2><p>Plant seeds, harvest crops, expand the homestead, and use magical farming supplies.</p>'+button('go-farm','OPEN GARDEN')+'</section></div>';
 }
 function campaign(){
  const entered=Chapters.CHAPTERS.filter(c=>saved.unlocked>=c.start).length;
@@ -196,7 +196,7 @@ function offerCard(id,o){
  button('buy-currency',(o.currency==='gems'?'STAR GEMS ':'RUPEES ')+number(o.cost),'primary','data-offer="'+id+'" '+(balance<o.cost?'disabled':''))+'</div>';
 }
 function shop(){
- const tabs=[['packs','Loot Chests'],['supplies','Supplies'],['character','Characters'],['outfit','Outfits'],['pickSkin','Pick Skins'],['gloveSkin','Glove Skins'],['frame','Frames']];
+ const tabs=[['packs','Loot Chests'],['boosters','Game Power-Ups'],['supplies','Supplies'],['character','Characters'],['outfit','Outfits'],['pickSkin','Pick Skins'],['gloveSkin','Glove Skins'],['frame','Frames']];
  const nav='<div class="mine-tabs shop-tabs">'+tabs.map(([id,label])=>button('shop-tab',label,shopTab===id?'primary':'secondary','data-shop-tab="'+id+'"')).join('')+'</div>';
  let content='';
  if(shopTab==='packs'){
@@ -207,6 +207,15 @@ function shop(){
    '<strong>'+escape(p.name)+'</strong><small>'+escape(p.description)+'</small><small class="odds">Per draw: '+escape(table)+'</small>'+
    button('buy-pack',number(p.cost)+' '+Economy.CURRENCY[p.currency],'primary','data-pack="'+id+'" '+(bal<p.cost?'disabled':''))+'</div>';
   }).join('')+'</div>';
+ }else if(shopTab==='boosters'){
+  content='<p class="hint">Each minigame has its own real consumables. Farming power-ups modify crops, mining tools affect excavation, and match-3 boosters work on gem boards. All items use earned in-game currencies.</p>'+
+  Object.entries(Powerups.BUNDLES).map(([id,p])=>'<div class="shop-item mode-bundle"><strong>'+escape(p.name)+'</strong><small>'+escape(p.family.toUpperCase())+' · '+(p.matchCount?p.matchCount+' match-3 boosters':Object.entries(p.contents).map(([id,q])=>q+' × '+Powerups.CATALOG[id].name).join(', '))+'</small>'+
+    button('buy-mode-bundle',number(p.cost)+' '+Economy.CURRENCY[p.currency],'primary','data-bundle="'+id+'" '+(saved[p.currency]<p.cost?'disabled':''))+'</div>').join('')+
+  ['farm','mine'].map(family=>'<h2 class="subhead">'+(family==='farm'?'Farming Power-Ups':'Mining Power-Ups')+'</h2><div class="shop-grid">'+
+    Object.values(Powerups.CATALOG).filter(p=>p.family===family).map(p=>'<div class="shop-item"><img class="powerup-art" src="'+escape(p.art)+'" alt=""><strong>'+escape(p.name)+'</strong><small>'+escape(p.description)+'</small><small>Owned ×'+Powerups.count(saved,p.id)+'</small>'+
+    button('buy-mode-power',p.price+' RUPEES','primary','data-power="'+p.id+'" '+(saved.coins<p.price?'disabled':''))+'</div>').join('')+'</div>').join('')+
+  '<h2 class="subhead">Match-3 Power-Ups</h2><div class="shop-grid">'+E.BOOSTERS.map(id=>'<div class="shop-item">'+boosterIcon(id,42)+'<strong>'+escape(E.BOOSTER_META[id].label)+'</strong><small>Owned ×'+P.count(saved,id)+'</small>'+
+    button('buy-booster',P.BOOSTER_PRICES[id]+' RUPEES','primary','data-booster="'+id+'" '+(!P.unlocked(saved,id)||saved.coins<P.BOOSTER_PRICES[id]?'disabled':''))+'</div>').join('')+'</div>';
  }else if(shopTab==='supplies'){
   content='<h2 class="subhead">Lives &amp; moves</h2><div class="shop-grid">'+Object.entries(P.SHOP_EXCHANGES).map(([id,o])=>offerCard(id,o)).join('')+'</div>'+
   '<h2 class="subhead">Booster supplies</h2><div class="shop-grid">'+E.BOOSTERS.map(id=>'<div class="shop-item">'+boosterIcon(id,39)+'<strong>'+escape(E.BOOSTER_META[id].label)+'</strong><small>Stock ×'+P.count(saved,id)+'</small>'+
@@ -228,14 +237,48 @@ function shop(){
  (shopReceipt?'<div class="reward-receipt" role="status"><b>'+escape(shopReceipt.title)+'</b><p>'+shopReceipt.lines.map(escape).join(' · ')+'</p>'+button('dismiss-receipt','DISMISS','quiet')+'</div>':'')+
  nav+content;
 }
+function modePowerCards(family){
+ return '<div class="shop-grid mode-power-list">'+Object.values(Powerups.CATALOG).filter(p=>p.family===family).map(p=>
+  '<div class="shop-item mode-power-card"><img class="powerup-art" src="'+escape(p.art)+'" alt=""><strong>'+escape(p.name)+'</strong><small>'+escape(p.description)+'</small><small>In bag: '+Powerups.count(saved,p.id)+'</small>'+
+  button('use-mode-power',p.targeted?'USE ON SELECTED '+(family==='farm'?'PLOT':'ROCK'):'ACTIVATE','primary','data-power="'+p.id+'" '+(Powerups.count(saved,p.id)<1?'disabled':''))+'</div>').join('')+'</div>';
+}
+function farm(){
+ const t=Garden.summary(saved),seeds=Object.values(Garden.CROPS),feeds=Object.values(Garden.FERTILIZERS),time=Date.now();
+ const art={carrot:'seeds-carrot.png',wheat:'seeds-wheat.png',berry:'seeds-bluebell-berry.png'};
+ const seedSelect='<div class="farm-selector">'+seeds.filter(c=>t.houseLevel>=c.house).map(c=>button('farm-crop',c.name+' · '+t.seeds[c.id]+' seeds',farmCrop===c.id?'primary':'secondary','data-crop="'+c.id+'"')).join('')+'</div>';
+ const feedSelect='<div class="farm-selector">'+button('farm-feed','No Fertilizer',farmFeed===''?'primary':'secondary','data-feed="none"')+
+ feeds.filter(f=>t.houseLevel>=f.house).map(f=>button('farm-feed',f.name+' · '+t.fertilizers[f.id],farmFeed===f.id?'primary':'secondary','data-feed="'+f.id+'"')).join('')+'</div>';
+ const plots='<div class="farm-grid">'+t.slots.map((p,i)=>{
+  const isSelected=i===farmPlot,which=p.crop&&Garden.CROPS[p.crop],ready=p.state==='ready',picture=which?art[which.id]:art[farmCrop];
+  const detail=p.state==='empty'?'Available':ready?'READY TO HARVEST':p.state==='locked'?'Locked':p.state.toUpperCase()+' · '+Math.ceil(Math.max(0,p.readyAt-time)/60000)+' min';
+  return '<div class="farm-plot '+(isSelected?'selected':'')+'"><button class="farm-plot-pick" data-action="farm-plot" data-plot="'+i+'" aria-pressed="'+isSelected+'"><img src="art/embryon/town/gardening/icons/'+picture+'" alt=""><b>Plot '+(i+1)+'</b><small>'+detail+'</small>'+
+   (which?'<small>'+escape(which.name)+' · yield '+p.yield+'</small>':'')+'</button>'+
+   (p.state==='empty'?button('farm-plant','PLANT','primary','data-plot="'+i+'" '+(!t.seeds[farmCrop]||(farmFeed&&!t.fertilizers[farmFeed])?'disabled':'')):
+    ready?button('farm-harvest','HARVEST +'+p.yield,'primary','data-plot="'+i+'"'):'')+'</div>';
+ }).join('')+'</div>';
+ return '<div class="location-banner location-garden">'+header('Embryon Garden','Grow supplies, expand your homestead, and activate farm-specific power-ups.')+'</div>'+stats()+
+ '<div class="panel"><h2>'+escape(t.houseBand)+' · House '+t.houseLevel+'/40</h2><p>'+t.plots+' growing plots available. House upgrades unlock more crops, fertilizers, and plots.</p>'+
+ button('farm-upgrade',t.nextUpgradeCost===null?'FULLY UPGRADED':'UPGRADE HOUSE · '+number(t.nextUpgradeCost)+' RUPEES','secondary',t.nextUpgradeCost===null||saved.coins<t.nextUpgradeCost?'disabled':'')+'</div>'+
+ '<h2 class="subhead">Growing Plots</h2><p class="hint">Choose seeds and optional fertilizer, then plant an empty plot. Select a plot before using targeted garden magic.</p>'+
+ seedSelect+feedSelect+plots+
+ '<h2 class="subhead">Buy Seeds &amp; Fertilizer</h2><div class="shop-grid">'+seeds.filter(c=>t.houseLevel>=c.house).map(c=>'<div class="shop-item"><img class="powerup-art" src="art/embryon/town/gardening/icons/'+art[c.id]+'" alt=""><strong>'+escape(c.name)+'</strong><small>Seed stock '+t.seeds[c.id]+' · '+c.seedCost+' Rupees</small>'+
+ button('farm-buy-seed','BUY 1','secondary','data-crop="'+c.id+'" '+(saved.coins<c.seedCost?'disabled':''))+'</div>').join('')+
+ feeds.filter(f=>t.houseLevel>=f.house).map(f=>'<div class="shop-item"><img class="powerup-art" src="art/embryon/town/gardening/icons/'+({compost:'fertilizer-compost.png',quality:'fertilizer-enriched.png',royal:'fertilizer-crystal-tonic.png'}[f.id])+'" alt=""><strong>'+escape(f.name)+'</strong><small>Stock '+t.fertilizers[f.id]+' · '+f.cost+' Rupees</small>'+
+ button('farm-buy-feed','BUY 1','secondary','data-feed="'+f.id+'" '+(saved.coins<f.cost?'disabled':''))+'</div>').join('')+'</div>'+
+ '<h2 class="subhead">Harvest Store</h2><div class="shop-grid">'+seeds.map(c=>'<div class="shop-item"><strong>'+escape(c.name)+'</strong><small>'+t.harvest[c.id]+' harvested · '+c.sellEach+' Rupees each</small>'+
+ button('farm-sell','SELL ALL','secondary','data-crop="'+c.id+'" '+(!t.harvest[c.id]?'disabled':''))+'</div>').join('')+'</div>'+
+ '<h2 class="subhead">Farming Power-Ups</h2><p class="hint">Selected plot: '+(farmPlot+1)+' · Consumables do not replace fertilizers or building upgrades.</p>'+
+ modePowerCards('farm')+button('farm-shop','SHOP FOR GARDEN POWER-UPS','secondary');
+}
+
 function mine(){
  const s=Mining.stats(saved),prices=Mining.prices(saved),cells=Mining.currentBoard(saved);
- const tabs=['dig','equipment','refinery','exchange'];
+ const tabs=['dig','equipment','refinery','exchange','powerups'];
  let content='';
  if(mineTab==='dig'){
-  content='<div class="mine-stats"><span>'+'<img class="mine-tool-art" alt="Current pickaxe" src="'+escape((Economy.BY_ID[saved.cosmeticEquipped.pickSkin]?.image||G.entry('pickaxe',s.pickTier).image))+'"> '+s.strikesLeft+'/'+s.strikeMax+' strikes</span><span>'+'<img class="mine-tool-art" alt="Current survey gloves" src="'+escape((Economy.BY_ID[saved.cosmeticEquipped.gloveSkin]?.image||G.entry('gloves',s.gloveTier).image))+'"> '+s.scansLeft+'/'+s.scanMax+' surveys</span><span>'+icon('cart',22)+' '+s.cartOre+'/'+s.cartMax+' cart</span><span>'+icon('crystal',22)+' '+s.ore+' ore</span></div>'+
-  '<div class="tool-row">'+button('mine-mode-dig','EXCAVATE',mineMode==='dig'?'primary':'secondary')+button('mine-mode-scan','SURVEY',mineMode==='scan'?'primary':'secondary')+button('mine-unload','UNLOAD CART','secondary',s.cartOre?'':'disabled')+'</div>'+
-  '<div class="mine-frame"><div class="mine-board" style="--mine-columns:'+s.size+'">'+cells.map(c=>'<button data-action="mine-cell" data-x="'+c.x+'" data-y="'+c.y+'" class="rock '+(c.done?'revealed ':'')+(c.exposed?'exposed ':'')+'" aria-label="Mine tile '+(c.x+1)+','+(c.y+1)+'" title="'+(c.done?(c.exposed?'Collect '+c.exposed+' ore':c.kind):'Rock '+c.hits+'/'+c.hardness)+'">'+(c.exposed?'<img class="mine-reward-sprite" src="art/nutvale/mining-economy/currency/gemmed-currency-chest.png" alt="Ore to collect">':c.done?(c.kind==='barren'?'<span class="mine-empty" aria-hidden="true">◌</span>':'<img class="mine-reward-sprite" src="art/nutvale/mining-economy/currency/rainbow-coin.png" alt="Excavated ore">'):c.survey==='ore'?icon('scan',31):'<span class="excavation-rock damage-'+Math.min(2,c.hits)+'" aria-hidden="true"><i></i><i></i><i></i></span>')+'<small>'+(c.exposed?'ORE ×'+c.exposed:c.done?(c.kind==='barren'?'EMPTY':'CLEARED'):c.survey==='ore'?'ORE HERE':c.survey==='barren'?'BARREN':c.hits+'/'+c.hardness)+'</small></button>').join('')+'</div></div>'+
+  content='<div class="mine-stats"><span>'+'<img class="mine-tool-art" alt="Current pickaxe" src="'+escape((Economy.BY_ID[saved.cosmeticEquipped.pickSkin]?.image||G.entry('pickaxe',s.pickTier).image))+'"> '+s.strikesLeft+'/'+s.strikeMax+' strikes +'+s.bonusStrikes+' bonus</span><span>'+'<img class="mine-tool-art" alt="Current survey gloves" src="'+escape((Economy.BY_ID[saved.cosmeticEquipped.gloveSkin]?.image||G.entry('gloves',s.gloveTier).image))+'"> '+s.scansLeft+'/'+s.scanMax+' surveys +'+s.bonusScans+' bonus</span><span>'+icon('cart',22)+' '+s.cartOre+'/'+s.cartMax+' cart</span><span>'+icon('crystal',22)+' '+s.ore+' ore</span></div>'+
+  '<div class="tool-row">'+button('mine-mode-dig','EXCAVATE',mineMode==='dig'?'primary':'secondary')+button('mine-mode-scan','SURVEY',mineMode==='scan'?'primary':'secondary')+button('mine-mode-focus','TARGET ROCK',mineMode==='focus'?'primary':'secondary')+button('mine-unload','UNLOAD CART','secondary',s.cartOre?'':'disabled')+'</div>'+
+  '<div class="mine-frame"><div class="mine-board" style="--mine-columns:'+s.size+'">'+cells.map(c=>'<button data-action="mine-cell" data-x="'+c.x+'" data-y="'+c.y+'" class="rock '+(c.done?'revealed ':'')+(c.exposed?'exposed ':'')+(mineFocus?.x===c.x&&mineFocus?.y===c.y?'focused ':'')+'" aria-label="Mine tile '+(c.x+1)+','+(c.y+1)+'" title="'+(c.done?(c.exposed?'Collect '+c.exposed+' ore':c.kind):'Rock '+c.hits+'/'+c.hardness)+'">'+(c.exposed?'<img class="mine-reward-sprite" src="art/nutvale/mining-economy/currency/gemmed-currency-chest.png" alt="Ore to collect">':c.done?(c.kind==='barren'?'<span class="mine-empty" aria-hidden="true">◌</span>':'<img class="mine-reward-sprite" src="art/nutvale/mining-economy/currency/rainbow-coin.png" alt="Excavated ore">'):c.survey==='ore'?icon('scan',31):'<span class="excavation-rock damage-'+Math.min(2,c.hits)+'" aria-hidden="true"><i></i><i></i><i></i></span>')+'<small>'+(c.exposed?'ORE ×'+c.exposed:c.done?(c.kind==='barren'?'EMPTY':'CLEARED'):c.survey==='ore'?'ORE HERE':c.survey==='barren'?'BARREN':c.hits+'/'+c.hardness)+'</small></button>').join('')+'</div></div>'+
   '<p class="hint">Site '+(s.site+1)+' · '+s.size+'×'+s.size+' tiles. Barren rocks are genuine empty results; completed sites regenerate only after all uncovered ore is collected.</p>';
  }else if(mineTab==='equipment'){
   content='<div class="upgrade-list">'+[
@@ -250,6 +293,8 @@ function mine(){
   '<div class="upgrade-list"><div class="upgrade"><img class="mine-economy-art" src="'+MineArt.path('currency','rainbow-coins')+'" alt=""><div class="upgrade-name"><b>Polish crystal</b><small>'+Mining.ORE_PER_METAL[s.refineryTier]+' raw ore → 1 polished crystal</small></div>'+button('mine-refine','POLISH ONE','primary',s.ore<Mining.ORE_PER_METAL[s.refineryTier]?'disabled':'')+'</div>'+
   '<div class="upgrade"><img class="mine-economy-art" src="'+MineArt.goods(s.refineryTier)+'" alt=""><div class="upgrade-name"><b>Pack crystal parcels</b><small>2 polished crystals → 1 trade parcel</small></div>'+button('mine-craft','PACK ONE','primary',s.metal<2?'disabled':'')+'</div>'+
   '<div class="upgrade"><img class="mine-economy-art" src="'+MineArt.goods(s.refineryTier)+'" alt=""><div class="upgrade-name"><b>Sell crystal parcel</b><small>1 parcel → '+Mining.SALE[s.refineryTier]+' mining credits</small></div>'+button('mine-sell','SELL ONE','primary',s.goods<1?'disabled':'')+'</div></div>';
+ }else if(mineTab==='powerups'){
+  content='<p class="hint">Targeted tools use the marked rock. Mark a rock in the DIG tab first; explosives and surveys do not consume ordinary strikes or scans.</p>'+ (mineFocus?'<p class="hint">Target: column '+(mineFocus.x+1)+', row '+(mineFocus.y+1)+'</p>':'<p class="hint">No rock targeted yet.</p>')+modePowerCards('mine')+button('mine-tab','RETURN TO DIG','secondary','data-tab="dig"');
  }else{
   content='<p class="hint">Sell crafted crystal parcels for mining credits, then buy supplies usable immediately in the match-3 campaign.</p>'+
    '<div class="shop-grid">'+Object.entries(Bridge.OFFERS).map(([id,o])=>'<div class="shop-item">'+icon(o.icon,38)+'<strong>'+escape(o.label)+'</strong><small>'+number(o.cost)+' mining credits</small>'+button('mine-buy','CLAIM SUPPLIES','primary','data-offer="'+id+'" '+(s.dollars<o.cost?'disabled':''))+'</div>').join('')+'</div>';
@@ -278,14 +323,14 @@ function settings(){
  button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE RUPEE RUSH DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>';
 }
 function render(){
- P.migrate(saved);Mining.ensure(saved);Economy.ensure(saved);bank();
+ P.migrate(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);bank();
  wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);if(styles)styles.textContent=number(saved.styleShards);
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
-  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='rewards'?rewards():settings());
+  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
  const navArt={
   home:Icons.get('home'),campaign:Icons.get('levels'),
-  mine:Icons.get('mine'),
+  mine:Icons.get('mine'),farm:'art/embryon/town/gardening/icons/seeds-carrot.png',
   shop:Icons.get('shop'),rewards:Icons.get('rewards'),settings:Icons.get('settings')
  };
  // Brand-neutral local glyphs and the genuine pickaxe, never old woodland icons.
@@ -298,7 +343,7 @@ function finishMining(result,success){if(result?.valid){const reward=/reward|ref
 function handle(b){
  const a=b.dataset.action,info=b.dataset,now=Date.now();
  if(info.nav){nav(info.nav);return;}
- if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
+ if(a==='go-farm'){nav('farm');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
  if(a==='toggle-sfx'){Audio.configure({sfx:!Audio.settings().sfx});render();return;}if(a==='toggle-music'){Music.configure({music:!Music.settings().music});render();return;}if(a==='toggle-voice'){Audio.configure({voice:!Audio.settings().voice});render();return;}
  if(a==='open-chapter'){const c=Chapters.byId(info.chapter);if(!c)return;chapterId=c.id;campaignPage=Math.max(0,Math.floor((Math.max(c.start,Math.min(saved.unlocked,c.end))-c.start)/30));page='chapter';Audio.play('chapter-enter');Audio.speak('enter'+c.id);render();return;}
  if(a==='play-next'){start(saved.unlocked);return;}
@@ -324,6 +369,27 @@ function handle(b){
   P.spend(saved,id);if(id==='extra')D.topUp(saved,5,now,dailyCap());
   impact(id,target);selectCell(-1);Audio.play('booster');Audio.speak(({hammer:'hammer',row:'rocket',column:'rocket',blast:'bomb',shuffle:'shuffle',color:'color',spectrum:'color'})[id]||'boosterUsed');save();animateMove(r,before);return;
  }
+ if(a==='farm-shop'){shopTab='boosters';nav('shop');return;}
+ if(a==='farm-plot'){farmPlot=Number(info.plot);render();return;}
+ if(a==='farm-crop'){if(Garden.CROPS[info.crop])farmCrop=info.crop;render();return;}
+ if(a==='farm-feed'){if(info.feed==='none'||Garden.FERTILIZERS[info.feed])farmFeed=info.feed==='none'?'':info.feed;render();return;}
+ if(a==='farm-upgrade')return finishMining(Garden.upgradeHouse(saved),'Garden home upgraded.');
+ if(a==='farm-buy-seed')return finishMining(Garden.purchase(saved,'seed',info.crop,1),'Seeds purchased.');
+ if(a==='farm-buy-feed')return finishMining(Garden.purchase(saved,'fertilizer',info.feed,1),'Fertilizer purchased.');
+ if(a==='farm-plant'){farmPlot=Number(info.plot);return finishMining(Garden.plant(saved,farmPlot,farmCrop,farmFeed||null,now),'New crops planted.');}
+ if(a==='farm-harvest'){farmPlot=Number(info.plot);return finishMining(Garden.harvest(saved,farmPlot,now),'Crops harvested.');}
+ if(a==='farm-sell'){const qty=Garden.summary(saved).harvest[info.crop];return finishMining(Garden.sell(saved,info.crop,qty),'Harvest sold for Rupees.');}
+ if(a==='mine-mode-focus'){mineMode='focus';mineTab='dig';render();return;}
+ if(a==='buy-mode-power')return finishMining(Powerups.purchase(saved,info.power),'Power-up purchased.');
+ if(a==='buy-mode-bundle'){const r=Powerups.buyBundle(saved,info.bundle);if(r.valid){shopReceipt={title:'Power-up bundle acquired',lines:Object.entries(r.contents).map(([id,q])=>q+' × '+(Powerups.CATALOG[id]?.name||E.BOOSTER_META[id]?.label||id))};Audio.play('purchase');save();render();}else message('Cannot buy bundle: '+r.reason);return;}
+ if(a==='use-mode-power'){
+  const p=Powerups.CATALOG[info.power];if(!p)return;
+  const target=p.family==='farm'?{plot:farmPlot,crop:farmCrop,fertilizer:farmFeed||'compost'}:mineFocus||{};
+  const r=Powerups.use(saved,info.power,target,now);
+  if(r.valid){Audio.play('booster');save();render();message('Activated '+p.name+'.');}
+  else{Audio.play('blocked');message('Cannot activate '+p.name+': '+r.reason);}
+  return;
+ }
  if(a==='open-wardrobe'){shopTab='character';nav('shop');return;}
  if(a==='shop-tab'){shopTab=info.shopTab;shopReceipt=null;render();return;}
  if(a==='dismiss-receipt'){shopReceipt=null;render();return;}
@@ -338,7 +404,8 @@ function handle(b){
  if(a==='mine-mode-dig'){mineMode='dig';render();return;}if(a==='mine-mode-scan'){mineMode='scan';render();return;}
  if(a==='mine-cell'){
   const x=Number(info.x),y=Number(info.y),c=Mining.currentBoard(saved).find(c=>c.x===x&&c.y===y);
-  const r=c?.done&&c.exposed?Mining.collect(saved,x,y,now):mineMode==='scan'?Mining.survey(saved,x,y,now):Mining.excavate(saved,x,y,now);
+  if(mineMode==='focus'){mineFocus={x,y};render();message('Target rock '+(x+1)+','+(y+1)+' selected.');return;}
+   const r=c?.done&&c.exposed?Mining.collect(saved,x,y,now):mineMode==='scan'?Mining.survey(saved,x,y,now):Mining.excavate(saved,x,y,now);
   return finishMining(r,r?.ore?'Found '+r.ore+' raw ore.':'Mining action complete.');
  }
  if(a==='mine-unload')return finishMining(Mining.unload(saved,now),'Cart unloaded into storage.');
@@ -353,7 +420,7 @@ function handle(b){
  if(a==='reset-cancel'){resetStep=0;render();return;}
  if(a==='reset-confirm'){
   if(resetStep===1){resetStep=2;render();return;}
-  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Economy.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
+  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
  }
 }
 document.addEventListener('click',e=>{
