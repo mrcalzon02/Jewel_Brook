@@ -24,7 +24,10 @@ const SystemIcons=require('../web/system-icons.js');
 const FarmArt=require('../web/farming-art.js');
 const TownGarden=require('../web/town-garden.js');
 const Kitchen=require('../web/kitchen-catalog.js');
-const Cooking=require('../web/kitchen-cooking.js');
+const kitchenWindow={RupeeTownGarden:TownGarden,RupeeDailyMoves:D,RupeeMining:Mining,
+ RupeeProgress:P,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../web/kitchen-cooking.js'),'utf8'),{window:kitchenWindow});
+const Cooking=kitchenWindow.RupeeKitchen;
 const root=path.resolve(__dirname,'../web');
 assert.equal(E.TYPES.length,19);
 assert.deepEqual(E.TYPES.slice(0,7),['ruby','sapphire','emerald','topaz','amethyst','citrine','diamond']);
