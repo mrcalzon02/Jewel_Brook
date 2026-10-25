@@ -10,7 +10,18 @@ const get=(id,variant)=>{
  return CLEAN[id]||OVERVIEW[id]||null;
 };
 const variants=id=>Object.freeze({clean:CLEAN[id]||null,overview:OVERVIEW[id]||null});
-const api=Object.freeze({get,variants,ART,BASE});
+// Art aliases deliberately do not rename the Town's persisted crop IDs.
+const TOWN_CROP_ART=Object.freeze({carrot:'carrot',wheat:'wheat',berry:'blueberry'});
+const MODE_POWER_ART=Object.freeze({
+ 'farm-sunrise':'growth-elixir','farm-rainfall':'deluxe-sprinkler',
+ 'farm-bounty':'harvest-boost','farm-seeds':'magic-seeds',
+ 'farm-compost':'compost-bin','farm-market':'harvest-basket'
+});
+const harvest=id=>get(TOWN_CROP_ART[id], 'overview');
+const powerup=id=>get(MODE_POWER_ART[id], 'clean');
+const equipment=id=>get(id,'clean');
+const goods=id=>get(id,'overview');
+const api=Object.freeze({get,variants,ART,BASE,TOWN_CROP_ART,MODE_POWER_ART,harvest,powerup,equipment,goods});
 root.RupeeFarmingArt=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

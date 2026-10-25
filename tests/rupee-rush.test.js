@@ -21,6 +21,9 @@ const Motion=require('../web/board-motion.js');
 const Features=require('../web/board-features.js');
 const EmbryonAssets=require('../web/embryon-assets.js');
 const SystemIcons=require('../web/system-icons.js');
+const FarmArt=require('../web/farming-art.js');
+const TownGarden=require('../web/town-garden.js');
+const Kitchen=require('../web/kitchen-catalog.js');
 const root=path.resolve(__dirname,'../web');
 assert.equal(E.TYPES.length,19);
 assert.deepEqual(E.TYPES.slice(0,7),['ruby','sapphire','emerald','topaz','amethyst','citrine','diamond']);
@@ -79,7 +82,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:require('../web/town-garden.js'),RupeeModePowerups:require('../web/mode-powerups.js')};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeKitchenCatalog:Kitchen};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -104,6 +107,10 @@ navigate('farm');
 assert.match(views.screen.innerHTML,/Embryon Garden/,'farm renders');
 assert.match(views.screen.innerHTML,/data-action="farm-plant"/,'plant actions available');
 assert.match(views.screen.innerHTML,/Farming Power-Ups/,'farming booster shelf renders');
+assert.match(views.screen.innerHTML,/Kitchen Pantry/,'kitchen pantry preview renders');
+assert.match(views.screen.innerHTML,/Cooking not yet available/,'unimplemented cooking is explicitly labeled');
+assert.match(views.screen.innerHTML,/farming-overview\/goods\/carrot\.webp/,'real harvest art integrated');
+assert.match(views.screen.innerHTML,/farming-tools\/equipment\/growth-elixir\.webp/,'farm power-up artwork integrated');
 navigate('mine');
 click('mine-tab',{tab:'powerups'});
 assert.match(views.screen.innerHTML,/No rock targeted/,'mining booster shelf renders');

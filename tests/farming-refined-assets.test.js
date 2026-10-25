@@ -29,6 +29,14 @@ assert.equal(Art.get('shovel'),Art.get('shovel','farming-tools'),'Clean dedicate
 assert.equal(Art.get('blueberry'),Art.get('blueberry','farming-overview'));
 assert.equal(Art.get('unknown-farm-item'),null);
 assert(Art.variants('shovel').clean!==Art.variants('shovel').overview,'Two source variants must remain distinct');
-assert(!fs.readFileSync(path.resolve(__dirname,'../web/index.html'),'utf8').includes('<script src="farming-art.js"'),
- 'Art registration must not silently enable new mechanics');
+const index=fs.readFileSync(path.resolve(__dirname,'../web/index.html'),'utf8');
+assert(index.includes('<script src="farming-art.js"></script>'),'Refined art is linked into game runtime');
+assert(index.includes('<script src="kitchen-catalog.js"></script>'),'Kitchen art/catalog contract is linked');
+assert(index.indexOf('farming-art.js')<index.indexOf('kitchen-catalog.js'));
+assert(index.indexOf('kitchen-catalog.js')<index.indexOf('game.js'));
+assert.equal(Art.harvest('carrot'),Art.get('carrot','overview'));
+assert.equal(Art.harvest('berry'),Art.get('blueberry','overview'));
+assert.equal(Art.powerup('farm-sunrise'),Art.get('growth-elixir','clean'));
+assert.equal(Art.powerup('farm-market'),Art.get('harvest-basket','clean'));
+assert.equal(Art.powerup('farm-unknown'),null);
 console.log('PASS Rupee Rush refined farming art: 120 transparent image files, hashes, registry and no gameplay integration');
