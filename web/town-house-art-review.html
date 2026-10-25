@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rupee Rush · Town House Art Review 01–40</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f8f0d9;background:#151728;line-height:1.5}
+*{box-sizing:border-box}body{margin:0}main{max-width:1480px;margin:0 auto;padding:clamp(12px,3vw,38px)}
+h1{font-size:clamp(23px,4vw,40px);line-height:1.15;margin:.3em 0}h2{font-size:clamp(18px,3vw,26px);margin:0}p{max-width:800px;color:#ddd3dd}
+.header{padding-bottom:18px;border-bottom:1px solid #76718b}.state{display:inline-block;background:#5a3d49;color:#fff1a7;padding:5px 12px;border-radius:999px;font-size:12px;font-weight:700}
+.tools{display:flex;flex-wrap:wrap;gap:9px;align-items:center}.tools button,dialog button{font:inherit;background:#45557e;border:1px solid #a5badd;border-radius:9px;color:white;padding:9px 12px;cursor:pointer}.tools button[aria-pressed=true]{background:#b98e56;color:#101a30}
+.board{margin-top:32px;border:1px solid #7e6d72;border-radius:17px;background:#232a3c;padding:clamp(10px,2vw,20px)}
+.board-head{display:flex;justify-content:space-between;gap:16px;align-items:baseline;margin:0 0 14px}.board-head small{color:#ffdc9a}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.tile{border:1px solid #5a6a84;border-radius:12px;overflow:hidden;min-width:0;background:#29314a;color:inherit;text-align:left;padding:0;cursor:zoom-in}
+.tile:focus-visible,.tools button:focus-visible{outline:3px solid #f0cc82;outline-offset:2px}
+.art{width:100%;aspect-ratio:1;background:#e6dfd0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.checker .art{background-color:#eeeeec;background-image:linear-gradient(45deg,#c9c9c9 25%,transparent 25%),linear-gradient(-45deg,#c9c9c9 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c9c9c9 75%),linear-gradient(-45deg,transparent 75%,#c9c9c9 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}
+.dark .art{background:#182138}
+.art img{display:block;max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain}
+.tile label{display:block;padding:9px;font-weight:800;font-size:13px;line-height:1.3}
+.tile label small{display:block;font-size:11px;font-weight:400;color:#d7cbd4;margin-top:3px}
+.caption{color:#d3cde0;font-size:12px;padding:0 9px 12px}
+.legend{margin-top:22px;color:#f0dfbc;font-size:13px}
+dialog{max-width:620px;width:calc(100% - 24px);background:#252c43;color:#f6edd6;border:2px solid #ceb77f;border-radius:16px}
+dialog::backdrop{background:#080d1edc}dialog img{width:min(100%,470px);height:auto;display:block;margin:0 auto;background:repeating-conic-gradient(#d7d7d7 0% 25%,#f3f3f3 0% 50%) 50%/22px 22px}
+#modal-description{max-width:100%;color:#eee}#asset-status{font-variant-numeric:tabular-nums}
+@media(max-width:880px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:580px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.board-head{display:block}.tile label{font-size:12px}.caption{font-size:11px}}
+</style></head>
+<body class="checker"><main>
+<header class="header"><span class="state">UNAPPROVED VECTOR ART PREVIEWS</span>
+<h1>Rupee Rush · Embryon Homestead</h1>
+<p>Four independent ten-level review boards. These SVGs are deterministic illustration candidates, not the finished painted house masters. All art is self-contained, with transparent backgrounds and no planted garden beds baked in.</p>
+<div class="tools"><button type="button" data-mode="checker" aria-pressed="true">Alpha checkerboard</button>
+<button type="button" data-mode="dark" aria-pressed="false">Dark game background</button>
+<button type="button" data-mode="light" aria-pressed="false">Light neutral background</button><span id="asset-status" aria-live="polite">Checking art…</span></div>
+</header><div id="boards"></div>
+<p class="legend">Review requirements: consistent 3/4 camera; doorway stays aligned; each incremental tier is visually changed; no early castles; no clipped chimneys, roof peaks or ornaments; no painted scenery or functional garden beds; final tier is a non-fortified royal manor. Full-size painted sprite production and device acceptance remain pending.</p>
+<dialog id="asset-modal" aria-label="Inspect individual house image"><button id="close-modal" type="button">Close image</button><h2 id="modal-title"></h2><img id="modal-image" alt=""><p id="modal-description"></p></dialog>
+</main><script src="town-houses.js"></script><script>
+(function(){
+ 'use strict';
+ const levels=[{"level":1,"name":"Hawseed Hovel","band":1,"appearance":"patched straw roof, bent timber, mud hearth","plots":1},{"level":2,"name":"Dry Roof","band":1,"appearance":"fresh straw patch, timber brace and a window shutter","plots":1},{"level":3,"name":"First Repairs","band":1,"appearance":"square door frame, new wall planks and a stone doorstep","plots":1},{"level":4,"name":"Stone Hearth","band":1,"appearance":"first brick chimney, second window, tidy doorstep","plots":1},{"level":5,"name":"Blue Shingles","band":1,"appearance":"part thatch replaced by blue tiles, sturdy lintel","plots":1},{"level":6,"name":"Fenced Yard","band":1,"appearance":"low timber fence and garden tool hook (plot 2 unlocked)","plots":2},{"level":7,"name":"Warm Cottage","band":1,"appearance":"complete blue-shingle roof, planter beneath windows","plots":2},{"level":8,"name":"Bright Windows","band":1,"appearance":"glass panes, flower boxes and renewed walls","plots":2},{"level":9,"name":"Hawseed Garden Cottage","band":1,"appearance":"small covered porch and decorated stone path","plots":2},{"level":10,"name":"Hawseed Homestead","band":1,"appearance":"finished modest one-story cottage, trimmed roof, no tower","plots":2},{"level":11,"name":"Garden Cottage","band":2,"appearance":"plaster walls, a tool shed (plot 3 unlocked)","plots":3},{"level":12,"name":"Kitchen Extension","band":2,"appearance":"small side kitchen, brick oven chimney","plots":3},{"level":13,"name":"Glazed Porch","band":2,"appearance":"porch glazing, raised flower beds","plots":3},{"level":14,"name":"Garden Lanterns","band":2,"appearance":"lamps flanking doorway, polished stone path","plots":3},{"level":15,"name":"Rural Homestead","band":2,"appearance":"neat cross-gable cottage with robust stone base","plots":3},{"level":16,"name":"Working Garden House","band":2,"appearance":"larger kitchen and greenhouse frame (plot 4 unlocked)","plots":4},{"level":17,"name":"Walled Orchard","band":2,"appearance":"short walls, climbing trellis and little arbor","plots":4},{"level":18,"name":"Half-Glass Conservatory","band":2,"appearance":"glass garden room shell attached to house","plots":4},{"level":19,"name":"Cottage Residence","band":2,"appearance":"clipped hedges, blue tile roof and full veranda","plots":4},{"level":20,"name":"Master Garden House","band":2,"appearance":"complete working garden house, still no manor towers","plots":4},{"level":21,"name":"Prosperous Townhouse","band":3,"appearance":"proper masonry townhouse footprint (plot 5 unlocked)","plots":5},{"level":22,"name":"Merchant Awning","band":3,"appearance":"small market awning and brick terrace","plots":5},{"level":23,"name":"Upper Dormer","band":3,"appearance":"second floor dormer and tiled awning","plots":5},{"level":24,"name":"Pantry House","band":3,"appearance":"stone-walled pantry wing and herb-drying lattice","plots":5},{"level":25,"name":"Sunlit Residence","band":3,"appearance":"well-proportioned townhouse with bright upper windows","plots":5},{"level":26,"name":"Conservatory Residence","band":3,"appearance":"glazed conservatory and paved planting aisle (plot 6 unlocked)","plots":6},{"level":27,"name":"Carved Balustrades","band":3,"appearance":"ornamental balcony, silver trim and stone steps","plots":6},{"level":28,"name":"Merchant Courtyard","band":3,"appearance":"formal courtyard gate and small topiary planters","plots":6},{"level":29,"name":"Refined Blue Estate","band":3,"appearance":"sunlit blue roof, polished silver house details","plots":6},{"level":30,"name":"Prosperous Manorlet","band":3,"appearance":"prosperous three-wing manorlet, not yet royal","plots":6},{"level":31,"name":"Noble Residence","band":4,"appearance":"pale stone and vaulted entry (plot 7 unlocked)","plots":7},{"level":32,"name":"Pearl Gallery","band":4,"appearance":"long covered colonnade on south wing","plots":7},{"level":33,"name":"Upper Balconies","band":4,"appearance":"sapphire roofs, elegantly turned balconies","plots":7},{"level":34,"name":"Luminous Hall","band":4,"appearance":"blue crystal lanterns on matching silver pedestals","plots":7},{"level":35,"name":"Noble Gardens","band":4,"appearance":"marble paths and symmetrical flowering planters","plots":7},{"level":36,"name":"Royal Garden Estate","band":4,"appearance":"first manor wing added (plot 8 unlocked)","plots":8},{"level":37,"name":"Silver Roof Manor","band":4,"appearance":"two-story stone house, silver gutters and blue gables","plots":8},{"level":38,"name":"Crystal Conservatory","band":4,"appearance":"tall crystal greenhouse and elaborate arched glass","plots":8},{"level":39,"name":"Royal Court Residence","band":4,"appearance":"large symmetrical stone manor, sapphire banners","plots":8},{"level":40,"name":"Royal Manor of Embryon","band":4,"appearance":"grand non-fortified manor with blue spires, crystal skylight and estate gardens","plots":8}];
+ const collection=document.getElementById('boards');
+ const status=document.getElementById('asset-status');
+ const modal=document.getElementById('asset-modal');
+ let loaded=0,broken=0;
+ for(let band=0;band<4;band++){
+  const section=document.createElement('section');section.className='board';
+  const heading=document.createElement('div');heading.className='board-head';
+  const title=document.createElement('h2');title.textContent='Board '+(band+1)+' · Levels '+(band*10+1)+'–'+(band*10+10);
+  const subtitle=document.createElement('small');subtitle.textContent=['Hawseed Hovel and Homestead','Garden Cottage and Working Home','Prosperous Townhouse','Noble Residence and Royal Manor'][band];
+  heading.append(title,subtitle);section.append(heading);
+  const tiles=document.createElement('div');tiles.className='tiles';
+  for(const spec of levels.slice(band*10,band*10+10)){
+    const asset=window.RupeeTownHouses.house(spec.level);
+    const item=document.createElement('button');item.className='tile';item.type='button';
+    const art=document.createElement('div');art.className='art';
+    const img=document.createElement('img');img.loading='lazy';img.src=asset.path;img.alt=spec.name+', house level '+spec.level;
+    img.addEventListener('load',()=>{loaded++;status.textContent=loaded+' of 40 images loaded'+(broken?' · '+broken+' broken':'');});
+    img.addEventListener('error',()=>{broken++;status.textContent=loaded+' of 40 loaded · '+broken+' broken';});
+    art.append(img);
+    const label=document.createElement('label');label.textContent='Level '+String(spec.level).padStart(2,'0')+' · '+spec.name;
+    const note=document.createElement('small');note.textContent=spec.appearance;label.append(note);
+    const plots=document.createElement('div');plots.className='caption';plots.textContent=spec.plots+' garden plot'+(spec.plots>1?'s':'')+' · preview SVG';
+    item.append(art,label,plots);
+    item.addEventListener('click',()=>{
+      document.getElementById('modal-title').textContent='Level '+spec.level+' · '+spec.name;
+      const zoom=document.getElementById('modal-image');zoom.src=asset.path;zoom.alt=spec.name+' transparent house artwork';
+      document.getElementById('modal-description').textContent=spec.appearance+' · '+spec.plots+' functional plots separately composed';
+      modal.showModal();
+    });
+    tiles.append(item);
+  }
+  section.append(tiles);collection.append(section);
+ }
+ for(const control of document.querySelectorAll('[data-mode]')){
+  control.addEventListener('click',()=>{
+   document.body.className=control.dataset.mode;
+   document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===control)));
+  });
+ }
+ document.getElementById('close-modal').addEventListener('click',()=>modal.close());
+})();
+</script></body></html>

@@ -3,6 +3,7 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const root=path.resolve(__dirname,'../web');
 const draw=require('../scripts/generate-town-house-previews.js').drawHouse;
 const Houses=require('../web/town-houses.js');
+const gallery=fs.readFileSync(path.join(root,'town-house-art-review.html'),'utf8');
 const manifest=require('../web/art/embryon/town/houses/previews/manifest.json');
 test('40 different house illustration files are transparent SVGs reproduced by the generator',()=>{
  assert.equal(manifest.assets.length,40);
@@ -36,4 +37,14 @@ test('starter hovel is not a premature castle or manor, with separate functional
  assert.notEqual(l1,l10);assert.notEqual(l10,l11);assert.notEqual(l21,l31);assert.notEqual(l31,l40);
  assert.doesNotMatch(l10,/fortress|castle/i);
  assert.match(manifest.bases,/Ground and crop beds are independent/);
+});
+
+test('four review boards display forty full house candidates with real transparent inspection',()=>{
+ assert.match(gallery,/Four independent ten-level review boards/);
+ assert.match(gallery,/const levels=/);
+ assert.match(gallery,/window\.RupeeTownHouses\.house\(spec\.level\)/);
+ assert.match(gallery,/band<4/);
+ assert.match(gallery,/levels\.slice\(band\*10,band\*10\+10\)/);
+ assert.match(gallery,/modal\.showModal\(\)/);
+ assert.match(gallery,/alpha checkerboard/i);
 });
