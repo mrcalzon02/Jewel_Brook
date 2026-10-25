@@ -18,10 +18,22 @@ The Android application ID is always io.github.mrcalzon02.rupeerush. Each succes
 
 ## Game packaging and offline persistence
 
-android/app/build.gradle packages the entire web/ folder as APK assets. WebViewAssetLoader exposes a local HTTPS origin at https://appassets.androidplatform.net/assets/index.html, not a file:// origin; the application grants no INTERNET permission and has JavaScript/DOM storage enabled. Rupee Rush's save key is rupeerush.save.v1. The APK must be installed on a physical device to verify actual gameplay and save survival.
+android/app/build.gradle packages the entire web/ folder as APK assets. WebViewAssetLoader exposes a local HTTPS origin at https://appassets.androidplatform.net/assets/index.html, not a file:// origin; the game WebView blocks external network traffic and has JavaScript/DOM storage enabled; only the native updater uses Android's INTERNET permission. Rupee Rush's save key is rupeerush.save.v1. The APK must be installed on a physical device to verify actual gameplay and save survival.
 
-No GitHub Actions added. No APK has been compiled or device-tested merely because these files were committed. Keep signing credentials off Git.
+GitHub Actions publishes verified signed test APKs after full test and signing checks. Repository commits alone are not proof of a working APK; inspect the corresponding successful build and verify installation on a device. Keep signing credentials off Git.
 
 ## Mandatory compliance checklist for every APK test
 
 The existing all-tests release workflow includes `tests/apk-release-compliance.test.js`, checking the [38-control APK release checklist](APK_RELEASE_COMPLIANCE_GATE.md). This is source/checklist coverage, **not** evidence of a signed APK, Google Play approval or actual device behavior. Complete a build-specific evidence file and run `python3 tools/verify_apk_release_gate.py --evidence <record.json> --apk <signed.apk>` for release acceptance, then independently verify signer, installed version and preserved progress. Keep `main` GitHub APK signing and sideload tests intact; `google-play` is a dormant future distribution branch, not a substitute signing key.
+
+## Automatic update channel (GitHub test releases)
+
+New signed Rupee Rush APKs include a native update checker copied and adapted from Nut Buster's updater. The check runs on app launch and level entry, at most hourly per running app instance. Settings > Android updates > CHECK FOR UPDATES performs a manual check, and VIEW GITHUB RELEASES opens the browser.
+
+Unlike GitHub's /releases/latest (which skips prereleases), Rupee Rush queries `https://api.github.com/repos/mrcalzon02/Rupee-rush/releases?per_page=30` including prereleases tagged `rupeerush-phone-test-N-N`. Only newer APKs with the expected filename, URL, version scheme, size and SHA-256 digest qualify. Download begins **only after confirmation**. The native service then verifies the downloaded APK checksum, package ID, greater Android versionCode and actual signer certificate against the installed app before separately requesting permission to open Android's system installer. Android requests its own installation approval. The underlying web game remains offline.
+
+The GitHub Actions workflow injects the permanent Rupee Rush signing certificate fingerprint into BuildConfig, after checking the keystore against its secret certificate hash. Local builds use the fingerprint extracted from the reused local keystore. Unsigned/debug builds cannot use the release updater. Neither Nut Buster's signing key nor its package name is reused.
+
+**Bootstrap once:** Already-installed Rupee Rush APKs built before this feature have no update checker and cannot update themselves. To start receiving in-app updates, install a new signed Rupee Rush release **over the existing app**, preserving its data. Do not uninstall. If Android blocks the update because the certificate differs, do not uninstall in an attempt to force it; instead inspect the signing identities and recover the matching original APK/key. Approve “Install unknown apps” for Rupee Rush when Android requires it. Connectivity is optional for ordinary offline play.
+
+Android APK release versions on GitHub use `500000000 + run_number * 100 + run_attempt`. A locally built APK with a different version code is not automatically offered to phones via GitHub. Only APKs published in this GitHub prerelease channel appear in update checks.

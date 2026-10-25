@@ -1,0 +1,80 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const service=read('android/app/src/main/java/io/github/mrcalzon02/rupeerush/RupeeUpdateService.java');
+const activity=read('android/app/src/main/java/io/github/mrcalzon02/rupeerush/MainActivity.java');
+const gradle=read('android/app/build.gradle');
+const manifest=read('android/app/src/main/AndroidManifest.xml');
+const xml=read('android/app/src/main/res/xml/update_paths.xml');
+const workflow=read('.github/workflows/rupee-rush-android.yml');
+const local=read('scripts/build-android-apk.ps1');
+const html=read('web/index.html');
+const game=read('web/game.js');
+assert.match(service,/https:\/\/api\.github\.com\/repos\/mrcalzon02\/Rupee-rush\/releases\?per_page=30/);
+assert.match(service,/\^rupeerush-phone-test-/);
+assert.doesNotMatch(service,/releases\/latest|optBoolean\("prerelease", false\)/,'Prerelases must not be filtered out');
+assert.match(service,/500_000_000L \+ run \* 100L \+ attempt/);
+assert.match(service,/RupeeRush-Android\.apk/);
+assert.match(service,/sha256:\[0-9a-f\]\{64\}/);
+assert.match(service,/readBounded\(in, 1024 \* 1024\)/);
+assert.match(service,/getPackageArchiveInfo/);
+assert.match(service,/activity\.getPackageName\(\)\.equals\(candidate\.packageName\)/);
+assert.match(service,/candidateCode <= currentCode/);
+assert.match(service,/MessageDigest\.getInstance\("SHA-256"\)/);
+assert.match(service,/signer\.equals\(actualSigner\)/);
+assert.match(service,/new AlertDialog\.Builder\(activity\)/);
+assert.match(service,/setPositiveButton\("Download"/);
+assert.match(service,/setPositiveButton\("Install"/);
+assert.match(service,/canRequestPackageInstalls\(\)/);
+assert.match(service,/FileProvider\.getUriForFile/);
+assert.match(service,/AUTO_CHECK_INTERVAL_MS = 60L \* 60L \* 1000L/);
+assert.match(service,/BuildConfig\.DISTRIBUTION_SIGNER_SHA256/);
+assert.match(service,/BuildConfig\.UPDATE_CHANNEL_ENABLED/);
+assert.match(activity,/RupeeUpdateService/);
+assert.match(activity,/RUPEE_UPDATE_BRIDGE/);
+assert.match(activity,/updater\.checkForUpdatesAutomatically\(\)/);
+assert.match(activity,/updater\.close\(\)/);
+assert.match(activity,/settings\.setBlockNetworkLoads\(true\)/);
+assert.match(activity,/WebViewAssetLoader/);
+assert.match(manifest,/android\.permission\.INTERNET/);
+assert.match(manifest,/android\.permission\.REQUEST_INSTALL_PACKAGES/);
+assert.match(manifest,/androidx\.core\.content\.FileProvider/);
+assert.match(manifest,/android:exported="false"/);
+assert.match(xml,/<cache-path name="verified-updates"/);
+assert.match(gradle,/buildFeatures \{ buildConfig true \}/);
+assert.match(gradle,/DISTRIBUTION_SIGNER_SHA256/);
+assert.match(gradle,/UPDATE_CHANNEL_ENABLED/);
+assert.match(gradle,/signerAvailable && trustedPublisher/);
+assert.match(workflow,/ORG_GRADLE_PROJECT_rupeePublisherSha256="\$RUPEE_APK_CERT_SHA256"/);
+assert.match(workflow,/assets\/update\.js/);
+assert.match(local,/rupeePublisherSha256=\$fingerprint/);
+assert.match(html,/src="update\.js"/);
+assert(html.indexOf('src="update.js"')<html.indexOf('src="game.js"'));
+assert.match(game,/button\('check-updates','CHECK FOR UPDATES'/);
+assert.match(game,/button\('view-releases','VIEW GITHUB RELEASES'/);
+assert.match(game,/RupeeUpdates\?\.autoCheck\(\)/);
+assert.match(game,/RupeeUpdates\?\.syncStatus\(\)/);
+const calls=[],status={textContent:''};
+const window={
+ document:{querySelector(sel){return sel==='[data-update-status]'?status:null;}},
+ RUPEE_UPDATE_BRIDGE:{
+   checkForUpdatesAutomatically(){calls.push('auto')},
+   checkForUpdates(){calls.push('manual')},
+   openReleases(){calls.push('releases')}
+ }
+};
+vm.runInNewContext(read('web/update.js'),{window});
+assert.deepEqual(calls,['auto']);
+window.RupeeUpdates.check();window.RupeeUpdates.openReleases();
+assert.deepEqual(calls,['auto','manual','releases']);
+assert.match(status.textContent,/Checking GitHub/);
+window.RupeeUpdates.receive('Up to date');
+assert.equal(status.textContent,'Up to date');
+const browser={document:window.document,open(url){calls.push(url)}};
+vm.runInNewContext(read('web/update.js'),{window:browser});
+browser.RupeeUpdates.check();
+assert.match(status.textContent,/Automatic updates require the signed Android app/);
+browser.RupeeUpdates.openReleases();
+assert.equal(calls.at(-1),'https://github.com/mrcalzon02/Rupee-rush/releases');
+console.log('PASS native signed-release updater, GitHub prerelease channel, offline WebView, manual controls and bridge');
