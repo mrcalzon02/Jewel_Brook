@@ -2,14 +2,14 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
-const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,hearts:5,vip:false,claimed:0});
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
-P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
+P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
 let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null;
-let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
-const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems');
+let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
+const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems'),styles=document.getElementById('style-shards');
 if(!root)throw Error('Missing #screen');
 // Restore only validated, unfinished Rupee Rush boards. Never touch Nut Buster saves.
 try{if(saved.activeBoard){const s=saved.activeBoard;const allowed=s.level>=T.FIRST?T.available(saved,s.level):s.level<=saved.unlocked;if(allowed)active=E.restore(s);if(!active)delete saved.activeBoard;}}catch(_){delete saved.activeBoard;}
@@ -28,7 +28,7 @@ function message(s){toast=s;const el=document.getElementById('toast');if(el){el.
 function dailyCap(){return E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves;}
 function bank(){return D.ensure(saved,Date.now(),dailyCap());}
 function header(name,description=''){return '<div class="heading"><h1>'+name+'</h1>'+(description?'<p>'+description+'</p>':'')+'</div>';}
-function stats(){return '<div class="stats"><div>'+icon('rupee',24)+' <strong>'+number(saved.coins)+'</strong><small>Rupees</small></div><div>'+icon('crystal',24)+' <strong>'+number(saved.gems)+'</strong><small>Star Gems</small></div><div>'+icon('heart',24)+' <strong>'+saved.hearts+'/5</strong><small>Lives</small></div><div>'+icon('extra',24)+' <strong>'+number(bank().remaining)+'</strong><small>Moves today</small></div></div>';}
+function stats(){return '<div class="stats"><div>'+icon('rupee',24)+' <strong>'+number(saved.coins)+'</strong><small>Rupees</small></div><div>'+icon('crystal',24)+' <strong>'+number(saved.gems)+'</strong><small>Star Gems</small></div><div><img class="icon" src="art/nutvale/mining-economy/currency/rainbow-coin.png" width="24" height="24" alt=""> <strong>'+number(saved.styleShards)+'</strong><small>Style Shards</small></div><div>'+icon('heart',24)+' <strong>'+saved.hearts+'/5</strong><small>Lives</small></div><div>'+icon('extra',24)+' <strong>'+number(bank().remaining)+'</strong><small>Moves today</small></div></div>';}
 function home(){
  return '<section class="home-kingdom" aria-label="Embryon Kingdom">'+
  '<div class="home-kingdom-content"><h1 class="home-brand"><img class="home-title-art" src="art/embryon/branding/rupee-rush-title.webp" alt="Rupee Rush — Heroes of Embryon" width="1200" height="674" decoding="async"></h1>'+
@@ -192,20 +192,46 @@ function offerCard(id,o){
  button('buy-currency',(o.currency==='gems'?'STAR GEMS ':'RUPEES ')+number(o.cost),'primary','data-offer="'+id+'" '+(balance<o.cost?'disabled':''))+'</div>';
 }
 function shop(){
- return '<div class="location-banner location-market">'+header('Crystal Market','Spend earned Rupees or Star Gems. Every exchange grants real in-game supplies; no cash checkout is required.')+'</div>'+stats()+
- '<h2 class="subhead">Lives &amp; moves</h2><div class="shop-grid">'+Object.entries(P.SHOP_EXCHANGES).map(([id,o])=>offerCard(id,o)).join('')+'</div>'+
- '<h2 class="subhead">Booster supplies</h2><div class="shop-grid">'+E.BOOSTERS.map(id=>'<div class="shop-item">'+boosterIcon(id,39)+'<strong>'+escape(E.BOOSTER_META[id].label)+'</strong><small>Stock ×'+P.count(saved,id)+'</small>'+
- button('buy-booster','1 · '+number(P.BOOSTER_PRICES[id])+' RUPEES','secondary','data-booster="'+id+'" '+(!P.unlocked(saved,id)||saved.coins<P.BOOSTER_PRICES[id]?'disabled':''))+
- button('buy-gem-booster','4 · '+P.GEM_BOOSTER_PRICES[id]+' STAR GEMS','primary','data-booster="'+id+'" '+(!P.unlocked(saved,id)||saved.gems<P.GEM_BOOSTER_PRICES[id]?'disabled':''))+'</div>').join('')+'</div>';
+ const tabs=[['packs','Loot Chests'],['supplies','Supplies'],['character','Characters'],['outfit','Outfits'],['pickSkin','Pick Skins'],['gloveSkin','Glove Skins'],['frame','Frames']];
+ const nav='<div class="mine-tabs shop-tabs">'+tabs.map(([id,label])=>button('shop-tab',label,shopTab===id?'primary':'secondary','data-shop-tab="'+id+'"')).join('')+'</div>';
+ let content='';
+ if(shopTab==='packs'){
+  content='<p class="hint">Every chest contains actual randomized rewards. Listed percentages are per independent roll; duplicates convert to Style Shards. All purchases use earned in-game currency.</p><div class="shop-grid">'+
+  Object.entries(Economy.PACKS).map(([id,p])=>{
+   const bal=saved[p.currency],table=Economy.odds(id).map(x=>x.kind.replace(/([A-Z])/g,' $1')+' '+x.percent+'%').join(' · ');
+   return '<div class="shop-item loot-card"><img class="market-art" alt="" src="art/nutvale/mining-economy/currency/'+(p.pool==='vanity'?'gemmed-currency-chest':p.pool==='expedition'?'gold-coin-chest':'rainbow-coin-stacks')+'.png" loading="lazy">'+
+   '<strong>'+escape(p.name)+'</strong><small>'+escape(p.description)+'</small><small class="odds">Per draw: '+escape(table)+'</small>'+
+   button('buy-pack',number(p.cost)+' '+Economy.CURRENCY[p.currency],'primary','data-pack="'+id+'" '+(bal<p.cost?'disabled':''))+'</div>';
+  }).join('')+'</div>';
+ }else if(shopTab==='supplies'){
+  content='<h2 class="subhead">Lives &amp; moves</h2><div class="shop-grid">'+Object.entries(P.SHOP_EXCHANGES).map(([id,o])=>offerCard(id,o)).join('')+'</div>'+
+  '<h2 class="subhead">Booster supplies</h2><div class="shop-grid">'+E.BOOSTERS.map(id=>'<div class="shop-item">'+boosterIcon(id,39)+'<strong>'+escape(E.BOOSTER_META[id].label)+'</strong><small>Stock ×'+P.count(saved,id)+'</small>'+
+   button('buy-booster','1 · '+number(P.BOOSTER_PRICES[id])+' RUPEES','secondary','data-booster="'+id+'" '+(!P.unlocked(saved,id)||saved.coins<P.BOOSTER_PRICES[id]?'disabled':''))+
+   button('buy-gem-booster','4 · '+P.GEM_BOOSTER_PRICES[id]+' STAR GEMS','primary','data-booster="'+id+'" '+(!P.unlocked(saved,id)||saved.gems<P.GEM_BOOSTER_PRICES[id]?'disabled':''))+'</div>').join('')+'</div>';
+ }else{
+  const list=Economy.CATALOG.filter(item=>item.type===shopTab);
+  content='<p class="hint">'+list.length+' distinct collectibles · Purchase with Style Shards only. Characters and visual skins do not change combat, mining yield, or power.</p>'+
+   '<div class="shop-grid">'+list.map(item=>{
+     const owned=!!saved.cosmeticsOwned[item.id],equipped=saved.cosmeticEquipped[item.type]===item.id;
+     return '<div class="shop-item cosmetic-card"><img class="cosmetic-art" src="'+escape(item.image)+'" alt="'+escape(item.name)+'" loading="lazy">'+
+      '<strong>'+escape(item.name)+'</strong><small>'+escape(item.rarity.toUpperCase())+' · '+item.cost+' Style Shards</small>'+
+      (owned?button('equip-cosmetic',equipped?'EQUIPPED':'EQUIP','secondary','data-cosmetic="'+item.id+'" '+(equipped?'disabled':'')):
+      button('buy-cosmetic','UNLOCK · '+item.cost+' SHARDS','primary','data-cosmetic="'+item.id+'" '+(saved.styleShards<item.cost?'disabled':'')))+'</div>';
+   }).join('')+'</div>';
+ }
+ return '<div class="location-banner location-market">'+header('Crystal Market','Loot chests, character discoveries, wardrobe looks, equipment skins and practical supplies.')+'</div>'+stats()+
+ '<p class="hint">Style Shards are cosmetics-only. Rupees and Star Gems remain gameplay currencies.</p>'+
+ (shopReceipt?'<div class="reward-receipt" role="status"><b>'+escape(shopReceipt.title)+'</b><p>'+shopReceipt.lines.map(escape).join(' · ')+'</p>'+button('dismiss-receipt','DISMISS','quiet')+'</div>':'')+
+ nav+content;
 }
 function mine(){
  const s=Mining.stats(saved),prices=Mining.prices(saved),cells=Mining.currentBoard(saved);
  const tabs=['dig','equipment','refinery','exchange'];
  let content='';
  if(mineTab==='dig'){
-  content='<div class="mine-stats"><span>'+'<img class="mine-tool-art" alt="Current pickaxe" src="'+escape(G.entry('pickaxe',s.pickTier).image)+'"> '+s.strikesLeft+'/'+s.strikeMax+' strikes</span><span>'+'<img class="mine-tool-art" alt="Current survey gloves" src="'+escape(G.entry('gloves',s.gloveTier).image)+'"> '+s.scansLeft+'/'+s.scanMax+' surveys</span><span>'+icon('cart',22)+' '+s.cartOre+'/'+s.cartMax+' cart</span><span>'+icon('crystal',22)+' '+s.ore+' ore</span></div>'+
+  content='<div class="mine-stats"><span>'+'<img class="mine-tool-art" alt="Current pickaxe" src="'+escape((Economy.BY_ID[saved.cosmeticEquipped.pickSkin]?.image||G.entry('pickaxe',s.pickTier).image))+'"> '+s.strikesLeft+'/'+s.strikeMax+' strikes</span><span>'+'<img class="mine-tool-art" alt="Current survey gloves" src="'+escape((Economy.BY_ID[saved.cosmeticEquipped.gloveSkin]?.image||G.entry('gloves',s.gloveTier).image))+'"> '+s.scansLeft+'/'+s.scanMax+' surveys</span><span>'+icon('cart',22)+' '+s.cartOre+'/'+s.cartMax+' cart</span><span>'+icon('crystal',22)+' '+s.ore+' ore</span></div>'+
   '<div class="tool-row">'+button('mine-mode-dig','EXCAVATE',mineMode==='dig'?'primary':'secondary')+button('mine-mode-scan','SURVEY',mineMode==='scan'?'primary':'secondary')+button('mine-unload','UNLOAD CART','secondary',s.cartOre?'':'disabled')+'</div>'+
-  '<div class="mine-frame"><div class="mine-board" style="--mine-columns:'+s.size+'">'+cells.map(c=>'<button data-action="mine-cell" data-x="'+c.x+'" data-y="'+c.y+'" class="rock '+(c.done?'revealed':'')+'" title="'+(c.done?(c.exposed?'Collect '+c.exposed+' ore':c.kind):'Rock '+c.hits+'/'+c.hardness)+'">'+(c.exposed?icon('crystal',31):c.done?icon('parcel',31):c.survey==='ore'?icon('scan',31):'<img class="mine-rock-art" src="art/primary/blockers/rock.png" alt="">')+'<small>'+(c.exposed?'ORE ×'+c.exposed:c.done?(c.kind==='barren'?'EMPTY':'CLEARED'):c.survey==='ore'?'ORE HERE':c.survey==='barren'?'BARREN':c.hits+'/'+c.hardness)+'</small></button>').join('')+'</div></div>'+
+  '<div class="mine-frame"><div class="mine-board" style="--mine-columns:'+s.size+'">'+cells.map(c=>'<button data-action="mine-cell" data-x="'+c.x+'" data-y="'+c.y+'" class="rock '+(c.done?'revealed ':'')+(c.exposed?'exposed ':'')+'" aria-label="Mine tile '+(c.x+1)+','+(c.y+1)+'" title="'+(c.done?(c.exposed?'Collect '+c.exposed+' ore':c.kind):'Rock '+c.hits+'/'+c.hardness)+'">'+(c.exposed?'<img class="mine-reward-sprite" src="art/nutvale/mining-economy/currency/gemmed-currency-chest.png" alt="Ore to collect">':c.done?'<img class="mine-reward-sprite" src="'+MineArt.goods(s.refineryTier)+'" alt="Excavated tile">':c.survey==='ore'?icon('scan',31):'<span class="excavation-rock damage-'+Math.min(2,c.hits)+'" aria-hidden="true"><i></i><i></i><i></i></span>')+'<small>'+(c.exposed?'ORE ×'+c.exposed:c.done?(c.kind==='barren'?'EMPTY':'CLEARED'):c.survey==='ore'?'ORE HERE':c.survey==='barren'?'BARREN':c.hits+'/'+c.hardness)+'</small></button>').join('')+'</div></div>'+
   '<p class="hint">Site '+(s.site+1)+' · '+s.size+'×'+s.size+' tiles. Barren rocks are genuine empty results; completed sites regenerate only after all uncovered ore is collected.</p>';
  }else if(mineTab==='equipment'){
   content='<div class="upgrade-list">'+[
@@ -217,23 +243,28 @@ function mine(){
   ].map(([id,name,key,level,max,cost,detail])=>'<div class="upgrade"><div>'+((id==='pickaxe'||id==='gloves')?'<img class="mine-gear-art" alt="'+name+'" src="'+escape(G.entry(id,level).image)+'">':icon(id==='cartTier'?'cart':id==='mineTier'?'mine':'gear',35))+'</div><div class="upgrade-name"><b>'+name+'</b><small>Tier '+(level+1)+'/'+(max+1)+' · '+detail+'</small></div>'+button('mine-upgrade',cost===null?'MAX TIER':number(cost)+' CREDITS','secondary','data-track="'+id+'" '+(cost===null||s.dollars<cost?'disabled':''))+'</div>').join('')+'</div>';
  }else if(mineTab==='refinery'){
   content='<div class="mine-stats"><span>'+icon('crystal',22)+' Ore '+number(s.ore)+'</span><span>'+icon('gem',22)+' Polished '+number(s.metal)+'</span><span>'+icon('parcel',22)+' Parcels '+number(s.goods)+'</span></div>'+
-  '<div class="upgrade-list"><div class="upgrade">'+icon('crystal',33)+'<div class="upgrade-name"><b>Polish crystal</b><small>'+Mining.ORE_PER_METAL[s.refineryTier]+' raw ore → 1 polished crystal</small></div>'+button('mine-refine','POLISH ONE','primary',s.ore<Mining.ORE_PER_METAL[s.refineryTier]?'disabled':'')+'</div>'+
-  '<div class="upgrade">'+icon('gear',33)+'<div class="upgrade-name"><b>Pack crystal parcels</b><small>2 polished crystals → 1 trade parcel</small></div>'+button('mine-craft','PACK ONE','primary',s.metal<2?'disabled':'')+'</div>'+
-  '<div class="upgrade">'+icon('parcel',33)+'<div class="upgrade-name"><b>Sell crystal parcel</b><small>1 parcel → '+Mining.SALE[s.refineryTier]+' mining credits</small></div>'+button('mine-sell','SELL ONE','primary',s.goods<1?'disabled':'')+'</div></div>';
+  '<div class="upgrade-list"><div class="upgrade"><img class="mine-economy-art" src="'+MineArt.path('currency','rainbow-coins')+'" alt="" >+'<div class="upgrade-name"><b>Polish crystal</b><small>'+Mining.ORE_PER_METAL[s.refineryTier]+' raw ore → 1 polished crystal</small></div>'+button('mine-refine','POLISH ONE','primary',s.ore<Mining.ORE_PER_METAL[s.refineryTier]?'disabled':'')+'</div>'+
+  '<div class="upgrade"><img class="mine-economy-art" src="'+MineArt.goods(s.refineryTier)+'" alt=""><div class="upgrade-name"><b>Pack crystal parcels</b><small>2 polished crystals → 1 trade parcel</small></div>'+button('mine-craft','PACK ONE','primary',s.metal<2?'disabled':'')+'</div>'+
+  '<div class="upgrade"><img class="mine-economy-art" src="'+MineArt.goods(s.refineryTier)+'" alt=""><div class="upgrade-name"><b>Sell crystal parcel</b><small>1 parcel → '+Mining.SALE[s.refineryTier]+' mining credits</small></div>'+button('mine-sell','SELL ONE','primary',s.goods<1?'disabled':'')+'</div></div>';
  }else{
   content='<p class="hint">Sell crafted crystal parcels for mining credits, then buy supplies usable immediately in the match-3 campaign.</p>'+
    '<div class="shop-grid">'+Object.entries(Bridge.OFFERS).map(([id,o])=>'<div class="shop-item">'+icon(o.icon,38)+'<strong>'+escape(o.label)+'</strong><small>'+number(o.cost)+' mining credits</small>'+button('mine-buy','CLAIM SUPPLIES','primary','data-offer="'+id+'" '+(s.dollars<o.cost?'disabled':''))+'</div>').join('')+'</div>';
  }
  return '<div class="location-banner location-mine">'+header('Prism Vale Mines','Available from the start. Mine crystal ore, refine it, and turn the proceeds into match-3 supplies.')+'</div>'+ 
- '<div class="mine-wallet">'+icon('rupee',29)+' <b>'+number(s.dollars)+'</b> Mining Credits</div>'+
+ '<div class="mine-wallet"><img class="mine-economy-art" alt="" src="'+MineArt.credits(s.dollars)+'"> <b>'+number(s.dollars)+'</b> Mining Credits</div>'+
  '<div class="mine-tabs">'+tabs.map(t=>button('mine-tab',t.toUpperCase(),mineTab===t?'primary':'secondary','data-tab="'+t+'"')).join('')+'</div>'+content;
 }
 function rewards(){
- const h=B.remaining(saved,'hearts'),m=B.remaining(saved,'moves');
+ const h=B.remaining(saved,'hearts'),m=B.remaining(saved,'moves'),daily=Economy.dailyState(saved);
  const timer=ms=>ms?B.countdown(ms):'READY';
- return header('Daily Rewards','Claim a free life refill and five additional moves once each every 12 hours.')+stats()+
+ return header('Daily Rewards','Free daily treasure with currency variety, cosmetics, boosters and possible free upgrades. Existing 12-hour refills stay available.')+stats()+
+ '<div class="panel daily-treasure"><img class="market-art" alt="" src="art/nutvale/mining-economy/currency/gemmed-currency-chest.png"><div><h2>Daily Mystery Chest</h2><p>One weighted draw daily. Possible outcomes: Rupees, Star Gems, Style Shards, Mining Credits, boosters, cosmetics, characters and permanent mining upgrades.</p>'+
+ '<small class="odds">'+Economy.odds('basic').map(o=>escape(o.kind)+' '+o.percent+'%').join(' · ')+'</small>'+
+ button('claim-daily',daily.ready?'OPEN FREE CHEST':'ALREADY CLAIMED TODAY','primary',daily.ready?'':'disabled')+'</div></div>'+
+ (shopReceipt?'<div class="reward-receipt" role="status"><b>'+escape(shopReceipt.title)+'</b><p>'+shopReceipt.lines.map(escape).join(' · ')+'</p>'+button('dismiss-receipt','DISMISS','quiet')+'</div>':'')+
  '<div class="shop-grid"><section class="panel">'+icon('heart',40)+'<h2>Life Refill</h2><p>Return to five hearts.</p>'+button('claim-hearts',h?timer(h):'CLAIM REFILL','primary',h||saved.hearts>=5?'disabled':'')+'</section>'+
- '<section class="panel">'+icon('extra',40)+'<h2>Move Refill</h2><p>Add five to the current daily move bank.</p>'+button('claim-moves',m?timer(m):'CLAIM +5 MOVES','primary',m?'disabled':'')+'</section></div>';
+ '<section class="panel">'+icon('extra',40)+'<h2>Move Refill</h2><p>Add five to the current daily move bank.</p>'+button('claim-moves',m?timer(m):'CLAIM +5 MOVES','primary',m?'disabled':'')+'</section></div>'+
+ (saved.rewardHistory.length?'<div class="panel reward-history"><h2>Recent Finds</h2>'+saved.rewardHistory.slice(0,6).map(h=>'<p><b>'+escape(h.label)+'</b> · '+h.items.map(escape).join(', ')+'</p>').join('')+'</div>':'');
 }
 function settings(){
  return header('Settings','Independent local game data. No Nut Buster saves or accounts are accessed.')+
@@ -243,8 +274,8 @@ function settings(){
  button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE RUPEE RUSH DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>';
 }
 function render(){
- P.migrate(saved);Mining.ensure(saved);bank();
- wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);
+ P.migrate(saved);Mining.ensure(saved);Economy.ensure(saved);bank();
+ wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);if(styles)styles.textContent=number(saved.styleShards);
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
@@ -289,6 +320,12 @@ function handle(b){
   P.spend(saved,id);if(id==='extra')D.topUp(saved,5,now,dailyCap());
   impact(id,target);selectCell(-1);Audio.play('booster');Audio.speak(({hammer:'hammer',row:'rocket',column:'rocket',blast:'bomb',shuffle:'shuffle',color:'color',spectrum:'color'})[id]||'boosterUsed');save();animateMove(r,before);return;
  }
+ if(a==='shop-tab'){shopTab=info.shopTab;shopReceipt=null;render();return;}
+ if(a==='dismiss-receipt'){shopReceipt=null;render();return;}
+ if(a==='buy-pack'){const r=Economy.buyPack(saved,info.pack);if(r.valid){shopReceipt={title:'Opened '+Economy.PACKS[info.pack].name,lines:r.results.map(x=>x.label)};Audio.play('reward');save();render();message('Treasure received.');}else message('Unable to open chest: '+r.reason);return;}
+ if(a==='buy-cosmetic'){const r=Economy.buyCosmetic(saved,info.cosmetic);if(r.valid){shopReceipt={title:'Cosmetic unlocked',lines:[r.item.name]};Audio.play('purchase');save();render();}else message('Cosmetic unavailable: '+r.reason);return;}
+ if(a==='equip-cosmetic'){const r=Economy.equip(saved,info.cosmetic);if(r.valid){save();render();message('Equipped '+r.item.name);}return;}
+ if(a==='claim-daily'){const r=Economy.claimDaily(saved,now);if(r.valid){shopReceipt={title:'Daily chest opened',lines:r.results.map(x=>x.label)};Audio.play('reward');save();render();message('Daily reward received.');}else message('Daily chest already claimed.');return;}
  if(a==='buy-currency'){const r=P.buyCurrencyOffer(saved,info.offer,D,now,dailyCap());return finishMining(r,'Supplies added to inventory.');}
  if(a==='buy-booster')return finishMining(P.buyBooster(saved,info.booster),'Booster purchased.');
  if(a==='buy-gem-booster')return finishMining(P.buyGemBooster(saved,info.booster),'Four boosters purchased.');
@@ -311,7 +348,7 @@ function handle(b){
  if(a==='reset-cancel'){resetStep=0;render();return;}
  if(a==='reset-confirm'){
   if(resetStep===1){resetStep=2;render();return;}
-  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
+  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Economy.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
  }
 }
 document.addEventListener('click',e=>{

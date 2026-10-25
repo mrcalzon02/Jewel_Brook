@@ -95,3 +95,35 @@
 .cell .board-feature.portal{top:0;left:0;width:35%;height:35%}
 .cell .board-feature.wind{right:0;bottom:0;width:36%;height:40%}
 @media(max-width:620px){.bottom .nav-art{width:27px;height:27px}}
+
+/* Deep Crystal Market & imported original mining artwork. */
+.top-money{gap:5px}.top-money button{padding:4px 6px}.top-money b{font-size:13px}
+.stats{grid-template-columns:repeat(5,minmax(0,1fr))}
+.shop-tabs{position:sticky;top:57px;z-index:7;background:#171327eb;padding:5px;border-radius:11px;justify-content:flex-start}
+.shop-tabs .btn{flex:0 1 auto}
+.loot-card .market-art,.daily-treasure .market-art{height:85px;width:85px;object-fit:contain;filter:drop-shadow(0 5px 7px #120d2280)}
+.cosmetic-card .cosmetic-art{width:min(100%,125px);height:122px;object-fit:contain;border-radius:10px}
+.cosmetic-card{justify-content:space-between}
+.loot-card .odds,.odds{font-size:11px;line-height:1.4;color:#bce4dc;display:block}
+.reward-receipt{border:2px solid #ffde9b;background:linear-gradient(135deg,#49365b,#2d264a);border-radius:12px;padding:12px;margin:12px 0}
+.reward-receipt p{color:#f6e4ca;margin:8px 0}
+.daily-treasure{display:flex;gap:16px;align-items:center;margin:12px 0 16px}
+.daily-treasure .market-art{width:115px;height:115px;flex:0 0 115px}
+.daily-treasure .btn{margin-top:11px}
+.reward-history{margin-top:14px}.reward-history p{padding:5px;border-bottom:1px solid #5b4569}
+.mine-economy-art{height:43px;width:43px;object-fit:contain;filter:drop-shadow(0 3px 5px #120e2390)}
+.mine-reward-sprite{width:75%;height:68%;object-fit:contain}
+.mine-tool-art{height:49px;width:49px;filter:drop-shadow(0 2px 3px #0b082099)}
+.mine-frame{background:radial-gradient(ellipse at 50% 0%,#747c88,#424452 65%,#282637);border-color:#9e9b8d}
+.rock{position:relative;overflow:hidden;background:linear-gradient(145deg,#6d777c,#4a4f59 65%,#2f333e);border:2px solid #97958e;box-shadow:inset 0 2px 3px #d3d3c755,0 2px 0 #171923}
+.rock.revealed{background:#273741}.rock.exposed{border-color:#ffdd80;box-shadow:0 0 9px #ffe07e66}
+.excavation-rock{display:block;position:relative;width:78%;height:67%;background:linear-gradient(135deg,#c2b6a2 0%,#807c75 25%,#505762 72%,#363742 100%);clip-path:polygon(26% 2%,73% 0%,96% 24%,97% 69%,69% 99%,19% 94%,0% 58%,7% 22%);filter:drop-shadow(0 4px 4px #15151b)}
+.excavation-rock:before{content:'';position:absolute;inset:3% 6% 18% 7%;clip-path:polygon(2% 23%,44% 0%,98% 24%,62% 80%,12% 100%);background:linear-gradient(135deg,#f0e2c333,#b0afb633,#2b303744)}
+.excavation-rock i{position:absolute;display:block;width:3px;background:#23262c;transform-origin:top;opacity:0}
+.excavation-rock.damage-1 i:first-child,.excavation-rock.damage-2 i{opacity:.95}
+.excavation-rock i:first-child{top:8%;left:48%;height:70%;transform:rotate(23deg)}
+.excavation-rock i:nth-child(2){top:35%;left:21%;height:48%;transform:rotate(-35deg)}
+.excavation-rock i:nth-child(3){top:25%;left:74%;height:64%;transform:rotate(43deg)}
+.rock:not(.revealed):active .excavation-rock{transform:scale(.92) rotate(3deg)}
+@media(max-width:620px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.shop-tabs{top:53px}.daily-treasure{flex-wrap:wrap}.top-money img{width:21px;height:21px}.top-money b{font-size:11px}.top-money button{padding:3px}}
+@media(prefers-reduced-motion:reduce){.rock:not(.revealed):active .excavation-rock{transform:none}}
