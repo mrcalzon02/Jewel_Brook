@@ -1,5 +1,6 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+require('../web/mining-gear.js');
 const Farm=require('../web/town-garden.js'),Daily=require('../web/daily-moves.js'),Mine=require('../web/mining.js');
 const Progress=require('../web/progression.js'),Power=require('../web/mode-powerups.js'),Art=require('../web/farming-art.js');
 const Cook=require('../web/kitchen-cooking.js');
