@@ -32,7 +32,8 @@ for(const x of manifest.files.filter(x=>x.role!=='individual-icon')){
  assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),x.sha256,x.path+' hash mismatch');
 }
 for(const x of Object.values(manifest.categories))for(const id of x)assert(ids.has(id),'Lost listed icon '+id);
-assert.equal(manifest.referenceSources.length,4,'Both original sheets and optimized atlases referenced');
+assert.equal(manifest.files.filter(x=>x.role==='original-unaltered').length,2,'Both original sheets archived');
+assert.equal(manifest.files.filter(x=>x.role==='reference-atlas').length,2,'Both optimized reference atlases archived');
 const game=fs.readFileSync(path.join(repo,'web/game.js'),'utf8');
 const engine=fs.readFileSync(path.join(repo,'web/engine.js'),'utf8');
 assert(!game.includes('future-powerups'),'No runtime activation');
