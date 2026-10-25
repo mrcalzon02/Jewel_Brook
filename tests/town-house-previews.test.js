@@ -15,8 +15,9 @@ test('40 different house illustration files are transparent SVGs reproduced by t
   const svg=fs.readFileSync(path.join(root,e.path),'utf8');
   assert.equal(svg,draw(i),'level '+i+' is not generator-identical');
   assert.match(svg,/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
-  assert.match(svg,/viewBox="0 0 480 460"/);
+  assert.match(svg,/viewBox="0 -56 480 516"/);
   assert.doesNotMatch(svg,/acorn|squirrel|<rect\b/i);
+  assert.match(svg,/transform="translate\(47 0\) scale\(\.92 1\)"/,'consistent sprite-anchor framing');
   seen.add(svg);
  }
  assert.equal(seen.size,40);

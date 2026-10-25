@@ -17,7 +17,7 @@ function drawHouse(level){
  const el=[];
  const add=(str)=>{el.push(str)};
  const w=(x,y,width=28,height=37)=>`<g><path d="M${x} ${y} l${width} -9 v${height} l-${width} 9 Z" fill="url(#glass)" stroke="${pal.trim}" stroke-width="5"/><path d="M${x+width/2} ${y-5}v${height+3}" stroke="${pal.metal}" stroke-width="2.5"/><path d="M${x} ${y+height/2}l${width} -9" stroke="${pal.metal}" stroke-width="2"/></g>`;
- add(`<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 480 460" fill="none" role="img" aria-label="Embryon house level ${n}"><defs>
+ add(`<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 -56 480 516" fill="none" role="img" aria-label="Embryon house level ${n}"><defs>
  <linearGradient id="wall" x1="0" x2=".9" y1="0" y2=".7"><stop stop-color="${pal.trim}"/><stop offset=".34" stop-color="${pal.wall}"/><stop offset="1" stop-color="${pal.side}"/></linearGradient>
  <linearGradient id="roof" x1=".1" x2="1" y1="0" y2=".8"><stop stop-color="${pal.roof}"/><stop offset=".55" stop-color="${pal.roof}"/><stop offset="1" stop-color="${pal.dark}"/></linearGradient>
  <linearGradient id="glass" x1=".2" x2=".9" y1="0" y2="1"><stop stop-color="#e4fcfc"/><stop offset=".5" stop-color="${pal.glass}"/><stop offset="1" stop-color="#46658e"/></linearGradient>
@@ -25,7 +25,7 @@ function drawHouse(level){
  <linearGradient id="stone" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff0d3"/><stop offset="1" stop-color="#8c817e"/></linearGradient>
  <filter id="glow"><feGaussianBlur stdDeviation="3"/></filter></defs>`);
  // The alpha-canvas contains only the building and its own contact shadow, not a fixed yard or garden beds.
- add(`<ellipse cx="239" cy="385" rx="170" ry="18" fill="#1a1a2b" opacity=".16"/>`);
+ add(`<g transform="translate(47 0) scale(.92 1)">`);add(`<ellipse cx="239" cy="385" rx="170" ry="18" fill="#1a1a2b" opacity=".16"/>`);
  if(band>=2){
   add(`<path d="M63 ${h(235)} 99 ${h(225)} 99 320 63 304Z" fill="${pal.wall}" stroke="${pal.trim}" stroke-width="5"/>`);
   add(`<path d="M50 ${h(240)} 87 ${h(171)} 117 ${h(217)} 100 ${h(235)}Z" fill="url(#roof)" stroke="${pal.dark}" stroke-width="6" stroke-linejoin="round"/>`);
@@ -111,7 +111,7 @@ function drawHouse(level){
   const x=118+col*10+row*2,y=328+row*7+Math.floor(col/3)*2;
   add(`<circle cx="${x}" cy="${y}" r="${1.3+row*.35}" fill="${row===3?'#f8e2a7':row===2?'#b3d2f1':row===1?'#87aace':'#a58d66'}" stroke="#fff5ce" stroke-width=".45"/>`);
  }
- add(`</svg>`);
+ add(`</g></svg>`);
  return el.join('');
 }
 if(require.main===module){

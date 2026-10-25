@@ -7,3 +7,5 @@ This pass adds a reproducible **transparent illustrated SVG preview for each of 
 The farm now overlays existing real transparent `garden-plot.webp` art with growth states and real curated crop item artwork on each of eight interactive plot sockets. Growth, selection, harvest and upgrade transactions are unchanged. Every house tier and artwork path is covered by `tests/town-house-previews.test.js`.
 
 Next art milestone: independently painted 1024×1024 transparent 3/4 isometric house masters, fixed door anchor, forty levels reviewed in 4 × (2×5) boards; 512×512 runtime; no baked functional beds, and a non-fortified manor only in the final tier. Finish proper crop plants (3 crops ×5 stages), ground modules, crops, garden props, and mobile visual acceptance before designating art complete.
+
+All forty previews use the same extended SVG viewBox (0 -56 480 516) and stable translated/scaled group, keeping upper roofs/finials within the alpha canvas and the door near the prescribed normalized 0.5×0.8 anchor. This is source-level geometric QA only; device/image-pixel visual acceptance remains outstanding.
