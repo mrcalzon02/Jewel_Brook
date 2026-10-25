@@ -3,7 +3,11 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 require('../web/mining-gear.js');
 const Farm=require('../web/town-garden.js'),Daily=require('../web/daily-moves.js'),Mine=require('../web/mining.js');
 const Progress=require('../web/progression.js'),Power=require('../web/mode-powerups.js'),Art=require('../web/farming-art.js');
-const Cook=require('../web/kitchen-cooking.js');
+const vm=require('node:vm');
+const browser={RupeeTownGarden:Farm,RupeeDailyMoves:Daily,RupeeMining:Mine,
+ RupeeProgress:Progress,RupeeModePowerups:Power,RupeeFarmingArt:Art};
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../web/kitchen-cooking.js'),'utf8'),{window:browser});
+const Cook=browser.RupeeKitchen;
 const at=Date.UTC(2026,9,25,12),cap=36;
 const fresh=(house=1)=>{const save={unlocked:1,coins:3000,gems:5,hearts:3,stars:{}};Progress.migrate(save);Farm.ensure(save);Mine.ensure(save,at);Power.ensure(save);Daily.ensure(save,at,cap);save.town.houseLevel=house;Cook.ensure(save);return save;};
 const add=(save,items)=>{for(const [k,v] of Object.entries(items))save.town.harvest[k]=v;};
