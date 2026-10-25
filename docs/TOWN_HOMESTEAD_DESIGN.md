@@ -1,6 +1,6 @@
 # Rupee Rush — Heroes of Embryon / Town Homestead & Gardening
 
-**Status:** Phase 1 implemented as a standalone, tested economy module. No player-facing Town screen, house sprite substitution, timed notification, or cooking minigame is yet enabled.  
+**Status:** Town/garden and cooking Phase 1 are player-facing. Current cooking uses direct deterministic craft/serve transactions; the optional cooking minigame and many future crops remain unimplemented.  
 **Authority:** `docs/ART_STYLE_MASTER.md` (approved high-sheen visual identity), `docs/TOWN_AVATAR_ART.md` (existing Town avatar levels 1–40), `web/mining.js` and `web/mining-gear.js` (existing mining and glove state).  
 **World:** Heroes of Embryon. **Location:** Town. **Residence progression:** Hawseed Hovel → Garden Cottage → Prosperous Townhouse → Royal Manor.
 
@@ -80,11 +80,24 @@ Each plot occupies one of eight fixed slots. States: **locked → empty → seed
 
 The client clock is not a secure source of truth against intentional device-clock manipulation. **Do not promise anti-cheat protection** without an authenticated server clock; for the current offline-first project, predictable persistent elapsed-time behavior is the correct default.
 
-## Kitchen / cooking (future phase; not implemented)
+## Kitchen / cooking (Phase 1 working implementation)
 
-Cooking must consume harvested crop units **atomically** and create concrete consumable inventory, never immediately magic extra hearts/moves at recipe selection. All foods will reference existing main campaign move/life APIs to prevent bypassing caps or incorrectly crediting outcomes.
+The earlier design decision is now implemented in `web/kitchen-cooking.js`: a **two-step, deterministic craft-and-serve loop**. Cooking withdraws real harvested crop units atomically and adds a meal to `save.town.kitchen.meals`. That step grants **no immediate resource**. Only a separate **Serve** action consumes the prepared meal and credits an existing gameplay wallet via its canonical subsystem API. Full health, locked boosters or capped stocks reject serving without spending a meal.
 
-Proposed recipe prototypes: Hawseed Broth (2 carrot + 1 wheat → +1 life, subject to normal heart cap), Bluebell Tart (2 berry + 1 wheat → +3 moves in the existing move bank), Herbal Tisane (2 herbs + 1 berry → move refills later), Royal Feast (multiple late-game crops → limited premium reward, cooldown). These are **proposals**, not runtime promises; confirm prices, caps, accessibility and whether they are once-per-day before enabling. First cooking release should be deterministic recipe crafting. Optional hands-on timed cooking minigame can be designed once the economy is stable.
+The six initial active recipes span the farming, match-three, mining and move-bank systems:
+
+| Meal | House level | Required harvested ingredients | Served benefit |
+|---|---:|---|---|
+| Hawseed Garden Salad | 1 | 3 carrot | 1 Farm Compost Cache power-up |
+| Hawseed Broth | 4 | 2 carrot + 1 wheat | 1 life, respecting the standard 5-life cap |
+| Prospector Rations | 4 | 2 wheat + 1 carrot | 3 bonus mining strikes |
+| Bluebell Tart | 8 | 2 berry + 1 wheat | 3 moves in the existing daily move bank |
+| Bluebell Infusion | 8 | 2 berry + 1 carrot | 2 bonus mining surveys |
+| Royal Harvest Platter | 11 | 2 carrot + 2 wheat + 2 berry | 1 already-unlocked Hammer booster |
+
+These are **initial implementation balances**, not user-confirmed final pricing. Recipes use only the three currently growable crops and the existing earned-resource systems. The new pantry state is backward-compatible and preserves unknown meal entries for future versions. Cook supports carefully capped batch operations; no new currency or extra daily reset exists. The food illustrations are temporary placeholders built from approved existing farming art.
+
+Original ideas such as Herbal Tisane, Royal Feast, additional processing ingredients, premium rewards and cooking minigames are still future design concepts until their crops, drops, rewards, cooldowns, and accessibility are specified and tested. Current game provides real cooking/serving buttons inside the Farm screen and a separate clearly labeled nonfunctional future recipe index.
 
 ## Visual / technical art production inventory
 

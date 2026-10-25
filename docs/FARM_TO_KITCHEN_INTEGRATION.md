@@ -28,3 +28,11 @@ Do not enable new crops in `RupeeTownGarden.CROPS` without unlock, stock, growth
 - `node tests/rupee-rush.test.js`: in-game garden, pantry and power-up art.
 - `node tests/farming-refined-assets.test.js`: 120 hashes, dimensions and URL lookup.
 - Full Actions build and Android on-device small-icon review remain required.
+
+## Cooking engine — phase 1 active
+
+The earlier art-only milestone is retained above for historical context. The Phase 1 deterministic cooking system is now implemented in `web/kitchen-cooking.js`, loaded after `mode-powerups.js`. Existing `town.harvest` carrot/wheat/berry are consumed only on successful `Cook.cook` transactions. Prepared portions live at `town.kitchen.meals` (schema 1); each `Cook.serve` call grants exactly one existing reward via `RupeeDailyMoves`, `RupeeMining`, `RupeeModePowerups`, or `RupeeProgress`, or adds a life to the existing capped health wallet. Missing ingredients, locked recipes, inventory cap and full-health conditions prevent the transaction from spending a meal.
+
+The Farm screen has active COOK and SERVE buttons, a real pantry preview, family equipment illustration, and separate preview-only recipes. No new farming items are silently available. Food art is deliberately temporary and text-labelled.
+
+**QA commands:** `node --test tests/kitchen-cooking.test.js`; `node tests/rupee-rush.test.js`; `node tests/farming-refined-assets.test.js`; and all source tests in the existing Actions build. Verify on-device before declaring full audiovisual polish.

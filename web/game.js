@@ -2,8 +2,8 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,Kitchen=window.RupeeKitchenCatalog;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,Kitchen].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,Kitchen,Cook].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
@@ -244,11 +244,21 @@ function farmEquipmentPreview(){
  '<div class="farm-art-shelf">'+items.map(([id,label])=>'<div class="farm-art-entry"><img loading="lazy" src="'+FarmArt.equipment(id)+'" alt=""><small>'+label+'</small></div>').join('')+'</div>';
 }
 function kitchenPreview(){
- const holdings=Kitchen.pantry(saved),recipes=Kitchen.RECIPES;
+ const holdings=Kitchen.pantry(saved),recipes=Kitchen.RECIPES,ready=Cook.list(saved,Date.now(),dailyCap());
+ const cookbook='<h3 class="subhead">Cooking Stove · Prepared Meals</h3><p class="hint">Cooking spends harvested crops to prepare a meal. The meal stays in your kitchen until you choose to serve it. Full lives or capped rewards will not consume food.</p>'+
+ '<div class="farm-recipe-grid">'+ready.map(r=>{
+  const locked=saved.town.houseLevel<r.house,canCook=r.cook.valid,canServe=r.serve.valid;
+  const contents=r.ingredients.map(x=>x.quantity+' × '+escape(Kitchen.get(x.item)?.name||x.item)+' ('+x.owned+' owned)').join(' · ');
+  const outcome=({hearts:'1 life',moves:'3 daily moves',strikes:'3 bonus mining strikes',scans:'2 bonus surveys',farmPower:'1 farming power-up',matchBooster:'1 match-3 booster'})[r.reward.kind];
+  return '<div class="farm-recipe kitchen-ready"><img src="'+r.art+'" alt=""><span><b>'+escape(r.name)+'</b><small>'+contents+'</small>'+
+   '<small>Unlock: house '+r.house+' · Serves: '+outcome+'</small><small>Cooked portions: '+r.stored+(locked?' · House upgrade required':'')+'</small></span>'+
+   button('kitchen-cook','COOK 1','secondary','data-recipe="'+r.id+'" '+(canCook?'':'disabled'))+
+   button('kitchen-serve','SERVE 1','primary','data-recipe="'+r.id+'" '+(canServe?'':'disabled'))+'</div>';
+ }).join('')+'</div>';
  return '<section class="farm-kitchen" aria-label="Kitchen planning"><h2 class="subhead">Kitchen Pantry</h2>'+
- '<p class="hint">Your real harvested ingredients are shown below. Cooking and processing recipes are previews only; nothing will be spent or crafted yet.</p>'+
+ '<p class="hint">Stored crops appear below. The Cooking Stove makes usable meals now; the separate concept recipes beneath it remain previews until those ingredients and rules are implemented.</p>'+
  '<div class="farm-art-shelf">'+holdings.map(item=>'<div class="farm-art-entry pantry-entry"><img loading="lazy" src="'+item.art+'" alt=""><strong>'+escape(item.name)+'</strong><small>Stored ×'+number(item.quantity)+'</small></div>').join('')+'</div>'+
- '<h3 class="subhead">Future Recipe Book</h3><div class="farm-recipe-grid">'+recipes.map(recipe=>
+ cookbook+'<h3 class="subhead">Future Recipe Concepts</h3><div class="farm-recipe-grid">'+recipes.map(recipe=>
  '<div class="farm-recipe"><img src="'+Kitchen.image(recipe.output)+'" alt=""><span><b>'+escape(recipe.name)+'</b><small>Planned: '+recipe.ingredients.map(x=>x.quantity+' × '+escape(Kitchen.get(x.item).name)).join(' + ')+'</small><small>Cooking not yet available</small></span></div>').join('')+'</div></section>';
 }
 function modePowerCards(family){
@@ -339,7 +349,7 @@ function settings(){
  button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE RUPEE RUSH DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>';
 }
 function render(){
- P.migrate(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);bank();
+ P.migrate(saved);Mining.ensure(saved);Garden.ensure(saved);Cook.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);bank();
  wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);if(styles)styles.textContent=number(saved.styleShards);
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='rewards'?rewards():settings());
@@ -388,6 +398,8 @@ function handle(b){
   P.spend(saved,id);if(id==='extra')D.topUp(saved,5,now,dailyCap());
   impact(id,target);selectCell(-1);Audio.play('booster');Audio.speak(({hammer:'hammer',row:'rocket',column:'rocket',blast:'bomb',shuffle:'shuffle',color:'color',spectrum:'color'})[id]||'boosterUsed');save();animateMove(r,before);return;
  }
+ if(a==='kitchen-cook')return finishMining(Cook.cook(saved,info.recipe,1),'Meal prepared and stored in the kitchen.');
+ if(a==='kitchen-serve')return finishMining(Cook.serve(saved,info.recipe,now,dailyCap()),'Meal served; reward granted.');
  if(a==='farm-shop'){shopTab='boosters';nav('shop');return;}
  if(a==='farm-plot'){farmPlot=Number(info.plot);render();return;}
  if(a==='farm-crop'){if(Garden.CROPS[info.crop])farmCrop=info.crop;render();return;}
@@ -439,7 +451,7 @@ function handle(b){
  if(a==='reset-cancel'){resetStep=0;render();return;}
  if(a==='reset-confirm'){
   if(resetStep===1){resetStep=2;render();return;}
-  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
+  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Cook.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
  }
 }
 document.addEventListener('click',e=>{
