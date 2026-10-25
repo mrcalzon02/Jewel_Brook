@@ -244,22 +244,41 @@ function farmEquipmentPreview(){
  '<div class="farm-art-shelf">'+items.map(([id,label])=>'<div class="farm-art-entry"><img loading="lazy" src="'+FarmArt.equipment(id)+'" alt=""><small>'+label+'</small></div>').join('')+'</div>';
 }
 function kitchenPreview(){
- const holdings=Kitchen.pantry(saved),recipes=Kitchen.RECIPES,ready=Cook.list(saved,Date.now(),dailyCap());
- const cookbook='<h3 class="subhead">Cooking Stove · Prepared Meals</h3><p class="hint">Cooking spends harvested crops to prepare a meal. The meal stays in your kitchen until you choose to serve it. Full lives or capped rewards will not consume food.</p>'+
- '<div class="farm-recipe-grid">'+ready.map(r=>{
-  const locked=saved.town.houseLevel<r.house,canCook=r.cook.valid,canServe=r.serve.valid;
-  const contents=r.ingredients.map(x=>x.quantity+' × '+escape(Kitchen.get(x.item)?.name||x.item)+' ('+x.owned+' owned)').join(' · ');
-  const outcome=({hearts:'1 life',moves:'3 daily moves',strikes:'3 bonus mining strikes',scans:'2 bonus surveys',farmPower:'1 farming power-up',matchBooster:'1 match-3 booster'})[r.reward.kind];
-  return '<div class="farm-recipe kitchen-ready"><img src="'+r.art+'" alt=""><span><b>'+escape(r.name)+'</b><small>'+contents+'</small>'+
-   '<small>Unlock: house '+r.house+' · Serves: '+outcome+'</small><small>Cooked portions: '+r.stored+(locked?' · House upgrade required':'')+'</small></span>'+
-   button('kitchen-cook','COOK 1','secondary','data-recipe="'+r.id+'" '+(canCook?'':'disabled'))+
-   button('kitchen-serve','SERVE 1','primary','data-recipe="'+r.id+'" '+(canServe?'':'disabled'))+'</div>';
- }).join('')+'</div>';
- return '<section class="farm-kitchen" aria-label="Kitchen planning"><h2 class="subhead">Kitchen Pantry</h2>'+
- '<p class="hint">Stored crops appear below. The Cooking Stove makes usable meals now; the separate concept recipes beneath it remain previews until those ingredients and rules are implemented.</p>'+
- '<div class="farm-art-shelf">'+holdings.map(item=>'<div class="farm-art-entry pantry-entry"><img loading="lazy" src="'+item.art+'" alt=""><strong>'+escape(item.name)+'</strong><small>Stored ×'+number(item.quantity)+'</small></div>').join('')+'</div>'+
- cookbook+'<h3 class="subhead">Future Recipe Concepts</h3><div class="farm-recipe-grid">'+recipes.map(recipe=>
- '<div class="farm-recipe"><img src="'+Kitchen.image(recipe.output)+'" alt=""><span><b>'+escape(recipe.name)+'</b><small>Planned: '+recipe.ingredients.map(x=>x.quantity+' × '+escape(Kitchen.get(x.item).name)).join(' + ')+'</small><small>Cooking not yet available</small></span></div>').join('')+'</div></section>';
+ const holdings=Kitchen.pantry(saved),planned=Kitchen.RECIPES,ready=Cook.list(saved,Date.now(),dailyCap());
+ const names={hearts:'1 life',moves:'3 daily moves',strikes:'3 bonus mining strikes',scans:'2 bonus surveys',farmPower:'1 farming power-up',matchBooster:'1 match-3 booster'};
+ const pantry='<div class="farm-art-shelf">'+holdings.map(item=>
+  '<div class="farm-art-entry pantry-entry"><img loading="lazy" src="'+item.art+'" alt=""><strong>'+escape(item.name)+'</strong><small>Stored ×'+number(item.quantity)+'</small></div>').join('')+'</div>';
+ const scene=(room,title,description)=>'<div class="kitchen-room-banner kitchen-room-'+room+'">'+
+  '<img class="kitchen-room-art" loading="lazy" decoding="async" src="art/embryon/town/kitchen/'+room+'-room.webp" alt="'+
+  (room==='kitchen'?'A welcoming fantasy kitchen with a warm stone hearth, stocked shelves and a food preparation table':
+   'A cozy blue-and-gold dining room with candlelit tables, a fireplace and mountain views')+'">'+
+  '<div class="kitchen-room-heading"><h3>'+title+'</h3><p>'+description+'</p></div></div>';
+ const cooking='<section class="kitchen-room-section" aria-label="Cooking kitchen">'+
+  scene('kitchen','Hearthside Kitchen','Prepare meals from your harvested ingredients. Cooked food stays in storage until served.')+
+  '<div class="farm-recipe-grid">'+ready.map(r=>{
+   const locked=saved.town.houseLevel<r.house,contents=r.ingredients.map(x=>x.quantity+' × '+escape(Kitchen.get(x.item)?.name||x.item)+' ('+x.owned+' owned)').join(' · ');
+   return '<div class="farm-recipe kitchen-ready"><img loading="lazy" src="'+r.art+'" alt=""><span>'+
+    '<b>'+escape(r.name)+'</b><small>'+contents+'</small><small>House '+r.house+' · '+names[r.reward.kind]+'</small>'+
+    '<small>Prepared: '+r.stored+(locked?' · House upgrade required':'')+'</small></span>'+
+    button('kitchen-cook','COOK 1','secondary','data-recipe="'+r.id+'" '+(r.cook.valid?'':'disabled'))+'</div>';
+  }).join('')+'</div></section>';
+ const dining='<section class="kitchen-room-section" aria-label="Dining room">'+
+  scene('dining','Cozy Dining Room','Serve prepared meals to receive farming, match-three, or mining benefits.')+
+  '<div class="farm-recipe-grid">'+ready.map(r=>
+   '<div class="farm-recipe kitchen-ready"><img loading="lazy" src="'+r.art+'" alt=""><span>'+
+   '<b>'+escape(r.name)+'</b><small>Prepared portions: '+r.stored+'</small>'+
+   '<small>Serving benefit: '+names[r.reward.kind]+'</small></span>'+
+   button('kitchen-serve','SERVE 1','primary','data-recipe="'+r.id+'" '+(r.serve.valid?'':'disabled'))+'</div>'
+  ).join('')+'</div></section>';
+ const future='<section class="kitchen-future"><h3 class="subhead">Future Recipe Concepts</h3>'+
+ '<p class="hint">These recipes are previews only until their ingredients and processing systems are implemented.</p>'+
+ '<div class="farm-recipe-grid">'+planned.map(recipe=>
+  '<div class="farm-recipe"><img loading="lazy" src="'+Kitchen.image(recipe.output)+'" alt=""><span><b>'+escape(recipe.name)+'</b>'+
+   '<small>Planned: '+recipe.ingredients.map(x=>x.quantity+' × '+escape(Kitchen.get(x.item).name)).join(' + ')+'</small>'+
+   '<small>Cooking not yet available</small></span></div>').join('')+'</div></section>';
+ return '<section class="farm-kitchen" aria-label="Kitchen and dining"><h2 class="subhead">Kitchen Pantry</h2>'+
+  '<p class="hint">Your existing harvested ingredients. Cooking spends crops and stores meals; serving a meal applies its reward separately. Full lives or capped rewards do not consume stored meals.</p>'+
+  pantry+cooking+dining+future+'</section>';
 }
 function modePowerCards(family){
  return '<div class="shop-grid mode-power-list">'+Object.values(Powerups.CATALOG).filter(p=>p.family===family).map(p=>
@@ -293,7 +312,7 @@ function farm(){
  '<h2 class="subhead">Harvest Store</h2><div class="shop-grid">'+seeds.map(c=>'<div class="shop-item"><img class="farm-item-art" loading="lazy" src="'+FarmArt.harvest(c.id)+'" alt=""><strong>'+escape(c.name)+'</strong><small>'+t.harvest[c.id]+' harvested · '+c.sellEach+' Rupees each</small>'+
  button('farm-sell','SELL ALL','secondary','data-crop="'+c.id+'" '+(!t.harvest[c.id]?'disabled':''))+'</div>').join('')+'</div>'+
  '<h2 class="subhead">Farming Power-Ups</h2><p class="hint">Selected plot: '+(farmPlot+1)+' · Consumables do not replace fertilizers or building upgrades.</p>'+
- modePowerCards('farm')+button('farm-shop','SHOP FOR GARDEN POWER-UPS','secondary')+farmEquipmentPreview()+kitchenPreview();
+ modePowerCards('farm')+button('farm-shop','SHOP FOR GARDEN POWER-UPS','secondary')+kitchenPreview()+farmEquipmentPreview();
 }
 
 function mine(){

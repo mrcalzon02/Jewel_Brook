@@ -1,0 +1,33 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const base=path.resolve(__dirname,'../web');
+const m=require('../web/art/embryon/town/kitchen/manifest.json');
+assert.equal(m.schema,'rupee-rush/kitchen-rooms/v1');
+assert.equal(m.scenes.length,2);
+const names=new Set();
+for(const scene of m.scenes){
+ assert(!names.has(scene.id));names.add(scene.id);
+ assert.match(scene.path,/^art\/embryon\/town\/kitchen\/(kitchen|dining)-room\.webp$/);
+ assert.equal(scene.width,1280);assert.equal(scene.height,960);
+ const absolute=path.resolve(base,scene.path);
+ assert(absolute.startsWith(base+path.sep));
+ const bin=fs.readFileSync(absolute);
+ assert.equal(bin.length,scene.bytes,'file bytes '+scene.id);
+ assert.equal(crypto.createHash('sha256').update(bin).digest('hex'),scene.sha256,scene.id+' checksum');
+ assert.equal(bin.subarray(0,4).toString(),'RIFF');
+ assert.equal(bin.subarray(8,12).toString(),'WEBP');
+}
+const game=fs.readFileSync(path.resolve(base,'game.js'),'utf8');
+const styles=fs.readFileSync(path.resolve(base,'style.css'),'utf8');
+assert(game.includes("scene('kitchen'"),'Cooking UI uses kitchen scene');
+assert(game.includes("scene('dining'"),'Serving UI uses dining scene');
+assert(game.includes("button('kitchen-cook'"),'Real cooking button available');
+assert(game.includes("button('kitchen-serve'"),'Real serving button available');
+assert(game.indexOf("scene('kitchen'")<game.indexOf("scene('dining'"),'Prepare then serve');
+assert(game.includes("kitchen-room-art"),'Scene image markup');
+assert(game.includes("Cooking not yet available"),'Future concept remains clearly labeled');
+assert(styles.includes('.kitchen-room-art')&&styles.includes('object-fit:cover'));
+assert(styles.includes('@media(max-width:620px)'), 'Small screen support');
+assert(!game.includes('kitchen-room-tab'), 'No decorative inert controls');
+console.log('PASS Rupee Rush scenic kitchen/dining: two checksum-verified images, responsive rooms and real cook/serve control wiring');

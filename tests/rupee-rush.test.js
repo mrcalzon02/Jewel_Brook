@@ -114,6 +114,10 @@ assert.match(views.screen.innerHTML,/Farming Power-Ups/,'farming booster shelf r
 assert.match(views.screen.innerHTML,/Kitchen Pantry/,'kitchen pantry preview renders');
 assert.match(views.screen.innerHTML,/data-action="kitchen-cook"/,'real recipe cooking is wired');
 assert.match(views.screen.innerHTML,/data-action="kitchen-serve"/,'explicit meal serving is wired');
+assert.match(views.screen.innerHTML,/kitchen-room\.webp/,'approved kitchen room is shown in farm');
+assert.match(views.screen.innerHTML,/dining-room\.webp/,'approved dining room is shown in farm');
+assert.match(views.screen.innerHTML,/aria-label="Cooking kitchen"/,'cooking scene has a distinct section');
+assert.match(views.screen.innerHTML,/aria-label="Dining room"/,'serving scene has a distinct section');
 assert.match(views.screen.innerHTML,/Cooking not yet available/,'unimplemented cooking is explicitly labeled');
 assert.match(views.screen.innerHTML,/farming-overview\/goods\/carrot\.webp/,'real harvest art integrated');
 assert.match(views.screen.innerHTML,/farming-tools\/equipment\/growth-elixir\.webp/,'farm power-up artwork integrated');
