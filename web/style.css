@@ -198,3 +198,9 @@
  .kitchen-room-section .farm-recipe img{width:55px;height:55px}
 }
 @media(prefers-reduced-motion:reduce){.kitchen-room-banner,.kitchen-room-art{transition:none!important;animation:none!important}}
+
+/* Recovered Daysha Town portraits. Portrait level follows campaign; house uses independent town.houseLevel. */
+.town-avatar-panel{display:flex;align-items:center;gap:clamp(10px,2.8vw,24px);margin:14px 0;padding:12px 20px 12px 12px;background:linear-gradient(120deg,#302852,#202b52 55%,#151a34);border:1px solid #d4b66b;border-radius:16px;box-shadow:0 8px 22px #07071650;overflow:hidden}
+.town-avatar-art{display:block;flex:0 0 auto;width:clamp(96px,25vw,144px);height:clamp(160px,42vw,240px);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 10px #0506199c)}
+.town-avatar-copy{min-width:0;flex:1}.town-avatar-copy h2{font-size:clamp(19px,3.5vw,28px);margin:4px 0 8px}.town-avatar-copy p{font-size:clamp(12px,2.7vw,15px);color:#ece4f9;line-height:1.5}.town-avatar-eyebrow{display:block;color:#ffdd93;font-size:11px;font-weight:800;letter-spacing:.12em}
+@media(max-width:390px){.town-avatar-panel{padding:8px;gap:8px}.town-avatar-art{width:94px;height:156px}.town-avatar-copy h2{font-size:18px}.town-avatar-copy p{font-size:12px}}

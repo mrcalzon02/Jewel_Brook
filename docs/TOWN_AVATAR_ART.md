@@ -16,7 +16,7 @@
 
 `RupeeTownAvatars.fromSave(saved).path` chooses Daysha’s level-appropriate Town avatar. `saved.unlocked` already stores the campaign’s next-unlocked level. Town portraits stop upgrading after Level 40; **no campaign levels, progression, resource consumption, unlock rules or saves are changed here**.
 
-The Tier 1–40 images are assets and proposed display mapping. This import **does not connect them to existing menus** until the Town interface is separately designed. The existing approved standalone Daysha key art remains the fallback. Keep mining available immediately.
+The Tier 1–40 images are assets and proposed display mapping. The live Home and Farm screens now show the numbered Town portrait using this resolver (see `web/game.js`). Both screens preserve the separate equipped-character/wardrobe cosmetics and the independently upgraded `saved.town.houseLevel`; no portrait grants mining or campaign bonuses. The existing approved standalone Daysha key art remains the fallback. Keep mining available immediately.
 
 ## Caveats and QA
 
