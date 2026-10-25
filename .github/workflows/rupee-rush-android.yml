@@ -91,6 +91,7 @@ jobs:
           version=$((500000000 + GITHUB_RUN_NUMBER * 100 + GITHUB_RUN_ATTEMPT))
           (( version < 2100000000 )) || exit 1
           export ORG_GRADLE_PROJECT_rupeeVersionCode="$version"
+          export ORG_GRADLE_PROJECT_rupeePublisherSha256="$RUPEE_APK_CERT_SHA256"
           gradle -p android --no-daemon :app:assembleRelease
           apk=android/app/build/outputs/apk/release/app-release.apk
           test -s "$apk"
@@ -99,7 +100,7 @@ jobs:
           "$ANDROID_SDK_ROOT/build-tools/36.0.0/aapt" dump badging "$apk" | tee "$RUNNER_TEMP/package.txt"
           grep -F "name='io.github.mrcalzon02.rupeerush'" "$RUNNER_TEMP/package.txt"
           grep -F "versionCode='$version'" "$RUNNER_TEMP/package.txt"
-          for a in assets/index.html assets/game.js assets/mining.js assets/style.css assets/art/embryon/generated/gems/ruby.png assets/art/primary/blockers/rock.png; do
+          for a in assets/index.html assets/game.js assets/update.js assets/mining.js assets/style.css assets/art/embryon/generated/gems/ruby.png assets/art/primary/blockers/rock.png; do
             unzip -Z -1 "$apk" | grep -Fx "$a"
           done
           mkdir -p release
@@ -121,4 +122,4 @@ jobs:
         run: |
           set -euo pipefail
           tag="rupeerush-phone-test-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT"
-          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Rupee Rush Android ${{ steps.release.outputs.version }}" --notes 'Persistent-signer offline APK. Install over the previous same-signer Rupee Rush app to retain saves. Do not uninstall first. Development prerelease, independent of Google Play.'
+          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Rupee Rush Android ${{ steps.release.outputs.version }}" --notes 'Native GitHub updater enabled in signed builds. Downloads and installations require player consent. To bootstrap on an older app, install this APK once over the currently installed same-signer package. Do not uninstall; retain local saves.'
