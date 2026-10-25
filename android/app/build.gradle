@@ -10,6 +10,14 @@ def versionNumber = (project.findProperty('rupeeVersionCode') ?: '1').toString()
 def expectedAlias = 'rupeerush-local-apk-v1'
 def signerAvailable = keystorePath && rrStorePass && rrKeyPass &&
     rrKeyAlias == expectedAlias && file(keystorePath).isFile()
+// Future Play channel: separate owner-supplied upload signer; never reuse the local APK key.
+def playKeystorePath = (project.findProperty('playUploadKeystorePath') ?: '').toString()
+def playStorePassword = (project.findProperty('playUploadStorePassword') ?: '').toString()
+def playKeyAlias = (project.findProperty('playUploadKeyAlias') ?: '').toString()
+def playKeyPassword = (project.findProperty('playUploadKeyPassword') ?: '').toString()
+def havePlaySigning = playKeystorePath && playStorePassword && playKeyPassword &&
+    playKeyAlias == 'rupeerush-play-upload-v1' && file(playKeystorePath).isFile()
+
 if (versionNumber < 1 || versionNumber > 2100000000) {
     throw new GradleException('Invalid Rupee Rush versionCode')
 }
@@ -46,6 +54,15 @@ android {
                 storeType = 'PKCS12'
             }
         }
+        if (havePlaySigning) {
+            playUpload {
+                storeFile file(playKeystorePath)
+                storePassword = playStorePassword
+                keyAlias = playKeyAlias
+                keyPassword = playKeyPassword
+                storeType = 'PKCS12'
+            }
+        }
     }
     buildTypes {
         debug { debuggable true }
@@ -54,6 +71,13 @@ android {
             minifyEnabled false
             shrinkResources false
             if (signerAvailable) signingConfig signingConfigs.rupeeLocal
+        }
+        // Play AAB only: do not inject the historical GitHub sideload signer.
+        play {
+            initWith release
+            signingConfig = null
+            if (havePlaySigning) signingConfig signingConfigs.playUpload
+            matchingFallbacks = ['release']
         }
     }
 }
@@ -75,5 +99,21 @@ tasks.register('requirePermanentLocalSigner') {
 tasks.configureEach { task ->
     if (task.name == 'assembleRelease' || task.name == 'bundleRelease') {
         task.dependsOn('requirePermanentLocalSigner')
+    }
+}
+
+tasks.register('validatePlayUploadSigning') {
+    doLast {
+        if (!havePlaySigning) {
+            throw new GradleException('Play bundle blocked: supply NEW rupeerush-play-upload-v1 upload key properties')
+        }
+        if (file(playKeystorePath).canonicalPath == file(keystorePath ?: '/nonexistent').canonicalPath) {
+            throw new GradleException('Play bundle blocked: local Rupee Rush sideload signer must NOT be reused')
+        }
+    }
+}
+tasks.configureEach { task ->
+    if (task.name in ['bundlePlay', 'assemblePlay']) {
+        task.dependsOn('validatePlayUploadSigning')
     }
 }
