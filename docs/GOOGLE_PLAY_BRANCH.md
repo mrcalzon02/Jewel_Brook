@@ -25,7 +25,7 @@ The Play candidate branch contains `tools/verify_play_release.py` as a fail-clos
 
 ## Application-specific readiness assessment
 
-The current Android Gradle configuration only has sideload/debug and local signed `release`; a separate Play upload-signed build variant has NOT been verified. Existing `docs/GOOGLE_PLAY_NEW_KEYS.md` intentionally defers generating new Play keys. All `tests/*.test.js` are mandatory release preflight tests. Blockers: add a safe independent Play bundle/signing variant only when explicitly implementing Play distribution, then prove privacy, Play Console, installer/save migration and policy acceptance; do not repurpose the current Rupee sideload key.
+The `google-play` branch now stages a separate fail-closed Gradle `play` build variant (`:app:bundlePlay`) requiring an independently provided `rupeerush-play-upload-v1` upload signing identity. This is source-only preparation: NO compiled or signed Play AAB or real-device verification has been performed. Existing `docs/GOOGLE_PLAY_NEW_KEYS.md` intentionally defers generating new Play keys. All `tests/*.test.js` are mandatory release preflight tests. Blockers: supply and securely back up the distinct Play upload key when expressly authorized; compile and verify `bundlePlay`, review Play release versionName (currently inherits a local-development suffix), and prove privacy, Play Console, installer/save migration and policy acceptance; do not repurpose the Rupee sideload key.
 
 ## Enforcement and evidence limitations
 
