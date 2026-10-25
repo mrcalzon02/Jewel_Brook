@@ -79,7 +79,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js')};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -92,7 +92,8 @@ function click(action,rest={}){assert.equal(typeof handler,'function');handler({
 function navigate(nav){click('',{nav});}
 navigate('mine');
 assert.match(views.screen.innerHTML,/Prism Vale Mines/);
-assert.match(views.screen.innerHTML,/art\/primary\/blockers\/rock.png/);
+assert.match(views.screen.innerHTML,/class="excavation-rock damage-0"/,'Mine uses modeled faceted boulder presentation');
+assert.doesNotMatch(views.screen.innerHTML,/art\/primary\/blockers\/rock.png/,'Mine must not use flat match-three blocker');
 click('mine-tab',{tab:'equipment'});
 assert.match(views.screen.innerHTML,/art\/nutvale\/mining-tools\/pickaxes\//);
 assert.match(views.screen.innerHTML,/art\/nutvale\/mining-tools\/gloves\//);
