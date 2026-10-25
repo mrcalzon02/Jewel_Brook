@@ -2,8 +2,8 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownHouses=window.RupeeTownHouses,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownHouses,Kitchen,Cook].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownHouses=window.RupeeTownHouses,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownHouses,CropGrowth,Kitchen,Cook].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
@@ -309,11 +309,11 @@ function farm(){
  feeds.filter(f=>t.houseLevel>=f.house).map(f=>button('farm-feed',f.name+' · '+t.fertilizers[f.id],farmFeed===f.id?'primary':'secondary','data-feed="'+f.id+'"')).join('')+'</div>';
  const plots='<div class="farm-grid">'+Array.from({length:8},(_,i)=>t.slots[i]||{state:'locked'}).map((p,i)=>{
   const isSelected=i===farmPlot,which=p.crop&&Garden.CROPS[p.crop],ready=p.state==='ready',
-   picture=which?(FarmArt.harvest(which.id)||'art/embryon/town/gardening/icons/'+art[which.id]):null;
+   picture=which?CropGrowth.fromStatus(p):null;
   const detail=p.state==='empty'?'Available':ready?'READY TO HARVEST':p.state==='locked'?'Locked':p.state.toUpperCase()+' · '+Math.ceil(Math.max(0,p.readyAt-time)/60000)+' min';
   const phase=['locked','empty','seed','sprout','growing','maturing','ready'].includes(p.state)?p.state:'empty';
   const bed='<span class="farm-bed-scene state-'+phase+'" aria-hidden="true"><img class="farm-bed-base" src="'+FarmArt.equipment('garden-plot')+'" alt="" loading="lazy">'+
-    (phase==='seed'?'<span class="farm-bed-seed"></span>':phase==='sprout'?'<span class="farm-bed-sprout"></span>':picture?'<img class="farm-bed-crop" src="'+picture+'" alt="">':'')+
+    (picture?'<img class="farm-bed-crop" src="'+picture+'" alt="" loading="lazy" decoding="async">':'')+
     (p.fertilizer?'<span class="farm-bed-fertilized">✧</span>':'')+'</span>';
   return '<div class="farm-plot '+(isSelected?'selected':'')+'"><button class="farm-plot-pick" data-action="farm-plot" data-plot="'+i+'" aria-pressed="'+isSelected+'" '+(p.state==='locked'?'disabled aria-disabled="true"':'')+'>'+bed+'<b>Plot '+(i+1)+'</b><small>'+detail+'</small>'+
    (which?'<small>'+escape(which.name)+' · yield '+p.yield+'</small>':'')+'</button>'+

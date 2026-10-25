@@ -12,3 +12,6 @@ All forty previews use the same extended SVG viewBox (0 -56 480 516) and stable 
 
 ## Visual review viewer
 Open `web/town-house-art-review.html` using the project's local HTTP preview server. It displays four ten-tier boards with alpha checkerboard, light/dark backgrounds, zoomable individual art, actual original house names/descriptions and loaded-asset counts. It does not mutate any save or alter runtime UI.
+
+## Crop growth graphics integration
+Fifteen independent transparent SVG illustrations (carrot, wheat, bluebell berry × seed/sprout/growing/maturing/ready) are stored under `web/art/embryon/town/gardening/growth/`. The deterministic generator is `scripts/generate-crop-growth.js`; the read-only resolver `web/crop-growth-art.js` accepts the existing saved crop ID and the result of `RupeeTownGarden.plotStatus`. Plot sockets remain eight, with only purchased plots selectable. Growth timing and yields stay in the original deterministic model; these art assets are not the final painted image masters.

@@ -86,7 +86,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -116,6 +116,7 @@ assert.match(views.screen.innerHTML,/house_lv_01\.svg/,'Farm displays house 1 at
 assert.match(views.screen.innerHTML,/farming-tools\/equipment\/garden-plot\.webp/,'Existing real gardening bed art renders');
 assert.match(views.screen.innerHTML,/farm-bed-scene state-empty/,'Available bed is visibly empty');
 assert.match(views.screen.innerHTML,/farm-bed-scene state-locked/,'All eight plot anchors include locked bed art');
+assert.match(fs.readFileSync(path.join(root,'game.js'),'utf8'),/CropGrowth\.fromStatus\(p\)/,'Farm renders real crop stages from plotStatus');
 assert.equal((views.screen.innerHTML.match(/class="farm-plot /g)||[]).length,8,'exactly eight visual plot sockets');
 assert.match(views.screen.innerHTML,/farm-plot-pick[^>]+disabled aria-disabled="true"/,'locked beds cannot be selected');
 assert.match(views.screen.innerHTML,/data-action="farm-plant"/,'plant actions available');
