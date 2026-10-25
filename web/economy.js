@@ -39,7 +39,17 @@ if(G){for(const [kind,type] of [['pickaxe','pickSkin'],['gloves','gloveSkin']]){
   for(const [i,item] of G.ART[kind].entries()){const r=rarity(i+11);CATALOG.push(Object.freeze({id:type+'-'+item.id,name:item.name+' '+(kind==='pickaxe'?'Pickaxe':'Gloves'),type,rarity:r,image:item.image,cost:RARITIES[r]}));}
   for(const [i,item] of G.BONUS[kind].entries())CATALOG.push(Object.freeze({id:type+'-'+item.id,name:item.name+' Collector '+(kind==='pickaxe'?'Pickaxe':'Gloves'),type,rarity:'legendary',image:item.image,cost:RARITIES.legendary}));
  }}
-for(let i=0;i<20;i++){const n=String(i+1).padStart(2,'0'),r=rarity(i+9);CATALOG.push(Object.freeze({id:'frame-'+n,name:['Amethyst','Sapphire','Emerald','Gold','Ruby'][i%5]+' Portrait Frame '+n,type:'frame',rarity:r,image:portrait((i+6)%PREFIX.length),cost:RARITIES[r]}));}
+function frameArt(i){
+ const colors=['#bcb4ef','#a9dcff','#a2f1ca','#f6d78d','#ef9aa9'];
+ const c=colors[i%colors.length],n=5+i%4,inner=8+(i%3)*2;
+ const ornaments=Array.from({length:n},(_,k)=>{const a=2*Math.PI*k/n,x=65+54*Math.cos(a),y=65+54*Math.sin(a);return '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(3+i%3)+'" fill="'+c+'" stroke="#fff5c4" stroke-width="1"/>';}).join('');
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130"><rect x="7" y="7" width="116" height="116" rx="'+(10+i%5)+'" fill="none" stroke="'+c+'" stroke-width="'+(4+i%3)+'"/>'+
+ '<rect x="'+inner+'" y="'+inner+'" width="'+(130-inner*2)+'" height="'+(130-inner*2)+'" rx="7" fill="none" stroke="#f5e7b5" stroke-width="2"/>'+
+ '<path d="M10 30L10 10L32 10 M98 10L120 10L120 30 M120 100L120 120L98 120 M32 120L10 120L10 100" fill="none" stroke="#fff6ca" stroke-width="4"/>'+
+ ornaments+'</svg>';
+ return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+for(let i=0;i<20;i++){const n=String(i+1).padStart(2,'0'),r=rarity(i+9);CATALOG.push(Object.freeze({id:'frame-'+n,name:['Amethyst','Sapphire','Emerald','Gold','Ruby'][i%5]+' Portrait Frame '+n,type:'frame',rarity:r,image:frameArt(i),cost:RARITIES[r]}));}
 const BY_ID=Object.freeze(Object.fromEntries(CATALOG.map(x=>[x.id,x])));
 const POOLS=Object.freeze({
  basic:Object.freeze([{kind:'coins',weight:24,min:250,max:650},{kind:'gems',weight:10,min:2,max:5},{kind:'styleShards',weight:18,min:35,max:90},{kind:'credits',weight:12,min:100,max:250},{kind:'booster',weight:16,min:1,max:3},{kind:'cosmetic',weight:10},{kind:'character',weight:6},{kind:'upgrade',weight:4}]),
@@ -114,15 +124,6 @@ function grantRoll(save,entry,rng=Math.random,P=root.RupeeProgress){
  if(!Object.prototype.hasOwnProperty.call(CURRENCY,kind))return {kind:'invalid',label:'Invalid reward'};
  const amount=randRange(entry.min||1,entry.max||1,rng);
  credit(save,kind,amount);return {kind,label:amount+' '+CURRENCY[kind],amount};
-}
-function purchasePack(save,id,rng=Math.random,P=root.RupeeProgress){
- ensure(save);const p=PACKS[id];if(!p)return {valid:false,reason:'unknown'};
- if(money(save[p.currency])<p.cost)return {valid:false,reason:'funds'};
- const results=[];for(let i=0;i<p.rolls;i++)results.push(grantRoll(save,weighted(POOLS[p.pool],rng),rng,P));
- // Reward rolls may pay out the purchase currency. Debit before granting to prevent false affordability/underflow.
- // We must have already reserved the cost, so rolls never affect whether this transaction is affordable.
- // The debit is applied before rolls in the caller via the prechecked balance snapshot below.
- return {valid:true,pack:id,results};
 }
 function buyPack(save,id,rng=Math.random,P=root.RupeeProgress){
  ensure(save);const p=PACKS[id];if(!p)return {valid:false,reason:'unknown'};
