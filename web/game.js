@@ -73,7 +73,7 @@ function start(id){
  if(bank().remaining<1)return message('No moves left. Mine or claim your next free refill.');
  if(id>=T.FIRST&&!T.available(saved,id))return message('That elemental trial is still locked.');
  if(id<T.FIRST&&(id>saved.unlocked||id<1))return message('Stage locked.');
- active=E.create(id,id*7919+saved.unlocked*17);selected=-1;visualImpact=null;outcome=null;page='game';save();Audio.play('chapter-enter');Audio.speak('levelStart');render();
+ active=E.create(id,id*7919+saved.unlocked*17);selected=-1;visualImpact=null;outcome=null;page='game';save();Audio.play('chapter-enter');Audio.speak('levelStart');render();window.RupeeUpdates?.autoCheck();
 }
 function payload(c){
  if(!c||c.type===null)return '<span class="void"></span>';
@@ -318,6 +318,7 @@ function rewards(){
 function settings(){
  return header('Settings','Independent local game data. No Nut Buster saves or accounts are accessed.')+
  '<div class="panel sound-controls"><h2>Embryon sound</h2>'+button('toggle-sfx',Audio.settings().sfx?'SOUND EFFECTS: ON':'SOUND EFFECTS: OFF')+button('toggle-music',Music.settings().music?'MUSIC: ON':'MUSIC: OFF')+button('toggle-voice',Audio.settings().voice?'EMBRYON ANNOUNCER: ON':'EMBRYON ANNOUNCER: OFF')+'<p>Frozen Glow 2 plays as looping, offline background music independently of original crystal sound effects and optional device narration.</p></div>'+
+ '<div class="panel app-updates"><h2>Android updates</h2><p>Signed Android builds check GitHub test releases automatically. Both downloading and installation require your approval; installing over this app preserves saved progress.</p>'+button('check-updates','CHECK FOR UPDATES','primary')+button('view-releases','VIEW GITHUB RELEASES','secondary')+'<p class="hint" role="status" data-update-status></p></div>'+
  '<div class="panel"><h2>Game data</h2><p>Your progress, mine equipment, balances and boosters are saved locally on this device.</p>'+button('advanced',advanced?'HIDE ADVANCED SETTINGS':'ADVANCED SETTINGS','secondary')+
  (advanced?'<div class="danger"><h3>Account maintenance</h3><p>Emergency testing only. Reset deletes all Rupee Rush progress from this device.</p>'+
  button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE RUPEE RUSH DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>';
@@ -328,6 +329,7 @@ function render(){
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
+ if(page==='settings')window.RupeeUpdates?.syncStatus();
  const navArt={
   home:Icons.get('home'),campaign:Icons.get('levels'),
   mine:Icons.get('mine'),farm:'art/embryon/town/gardening/icons/seeds-carrot.png',
@@ -344,6 +346,8 @@ function handle(b){
  const a=b.dataset.action,info=b.dataset,now=Date.now();
  if(info.nav){nav(info.nav);return;}
  if(a==='go-farm'){nav('farm');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
+ if(a==='check-updates'){window.RupeeUpdates?.check();return;}
+ if(a==='view-releases'){window.RupeeUpdates?.openReleases();return;}
  if(a==='toggle-sfx'){Audio.configure({sfx:!Audio.settings().sfx});render();return;}if(a==='toggle-music'){Music.configure({music:!Music.settings().music});render();return;}if(a==='toggle-voice'){Audio.configure({voice:!Audio.settings().voice});render();return;}
  if(a==='open-chapter'){const c=Chapters.byId(info.chapter);if(!c)return;chapterId=c.id;campaignPage=Math.max(0,Math.floor((Math.max(c.start,Math.min(saved.unlocked,c.end))-c.start)/30));page='chapter';Audio.play('chapter-enter');Audio.speak('enter'+c.id);render();return;}
  if(a==='play-next'){start(saved.unlocked);return;}
