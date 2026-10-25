@@ -21,3 +21,7 @@ The Android application ID is always io.github.mrcalzon02.rupeerush. Each succes
 android/app/build.gradle packages the entire web/ folder as APK assets. WebViewAssetLoader exposes a local HTTPS origin at https://appassets.androidplatform.net/assets/index.html, not a file:// origin; the application grants no INTERNET permission and has JavaScript/DOM storage enabled. Rupee Rush's save key is rupeerush.save.v1. The APK must be installed on a physical device to verify actual gameplay and save survival.
 
 No GitHub Actions added. No APK has been compiled or device-tested merely because these files were committed. Keep signing credentials off Git.
+
+## Mandatory compliance checklist for every APK test
+
+The existing all-tests release workflow includes `tests/apk-release-compliance.test.js`, checking the [38-control APK release checklist](APK_RELEASE_COMPLIANCE_GATE.md). This is source/checklist coverage, **not** evidence of a signed APK, Google Play approval or actual device behavior. Complete a build-specific evidence file and run `python3 tools/verify_apk_release_gate.py --evidence <record.json> --apk <signed.apk>` for release acceptance, then independently verify signer, installed version and preserved progress. Keep `main` GitHub APK signing and sideload tests intact; `google-play` is a dormant future distribution branch, not a substitute signing key.
