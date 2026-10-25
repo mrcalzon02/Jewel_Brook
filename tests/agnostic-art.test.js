@@ -96,7 +96,7 @@ const document={getElementById:id=>({
  addEventListener:(id,cb)=>{if(id==='click')click=cb;}};
 const win={RupeeEngine:proxy,RupeeProgress:Progress,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trial,RupeeElementalRewards:R,RupeeMining:M,RupeeMiningGear:Gear,
- RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeEmbryonAssets:require('../web/embryon-assets.js'),RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js'),RupeeMusic:require('../web/embryon-music.js'),RupeeBoardMotion:require('../web/board-motion.js'),RupeeBoardFeatures:require('../web/board-features.js'),RupeeSystemIcons:require('../web/system-icons.js'),RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js')};
+ RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeEmbryonAssets:require('../web/embryon-assets.js'),RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js'),RupeeMusic:require('../web/embryon-music.js'),RupeeBoardMotion:require('../web/board-motion.js'),RupeeBoardFeatures:require('../web/board-features.js'),RupeeSystemIcons:require('../web/system-icons.js'),RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:require('../web/town-garden.js'),RupeeModePowerups:require('../web/mode-powerups.js')};
 vm.runInNewContext(src,{window:win,document,localStorage:{getItem(){return null;},setItem(){}},
  setTimeout(){return 1;},clearTimeout(){},console},{filename:'game.js'});
 assert.ok(click,'Game click dispatch must initialize');

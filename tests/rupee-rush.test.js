@@ -79,7 +79,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js')};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:require('../web/town-garden.js'),RupeeModePowerups:require('../web/mode-powerups.js')};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -88,6 +88,7 @@ assert.match(views.screen.innerHTML,/art\/embryon\/branding\/rupee-rush-title\.w
 assert.match(views.screen.innerHTML,/Rupee Rush — Heroes of Embryon/,'title provides readable alternative text');
 assert.match(views.screen.innerHTML,/data-action="play-next"/,'Play action remains available');
 assert.match(views.screen.innerHTML,/data-action="go-mine"/,'Mining action remains available from home');
+assert.match(views.screen.innerHTML,/data-action="go-farm"/,'Farming action available from home');
 function click(action,rest={}){assert.equal(typeof handler,'function');handler({target:{closest:()=>({dataset:{action,...rest},disabled:false})}});}
 function navigate(nav){click('',{nav});}
 navigate('mine');
@@ -99,6 +100,17 @@ assert.match(views.screen.innerHTML,/art\/nutvale\/mining-tools\/pickaxes\//);
 assert.match(views.screen.innerHTML,/art\/nutvale\/mining-tools\/gloves\//);
 click('mine-tab',{tab:'exchange'});
 assert.match(views.screen.innerHTML,/Five extra moves/);
+navigate('farm');
+assert.match(views.screen.innerHTML,/Embryon Garden/,'farm renders');
+assert.match(views.screen.innerHTML,/data-action="farm-plant"/,'plant actions available');
+assert.match(views.screen.innerHTML,/Farming Power-Ups/,'farming booster shelf renders');
+navigate('mine');
+click('mine-tab',{tab:'powerups'});
+assert.match(views.screen.innerHTML,/No rock targeted/,'mining booster shelf renders');
+navigate('shop');
+click('shop-tab',{shopTab:'boosters'});
+assert.match(views.screen.innerHTML,/Match-3 Power-Ups/,'shop contains match-3 family');
+assert.match(views.screen.innerHTML,/Seedling Starter Kit/,'shop contains farming bundles');
 navigate('home');click('play-next');
 assert.equal(gameWindow.RupeeRushDebug.getPage(),'game');
 assert.match(views.screen.innerHTML,/data-action="cell"/);
