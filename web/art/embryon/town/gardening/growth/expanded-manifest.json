@@ -1,0 +1,909 @@
+{
+  "schema": "rupee-rush/town-crop-growth-expanded/v2",
+  "generator": "scripts/generate-expanded-crop-growth.js",
+  "status": "actual_staged_transparent_illustrations; not_final_painted_master_assets",
+  "species": 45,
+  "stagesPerCrop": 5,
+  "assets": [
+    {
+      "path": "art/embryon/town/gardening/growth/radish-seed.svg",
+      "bytes": 621
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/radish-sprout.svg",
+      "bytes": 1081
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/radish-growing.svg",
+      "bytes": 2459
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/radish-maturing.svg",
+      "bytes": 2981
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/radish-ready.svg",
+      "bytes": 3502
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lettuce-seed.svg",
+      "bytes": 624
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lettuce-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lettuce-growing.svg",
+      "bytes": 2464
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lettuce-maturing.svg",
+      "bytes": 5232
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lettuce-ready.svg",
+      "bytes": 5766
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pea-seed.svg",
+      "bytes": 623
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pea-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pea-growing.svg",
+      "bytes": 2459
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pea-maturing.svg",
+      "bytes": 5227
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pea-ready.svg",
+      "bytes": 5761
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/mint-seed.svg",
+      "bytes": 619
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/mint-sprout.svg",
+      "bytes": 1079
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/mint-growing.svg",
+      "bytes": 2455
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/mint-maturing.svg",
+      "bytes": 6596
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/mint-ready.svg",
+      "bytes": 7629
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/potato-seed.svg",
+      "bytes": 621
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/potato-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/potato-growing.svg",
+      "bytes": 2459
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/potato-maturing.svg",
+      "bytes": 2979
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/potato-ready.svg",
+      "bytes": 3500
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/onion-seed.svg",
+      "bytes": 619
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/onion-sprout.svg",
+      "bytes": 1081
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/onion-growing.svg",
+      "bytes": 2458
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/onion-maturing.svg",
+      "bytes": 2978
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/onion-ready.svg",
+      "bytes": 3499
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/spinach-seed.svg",
+      "bytes": 628
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/spinach-sprout.svg",
+      "bytes": 1088
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/spinach-growing.svg",
+      "bytes": 2465
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/spinach-maturing.svg",
+      "bytes": 5233
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/spinach-ready.svg",
+      "bytes": 5767
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/beet-seed.svg",
+      "bytes": 622
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/beet-sprout.svg",
+      "bytes": 1082
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/beet-growing.svg",
+      "bytes": 2460
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/beet-maturing.svg",
+      "bytes": 2982
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/beet-ready.svg",
+      "bytes": 3503
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/strawberry-seed.svg",
+      "bytes": 629
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/strawberry-sprout.svg",
+      "bytes": 1089
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/strawberry-growing.svg",
+      "bytes": 2466
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/strawberry-maturing.svg",
+      "bytes": 3276
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/strawberry-ready.svg",
+      "bytes": 4365
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tomato-seed.svg",
+      "bytes": 622
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tomato-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tomato-growing.svg",
+      "bytes": 2458
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tomato-maturing.svg",
+      "bytes": 3255
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tomato-ready.svg",
+      "bytes": 4330
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cabbage-seed.svg",
+      "bytes": 623
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cabbage-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cabbage-growing.svg",
+      "bytes": 2459
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cabbage-maturing.svg",
+      "bytes": 5227
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cabbage-ready.svg",
+      "bytes": 5761
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/bean-seed.svg",
+      "bytes": 624
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/bean-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/bean-growing.svg",
+      "bytes": 2463
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/bean-maturing.svg",
+      "bytes": 5231
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/bean-ready.svg",
+      "bytes": 5765
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/garlic-seed.svg",
+      "bytes": 621
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/garlic-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/garlic-growing.svg",
+      "bytes": 2459
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/garlic-maturing.svg",
+      "bytes": 2979
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/garlic-ready.svg",
+      "bytes": 3500
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/corn-seed.svg",
+      "bytes": 619
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/corn-sprout.svg",
+      "bytes": 1081
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/corn-growing.svg",
+      "bytes": 2458
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/corn-maturing.svg",
+      "bytes": 6287
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/corn-ready.svg",
+      "bytes": 6210
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pepper-seed.svg",
+      "bytes": 622
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pepper-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pepper-growing.svg",
+      "bytes": 2462
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pepper-maturing.svg",
+      "bytes": 3260
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pepper-ready.svg",
+      "bytes": 4337
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/broccoli-seed.svg",
+      "bytes": 626
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/broccoli-sprout.svg",
+      "bytes": 1085
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/broccoli-growing.svg",
+      "bytes": 2458
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/broccoli-maturing.svg",
+      "bytes": 5219
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/broccoli-ready.svg",
+      "bytes": 5751
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cucumber-seed.svg",
+      "bytes": 626
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cucumber-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cucumber-growing.svg",
+      "bytes": 2462
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cucumber-maturing.svg",
+      "bytes": 3272
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cucumber-ready.svg",
+      "bytes": 4361
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cauliflower-seed.svg",
+      "bytes": 632
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cauliflower-sprout.svg",
+      "bytes": 1089
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cauliflower-growing.svg",
+      "bytes": 2464
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cauliflower-maturing.svg",
+      "bytes": 5225
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cauliflower-ready.svg",
+      "bytes": 5757
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/kale-seed.svg",
+      "bytes": 623
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/kale-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/kale-growing.svg",
+      "bytes": 2460
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/kale-maturing.svg",
+      "bytes": 5228
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/kale-ready.svg",
+      "bytes": 5762
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/raspberry-seed.svg",
+      "bytes": 626
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/raspberry-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/raspberry-growing.svg",
+      "bytes": 2456
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/raspberry-maturing.svg",
+      "bytes": 3265
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/raspberry-ready.svg",
+      "bytes": 4352
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sunflower-seed.svg",
+      "bytes": 625
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sunflower-sprout.svg",
+      "bytes": 1087
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sunflower-growing.svg",
+      "bytes": 2230
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sunflower-maturing.svg",
+      "bytes": 6451
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sunflower-ready.svg",
+      "bytes": 10968
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/zucchini-seed.svg",
+      "bytes": 629
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/zucchini-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/zucchini-growing.svg",
+      "bytes": 2458
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/zucchini-maturing.svg",
+      "bytes": 3268
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/zucchini-ready.svg",
+      "bytes": 4356
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/eggplant-seed.svg",
+      "bytes": 621
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/eggplant-sprout.svg",
+      "bytes": 1085
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/eggplant-growing.svg",
+      "bytes": 2461
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/eggplant-maturing.svg",
+      "bytes": 3259
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/eggplant-ready.svg",
+      "bytes": 4336
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pumpkin-seed.svg",
+      "bytes": 625
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pumpkin-sprout.svg",
+      "bytes": 1085
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pumpkin-growing.svg",
+      "bytes": 2463
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pumpkin-maturing.svg",
+      "bytes": 3273
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pumpkin-ready.svg",
+      "bytes": 4362
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/barley-seed.svg",
+      "bytes": 623
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/barley-sprout.svg",
+      "bytes": 1085
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/barley-growing.svg",
+      "bytes": 2461
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/barley-maturing.svg",
+      "bytes": 6290
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/barley-ready.svg",
+      "bytes": 6213
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rice-seed.svg",
+      "bytes": 622
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rice-sprout.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rice-growing.svg",
+      "bytes": 2460
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rice-maturing.svg",
+      "bytes": 6289
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rice-ready.svg",
+      "bytes": 6212
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cotton-seed.svg",
+      "bytes": 622
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cotton-sprout.svg",
+      "bytes": 1079
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cotton-growing.svg",
+      "bytes": 2452
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cotton-maturing.svg",
+      "bytes": 3210
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/cotton-ready.svg",
+      "bytes": 3736
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sugarcane-seed.svg",
+      "bytes": 625
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sugarcane-sprout.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sugarcane-growing.svg",
+      "bytes": 2457
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sugarcane-maturing.svg",
+      "bytes": 6283
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/sugarcane-ready.svg",
+      "bytes": 6205
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/herb-bundle-seed.svg",
+      "bytes": 625
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/herb-bundle-sprout.svg",
+      "bytes": 1085
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/herb-bundle-growing.svg",
+      "bytes": 2463
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/herb-bundle-maturing.svg",
+      "bytes": 6604
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/herb-bundle-ready.svg",
+      "bytes": 7637
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lavender-seed.svg",
+      "bytes": 624
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lavender-sprout.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lavender-growing.svg",
+      "bytes": 2461
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lavender-maturing.svg",
+      "bytes": 6602
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/lavender-ready.svg",
+      "bytes": 7635
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tea-leaves-seed.svg",
+      "bytes": 622
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tea-leaves-sprout.svg",
+      "bytes": 1079
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tea-leaves-growing.svg",
+      "bytes": 2451
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tea-leaves-maturing.svg",
+      "bytes": 6583
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tea-leaves-ready.svg",
+      "bytes": 7615
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/daisy-seed.svg",
+      "bytes": 624
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/daisy-sprout.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/daisy-growing.svg",
+      "bytes": 2226
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/daisy-maturing.svg",
+      "bytes": 4579
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/daisy-ready.svg",
+      "bytes": 7216
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tulip-seed.svg",
+      "bytes": 626
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tulip-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tulip-growing.svg",
+      "bytes": 2228
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tulip-maturing.svg",
+      "bytes": 5219
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/tulip-ready.svg",
+      "bytes": 8498
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rose-seed.svg",
+      "bytes": 625
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rose-sprout.svg",
+      "bytes": 1085
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rose-growing.svg",
+      "bytes": 2229
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rose-maturing.svg",
+      "bytes": 5082
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/rose-ready.svg",
+      "bytes": 8221
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/coffee-beans-seed.svg",
+      "bytes": 626
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/coffee-beans-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/coffee-beans-growing.svg",
+      "bytes": 2462
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/coffee-beans-maturing.svg",
+      "bytes": 3272
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/coffee-beans-ready.svg",
+      "bytes": 3815
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/orchid-seed.svg",
+      "bytes": 623
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/orchid-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/orchid-growing.svg",
+      "bytes": 2226
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/orchid-maturing.svg",
+      "bytes": 5079
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/orchid-ready.svg",
+      "bytes": 8218
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/grape-seed.svg",
+      "bytes": 626
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/grape-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/grape-growing.svg",
+      "bytes": 2464
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/grape-maturing.svg",
+      "bytes": 3271
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/grape-ready.svg",
+      "bytes": 4435
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/melon-seed.svg",
+      "bytes": 623
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/melon-sprout.svg",
+      "bytes": 1083
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/melon-growing.svg",
+      "bytes": 2459
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/melon-maturing.svg",
+      "bytes": 3269
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/melon-ready.svg",
+      "bytes": 4358
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/watermelon-seed.svg",
+      "bytes": 626
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/watermelon-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/watermelon-growing.svg",
+      "bytes": 2462
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/watermelon-maturing.svg",
+      "bytes": 3281
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/watermelon-ready.svg",
+      "bytes": 4457
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/apple-seed.svg",
+      "bytes": 618
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/apple-sprout.svg",
+      "bytes": 1082
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/apple-growing.svg",
+      "bytes": 2341
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/apple-maturing.svg",
+      "bytes": 3316
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/apple-ready.svg",
+      "bytes": 4388
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pear-seed.svg",
+      "bytes": 622
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pear-sprout.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pear-growing.svg",
+      "bytes": 2343
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pear-maturing.svg",
+      "bytes": 3324
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pear-ready.svg",
+      "bytes": 4410
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/peach-seed.svg",
+      "bytes": 623
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/peach-sprout.svg",
+      "bytes": 1085
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/peach-growing.svg",
+      "bytes": 2346
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/peach-maturing.svg",
+      "bytes": 3325
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/peach-ready.svg",
+      "bytes": 4401
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pineapple-seed.svg",
+      "bytes": 628
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pineapple-sprout.svg",
+      "bytes": 1088
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pineapple-growing.svg",
+      "bytes": 2466
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pineapple-maturing.svg",
+      "bytes": 4730
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/pineapple-ready.svg",
+      "bytes": 5273
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/dragonfruit-seed.svg",
+      "bytes": 627
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/dragonfruit-sprout.svg",
+      "bytes": 1084
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/dragonfruit-growing.svg",
+      "bytes": 2456
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/dragonfruit-maturing.svg",
+      "bytes": 3993
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/dragonfruit-ready.svg",
+      "bytes": 4535
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/starfruit-seed.svg",
+      "bytes": 624
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/starfruit-sprout.svg",
+      "bytes": 1086
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/starfruit-growing.svg",
+      "bytes": 2462
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/starfruit-maturing.svg",
+      "bytes": 3219
+    },
+    {
+      "path": "art/embryon/town/gardening/growth/starfruit-ready.svg",
+      "bytes": 3757
+    }
+  ]
+}
