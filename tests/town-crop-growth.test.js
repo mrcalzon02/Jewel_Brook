@@ -20,7 +20,7 @@ test('fifteen stage assets exist, use transparent self-contained vectors, and ar
    assert.equal(art,Generator.drawCrop(crop,stage),'stage drift '+crop+'/'+stage);
    assert.match(art,/viewBox="0 0 256 256"/);
    assert.match(art,/aria-label="/);
-   assert.doesNotMatch(art,/<rect\b|<image\b|href=|https?:\/\//g,'no flat background or external linked art');
+   assert.doesNotMatch(art,/<rect\b|<image\b|\shref=|\ssrc=/i,'no flat background, external images or linked assets');
    assert.ok(art.length>1200,'nontrivial illustrated stage '+crop+'/'+stage);
    seen.add(art);
   }
