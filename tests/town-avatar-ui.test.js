@@ -13,7 +13,7 @@ test('approved forty-level Daysha atlas is wired before the live game shell',()=
  const avatar=html.indexOf('src="town-avatars.js"'),shell=html.indexOf('src="game.js"');
  assert.ok(avatar>0&&avatar<shell,'resolver loads before UI');
  assert.match(game,/TownAvatars=window\.RupeeTownAvatars/);
- assert.match(game,/FarmArt,TownAvatars,Kitchen/);
+ assert.match(game,/FarmArt,TownAvatars,TownHouses,Kitchen/);
  assert.match(game,/function townAvatarPanel\(\)/);
  assert.match(game,/TownAvatars\.fromSave\(saved\)/);
  assert.match(game,/alt="Daysha, Town avatar /);
