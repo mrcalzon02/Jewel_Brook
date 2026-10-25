@@ -1,12 +1,11 @@
-# Rupee Rush — future booster and power-up icon reserve
+# Rupee Rush — future booster and power-up art library
 
-Two approved, original 4×4 concept-art batches, 32 independent PNG-source-derived transparent WebP icons.
+**32 approved concept illustrations, not additional activated game mechanics.** Two cohesive batches of 16 transparent 192×192 WebP sprites: utility/support and elemental/arcane. Use their stable IDs in `manifest.json` when future features are designed and implemented.
 
-- `utility-support/`: extra moves, shuffle, unlock key, chest, currency booster, premium reward, shield, frostbreaker, healing, phoenix revive, score multiplier, targeting, wildcard, conversion, stasis and gift bundle.
-- `elemental-arcane/`: fire, water, earth, wind, lightning, ice, sunlight, moonshadow, poison, cleansing, portal, gravity, time, spellbook, summoning and wild magic.
+`manifest.json` preserves individual file byte counts, SHA-256, transparent alpha QA, source cell coordinates, concept/approved distinctions, and hashes for the retained full-size original images.
 
-Each original 1254×1254 transparent PNG is preserved byte-for-byte alongside an optimized 1024px reference atlas. The 32 game-ready transparent WebPs are individually sliced at 192px, with source row/column, SHA-256, file bytes and alpha QA in `manifest.json`.
+The full-size 1254×1254 PNG originals and optimized 1024px sheet references are archived in `RupeeRush_Future_Boosters_32_Icons.zip`, supplied separately as a downloadable design-source package. The repository stores *each of the 32 transparent icons* as an individual binary image; the original sheets are not part of this Git tree. This avoids duplicating large reference sources in the Android installer.
 
-**These are future assets, NOT existing functional boosters.** No new item IDs, economy prices, consumables, gameplay powers, objectives or bindings are enabled. Map an icon to mechanics only after implementation and tests; keep existing active booster icons untouched.
+Nothing in this package changes `web/game.js`, `web/engine.js`, the live booster mappings, purchases, balances, or level behavior. Art assignments to actual mechanics require a separate product/design pass.
 
-Some AI-generated glows reach atlas-cell seams. The manifest includes a contact warning report to identify sprites needing re-isolation or manual polish. All individual exports have transparent padded edges.
+Some glows reach source grid seams. The manifest lists contact warnings, so inspect borderline sprites on the device before final release. Run `node tests/future-powerups.test.js` to validate all asset hashes and that no gameplay integration was inadvertently activated.

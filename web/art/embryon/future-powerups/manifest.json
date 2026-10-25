@@ -358,24 +358,6 @@
   },
   "files": [
     {
-      "id": "utility-support-source",
-      "category": "utility-support",
-      "path": "web/art/embryon/future-powerups/utility-support-original-1254.png",
-      "size": 2928564,
-      "sha256": "be92697722a19ea9a8a15c10c6898335e8fea80470e37ccaa485844b273f3c78",
-      "format": "png",
-      "role": "original-unaltered"
-    },
-    {
-      "id": "utility-support-atlas",
-      "category": "utility-support",
-      "path": "web/art/embryon/future-powerups/utility-support-atlas-1024.webp",
-      "size": 635132,
-      "sha256": "bbb1a4c3f84b911302cdfce5a8540d9bb48c765bb92f681d1fe6e985c61f6dda",
-      "format": "webp",
-      "role": "reference-atlas"
-    },
-    {
       "id": "extra-moves-hourglass",
       "category": "utility-support",
       "path": "web/art/embryon/future-powerups/utility-support/extra-moves-hourglass.webp",
@@ -680,24 +662,6 @@
       "semanticStatus": "concept; not a live booster mechanic"
     },
     {
-      "id": "elemental-arcane-source",
-      "category": "elemental-arcane",
-      "path": "web/art/embryon/future-powerups/elemental-arcane-original-1254.png",
-      "size": 2998990,
-      "sha256": "b05a82334bf6d2903ddd8942d684a74c9e8c17ecefe74558c73734bf1060f173",
-      "format": "png",
-      "role": "original-unaltered"
-    },
-    {
-      "id": "elemental-arcane-atlas",
-      "category": "elemental-arcane",
-      "path": "web/art/embryon/future-powerups/elemental-arcane-atlas-1024.webp",
-      "size": 656790,
-      "sha256": "100067da4e7a3f4a637c83dc7a7700b35ebab266f07b4edb5d25b7dbe7479325",
-      "format": "webp",
-      "role": "reference-atlas"
-    },
-    {
       "id": "fire-burst",
       "category": "elemental-arcane",
       "path": "web/art/embryon/future-powerups/elemental-arcane/fire-burst.webp",
@@ -998,3 +962,39 @@
         4,
         4
       ],
+      "transparent": true,
+      "semanticStatus": "concept; not a live booster mechanic"
+    }
+  ],
+  "externalSourceArchive": {
+    "name": "RupeeRush_Future_Boosters_32_Icons.zip",
+    "sha256": "d0e2d44cfeaaf38666c44ade46509b4ad8ee414f1cc9ec4db42cd56801543604",
+    "contents": "two untouched 1254px PNG source atlases and two optimized 1024px WEBP reference atlases, plus the same 32 individually extracted WEBPs",
+    "repository_policy": "source atlases archived in downloadable handoff; individual runtime sprites committed as independent GitHub blobs"
+  },
+  "referenceSources": [
+    {
+      "id": "utility-support-source",
+      "category": "utility-support",
+      "path": "web/art/embryon/future-powerups/utility-support-original-1254.png",
+      "size": 2928564,
+      "sha256": "be92697722a19ea9a8a15c10c6898335e8fea80470e37ccaa485844b273f3c78",
+      "format": "png",
+      "role": "original-unaltered"
+    },
+    {
+      "id": "utility-support-atlas",
+      "category": "utility-support",
+      "path": "web/art/embryon/future-powerups/utility-support-atlas-1024.webp",
+      "size": 635132,
+      "sha256": "bbb1a4c3f84b911302cdfce5a8540d9bb48c765bb92f681d1fe6e985c61f6dda",
+      "format": "webp",
+      "role": "reference-atlas"
+    },
+    {
+      "id": "elemental-arcane-source",
+      "category": "elemental-arcane",
+      "path": "web/art/embryon/future-powerups/elemental-arcane-original-1254.png",
+      "size": 2998990,
+      "sha256": "b05a82334bf6d2903ddd8942d684a74c9e8c17ecefe74558c73734bf1060f173",
+      "format": "png",
