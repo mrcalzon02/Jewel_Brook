@@ -56,3 +56,31 @@
 @keyframes embryon-impact{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}22%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}}
 @keyframes embryon-reward{0%{opacity:0;transform:scale(.6)}40%{opacity:1}100%{opacity:1;transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.board-impact{animation:none;opacity:.8;transform:translate(-50%,-50%) scale(1)}.result-vfx{animation:none}}
+
+/* Board-motion parity: move only gemstone payloads, never tile-attached hazards. */
+.board{position:relative;isolation:isolate}
+.cell .gem-payload,.flying-gem .gem-payload{position:relative;display:grid;place-items:center;width:94%;height:94%;z-index:2;pointer-events:none;will-change:transform}
+.cell .gem-payload .gem,.flying-gem .gem-payload .gem{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.flying-gem{position:absolute;z-index:25;display:grid;place-items:center;pointer-events:none;will-change:transform}
+.flying-gem .gem-payload{width:94%;height:94%}
+.gem-special,.gem-elemental,.gem-held{position:absolute;z-index:4;display:grid;place-items:center;pointer-events:none;font-weight:900;text-shadow:0 1px 3px #1a092f}
+.gem-special{right:1%;top:0;width:38%;height:38%;font-size:clamp(13px,3vw,24px);color:#ffec90;filter:drop-shadow(0 0 4px #fad779)}
+.gem-special.line-h,.gem-special.line-v{color:#b8f8ff;background:#12486daa;border-radius:50%}
+.gem-special.blast{color:#ffd09a;background:#a34437ac;border-radius:50%}
+.gem-special.rainbow{background:#281850bd;border-radius:50%}
+.gem-elemental{left:0;top:0;font-size:clamp(10px,2.3vw,18px);color:#fff4b3}
+.gem-held{right:0;bottom:0;padding:0 2px;border-radius:4px;background:#294c74de;color:#e6faff;font-size:clamp(8px,2vw,12px)}
+.cell .board-feature{position:absolute;z-index:6;pointer-events:none;font-size:clamp(13px,3vw,20px);font-weight:900;line-height:1;color:#adeaf9;text-shadow:0 1px 3px #090c2a,0 0 5px #2399c5}
+.board-feature.conveyor{left:3px;bottom:1px;color:#ffdc9c}
+.board-feature.portal{top:0;left:3px;color:#b9a4ff}
+.board-feature.wind{right:3px;bottom:1px;color:#9ff9e0}
+.gem-impact{position:absolute;inset:1%;z-index:18;width:98%;height:98%;object-fit:contain;pointer-events:none;animation:rupee-gem-impact .58s ease-out both}
+.gem-shaking .gem-payload{animation:rupee-gem-shake .15s linear both}
+.gem-clearing .gem-payload{animation:rupee-gem-clear .2s ease-in both}
+.gem-shuffling .gem-payload{animation:rupee-gem-shuffle .17s ease-in-out both}
+.board-busy .board{touch-action:none}
+@keyframes rupee-gem-shake{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-3px) rotate(-4deg)}75%{transform:translateX(3px) rotate(4deg)}}
+@keyframes rupee-gem-clear{0%{opacity:1;transform:scale(1)}65%{opacity:.85;transform:scale(1.2)}100%{opacity:0;transform:scale(.25)}}
+@keyframes rupee-gem-impact{0%{opacity:0;transform:scale(.5)}20%{opacity:1}65%{opacity:.9}100%{opacity:0;transform:scale(1.7)}}
+@keyframes rupee-gem-shuffle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.48;transform:scale(.88)}}
+@media(prefers-reduced-motion:reduce){.gem-impact,.gem-shaking .gem-payload,.gem-clearing .gem-payload,.gem-shuffling .gem-payload{animation:none}}

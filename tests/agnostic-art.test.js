@@ -54,12 +54,14 @@ for(const p of banned){
  }
  assert.ok(!fs.existsSync(path.join(root,p)),'Disallowed source artwork shipped: '+p);
 }
-assert.match(html,/<script src="shared-art\.js"><\/script><script src="embryon-assets\.js"><\/script><script src="embryon-chapters\.js"><\/script><script src="embryon-audio\.js"><\/script><script src="game\.js"><\/script>/);
+assert.ok(html.indexOf('shared-art.js')<html.indexOf('embryon-assets.js'));
+assert.ok(html.indexOf('embryon-audio.js')<html.indexOf('embryon-music.js'));
+assert.ok(html.indexOf('board-motion.js')<html.indexOf('game.js'));
 assert.match(styles,/-webkit-mask-image:radial-gradient\(circle closest-side at center,transparent 0 63%,#000 80%\)/);
 assert.match(styles,/[^-]mask-image:radial-gradient\(circle closest-side at center,transparent 0 63%,#000 80%\)/);
 assert.match(styles,/\.cell \.gem\{position:relative;z-index:1\}/);
 assert.match(styles,/\.cell \.tile-status\{position:absolute;inset:0;z-index:2/);
-assert.match(src,/gem\(cell\.type\)\+status\+anchor/,'Gem must be composed beneath tile ring and anchor');
+assert.match(src,/return payload\(cell\)\+status\+anchor\+counters/,'Gem payload must remain beneath cell-affixed overlay and anchor');
 assert.ok(html.includes('art/embryon/components/crystal-medallion.svg'),'Neutral interim navigator fallback');
 assert.equal(Shared.anchor({type:0,lock:2}).src,'art/primary/blockers/lock.png');
 assert.equal(Shared.anchor({type:0,ice:2}).src,'art/primary/blockers/ice-2.png');
@@ -94,7 +96,7 @@ const document={getElementById:id=>({
  addEventListener:(id,cb)=>{if(id==='click')click=cb;}};
 const win={RupeeEngine:proxy,RupeeProgress:Progress,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trial,RupeeElementalRewards:R,RupeeMining:M,RupeeMiningGear:Gear,
- RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeEmbryonAssets:require('../web/embryon-assets.js'),RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js')};
+ RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeEmbryonAssets:require('../web/embryon-assets.js'),RupeeChapters:require('../web/embryon-chapters.js'),RupeeAudio:require('../web/embryon-audio.js'),RupeeMusic:require('../web/embryon-music.js'),RupeeBoardMotion:require('../web/board-motion.js'),RupeeBoardFeatures:require('../web/board-features.js')};
 vm.runInNewContext(src,{window:win,document,localStorage:{getItem(){return null;},setItem(){}},
  setTimeout(){return 1;},clearTimeout(){},console},{filename:'game.js'});
 assert.ok(click,'Game click dispatch must initialize');

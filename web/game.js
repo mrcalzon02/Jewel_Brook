@@ -2,12 +2,12 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
-let visualImpact=null;
+let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null;
 let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems');
 if(!root)throw Error('Missing #screen');
@@ -71,10 +71,27 @@ function start(id){
  if(id<T.FIRST&&(id>saved.unlocked||id<1))return message('Stage locked.');
  active=E.create(id,id*7919+saved.unlocked*17);selected=-1;visualImpact=null;outcome=null;page='game';save();Audio.play('chapter-enter');Audio.speak('levelStart');render();
 }
+function payload(c){
+ if(!c||c.type===null)return '<span class="void"></span>';
+ const special=c.special?'<span class="gem-special '+escape(c.special)+'" aria-hidden="true">'+
+  ({'line-h':'↔','line-v':'↕',blast:'✺',rainbow:'🌈'}[c.special]||'✦')+'</span>':'';
+ const elemental=c.elemental?'<span class="gem-elemental" title="'+escape(c.elemental)+'">⚡</span>':'';
+ const hold=c.hold?'<span class="gem-held" title="Gravity hold">'+c.hold+'↓</span>':'';
+ return '<span class="gem-payload">'+gem(c.type)+special+elemental+hold+'</span>';
+}
+function featureMarkup(g,i){
+ const features=g.cfg.features||{},list=[];
+ const belt=(features.conveyors||[]).find(f=>f.indices.includes(i));
+ const portal=(features.portals||[]).find(f=>f.indices.includes(i));
+ const wind=(features.wind||[]).find(f=>f.indices.includes(i));
+ if(belt)list.push('<span class="board-feature conveyor" aria-hidden="true">'+(belt.direction==='right'?'›':'‹')+'</span>');
+ if(portal)list.push('<span class="board-feature portal" aria-hidden="true">◎</span>');
+ if(wind){const dir=Features.nextWindDirection(wind,g.turns);list.push('<span class="board-feature wind" aria-label="Next wind gust '+dir+'">'+(dir==='up'?'↑':'↓')+'</span>');}
+ return list.join('');
+}
 function piece(cell,index){
  if(!cell||cell.type===null)return '<span class="void"></span>';
- // Status effects occupy their own see-through layer. Never substitute a nut
- // blocker image for the gemstone identity stored by the deterministic engine.
+ // Board statuses are attached to cells, not to moving gemstone sprites.
  const layers=Shared.layers(cell),fixed=Shared.anchor(cell);
  const status=layers.map(x=>'<span class="tile-status '+x.id+'" data-effect="'+x.id+'"><img class="status-art" src="'+x.src+'" alt="" aria-hidden="true"></span>').join('');
  const anchor=fixed?'<img class="tile-anchor" src="'+fixed.src+'" alt="" aria-hidden="true">':'';
@@ -85,8 +102,52 @@ function piece(cell,index){
  ].filter(([,n])=>Number(n)>0);
  const counters=readouts.length?'<span class="tile-counts">'+readouts.map(([id,n])=>
   '<b class="status-count" data-status="'+id+'" data-strength="'+Math.trunc(n)+'">'+id.slice(0,1).toUpperCase()+n+'</b>').join('')+'</span>':'';
- const special=cell.special||cell.elemental?'<small class="piece-badges">'+(cell.special?'✦':'')+(cell.elemental?'⚡':'')+'</small>':'';
- return gem(cell.type)+status+anchor+counters+special;
+ return payload(cell)+status+anchor+counters;
+}
+function selectCell(i){
+ const board=root.querySelector?.('.board');
+ board?.querySelectorAll?.('.cell.selected').forEach(el=>el.classList.remove('selected'));
+ selected=i;
+ if(i>=0)board?.querySelector?.('[data-cell="'+i+'"]')?.classList.add('selected');
+}
+function paintBoard(cells){
+ const board=root.querySelector?.('.board');
+ if(!board||!active)return;
+ for(let i=0;i<cells.length;i++){
+  const tile=board.querySelector('[data-cell="'+i+'"]'),cell=cells[i];
+  if(!tile)continue;
+  const signature=JSON.stringify(cell)+':'+active.turns;
+  if(tile.dataset.renderKey!==signature){
+   tile.innerHTML=piece(cell,i)+(cell?featureMarkup(active,i):'');
+   tile.dataset.renderKey=signature;
+   tile.setAttribute('aria-label',cell&&cell.type!==null?'Tile '+(i+1)+' '+E.TYPES[cell.type]+(Shared.label(cell)?', '+Shared.label(cell):''):'Empty tile '+(i+1));
+  }
+ }
+}
+function boardSound(kind,count){
+ if(kind==='match'||kind==='cascade'){if(count>0)Audio.burst(count,kind==='cascade'?2:1);else Audio.play('match');}
+ else Audio.play(({hazard:'blocked',shuffle:'booster',transport:'swap'})[kind]||kind);
+}
+function animateMove(result,before){
+ const game=active,after=E.snapshot(game).cells,board=root.querySelector?.('.board');
+ if(!board){settle();render();return;}
+ animating=true;root.classList.add?.('board-busy');
+ void Motion.resolve({board,before,after,result,width:game.cfg.width,paint:paintBoard,
+  sprite:payload,effect:id=>Assets.effect(id),sound:boardSound,
+  current:()=>active===game&&page==='game'
+ }).catch(err=>{console.error('Board visual recovery:',err);})
+ .finally(()=>{animating=false;root.classList.remove?.('board-busy');if(active===game){settle();render();}});
+}
+function performSwap(a,b){
+ if(animating||!active||page!=='game')return;
+ if(bank().remaining<1)return message('Daily moves exhausted. Mine for a move pack.');
+ const before=E.snapshot(active).cells,result=E.swap(active,a,b);
+ selectCell(-1);
+ if(!result.valid){Audio.play('blocked');return message('That pair cannot be swapped.');}
+ D.spend(saved,1,Date.now(),dailyCap());
+ visualImpact=null;save();
+ if(result.loops>=3)Audio.speak('cascade');
+ animateMove(result,before);
 }
 function gameplay(){
  const g=active;if(!g)return home();
@@ -94,7 +155,7 @@ function gameplay(){
  return header('Level '+g.level+' · '+escape(g.cfg.stageTitle),escape(g.cfg.hint))+
  stats()+'<div class="game-progress"><b>Score '+number(g.score)+' / '+number(g.cfg.goal)+'</b><b>Moves '+g.moves+'</b></div>'+
  '<div class="objectives">'+objectives.map(o=>'<span class="'+(o.done?'done':'')+'">'+escape(o.label)+' '+number(o.value)+'/'+number(o.target)+'</span>').join('')+'</div>'+
- '<div class="board-frame"><div class="board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+'</button>').join('')+'</div>'+impactMarkup(g)+'</div>'+
+ '<div class="board-frame"><div class="board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+(c?featureMarkup(g,i):'')+'</button>').join('')+'</div>'+impactMarkup(g)+'</div>'+
  '<p class="hint">Tap two adjacent gems to swap them. Non-matching swaps still use a move. Select a gem before using targeted tools.</p>'+
  '<div class="booster-grid">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+boosterIcon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div>'+
  button('abandon','LEAVE BOARD','quiet');
@@ -213,22 +274,20 @@ function handle(b){
  if(a==='abandon'){active=null;visualImpact=null;save();nav('campaign');return;}
  if(a==='cell'){
   if(!active)return;const n=Number(info.cell);
-  if(selected<0){selected=n;render();return;}
-  if(selected===n){selected=-1;render();return;}
-  if(!E.adjacent(active,selected,n)){selected=n;render();return;}
-  if(bank().remaining<1)return message('Daily moves exhausted. Mine for a move pack.');
-  const result=E.swap(active,selected,n);selected=-1;
-  if(!result.valid){render();return message('That pair cannot be swapped.');}
-  D.spend(saved,1,now,dailyCap());if(result.removed>0||result.cracked>0){impact(result.loops>=2?'cascade':'match',n);Audio.play(result.loops>=2?'cascade':'match');}else{visualImpact=null;Audio.play('swap');}if(result.loops>=3)Audio.speak('cascade');save();settle();render();return;
+  if(selected<0){selectCell(n);Audio.play('tap');return;}
+  if(selected===n){selectCell(-1);return;}
+  if(!E.adjacent(active,selected,n)){selectCell(n);return;}
+  performSwap(selected,n);return;
  }
  if(a==='booster'){
   if(!active)return;
   const id=info.booster,meta=E.BOOSTER_META[id];if(!meta||!P.unlocked(saved,id)||P.count(saved,id)<1)return;
   if(meta.targeted&&selected<0)return message('Select a gem first to target this booster.');
+  const before=E.snapshot(active).cells,target=meta.targeted?selected:-1;
   const r=E.booster(active,id,meta.targeted?selected:undefined);
   if(!r.valid)return message('Booster unavailable: '+(r.reason||'not applicable'));
   P.spend(saved,id);if(id==='extra')D.topUp(saved,5,now,dailyCap());
-  impact(id,meta.targeted?selected:-1);selected=-1;Audio.play('booster');Audio.speak(({hammer:'hammer',row:'rocket',column:'rocket',blast:'bomb',shuffle:'shuffle',color:'color',spectrum:'color'})[id]||'boosterUsed');save();settle();render();return;
+  impact(id,target);selectCell(-1);Audio.play('booster');Audio.speak(({hammer:'hammer',row:'rocket',column:'rocket',blast:'bomb',shuffle:'shuffle',color:'color',spectrum:'color'})[id]||'boosterUsed');save();animateMove(r,before);return;
  }
  if(a==='buy-currency'){const r=P.buyCurrencyOffer(saved,info.offer,D,now,dailyCap());return finishMining(r,'Supplies added to inventory.');}
  if(a==='buy-booster')return finishMining(P.buyBooster(saved,info.booster),'Booster purchased.');
@@ -255,6 +314,26 @@ function handle(b){
   if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
  }
 }
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;Music.activate();handle(b);});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('button');
+ if(!b||b.disabled||animating||Date.now()<swipeGuard)return;
+ Music.activate();handle(b);
+});
+// Touch and mouse swipes share Nut Buster's direction threshold and move rules.
+root.addEventListener?.('pointerdown',e=>{
+ if(page!=='game'||!active||animating)return;
+ const tile=e.target.closest?.('[data-cell]');
+ if(tile)pointerStart={i:Number(tile.dataset.cell),x:e.clientX,y:e.clientY};
+});
+root.addEventListener?.('pointercancel',()=>{pointerStart=null;});
+root.addEventListener?.('pointerup',e=>{
+ const start=pointerStart;pointerStart=null;
+ if(!start||page!=='game'||!active||animating)return;
+ const dx=e.clientX-start.x,dy=e.clientY-start.y;
+ if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;
+ const w=active.cfg.width,to=start.i+(Math.abs(dx)>Math.abs(dy)?(dx>0?1:-1):(dy>0?w:-w));
+ if(!E.adjacent(active,start.i,to))return;
+ swipeGuard=Date.now()+450;Music.activate();performSwap(start.i,to);
+});
 render();window.RupeeRushDebug=Object.freeze({getSave:()=>JSON.parse(JSON.stringify(saved)),getPage:()=>page,getChapter:()=>chapterId,activeSnapshot:()=>active?E.snapshot(active):null});
 })();

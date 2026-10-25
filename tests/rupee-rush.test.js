@@ -16,6 +16,9 @@ const Art=require('../web/art.js');
 const Shared=require('../web/shared-art.js');
 const Chapters=require('../web/embryon-chapters.js');
 const Audio=require('../web/embryon-audio.js');
+const Music=require('../web/embryon-music.js');
+const Motion=require('../web/board-motion.js');
+const Features=require('../web/board-features.js');
 const EmbryonAssets=require('../web/embryon-assets.js');
 const root=path.resolve(__dirname,'../web');
 assert.equal(E.TYPES.length,19);
@@ -63,7 +66,7 @@ assert.equal(Rewards.summary(save).total,300);
 assert.ok(Art.gem(0).startsWith('data:image/svg+xml'));
 assert.ok(Art.icon('hammer').startsWith('data:image/svg+xml'));
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-for(const name of ['engine','game','mining-gear','mining','mine-bridge','art'])assert.ok(html.includes('src="'+name+'.js"'),name+' script absent');
+for(const name of ['engine','game','mining-gear','mining','mine-bridge','art','embryon-music','board-motion'])assert.ok(html.includes('src="'+name+'.js"'),name+' script absent');
 assert.ok(!html.includes('nutbuster.v1'));
 const views={screen:{innerHTML:''},wallet:{textContent:''},stargems:{textContent:''},toast:{textContent:'',classList:{add(){},remove(){}}}};
 const store={};
@@ -75,7 +78,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeEmbryonAssets:EmbryonAssets};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
