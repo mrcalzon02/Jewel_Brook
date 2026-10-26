@@ -55,6 +55,17 @@ jobs:
       - name: Stage executable, SDL3 and original approved PNG assets
         shell: bash
         run: cmake --install build/native --config Release --prefix "$GITHUB_WORKSPACE/stage/RupeeRush"
+      - name: Headless functional launch of packaged Windows executable
+        if: matrix.target == 'Windows'
+        shell: pwsh
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+        run: |
+          $exe = Join-Path $env:GITHUB_WORKSPACE 'stage/RupeeRush/RupeeRushNative.exe'
+          if (-not (Test-Path $exe)) { throw "Missing packaged native Windows executable" }
+          & $exe --smoke
+          if ($LASTEXITCODE -ne 0) { throw "Native Windows executable failed to start ($LASTEXITCODE)" }
       - name: Headless functional launch using staged Linux binary and approved art
         if: matrix.target == 'Linux'
         shell: bash
