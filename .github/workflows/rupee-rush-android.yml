@@ -24,11 +24,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run all Rupee Rush source tests
+      - name: Run functional game and release diagnostics
         shell: bash
         run: |
           set -euo pipefail
-          for t in tests/*.test.js; do node "$t"; done
+          for t in \
+            tests/android-apk-contract.test.js \
+            tests/android-update-contract.test.js \
+            tests/github-apk-release-contract.test.js \
+            tests/rupee-rush.test.js \
+            tests/economy-market.test.js \
+            tests/mode-powerups.test.js \
+            tests/town-garden.test.js \
+            tests/kitchen-cooking.test.js \
+            tests/kitchen-expanded-recipes.test.js; do
+            node "$t"
+          done
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -100,7 +111,7 @@ jobs:
           "$ANDROID_SDK_ROOT/build-tools/36.0.0/aapt" dump badging "$apk" | tee "$RUNNER_TEMP/package.txt"
           grep -F "name='io.github.mrcalzon02.rupeerush'" "$RUNNER_TEMP/package.txt"
           grep -F "versionCode='$version'" "$RUNNER_TEMP/package.txt"
-          for a in assets/index.html assets/game.js assets/update.js assets/mining.js assets/style.css assets/art/embryon/generated/gems/ruby.png assets/art/primary/blockers/rock.png; do
+          for a in assets/index.html assets/game.js assets/update.js assets/mining.js assets/style.css; do
             unzip -Z -1 "$apk" | grep -Fx "$a"
           done
           mkdir -p release

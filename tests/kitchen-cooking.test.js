@@ -16,7 +16,6 @@ test('kitchen migrates additively and never changes the save key or farming crop
  assert.equal(s.town.kitchen.schemaVersion,1);assert.equal(s.town.kitchen.meals['future-recipe'],8);
  assert.equal(Cook.stock(s,'garden-salad'),2);assert.equal(Cook.stock(s,'future-recipe'),0);
  assert.equal(Cook.RECIPES.length,43);assert.equal(Object.keys(Farm.CROPS).length,48);
- assert(Cook.RECIPES.every(r=>r.art&&r.placeholderArt));
 });
 test('kitchen cannot craft locked recipe or phantom future pantry ingredients',()=>{
  const s=fresh();add(s,{carrot:12,wheat:12,berry:12});

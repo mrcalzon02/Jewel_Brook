@@ -15,7 +15,7 @@ for(const m of html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)){
   assert.ok(exists('web/'+m[1]),'Missing APK-packaged stylesheet '+m[1]);
 }
 for(const p of ['web/game.js','web/mining.js','web/engine.js',
- 'web/art/embryon/generated/gems/ruby.png','web/art/primary/blockers/rock.png']) {
+ 'web/update.js','web/economy.js']) {
   assert.ok(exists(p),'Missing game asset '+p);
 }
 

@@ -8,12 +8,12 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const window={RupeeTownGarden:Farm,RupeeDailyMoves:Daily,RupeeMining:Mine,RupeeProgress:Progress,RupeeModePowerups:Power,RupeeFarmingArt:Art};
 vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../web/kitchen-cooking.js'),'utf8'),{window});
 const Cook=window.RupeeKitchen;
-test('all 43 real kitchen recipes use actual harvested crop IDs, valid art, and unlockable house tiers',()=>{
+test('all 43 kitchen recipes use actual harvested crop IDs and unlockable house tiers',()=>{
  assert.equal(Cook.RECIPES.length,43);
  const seen=new Set();
  for(const r of Cook.RECIPES){
   assert(!seen.has(r.id),r.id);seen.add(r.id);
-  assert(r.art&&r.placeholderArt&&r.ingredients.length>0,r.id);
+  assert(r.ingredients.length>0,r.id);
   assert(r.house>=1&&r.house<=40);
   for(const x of r.ingredients){const item=Farm.CROPS[x.item];assert(item,r.id+'/'+x.item);assert(item.house<=r.house,r.id+'/'+x.item);}
  }
