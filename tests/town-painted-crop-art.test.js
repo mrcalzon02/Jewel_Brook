@@ -46,7 +46,7 @@ test('all eight lossless source sheets are archived with reproducible dimensions
  assert.equal(meta.sourceMasters.length,8);
  const seen=new Set();
  for(const master of meta.sourceMasters){
-  const bytes=fs.readFileSync(path.join(root,master.path.replace(/^web\\//,'')));
+  const bytes=fs.readFileSync(path.join(root,master.path.slice(4)));
   assert.equal(bytes.length,master.bytes,master.crop);
   assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),master.sha256,master.crop);
   assert.equal(bytes.toString('ascii',0,4),'RIFF');
