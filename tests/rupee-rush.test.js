@@ -64,7 +64,8 @@ assert.equal(Rewards.summary(save).total,300);
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 for(const name of ['engine','game','mining-gear','mining','mine-bridge','art','embryon-music','board-motion'])assert.ok(html.includes('src="'+name+'.js"'),name+' script absent');
 assert.ok(!html.includes('nutbuster.v1'));
-const views={screen:{innerHTML:''},wallet:{textContent:''},stargems:{textContent:''},toast:{textContent:'',classList:{add(){},remove(){}}}};
+const pointerHandlers={};
+const views={screen:{innerHTML:'',addEventListener(event,fn){pointerHandlers[event]=fn;}},wallet:{textContent:''},stargems:{textContent:''},toast:{textContent:'',classList:{add(){},remove(){}}}};
 const store={};
 let handler=null;
 const doc={
@@ -134,6 +135,19 @@ for(let i=0;i<playable.cells.length&&!matchingPair;i++){
 assert.ok(matchingPair,'A matching move is available');
 click('cell',{cell:String(matchingPair[0])});
 click('cell',{cell:String(matchingPair[1])});
+assert.equal(gameWindow.RupeeRushDebug.activeSnapshot().turns,beforeMatch.turns,
+ 'Two taps select booster targets; they must not replace directional dragging');
+const [from,to]=matchingPair,w=playable.cfg.width;
+const dx=to-from===1?36:to-from===-1?-36:0;
+const dy=to-from===w?36:to-from===-w?-36:0;
+assert.ok(dx||dy,'The legal match uses adjacent cells');
+assert.equal(typeof pointerHandlers.pointerdown,'function','Drag start handler is registered');
+assert.equal(typeof pointerHandlers.pointerup,'function','Drag end handler is registered');
+let captured=null;
+pointerHandlers.pointerdown({pointerId:7,isPrimary:true,button:0,clientX:100,clientY:100,
+ target:{closest:selector=>selector==='[data-cell]'?{dataset:{cell:String(from)},disabled:false,setPointerCapture(id){captured=id}}:null}});
+assert.equal(captured,7,'The board captures the input pointer rather than releasing it to scrolling');
+pointerHandlers.pointerup({pointerId:7,clientX:100+dx,clientY:100+dy});
 const afterMatch=gameWindow.RupeeRushDebug.activeSnapshot();
 assert.equal(afterMatch.turns,beforeMatch.turns+1,'Match input advances one game turn');
 assert(afterMatch.score>beforeMatch.score,'Match awards a score');
