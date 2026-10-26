@@ -165,9 +165,11 @@ jobs:
           node tests/kitchen-cooking.test.js
           node tests/kitchen-expanded-recipes.test.js
       - name: Install desktop packager
-        run: npm --prefix desktop install --no-audit --no-fund
+        working-directory: desktop
+        run: npm install --no-audit --no-fund
       - name: Build standalone desktop distributions
-        run: npm --prefix desktop run ${{ matrix.script }}
+        working-directory: desktop
+        run: npm run ${{ matrix.script }}
       - name: Confirm distributable packages exist
         shell: bash
         run: |
@@ -176,7 +178,7 @@ jobs:
             test "$(find release-desktop -maxdepth 1 -name '*.exe' -type f | wc -l)" -ge 2
           else
             test "$(find release-desktop -maxdepth 1 -name '*.AppImage' -type f | wc -l)" -ge 1
-            test "$(find release-desktop -maxdepth 1 -name '*.deb' -type f | wc -l)" -ge 1
+            test "$(find release-desktop -maxdepth 1 -name '*.tar.gz' -type f | wc -l)" -ge 1
           fi
       - name: Upload Windows / Linux packages
         uses: actions/upload-artifact@v4
@@ -185,7 +187,7 @@ jobs:
           path: |
             release-desktop/*.exe
             release-desktop/*.AppImage
-            release-desktop/*.deb
+            release-desktop/*.tar.gz
           retention-days: 30
           if-no-files-found: error
 
@@ -207,7 +209,7 @@ jobs:
           set -euo pipefail
           test -s "$(find release-desktop -maxdepth 1 -name '*.AppImage' -type f -print -quit)"
           test "$(find release-desktop -maxdepth 1 -name '*.exe' -type f | wc -l)" -ge 2
-          (cd release-desktop && sha256sum ./*.exe ./*.AppImage ./*.deb > SHA256SUMS.txt)
+          (cd release-desktop && sha256sum ./*.exe ./*.AppImage ./*.tar.gz > SHA256SUMS.txt)
           tag="rupeerush-desktop-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}"
           gh release create "$tag" release-desktop/* \
             --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease \

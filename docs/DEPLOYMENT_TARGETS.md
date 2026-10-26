@@ -7,7 +7,7 @@ One authoritative game: `web/` (match-three, mining, farming, cooking, shop, art
 | Android phones/tablets | `RupeeRush-Android.apk` | GitHub signed prereleases | Existing pipeline; verify on device |
 | Amazon Fire tablets (Fire OS 7/8+) | The **same** `RupeeRush-Android.apk` | Side-load GitHub APK | API-level eligible; physical Fire device verification pending |
 | Windows x64 | NSIS `.exe` installer and portable `.exe` | GitHub desktop prereleases | Electron packaged workflow; runtime installation pending |
-| Linux x64 | `.AppImage` and `.deb` | GitHub desktop prereleases | Electron packaged workflow; runtime installation pending |
+| Linux x64 | `.AppImage` and `.tar.gz` | GitHub desktop prereleases | Electron packaged workflow; runtime installation pending |
 
 The Fire OS 7 minimum is Android API 28 and Fire OS 8 is API 30. The current Android `minSdk 26` supports both at the manifest/API level. This is **not** proof of actual Fire compatibility. Fire OS 5 and 6 are below the minimum. Devices with new Fire OS versions must be tested before being claimed compatible.
 

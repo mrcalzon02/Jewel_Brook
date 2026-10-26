@@ -12,7 +12,7 @@ assert.equal(config.build.extraResources[0].to, 'game');
 assert.ok(config.scripts['dist:win'].includes('nsis'));
 assert.ok(config.scripts['dist:win'].includes('portable'));
 assert.ok(config.scripts['dist:linux'].includes('AppImage'));
-assert.ok(config.scripts['dist:linux'].includes('deb'));
+assert.ok(config.scripts['dist:linux'].includes('tar.gz'));
 
 for (const name of ['index.html', 'game.js', 'mining.js', 'update.js', 'style.css']) {
   assert.ok(fs.statSync(path.join(root, name)).isFile(), 'Missing bundled game resource: ' + name);

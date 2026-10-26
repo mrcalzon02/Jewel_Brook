@@ -8,7 +8,7 @@
   "scripts": {
     "start": "electron .",
     "dist:win": "electron-builder --win nsis portable --x64 --publish never",
-    "dist:linux": "electron-builder --linux AppImage deb --x64 --publish never"
+    "dist:linux": "electron-builder --linux AppImage tar.gz --x64 --publish never"
   },
   "devDependencies": {
     "electron": "45.0.0",
@@ -46,7 +46,7 @@
       "artifactName": "RupeeRush-Windows-Portable-${version}-${arch}.${ext}"
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": ["AppImage", "tar.gz"],
       "category": "Game",
       "desktop": {
         "entry": {
@@ -58,8 +58,8 @@
     "appImage": {
       "artifactName": "RupeeRush-Linux-${version}-${arch}.AppImage"
     },
-    "deb": {
-      "artifactName": "RupeeRush-Linux-${version}-${arch}.deb"
+    "tar.gz": {
+      "artifactName": "RupeeRush-Linux-${version}-${arch}.tar.gz"
     }
   }
 }
