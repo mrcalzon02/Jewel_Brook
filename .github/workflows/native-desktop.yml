@@ -34,7 +34,7 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y libx11-dev libxext-dev libxrandr-dev libxfixes-dev libxcursor-dev libxi-dev libxss-dev libxkbcommon-dev libegl1-mesa-dev libgl1-mesa-dev libwayland-dev wayland-protocols
+          sudo apt-get install -y libx11-dev libxext-dev libxrandr-dev libxfixes-dev libxcursor-dev libxi-dev libxss-dev libxkbcommon-dev libegl1-mesa-dev libgl1-mesa-dev libwayland-dev wayland-protocols libxtst-dev libdecor-0-dev libasound2-dev libpulse-dev libudev-dev libdrm-dev libgbm-dev
       - name: Configure C++ / SDL3 (no browser runtime)
         shell: bash
         run: cmake -S native -B build/native -DCMAKE_BUILD_TYPE=Release

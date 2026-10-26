@@ -34,7 +34,12 @@ target_link_libraries(rupee_native_tests PRIVATE rupee_native_logic)
 add_test(NAME native_gameplay_functions COMMAND rupee_native_tests)
 
 install(TARGETS RupeeRushNative RUNTIME DESTINATION ".")
-install(FILES "$<TARGET_FILE:SDL3-shared>" DESTINATION ".")
+if(WIN32)
+  install(FILES "$<TARGET_FILE:SDL3-shared>" DESTINATION ".")
+else()
+  # Keep the ELF SONAME filename in the archive; the loader searches for libSDL3.so.0.
+  install(FILES "$<TARGET_SONAME_FILE:SDL3-shared>" DESTINATION ".")
+endif()
 set(SOURCE_GEMS "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/generated/gems")
 install(FILES
   "${SOURCE_GEMS}/ruby.png"
