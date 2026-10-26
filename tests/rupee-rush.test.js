@@ -104,19 +104,19 @@ function navigate(nav){click('',{nav});}
 navigate('mine');
 assert.match(views.screen.innerHTML,/Prism Vale Mines/);
 assert.match(views.screen.innerHTML,/class="mine-rock-face damage-0"/,'Mine displays existing raster rock art');
-assert.match(views.screen.innerHTML,/class="mine-rock-base" src="art\\/primary\\/blockers\\/rock.png"/,'Mine rock comes from checked-in PNG');
+assert.ok(views.screen.innerHTML.includes('class="mine-rock-base" src="art/primary/blockers/rock.png"'),'Mine rock comes from checked-in PNG');
 assert.doesNotMatch(views.screen.innerHTML,/excavation-rock/,'No procedural faceted SVG/CSS placeholder rocks');
-assert.match(views.screen.innerHTML,/mine-action-art[^>]+mining-tools\\/pickaxes\\//,'Dig mode uses actual pickaxe art');
-assert.match(views.screen.innerHTML,/mine-action-art[^>]+mining-tools\\/gloves\\//,'Survey mode uses actual glove art');
+assert.ok(views.screen.innerHTML.includes('class="mine-action-art" src="art/nutvale/mining-tools/pickaxes/'),'Dig mode uses actual pickaxe art');
+assert.ok(views.screen.innerHTML.includes('class="mine-action-art" src="art/nutvale/mining-tools/gloves/'),'Survey mode uses actual glove art');
 const damagedSite={rupeeMine:{},rupeeExpedition:{}};
 Mining.ensure(damagedSite);
 const hardRock=Mining.currentBoard(damagedSite).find(c=>c.hardness>=2);
 assert.ok(hardRock,'seeded site includes multi-hit rock');
 click('mine-cell',{x:String(hardRock.x),y:String(hardRock.y)});
 assert.match(views.screen.innerHTML,/class="mine-rock-face damage-1"/,'After one strike the raster fracture state renders');
-assert.match(views.screen.innerHTML,/class="mine-rock-fracture" src="art\\/primary\\/overlays\\/void-rock.png"/,'Damage overlays use committed raster art');
+assert.ok(views.screen.innerHTML.includes('class="mine-rock-fracture" src="art/primary/overlays/void-rock.png"'),'Damage overlays use committed raster art');
 const styles=fs.readFileSync(path.join(root,'style.css'),'utf8');
-assert.doesNotMatch(styles,/\\.excavation-rock(?:\\{|\\s|\\:)/,'Do not reintroduce procedural boulder renderer');
+assert.ok(!styles.includes('.excavation-rock'),'Do not reintroduce procedural boulder renderer');
 for(const asset of ['art/primary/blockers/rock.png','art/primary/overlays/void-rock.png','art/embryon/runtime/gems/diamond.webp','art/embryon/runtime/gems/onyx.webp','art/embryon/runtime/gems/garnet.webp','art/nutvale/mining-economy/goods/crate-mining-supplies.png']){
  assert.ok(fs.existsSync(path.join(root,asset)),'missing mining gameplay art '+asset);
 }
