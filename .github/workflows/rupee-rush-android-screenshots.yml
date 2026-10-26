@@ -1,0 +1,91 @@
+name: Rupee Rush Android gameplay screenshots
+on:
+  workflow_run:
+    workflows: ["Rupee Rush signed Android APK"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing signed Rupee Rush release tag to capture
+        type: string
+        required: true
+permissions:
+  contents: write
+jobs:
+  installed-apk-capture:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout exactly the release source revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify original imported mining artwork is wired into the game
+        run: node tests/mining-import-assets.test.js
+      - name: Fetch the exact signed release APK and verify its published checksum
+        id: apk
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          RELEASE_TAG_INPUT: ${{ inputs.release_tag }}
+          SOURCE_RUN_NUMBER: ${{ github.event.workflow_run.run_number }}
+          SOURCE_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == workflow_run ]]; then
+            tag="rupeerush-phone-test-$SOURCE_RUN_NUMBER-$SOURCE_RUN_ATTEMPT"
+          else
+            tag="$RELEASE_TAG_INPUT"
+          fi
+          test -n "$tag"
+          mkdir -p incoming
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern 'RupeeRush-Android.apk' --pattern 'SHA256SUMS.txt' --dir incoming
+          test -s incoming/RupeeRush-Android.apk
+          expected="$(awk 'NR==1 {print $1}' incoming/SHA256SUMS.txt)"
+          actual="$(sha256sum incoming/RupeeRush-Android.apk | cut -d' ' -f1)"
+          test "$actual" == "$expected"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "Verified published signed APK SHA-256: $actual"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Capture real mining gameplay from installed Android APK
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          target: google_apis
+          arch: x86_64
+          profile: pixel_3a
+          cores: 2
+          ram-size: 2048M
+          heap-size: 512M
+          disable-animations: true
+          emulator-boot-timeout: 720
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          script: python3 scripts/capture_android_mining.py incoming/RupeeRush-Android.apk captures
+      - name: Retain authentic screenshots as a workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: RupeeRush-Android-Actual-Screenshots-${{ github.run_number }}-${{ github.run_attempt }}
+          path: captures/
+          retention-days: 30
+          if-no-files-found: warn
+      - name: Attach verified gameplay captures to the corresponding APK release
+        shell: bash
+        env:
+          TAG: ${{ steps.apk.outputs.tag }}
+        run: |
+          set -euo pipefail
+          for f in 01-RupeeRush-Home.png 02-RupeeRush-Mine-Tools.png 03-RupeeRush-Mine-Equipment.png 04-RupeeRush-Mine-Board.png 05-RupeeRush-Mine-After-Strike.png CAPTURE-EVIDENCE.json; do
+            test -s "captures/$f"
+          done
+          gh release upload "$TAG" captures/*.png captures/CAPTURE-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --clobber
+          echo "Attached actual Android screenshots to release $TAG"

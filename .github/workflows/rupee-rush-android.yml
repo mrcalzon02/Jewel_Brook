@@ -33,6 +33,7 @@ jobs:
             tests/android-update-contract.test.js \
             tests/github-apk-release-contract.test.js \
             tests/rupee-rush.test.js \
+            tests/mining-import-assets.test.js \
             tests/economy-market.test.js \
             tests/mode-powerups.test.js \
             tests/town-garden.test.js \
