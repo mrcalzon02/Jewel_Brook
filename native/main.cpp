@@ -161,7 +161,8 @@ void drawHome(SDL_Renderer* r,Game& g,int ww,int hh){
           "   MINED ORE "+std::to_string(g.ore),2);
 }
 }
-int main(int,char**){
+int main(int argc,char** argv){
+    const bool smoke=argc>1 && std::string(argv[1])=="--smoke";
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS)){SDL_Log("SDL init failed: %s",SDL_GetError());return 1;}
     SDL_Window* window=nullptr;SDL_Renderer* render=nullptr;
     if(!SDL_CreateWindowAndRenderer("Rupee Rush - Native",1080,740,SDL_WINDOW_RESIZABLE,&window,&render)){
@@ -176,7 +177,7 @@ int main(int,char**){
     const fs::path storage=savePath();
     Game game=restore(storage);
     Screen screen=Screen::Home;
-    bool running=true;int pressed=-1;
+    bool running=true;int pressed=-1;int renderedFrames=0;
     auto persist=[&](){if(!writeSave(game,storage))SDL_Log("Native save write failed.");};
     while(running){
         int ww=0,hh=0;SDL_GetWindowSize(window,&ww,&hh);
@@ -225,6 +226,7 @@ int main(int,char**){
         else if(screen==Screen::Board)drawBoard(render,art,game,ww,hh);
         else drawMine(render,art,game,ww,hh);
         SDL_RenderPresent(render);
+        if(smoke && ++renderedFrames>=3)running=false;
         SDL_Delay(16);
     }
     persist();art.release();

@@ -47,6 +47,19 @@ jobs:
       - name: Stage executable, SDL3 and original approved PNG assets
         shell: bash
         run: cmake --install build/native --config Release --prefix "$GITHUB_WORKSPACE/stage/RupeeRush"
+      - name: Headless functional launch using staged Linux binary and approved art
+        if: matrix.target == 'Linux'
+        shell: bash
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+        run: |
+          set -euo pipefail
+          test -x stage/RupeeRush/RupeeRushNative
+          test -s stage/RupeeRush/libSDL3.so.0
+          ldd stage/RupeeRush/RupeeRushNative | tee native-dependencies.txt
+          ! grep -q 'not found' native-dependencies.txt
+          stage/RupeeRush/RupeeRushNative --smoke
       - name: Ensure no browser or web package has been included
         shell: bash
         run: |
