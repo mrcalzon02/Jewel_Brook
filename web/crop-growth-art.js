@@ -3,7 +3,7 @@
  const BASE='art/embryon/town/gardening/growth/';
  const CROPS=Object.freeze(["carrot","wheat","berry","radish","lettuce","pea","mint","potato","onion","spinach","beet","strawberry","tomato","cabbage","bean","garlic","corn","pepper","broccoli","cucumber","cauliflower","kale","raspberry","sunflower","zucchini","eggplant","pumpkin","barley","rice","cotton","sugarcane","herb-bundle","lavender","tea-leaves","daisy","tulip","rose","coffee-beans","orchid","grape","melon","watermelon","apple","pear","peach","pineapple","dragonfruit","starfruit"]);
  const STAGES=Object.freeze(['seed','sprout','growing','maturing','ready']);
- const PAINTED=Object.freeze(['carrot','radish','lettuce','pea','mint','potato','onion','strawberry']);
+ const PAINTED=Object.freeze(['carrot','radish','lettuce','pea','mint','potato','onion','strawberry','spinach']);
  const has=(crop,stage)=>CROPS.includes(crop)&&STAGES.includes(stage);
  const vector=(crop,stage)=>has(crop,stage)?BASE+crop+'-'+stage+'.svg':null;
  const image=(crop,stage)=>has(crop,stage)?(PAINTED.includes(crop)?BASE+'painted/'+crop+'-'+stage+'.webp':vector(crop,stage)):null;

@@ -16,9 +16,10 @@
     "mint",
     "potato",
     "onion",
-    "strawberry"
+    "strawberry",
+    "spinach"
   ],
-  "sprite_count": 40,
+  "sprite_count": 45,
   "transform": "five-column isolated alpha sprites; common 0.66 scale and baseline 487 on transparent 512 square canvas",
   "sprites": [
     {
@@ -1220,6 +1221,156 @@
         431,
         486
       ]
+    },
+    {
+      "crop": "spinach",
+      "stage": "seed",
+      "asset": "web/art/embryon/town/gardening/growth/painted/spinach-seed.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/spinach-growth-source.webp",
+      "bytes": 13848,
+      "sha256": "721a0128bb7084b036e5f9c9d0b61a5de968ab05564014a6e5ac3bd1f29f8fcc",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        0,
+        0,
+        340,
+        724
+      ],
+      "source_bbox": [
+        13,
+        475,
+        327,
+        641
+      ],
+      "render_bbox": [
+        152,
+        377,
+        358,
+        487
+      ]
+    },
+    {
+      "crop": "spinach",
+      "stage": "sprout",
+      "asset": "web/art/embryon/town/gardening/growth/painted/spinach-sprout.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/spinach-growth-source.webp",
+      "bytes": 23510,
+      "sha256": "44216bb3cd4b27629ca1eec33a3d92cc9a3ee60cfc70ad1dc3665db6163b45fd",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        340,
+        0,
+        702,
+        724
+      ],
+      "source_bbox": [
+        16,
+        361,
+        350,
+        645
+      ],
+      "render_bbox": [
+        146,
+        300,
+        366,
+        487
+      ]
+    },
+    {
+      "crop": "spinach",
+      "stage": "growing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/spinach-growing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/spinach-growth-source.webp",
+      "bytes": 40338,
+      "sha256": "b0933099baa4069eecce0a0ee4f22704d1cfc9578a2609f5eb4faebc63474e1c",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        702,
+        0,
+        1112,
+        724
+      ],
+      "source_bbox": [
+        14,
+        259,
+        400,
+        643
+      ],
+      "render_bbox": [
+        128,
+        235,
+        383,
+        487
+      ]
+    },
+    {
+      "crop": "spinach",
+      "stage": "maturing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/spinach-maturing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/spinach-growth-source.webp",
+      "bytes": 59976,
+      "sha256": "0d368e854e7f766fc5555f73d99816263ab456efa8cbbfa80ac451e7bda38c35",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1112,
+        0,
+        1618,
+        724
+      ],
+      "source_bbox": [
+        11,
+        164,
+        500,
+        646
+      ],
+      "render_bbox": [
+        94,
+        169,
+        416,
+        487
+      ]
+    },
+    {
+      "crop": "spinach",
+      "stage": "ready",
+      "asset": "web/art/embryon/town/gardening/growth/painted/spinach-ready.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/spinach-growth-source.webp",
+      "bytes": 75262,
+      "sha256": "a3579392914885a0d6780799779ca3cecc72a44accbaac3d4986ab8282143cdb",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1618,
+        0,
+        2172,
+        724
+      ],
+      "source_bbox": [
+        7,
+        116,
+        548,
+        646
+      ],
+      "render_bbox": [
+        77,
+        137,
+        434,
+        487
+      ]
     }
   ],
   "sourceMasters": [
@@ -1310,6 +1461,17 @@
       ],
       "bytes": 932004,
       "sha256": "7c62563da7f21cafc9adda1a9a42b511c094809244550b883163dd2d99b74f1d"
+    },
+    {
+      "crop": "spinach",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/spinach-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 1125594,
+      "sha256": "271beafae6511c9228db88ab5faec47c1fb07148f015a744f351c6fa43268f6c"
     }
   ],
   "sourceOriginals": "Eight unmodified transparent PNG originals are preserved in the Rupee Rush Painted Crop Art Transfer folder in connected Google Drive; these Git originals are lossless WEBP preserving every RGBA pixel."

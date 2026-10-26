@@ -2,9 +2,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../web'),Crops=require('../web/crop-growth-art.js');
 const meta=require('../web/art/embryon/town/gardening/growth/painted/manifest.json');
-test('all 40 actual painted sprites match source SHA256 and are alpha-enabled 512px WebP',()=>{
- assert.equal(meta.sprite_count,40);
- assert.equal(meta.sprites.length,40);
+test('all 45 actual painted sprites match source SHA256 and are alpha-enabled 512px WebP',()=>{
+ assert.equal(meta.sprite_count,45);
+ assert.equal(meta.sprites.length,45);
  assert.deepEqual(Crops.PAINTED,meta.crops);
  assert.deepEqual(Crops.STAGES,meta.stages);
  const paths=new Set(),hashes=new Set();
@@ -27,9 +27,9 @@ test('all 40 actual painted sprites match source SHA256 and are alpha-enabled 51
   assert(!paths.has(expected),'duplicate sprite path');
   paths.add(expected);hashes.add(entry.sha256);
  }
- assert.equal(paths.size,40);assert.equal(hashes.size,40);
+ assert.equal(paths.size,45);assert.equal(hashes.size,45);
 });
-test('eight crops prefer painted art, other 40 retain old tested transparent SVGs',()=>{
+test('nine crops prefer painted art, other 39 retain old tested transparent SVGs',()=>{
  assert.equal(Crops.CROPS.length,48);
  for(const c of Crops.CROPS)for(const st of Crops.STAGES){
   const expected=Crops.PAINTED.includes(c)?'.webp':'.svg';
@@ -42,8 +42,8 @@ test('eight crops prefer painted art, other 40 retain old tested transparent SVG
  assert.equal(Crops.fromStatus({crop:'wheat',state:'ready'}),Crops.image('wheat','ready'));
 });
 
-test('all eight lossless source sheets are archived with reproducible dimensions and digests',()=>{
- assert.equal(meta.sourceMasters.length,8);
+test('all nine lossless source sheets are archived with reproducible dimensions and digests',()=>{
+ assert.equal(meta.sourceMasters.length,9);
  const seen=new Set();
  for(const master of meta.sourceMasters){
   const bytes=fs.readFileSync(path.join(root,master.path.slice(4)));
