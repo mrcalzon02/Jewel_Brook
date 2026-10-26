@@ -38,7 +38,7 @@ if(WIN32)
   install(FILES "$<TARGET_FILE:SDL3-shared>" DESTINATION ".")
 else()
   # Keep the ELF SONAME filename in the archive; the loader searches for libSDL3.so.0.
-  install(FILES "$<TARGET_SONAME_FILE:SDL3-shared>" DESTINATION ".")
+  install(FILES "$<TARGET_FILE:SDL3-shared>" DESTINATION "." RENAME "libSDL3.so.0")
 endif()
 set(SOURCE_GEMS "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/generated/gems")
 install(FILES

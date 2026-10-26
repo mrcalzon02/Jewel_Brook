@@ -55,6 +55,7 @@ jobs:
           SDL_RENDER_DRIVER: software
         run: |
           set -euo pipefail
+          ls -lah stage/RupeeRush
           test -x stage/RupeeRush/RupeeRushNative
           test -s stage/RupeeRush/libSDL3.so.0
           ldd stage/RupeeRush/RupeeRushNative | tee native-dependencies.txt
