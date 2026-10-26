@@ -74,3 +74,17 @@ test('240 crop sprites have a forty-eight-by-five transparent review gallery',()
  assert.match(html,/Check alpha/);
  assert.match(html,/240 loaded/);
 });
+
+test('art review uses actual crop names and family, with working missing-art filters',()=>{
+ const html=fs.readFileSync(path.join(dir,'town-crop-art-review.html'),'utf8');
+ assert.match(html,/src="town-garden\.js"/);
+ assert.ok(html.indexOf('src="town-garden.js"')<html.indexOf('src="crop-growth-art.js"'));
+ assert.match(html,/const catalog=window\.RupeeTownGarden\.CROPS/);
+ assert.match(html,/spec\.name\+' · House '\+spec\.house/);
+ assert.match(html,/const artPriority=\['bean','garlic','corn','pepper'/);
+ assert.match(html,/data-show="missing"/);
+ assert.match(html,/card\.hidden=/);
+ assert.match(html,/spec\.category/);
+ assert.ok(Object.hasOwn(Town.CROPS,'bean')&&!Visual.PAINTED.includes('bean'));
+ assert.equal(Visual.PAINTED.length,12);
+});
