@@ -1,8 +1,11 @@
 #include "game_logic.h"
+#include "mine_economy.h"
+#include "equipment_paths.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <algorithm>
 #include <array>
+#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -10,6 +13,8 @@
 
 namespace fs=std::filesystem;
 using rupee::Game;
+using rupee::MineEconomy;
+using rupee::MineUpgrade;
 namespace {
 enum class Screen { Home, Board, Mine };
 struct Rect {float x,y,w,h; bool contains(float px,float py)const{
@@ -43,10 +48,22 @@ Rect gameBoard(int ww,int hh,const Game& g){
     cell=std::max(10.0f,cell);
     return {(ww-g.width*cell)*.5f,96.0f,g.width*cell,g.height*cell};
 }
-Rect mineBoard(int ww,int hh){
-    float cell=std::min({128.0f,(ww-120.0f)/4.0f,(hh-200.0f)/4.0f});
-    cell=std::max(10.0f,cell);
-    return {(ww-cell*4)*.5f,104.0f,cell*4,cell*4};
+Rect mineBoard(int ww,int hh,int size){
+    // Leave a genuine native actions/economy panel to the right, not a page scroller.
+    float cell=std::min({110.0f,(ww-380.0f)/size,(hh-195.0f)/size});
+    cell=std::max(15.0f,cell);
+    return {22.0f,105.0f,cell*size,cell*size};
+}
+std::array<Rect,10> mineActions(int ww,int hh,const MineEconomy& mine){
+    Rect board=mineBoard(ww,hh,mine.size());
+    const float px=board.x+board.w+24.0f;
+    const float panel=std::max(120.0f,ww-px-18.0f);
+    const float half=(panel-10.0f)/2.0f;
+    std::array<Rect,10> result{};
+    for(int i=0;i<10;++i){
+        result[i]={px+(i%2)*(half+10),195.0f+(i/2)*53.0f,half,44.0f};
+    }
+    return result;
 }
 int hit(Rect b,int cols,int rows,float x,float y){
     if(!b.contains(x,y))return -1;
@@ -64,7 +81,7 @@ fs::path savePath(){
     SDL_free(pref);
     return result;
 }
-bool writeSave(const Game& g,const fs::path& path){
+template<class State>bool writeSave(const State& g,const fs::path& path){
     if(path.empty())return false;
     const auto tmp=fs::path(path.string()+".tmp");
     const auto backup=fs::path(path.string()+".bak");
@@ -96,16 +113,49 @@ Game restore(const fs::path& path){
     if(backup)g.load(backup);
     return g;
 }
+MineEconomy restoreMine(const fs::path& path,const Game& oldGame,bool hasPreviousNativeSave){
+    MineEconomy n;
+    std::ifstream main(path);
+    if(main && n.load(main))return n;
+    std::ifstream backup(path.string()+".bak");
+    if(backup && n.load(backup))return n;
+    // Upgrade from the previously published native desktop preview without
+    // deleting its earned ore or strikes. No compatibility changes to Android.
+    if(hasPreviousNativeSave && !fs::exists(path) && !fs::exists(path.string()+".bak")){
+        std::vector<rupee::MineCell> old;
+        for(const auto& r:oldGame.rocks){
+            rupee::MineCell cell;
+            cell.kind=r.kind;cell.hardness=r.hardness;cell.hits=r.hits;
+            old.push_back(cell);
+        }
+        n.importLegacy(old,oldGame.ore,oldGame.strikes);
+    }
+    return n;
+}
 struct Art {
     std::array<SDL_Texture*,5> gem{};
+    std::array<SDL_Texture*,40> pick{};
+    std::array<SDL_Texture*,40> glove{};
     SDL_Texture* ore=nullptr;
     bool load(SDL_Renderer* r,const fs::path& root){
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
         for(int i=0;i<5;++i)gem[i]=png(r,root/"art/embryon/generated/gems"/(std::string(names[i])+".png"));
         ore=png(r,root/"art/nutvale/mines/nutvale-mines-ore-atlas-approved.png");
-        return std::all_of(gem.begin(),gem.end(),[](auto* t){return t!=nullptr;})&&ore;
+        for(int i=0;i<40;++i) {
+            pick[i]=png(r,root/rupee::PickaxeArt[i]);
+            glove[i]=png(r,root/rupee::GloveArt[i]);
+        }
+        const auto ready=[](const auto& list){
+            return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
+        };
+        return ready(gem)&&ready(pick)&&ready(glove)&&ore;
     }
-    void release(){for(auto* t:gem)if(t)SDL_DestroyTexture(t);if(ore)SDL_DestroyTexture(ore);}
+    void release(){
+        for(auto* t:gem)if(t)SDL_DestroyTexture(t);
+        for(auto* t:pick)if(t)SDL_DestroyTexture(t);
+        for(auto* t:glove)if(t)SDL_DestroyTexture(t);
+        if(ore)SDL_DestroyTexture(ore);
+    }
 };
 void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh){
     label(r,28,26,"RUPEE RUSH - NATIVE MATCH 3",2);
@@ -129,36 +179,63 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh){
         button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"RETRY");
     }else label(r,ww*.5f-120,hh-36,"DRAG A GEM TO SWAP",2);
 }
-void drawMine(SDL_Renderer* r,Art& art,Game& game,int ww,int hh){
-    label(r,28,26,"RUPEE RUSH - NATIVE MINING",2);
-    label(r,28,59,"STRIKES "+std::to_string(game.strikes)+"   ORE "+std::to_string(game.ore),2);
-    Rect b=mineBoard(ww,hh);float tile=b.w/4;
+void drawMine(SDL_Renderer* r,Art& art,const MineEconomy& n,int ww,int hh,bool surveyMode){
+    label(r,24,20,"RUPEE RUSH - NATIVE MINING",2);
+    label(r,24,55,"STRIKES "+std::to_string(n.strikes)+"/"+std::to_string(MineEconomy::strikeLimit(n.pickTier))+
+          "   SCANS "+std::to_string(n.scans)+"   MINE "+std::to_string(n.mineTier+1),2);
+    const int count=n.size();
+    Rect b=mineBoard(ww,hh,count);float tile=b.w/count;
     static constexpr int xs[]={37,270,504,736,968,1200};
     static constexpr int ys[]={55,295,536,777};
-    for(int i=0;i<16;++i){
-        const auto& rock=game.rocks[i];
+    for(int i=0;i<static_cast<int>(n.cells.size());++i){
+        const auto& rock=n.cells[i];
         int row=0,col=0;
-        if(!rock.done){col=rock.hits>=2?4:rock.hits>=1?3:0;}
+        if(rock.hits<rock.hardness){col=rock.hits>=2?4:rock.hits>=1?3:0;}
         else if(rock.kind==0){row=3;col=0;}
         else if(rock.kind==2){row=1;col=2;}
         else if(rock.kind==3){row=1;col=5;}
         else {row=1;col=0;}
         SDL_FRect src{static_cast<float>(xs[col]),static_cast<float>(ys[row]),212,215};
-        SDL_FRect dest{b.x+(i%4)*tile+2,b.y+(i/4)*tile+2,tile-4,tile-4};
-        // Atlas slices are the approved exact positions from web/mine-ore-atlas.js.
+        SDL_FRect dest{b.x+(i%count)*tile+2,b.y+(i/count)*tile+2,tile-4,tile-4};
+        // The exact rectangles in web/mine-ore-atlas.js.
         SDL_RenderTexture(r,art.ore,&src,&dest);
+        if(rock.exposed>0){
+            fill(r,{dest.x+4,dest.y+4,std::min(15.0f,tile/4),std::min(15.0f,tile/4)},{255,200,72,255});
+        }else if(rock.scanned && rock.hits<rock.hardness){
+            SDL_SetRenderDrawColor(r,rock.kind?95:160,rock.kind?231:120,180,255);
+            SDL_FRect mark{dest.x+dest.w-11,dest.y+2,8,8};
+            SDL_RenderFillRect(r,&mark);
+        }
     }
-    label(r,ww*.5f-180,hh-93,"EXCAVATE TO REVEAL ORE",2);
-    button(r,{20.0f,static_cast<float>(hh-64),154,44},"MAIN MENU");
+    const auto act=mineActions(ww,hh,n);
+    const float panel=act[0].x;
+    label(r,panel,78,"CART "+std::to_string(n.cartOre)+"/"+std::to_string(MineEconomy::cartLimit(n.cartTier))+
+          "   ORE "+std::to_string(n.ore)+"   METAL "+std::to_string(n.metal),1);
+    label(r,panel,90,"GOODS "+std::to_string(n.goods)+"   COINS "+std::to_string(n.dollars)+
+          "   WRITS "+std::to_string(n.writs),1);
+    if(art.pick[n.pickTier]){
+        SDL_FRect image{panel,103,54,54};SDL_RenderTexture(r,art.pick[n.pickTier],nullptr,&image);
+    }
+    if(art.glove[n.gloveTier]){
+        SDL_FRect image{panel+74,103,54,54};SDL_RenderTexture(r,art.glove[n.gloveTier],nullptr,&image);
+    }
+    label(r,panel,164,"PICK "+std::to_string(n.pickTier)+"   GLOVE "+std::to_string(n.gloveTier),1);
+    static const char* names[]={
+        "UNLOAD","REFINE","CRAFT","SELL","PICK +","GLOVE +","MINE +","CART +","REFINE +","SURVEY"
+    };
+    for(int i=0;i<10;++i)
+        button(r,act[i],i==9?(surveyMode?"DIG MODE":names[i]):names[i]);
+    label(r,24,hh-87,surveyMode?"SURVEY MODE: CLICK UNEXCAVATED ROCKS":"CLICK TO DIG / COLLECT EXPOSED ORE",1);
+    button(r,{20.0f,static_cast<float>(hh-58),155,42},"MAIN MENU");
 }
-void drawHome(SDL_Renderer* r,Game& g,int ww,int hh){
+void drawHome(SDL_Renderer* r,const Game& g,const MineEconomy& mine,int ww,int hh){
     label(r,ww*.5f-125,hh*.19f,"RUPEE RUSH",3);
     label(r,ww*.5f-170,hh*.19f+48,"NATIVE DESKTOP FOUNDATION",2);
     button(r,{ww*.5f-170,hh*.37f,340,62},"PLAY MATCH 3");
     button(r,{ww*.5f-170,hh*.37f+82,340,62},"GO MINING");
     button(r,{ww*.5f-170,hh*.37f+164,340,62},"QUIT GAME");
     label(r,ww*.5f-175,hh-70,"STAGE "+std::to_string(g.level)+
-          "   MINED ORE "+std::to_string(g.ore),2);
+          "   STORED ORE "+std::to_string(mine.ore),2);
 }
 }
 int main(int argc,char** argv){
@@ -176,9 +253,21 @@ int main(int argc,char** argv){
     }
     const fs::path storage=savePath();
     Game game=restore(storage);
+    const fs::path mineStorage=storage.parent_path()/"mine-state-v1.txt";
+    MineEconomy mine=restoreMine(mineStorage,game,fs::exists(storage));
     Screen screen=Screen::Home;
-    bool running=true;int pressed=-1;int renderedFrames=0;
-    auto persist=[&](){if(!writeSave(game,storage))SDL_Log("Native save write failed.");};
+    bool running=true;bool surveyMode=false;int pressed=-1;int renderedFrames=0;
+    auto persist=[&](){if(!writeSave(game,storage))SDL_Log("Native board save write failed.");};
+    auto persistMine=[&](){if(!writeSave(mine,mineStorage))SDL_Log("Native mining save write failed.");};
+    if(mine.resetForDay([](){
+        std::time_t now=std::time(nullptr);std::tm time{};
+#ifdef _WIN32
+        localtime_s(&time,&now);
+#else
+        localtime_r(&now,&time);
+#endif
+        char day[11]={};std::strftime(day,sizeof(day),"%Y-%m-%d",&time);return std::string(day);
+    }()))persistMine();
     while(running){
         int ww=0,hh=0;SDL_GetWindowSize(window,&ww,&hh);
         SDL_Event e;
@@ -211,25 +300,48 @@ int main(int argc,char** argv){
                         if(pressed>=0 && target>=0 && game.swap(pressed,target))persist();
                     }
                 }else{
-                    if(Rect{20.0f,static_cast<float>(hh-64),154,44}.contains(x,y))
+                    if(Rect{20.0f,static_cast<float>(hh-58),155,42}.contains(x,y))
                         screen=Screen::Home;
                     else {
-                        int target=hit(mineBoard(ww,hh),4,4,x,y);
-                        if(target>=0&&game.mine(target))persist();
+                        int target=hit(mineBoard(ww,hh,mine.size()),mine.size(),mine.size(),x,y);
+                        bool changed=false;
+                        if(target>=0){
+                            if(surveyMode)changed=mine.survey(target);
+                            else if(mine.cells[target].exposed>0)changed=mine.collect(target);
+                            else changed=mine.mine(target);
+                        }else{
+                            auto actions=mineActions(ww,hh,mine);
+                            for(int i=0;i<10;++i)if(actions[i].contains(x,y)){
+                                switch(i){
+                                    case 0:changed=mine.unload();break;
+                                    case 1:changed=mine.refine();break;
+                                    case 2:changed=mine.manufacture();break;
+                                    case 3:changed=mine.sell();break;
+                                    case 4:changed=mine.upgrade(MineUpgrade::Pickaxe);break;
+                                    case 5:changed=mine.upgrade(MineUpgrade::Gloves);break;
+                                    case 6:changed=mine.upgrade(MineUpgrade::Mine);break;
+                                    case 7:changed=mine.upgrade(MineUpgrade::Cart);break;
+                                    case 8:changed=mine.upgrade(MineUpgrade::Refinery);break;
+                                    case 9:surveyMode=!surveyMode;break;
+                                }
+                                break;
+                            }
+                        }
+                        if(changed)persistMine();
                     }
                 }
                 pressed=-1;
             }
         }
         SDL_SetRenderDrawColor(render,23,17,40,255);SDL_RenderClear(render);
-        if(screen==Screen::Home)drawHome(render,game,ww,hh);
+        if(screen==Screen::Home)drawHome(render,game,mine,ww,hh);
         else if(screen==Screen::Board)drawBoard(render,art,game,ww,hh);
-        else drawMine(render,art,game,ww,hh);
+        else drawMine(render,art,mine,ww,hh,surveyMode);
         SDL_RenderPresent(render);
         if(smoke && ++renderedFrames>=3)running=false;
         SDL_Delay(16);
     }
-    persist();art.release();
+    persist();persistMine();art.release();
     SDL_DestroyRenderer(render);SDL_DestroyWindow(window);SDL_Quit();
     return 0;
 }

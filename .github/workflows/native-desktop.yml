@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 'native/**'
+      - 'web/mining.js'
+      - 'web/mining-gear.js'
       - 'web/art/embryon/generated/gems/**'
       - 'web/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png'
       - '.github/workflows/native-desktop.yml'
@@ -41,6 +43,12 @@ jobs:
       - name: Compile native executable and functional diagnostics
         shell: bash
         run: cmake --build build/native --config Release --parallel 4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate native mining contract vectors from existing JavaScript gameplay
+        shell: bash
+        run: node native/tests/mine_fixture.js build/native/mine-fixture.txt
       - name: Run native gameplay functional diagnostics
         shell: bash
         run: ctest --test-dir build/native -C Release --output-on-failure

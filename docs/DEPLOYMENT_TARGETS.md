@@ -18,6 +18,9 @@ The latest native build removes the earlier Electron proof-of-concept completely
 ## Current native functionality (not a claim of full parity)
 
 - Native main menu, game board and mining screen.
+- Mining now implements the **source-authored six map sizes, 40 pickaxe/glove tiers, daily strike/scan capacities, upgrade prices, survey, cart capacity/exposed ore, unloading, refinery, parcel crafting and selling**, with original equipment artwork for every tier.
+- Functional source comparison is generated from the existing JavaScript mining engine at build time and checked against C++ for all mine tiers, several seeds and every cell. The build-time Node tool is **not** shipped with the game.
+- Existing experimental native preview's mined ore and remaining strikes are imported into independent native mining saves, preserving previous partial progress. Android saves and APK updater stay unchanged.
 - Native mouse-down/drag/release moves: adjacent swaps, including non-matching swaps that consume a move.
 - Deterministic match-three spawning, scoring, gravity and cascade resolution; no initial matches; repair if trapped.
 - Level 1 uses the familiar 4×5 / 3-gem early-stage footprint; new levels expand the board.
@@ -28,7 +31,7 @@ The latest native build removes the earlier Electron proof-of-concept completely
 
 ## Known missing native ports
 
-These features remain in the existing Android implementation and **are not yet present on desktop**: authored level shapes, blockers, boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native score and mining economy are provisional isolated from Android gameplay and must converge on authoritative rules when their respective feature ports are implemented. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
+These features remain in the existing Android implementation and **are not yet present on desktop**: authored level shapes, blockers, boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native scoring and the more advanced mini-game integrations are still provisional; the native mining economic transactions and ore generator now follow the authoritative mining module and receive cross-runtime functional checks. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
 
 ## Verification and distributions
 

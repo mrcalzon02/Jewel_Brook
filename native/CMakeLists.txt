@@ -18,9 +18,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SDL3)
 
 add_library(rupee_native_logic STATIC game_logic.cpp)
+add_library(rupee_mine_logic STATIC mine_economy.cpp)
+target_include_directories(rupee_mine_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(rupee_native_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 add_executable(RupeeRushNative main.cpp)
-target_link_libraries(RupeeRushNative PRIVATE rupee_native_logic SDL3::SDL3)
+target_link_libraries(RupeeRushNative PRIVATE rupee_native_logic rupee_mine_logic SDL3::SDL3)
 if(WIN32)
   set_target_properties(RupeeRushNative PROPERTIES WIN32_EXECUTABLE TRUE)
 endif()
@@ -32,6 +34,10 @@ enable_testing()
 add_executable(rupee_native_tests tests/game_logic_test.cpp)
 target_link_libraries(rupee_native_tests PRIVATE rupee_native_logic)
 add_test(NAME native_gameplay_functions COMMAND rupee_native_tests)
+add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
+target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
+add_test(NAME native_mining_source_parity_and_economy
+    COMMAND rupee_mine_tests "${CMAKE_BINARY_DIR}/mine-fixture.txt")
 
 install(TARGETS RupeeRushNative RUNTIME DESTINATION ".")
 if(WIN32)
@@ -52,4 +58,93 @@ install(FILES
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png"
   DESTINATION data/art/nutvale/mines
+)
+
+
+# Install original equipment art under its original relative path (not flattened).
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/iron-prospector.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/acorn-bronze.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/blossom-oak.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/pinecone-copper.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/ropebound-steel.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/daisy-wreathed.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/froststeel.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/gilded-crescent.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/flamecrest-gold.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/amethyst-sickle.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/azure-edge.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/riverstone-iron.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/sapphire-shard.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/ruby-blaze.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/glacier-shadow.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/honeygold.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/mossbound-amber.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/thorn-garnet.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/strawberry-frosting.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/caramel-drizzle.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/heart-cupcake.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/prism-star.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/violet-skull.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/astral-comet.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/opal-sunrise.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/amber-crown.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/arcane-wraith.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/bloodmoon-crystal.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/silver-sunstone.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/spring-blossom.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/lionheart-gold.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/sunburst-royal.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/golden-dawn.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/ocean-lantern.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/starfall-amethyst.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/tideglass-cyan.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/forest-prism.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/ruby-ice.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/molten-star.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/pickaxes/winter-berry.png"
+  DESTINATION data/art/nutvale/mining-tools/pickaxes
+)
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/russet-leather.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/apprentice-leather.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/autumn-leaves.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/verdant-wool.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/acorn-gardener.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/frostfur-forager.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/oak-traveler.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/winter-stone.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/copper-clockwork.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/brass-clockwork.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/sapphire-royal.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/solar-gilt.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/orchid-bloom.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/holly-blossom.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/pink-confection.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/rainbow-icing.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/confetti-star.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/candy-party.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/violet-nebula.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/spectral-skull.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/starlight-void.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/golden-cabochon.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/silver-sunburst.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/arcane-geode.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/industrial-gear.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/glacier-mechanist.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/sunstone-alchemist.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/sunflower-garden.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/lava-fissure.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/flameheart.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/riveted-steel.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/winter-rune.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/shadow-amethyst.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/aether-machinery.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/fresh-spring.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/woodland-hide.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/golden-gears.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/pumpkin-gold.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/holiday-holly.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mining-tools/gloves/fur-trapper.png"
+  DESTINATION data/art/nutvale/mining-tools/gloves
 )
