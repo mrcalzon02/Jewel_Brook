@@ -56,6 +56,14 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Enable hardware-accelerated Android emulator (KVM)
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -e /dev/kvm
+          sudo chmod a+rw /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+          ls -l /dev/kvm
       - name: Capture real mining gameplay from installed Android APK
         uses: reactivecircus/android-emulator-runner@v2
         with:
