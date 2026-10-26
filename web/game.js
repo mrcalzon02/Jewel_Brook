@@ -400,8 +400,8 @@ function settings(){
 function render(){
  P.migrate(saved);Mining.ensure(saved);Garden.ensure(saved);Cook.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);bank();
  wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);if(styles)styles.textContent=number(saved.styleShards);
- document.getElementById('app')?.classList.toggle('playing',page==='game');
- root.classList.toggle('game-active',page==='game');
+ document.getElementById('app')?.classList?.toggle?.('playing',page==='game');
+ root.classList?.toggle?.('game-active',page==='game');
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
