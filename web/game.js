@@ -172,14 +172,18 @@ function performSwap(a,b){
 }
 function gameplay(){
  const g=active;if(!g)return home();
- const objectives=E.objectiveState(g);
- return header('Level '+g.level+' · '+escape(g.cfg.stageTitle),escape(g.cfg.hint))+
- stats()+'<div class="game-progress"><b>Score '+number(g.score)+' / '+number(g.cfg.goal)+'</b><b>Moves '+g.moves+'</b></div>'+
- '<div class="objectives">'+objectives.map(o=>'<span class="'+(o.done?'done':'')+'">'+escape(o.label)+' '+number(o.value)+'/'+number(o.target)+'</span>').join('')+'</div>'+
- '<div class="board-frame"><div class="board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+(c?featureMarkup(g,i):'')+'</button>').join('')+'</div>'+impactMarkup(g)+'</div>'+
- '<p class="hint">Tap two adjacent gems to swap them. Non-matching swaps still use a move. Select a gem before using targeted tools.</p>'+
- '<div class="booster-grid">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+boosterIcon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div>'+
- button('abandon','LEAVE BOARD','quiet');
+ const objective=E.objectiveState(g).map(o=>escape(o.label)+' '+number(Math.min(o.value,o.target))+'/'+number(o.target)).join(' · ');
+ const boardVw=(100*g.cfg.height/g.cfg.width).toFixed(3),maxBoardH=Math.round(550*g.cfg.height/g.cfg.width);
+ return '<section class="play-layout" style="--board-w:'+g.cfg.width+';--board-h:'+g.cfg.height+';--board-vw:'+boardVw+'vw;--board-max-h:'+maxBoardH+'px">'+
+ '<div class="play-hud"><div class="play-title" title="'+escape(g.cfg.stageTitle)+'"><b>LV '+g.level+'</b><span>'+escape(g.cfg.stageTitle)+'</span></div>'+
+ '<div class="play-count"><small>SCORE</small><b>'+number(g.score)+'</b></div><div class="play-count"><small>MOVES</small><b>'+g.moves+'</b></div>'+
+ '<div class="play-count"><small>TODAY</small><b>'+number(bank().remaining)+'</b></div><div class="play-count"><small>LIVES</small><b>'+saved.hearts+'/5</b></div>'+
+ '<button class="play-exit" data-action="abandon" aria-label="Leave level" title="Leave level">×</button></div>'+
+ '<div class="play-objective"><small>GOAL</small><b title="'+objective+'">'+objective+'</b><span>'+number(g.score)+'/'+number(g.cfg.goal)+'</span>'+
+ '<details class="play-help"><summary aria-label="Level hint">?</summary><p>'+escape(g.cfg.hint)+'</p></details></div>'+
+ '<div class="board-frame"><div class="board" role="group" aria-label="Match-three gem board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+(c?featureMarkup(g,i):'')+'</button>').join('')+'</div>'+impactMarkup(g)+'</div>'+
+ '<p class="play-instruction">Drag to swap · Tap to target a booster</p>'+
+ '<div class="booster-grid" role="group" aria-label="Match-three boosters">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+boosterIcon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div></section>';
 }
 function settle(){
  if(!active)return;
@@ -396,6 +400,8 @@ function settings(){
 function render(){
  P.migrate(saved);Mining.ensure(saved);Garden.ensure(saved);Cook.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);bank();
  wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);if(styles)styles.textContent=number(saved.styleShards);
+ document.getElementById('app')?.classList.toggle('playing',page==='game');
+ root.classList.toggle('game-active',page==='game');
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
@@ -427,11 +433,9 @@ function handle(b){
  if(a==='result-next'){const id=outcome?.won?(outcome.id>=T.FIRST?saved.unlocked:Math.min(1000,outcome.id+1)):outcome?.id;outcome=null;start(id||saved.unlocked);return;}
  if(a==='abandon'){active=null;visualImpact=null;save();nav('campaign');return;}
  if(a==='cell'){
-  if(!active)return;const n=Number(info.cell);
-  if(selected<0){selectCell(n);Audio.play('tap');return;}
-  if(selected===n){selectCell(-1);return;}
-  if(!E.adjacent(active,selected,n)){selectCell(n);return;}
-  performSwap(selected,n);return;
+  if(!active)return;
+  // Tapping selects a booster target; dragging is the only way to swap.
+  const n=Number(info.cell);selectCell(selected===n?-1:n);Audio.play('tap');return;
  }
  if(a==='booster'){
   if(!active)return;
@@ -505,21 +509,24 @@ document.addEventListener('click',e=>{
  if(!b||b.disabled||animating||Date.now()<swipeGuard)return;
  Music.activate();handle(b);
 });
-// Touch and mouse swipes share Nut Buster's direction threshold and move rules.
+// Capture the directional drag on the gem. Board CSS disables page-scroll gestures.
 root.addEventListener?.('pointerdown',e=>{
- if(page!=='game'||!active||animating)return;
- const tile=e.target.closest?.('[data-cell]');
- if(tile)pointerStart={i:Number(tile.dataset.cell),x:e.clientX,y:e.clientY};
+ if(page!=='game'||!active||animating||e.isPrimary===false||(e.button!==undefined&&e.button!==0))return;
+ const tile=e.target.closest?.('[data-cell]');if(!tile||tile.disabled)return;
+ pointerStart={id:e.pointerId,i:Number(tile.dataset.cell),x:e.clientX,y:e.clientY};
+ tile.setPointerCapture?.(e.pointerId);
 });
-root.addEventListener?.('pointercancel',()=>{pointerStart=null;});
+root.addEventListener?.('pointercancel',e=>{if(pointerStart?.id===e.pointerId)pointerStart=null;});
 root.addEventListener?.('pointerup',e=>{
- const start=pointerStart;pointerStart=null;
- if(!start||page!=='game'||!active||animating)return;
+ const start=pointerStart;if(!start||start.id!==e.pointerId)return;
+ pointerStart=null;
+ if(page!=='game'||!active||animating)return;
  const dx=e.clientX-start.x,dy=e.clientY-start.y;
  if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;
+ swipeGuard=Date.now()+450; // Suppress synthesized taps after a swipe.
  const w=active.cfg.width,to=start.i+(Math.abs(dx)>Math.abs(dy)?(dx>0?1:-1):(dy>0?w:-w));
  if(!E.adjacent(active,start.i,to))return;
- swipeGuard=Date.now()+450;Music.activate();performSwap(start.i,to);
+ Music.activate();performSwap(start.i,to);
 });
 render();window.RupeeRushDebug=Object.freeze({getSave:()=>JSON.parse(JSON.stringify(saved)),getPage:()=>page,getChapter:()=>chapterId,activeSnapshot:()=>active?E.snapshot(active):null});
 })();

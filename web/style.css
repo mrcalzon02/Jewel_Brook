@@ -237,3 +237,51 @@
 .farm-unlock-preview{margin:15px 0 20px;padding:12px;border:1px solid #788fa3;border-radius:14px;background:linear-gradient(135deg,#272f4a,#263b40)}
 .farm-seed-locked{opacity:.65;filter:saturate(.55);cursor:default}
 .farm-seed-locked img{filter:grayscale(.25)}
+
+/* Compact, viewport-constrained Nut Buster gameplay: the full board is touch-owned. */
+#app.playing{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+#app.playing .top{height:42px;flex:0 0 42px;padding:3px 7px;gap:3px}
+#app.playing .logo{font-size:clamp(13px,4vw,19px);letter-spacing:-.5px}
+#app.playing .top-money{gap:3px;min-width:0}
+#app.playing .top-money button{gap:2px;min-width:0;padding:2px 3px}
+#app.playing .top-money img{width:17px;height:17px}
+#app.playing .top-money b{font-size:10px;max-width:45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#app.playing .bottom{height:calc(48px + env(safe-area-inset-bottom));padding:2px 3px env(safe-area-inset-bottom)}
+#app.playing .bottom button{gap:0;padding:1px 0;font-size:9px}
+#app.playing .bottom .nav-art{width:22px;height:22px}
+#screen.game-active{flex:1;min-height:0;overflow:hidden;padding:3px 5px calc(52px + env(safe-area-inset-bottom))}
+.game-active .play-layout{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.game-active .play-hud{width:100%;height:32px;min-height:32px;display:grid;grid-template-columns:minmax(58px,1fr) repeat(4,minmax(30px,auto)) 29px;gap:3px;align-items:center}
+.game-active .play-title{min-width:0;white-space:nowrap;overflow:hidden}
+.game-active .play-title b{display:block;font-size:12px;line-height:1.1;color:#ffe3a2}
+.game-active .play-title span{display:block;font-size:9px;line-height:1.1;color:#cfc1dd;overflow:hidden;text-overflow:ellipsis}
+.game-active .play-count{text-align:center;min-width:0;font-variant-numeric:tabular-nums}
+.game-active .play-count small{display:block;font-size:8px;line-height:1.15;color:#cfc1dd}
+.game-active .play-count b{display:block;font-size:clamp(10px,2.9vw,13px);color:#ffe3a2;line-height:1.2;white-space:nowrap}
+.game-active .play-exit{width:29px;height:29px;padding:0;border:1px solid #8668a5;background:#33274c;border-radius:6px;color:#ffe3a2;font-size:23px;line-height:1}
+.game-active .play-objective{width:100%;max-width:550px;min-height:27px;height:27px;display:flex;align-items:center;gap:5px;padding:3px 5px;background:#2d2442;border:1px solid #725990;border-radius:7px}
+.game-active .play-objective>small{font-size:9px;color:#e3c3ff}
+.game-active .play-objective>b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+.game-active .play-objective>span{font-size:10px;white-space:nowrap;color:#ffe5a7;font-variant-numeric:tabular-nums}
+.game-active .play-help{position:relative;z-index:8;flex:none}
+.game-active .play-help summary{width:18px;height:18px;display:grid;place-items:center;list-style:none;cursor:pointer;font-size:11px;border:1px solid #ab8dca;border-radius:50%}
+.game-active .play-help summary::-webkit-details-marker{display:none}
+.game-active .play-help p{position:absolute;top:20px;right:0;width:min(265px,84vw);padding:8px;border:1px solid #ab8dca;border-radius:8px;background:#291f3d;box-shadow:0 6px 14px #0b0716a8;font-size:11px;line-height:1.35}
+#screen.game-active .board-frame{flex:none;box-sizing:border-box;height:min(calc(100dvh - 285px),calc(var(--board-vw) - 16px),var(--board-max-h));width:auto;max-width:calc(100% - 4px);aspect-ratio:var(--board-w)/var(--board-h);margin:0 auto;padding:3px;border:2px solid #ac89c4;border-radius:10px;overflow:hidden;touch-action:none;overscroll-behavior:contain}
+#screen.game-active .board{height:100%;width:100%;display:grid;grid-template-columns:repeat(var(--columns),minmax(0,1fr));grid-template-rows:repeat(var(--board-h),minmax(0,1fr));gap:2px;touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#screen.game-active .cell{aspect-ratio:auto;min-width:0;min-height:0;padding:1px;border-radius:5px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#screen.game-active .cell .gem{user-select:none;-webkit-user-drag:none;pointer-events:none}
+.game-active .play-instruction{flex:none;min-height:16px;line-height:16px;margin:0;text-align:center;font-size:10px;color:#cfc1dd}
+#screen.game-active .booster-grid{flex:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:48px;gap:3px;width:min(100%,500px);max-height:99px;margin:0;padding:0;overflow-y:auto;overscroll-behavior:contain}
+#screen.game-active .booster{min-height:0;height:48px;min-width:0;padding:2px 1px;gap:0;border-radius:7px}
+#screen.game-active .booster .booster-art,#screen.game-active .booster .icon{height:26px;width:26px;max-width:95%;object-fit:contain;pointer-events:none}
+#screen.game-active .booster b{font-size:8px;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+#screen.game-active .booster small{font-size:9px;line-height:1}
+@media (orientation:landscape) and (max-height:600px){
+ #screen.game-active .play-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.92fr);grid-template-rows:32px 27px 17px minmax(0,1fr);gap:3px 6px;align-items:start}
+ #screen.game-active .play-hud{grid-column:2;grid-row:1}
+ #screen.game-active .play-objective{grid-column:2;grid-row:2}
+ #screen.game-active .board-frame{grid-column:1;grid-row:1/5;justify-self:center;align-self:start;height:min(calc(100dvh - 100px),calc(50vw),var(--board-max-h));max-width:100%}
+ #screen.game-active .play-instruction{grid-column:2;grid-row:3}
+ #screen.game-active .booster-grid{grid-column:2;grid-row:4;max-height:100%;overflow-y:auto}
+}
