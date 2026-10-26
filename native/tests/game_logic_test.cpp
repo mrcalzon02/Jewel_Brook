@@ -1,3 +1,6 @@
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
 #include "../game_logic.h"
 #include <cassert>
 #include <sstream>

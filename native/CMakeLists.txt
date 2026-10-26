@@ -17,6 +17,19 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SDL3)
 
+# Native executable consumes authored data only. JavaScript is used once, at
+# build time, to export initial stages from the authoritative Android engine.
+find_program(RUPEE_NODE node REQUIRED)
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/intro-campaign-v1.txt")
+execute_process(
+  COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
+  RESULT_VARIABLE INTRO_EXPORT_STATUS
+)
+if(NOT INTRO_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Could not export authoritative Android intro campaign")
+endif()
+
 add_library(rupee_native_logic STATIC game_logic.cpp)
 add_library(rupee_mine_logic STATIC mine_economy.cpp)
 target_include_directories(rupee_mine_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -34,6 +47,11 @@ enable_testing()
 add_executable(rupee_native_tests tests/game_logic_test.cpp)
 target_link_libraries(rupee_native_tests PRIVATE rupee_native_logic)
 add_test(NAME native_gameplay_functions COMMAND rupee_native_tests)
+add_executable(rupee_intro_tests tests/intro_campaign_test.cpp)
+target_link_libraries(rupee_intro_tests PRIVATE rupee_native_logic)
+add_test(NAME native_authoritative_intro_levels
+    COMMAND rupee_intro_tests "${INTRO_CATALOG}")
+
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
 add_test(NAME native_mining_source_parity_and_economy
@@ -58,6 +76,13 @@ install(FILES
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png"
   DESTINATION data/art/nutvale/mines
+)
+
+install(FILES "${INTRO_CATALOG}" DESTINATION data)
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/blockers/ice-1.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/blockers/ice-2.png"
+  DESTINATION data/art/primary/blockers
 )
 
 

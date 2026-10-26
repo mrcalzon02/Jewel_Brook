@@ -29,9 +29,13 @@ The latest native build removes the earlier Electron proof-of-concept completely
 - Native offline save/restore with strict input validation and previous-save backup.
 - Native functional diagnostics test board seeding, swap validity, progression footprint, mining, exhaustion and save load.
 
+## Source-authored early match-three stage port
+
+The first ten levels are imported **at native build time** from `web/engine.js` by `native/tests/export_intro_campaign.js`. The executable packages only a compact numeric stage data file, **not** a JavaScript interpreter or webpage. The native stage loader uses the source's exact starting board, move allowance, score/ice objective, ice layers and RNG state. It refuses unsupported source changes instead of inventing alternative gameplay. The original `web/art/primary/blockers/ice-1.png` and `ice-2.png` are used as the ice overlays, and pinned tiles cannot be dragged. Native saves advance to RRNATIVE2 with backward-compatible loading for the old preview. Later campaign stages remain unported and are not falsely presented as implemented.
+
 ## Known missing native ports
 
-These features remain in the existing Android implementation and **are not yet present on desktop**: authored level shapes, blockers, boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native scoring and the more advanced mini-game integrations are still provisional; the native mining economic transactions and ore generator now follow the authoritative mining module and receive cross-runtime functional checks. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
+These features remain in the existing Android implementation and **are not yet present on desktop**: authored levels 11+, blockers beyond early ice, boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native scoring and the more advanced mini-game integrations are still provisional; the native mining economic transactions and ore generator now follow the authoritative mining module and receive cross-runtime functional checks. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
 
 ## Verification and distributions
 

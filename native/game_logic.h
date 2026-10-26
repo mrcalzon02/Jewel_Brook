@@ -25,10 +25,15 @@ public:
     bool lost = false;
     uint32_t randomState = 1;
     std::vector<int> cells;
+    // Android-authored introductory campaign objectives and blocker state.
+    // objectiveKind: 0=score, 1=ice; later kinds are not exposed until ported.
+    int objectiveKind = 0, objectiveTarget = 850, iceCleared = 0;
+    std::vector<int> ice;
     std::array<MineTile, 16> rocks{};
 
     explicit Game(uint32_t seed = 7919);
     void startLevel(int stage);
+    bool startIntro(int stage, std::istream& authoredCatalog);
     bool adjacent(int first, int second) const;
     // A valid adjacent non-matching swap is an intentional, move-consuming action.
     bool swap(int first, int second);

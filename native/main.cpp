@@ -137,10 +137,14 @@ struct Art {
     std::array<SDL_Texture*,40> pick{};
     std::array<SDL_Texture*,40> glove{};
     SDL_Texture* ore=nullptr;
+    SDL_Texture* ice1=nullptr;
+    SDL_Texture* ice2=nullptr;
     bool load(SDL_Renderer* r,const fs::path& root){
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
         for(int i=0;i<5;++i)gem[i]=png(r,root/"art/embryon/generated/gems"/(std::string(names[i])+".png"));
         ore=png(r,root/"art/nutvale/mines/nutvale-mines-ore-atlas-approved.png");
+        ice1=png(r,root/"art/primary/blockers/ice-1.png");
+        ice2=png(r,root/"art/primary/blockers/ice-2.png");
         for(int i=0;i<40;++i) {
             pick[i]=png(r,root/rupee::PickaxeArt[i]);
             glove[i]=png(r,root/rupee::GloveArt[i]);
@@ -148,19 +152,23 @@ struct Art {
         const auto ready=[](const auto& list){
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
-        return ready(gem)&&ready(pick)&&ready(glove)&&ore;
+        return ready(gem)&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
         for(auto* t:pick)if(t)SDL_DestroyTexture(t);
         for(auto* t:glove)if(t)SDL_DestroyTexture(t);
         if(ore)SDL_DestroyTexture(ore);
+        if(ice1)SDL_DestroyTexture(ice1);
+        if(ice2)SDL_DestroyTexture(ice2);
     }
 };
 void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh){
     label(r,28,26,"RUPEE RUSH - NATIVE MATCH 3",2);
     label(r,28,59,"STAGE "+std::to_string(game.level)+"   MOVES "+std::to_string(game.moves)+
-          "   SCORE "+std::to_string(game.score)+" / "+std::to_string(game.goal),2);
+          (game.objectiveKind==1?
+             "   BREAK ICE "+std::to_string(game.iceCleared)+" / "+std::to_string(game.objectiveTarget):
+             "   SCORE "+std::to_string(game.score)+" / "+std::to_string(game.objectiveTarget)),2);
     const auto b=gameBoard(ww,hh,game);
     float tile=b.w/game.width;
     for(int y=0;y<game.height;++y)for(int x=0;x<game.width;++x){
@@ -169,11 +177,16 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh){
         fill(r,{dest.x,dest.y,dest.w,dest.h},{48,36,81,255});
         // Source identity is the same approved gemstone file already in web/.
         SDL_RenderTexture(r,art.gem[game.cells[i]],nullptr,&dest);
+        if(game.ice.size()==game.cells.size()&&game.ice[i]>0){
+            SDL_RenderTexture(r,game.ice[i]>=2?art.ice2:art.ice1,nullptr,&dest);
+        }
     }
     button(r,{20.0f,static_cast<float>(hh-64),154,44},"MAIN MENU");
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
+        if(game.level<10)
+            button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
+        else label(r,ww*.5f-155,hh-32,"INTRO COMPLETE",2);
     }else if(game.lost){
         label(r,ww*.5f-90,hh-72,"OUT OF MOVES",2);
         button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"RETRY");
@@ -253,6 +266,15 @@ int main(int argc,char** argv){
     }
     const fs::path storage=savePath();
     Game game=restore(storage);
+    auto loadAuthoredIntro=[&](int stage){
+        std::ifstream campaign(dataRoot()/"intro-campaign-v1.txt");
+        if(!campaign)return false;
+        return game.startIntro(stage,campaign);
+    };
+    if(!fs::exists(storage) && !loadAuthoredIntro(1)){
+        SDL_Log("Missing authored intro campaign data: refusing to invent level profiles");
+        art.release();SDL_DestroyRenderer(render);SDL_DestroyWindow(window);SDL_Quit();return 3;
+    }
     const fs::path mineStorage=storage.parent_path()/"mine-state-v1.txt";
     MineEconomy mine=restoreMine(mineStorage,game,fs::exists(storage));
     Screen screen=Screen::Home;
@@ -294,7 +316,8 @@ int main(int argc,char** argv){
                         screen=Screen::Home;
                     else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
-                        game.startLevel(game.level+(game.won?1:0));persist();
+                        const int next=game.level+(game.won?1:0);
+                        if(next<=10 && loadAuthoredIntro(next))persist();
                     }else {
                         int target=hit(gameBoard(ww,hh,game),game.width,game.height,x,y);
                         if(pressed>=0 && target>=0 && game.swap(pressed,target))persist();

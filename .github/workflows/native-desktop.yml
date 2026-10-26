@@ -5,6 +5,11 @@ on:
     paths:
       - 'native/**'
       - 'web/mining.js'
+      - 'web/engine.js'
+      - 'web/level-design.js'
+      - 'web/board-features.js'
+      - 'web/elemental-challenges.js'
+      - 'web/art/primary/blockers/ice-*.png'
       - 'web/mining-gear.js'
       - 'web/art/embryon/generated/gems/**'
       - 'web/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png'
@@ -37,15 +42,15 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y libx11-dev libxext-dev libxrandr-dev libxfixes-dev libxcursor-dev libxi-dev libxss-dev libxkbcommon-dev libegl1-mesa-dev libgl1-mesa-dev libwayland-dev wayland-protocols libxtst-dev libdecor-0-dev libasound2-dev libpulse-dev libudev-dev libdrm-dev libgbm-dev
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Configure C++ / SDL3 (no browser runtime)
         shell: bash
         run: cmake -S native -B build/native -DCMAKE_BUILD_TYPE=Release
       - name: Compile native executable and functional diagnostics
         shell: bash
         run: cmake --build build/native --config Release --parallel 4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
       - name: Generate native mining contract vectors from existing JavaScript gameplay
         shell: bash
         run: node native/tests/mine_fixture.js build/native/mine-fixture.txt
@@ -64,8 +69,12 @@ jobs:
         run: |
           $exe = Join-Path $env:GITHUB_WORKSPACE 'stage/RupeeRush/RupeeRushNative.exe'
           if (-not (Test-Path $exe)) { throw "Missing packaged native Windows executable" }
-          & $exe --smoke
-          if ($LASTEXITCODE -ne 0) { throw "Native Windows executable failed to start ($LASTEXITCODE)" }
+          # The target has WIN32_EXECUTABLE, so direct PowerShell invocation
+          # leaves LASTEXITCODE unset. An explicit waited process gives a real code.
+          $process = Start-Process -FilePath $exe -ArgumentList '--smoke' -Wait -PassThru
+          if ($null -eq $process.ExitCode -or $process.ExitCode -ne 0) {
+            throw "Native Windows executable failed its packaged launch check: $($process.ExitCode)"
+          }
       - name: Headless functional launch using staged Linux binary and approved art
         if: matrix.target == 'Linux'
         shell: bash

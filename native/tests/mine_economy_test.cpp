@@ -1,3 +1,6 @@
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
 #include "../mine_economy.h"
 #include <cassert>
 #include <fstream>
