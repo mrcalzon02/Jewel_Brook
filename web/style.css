@@ -285,3 +285,14 @@
  #screen.game-active .play-instruction{grid-column:2;grid-row:3}
  #screen.game-active .booster-grid{grid-column:2;grid-row:4;max-height:100%;overflow-y:auto}
 }
+
+/* Approved Nutvale six-column ore atlas; crop coordinates are fixed by
+   mine-ore-atlas.js, never by an unrelated match-three overlay. */
+.mine-ore-slice{
+ display:block;width:82%;aspect-ratio:212/215;max-height:74%;flex:0 0 auto;
+ background-image:url('art/nutvale/mines/nutvale-mines-ore-atlas-approved.png');
+ background-repeat:no-repeat;background-size:683.0189% 505.1163%;
+ border-radius:6px;pointer-events:none;
+}
+.rock .mine-ore-slice{filter:drop-shadow(0 3px 3px #101019)}
+.rock small{position:relative;z-index:1;padding:1px 2px;border-radius:3px;background:#151726b8;text-shadow:0 1px 2px #000}
