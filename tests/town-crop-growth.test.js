@@ -16,7 +16,7 @@ test('240 stage assets exist, use transparent self-contained vectors, and are bi
  for(const crop of Visual.CROPS){
   assert.ok(Town.CROPS[crop],'real Town farming crop');
   for(const stage of Visual.STAGES){
-   const sprite=Visual.image(crop,stage);
+   const sprite=Visual.vector(crop,stage);
    assert.equal(sprite,'art/embryon/town/gardening/growth/'+crop+'-'+stage+'.svg');
    const art=fs.readFileSync(path.join(dir,sprite),'utf8');
    assert.equal(art,['carrot','wheat','berry'].includes(crop)?Generator.drawCrop(crop,stage):Extra.drawExpanded(Town.CROPS[crop],stage),'stage drift '+crop+'/'+stage);

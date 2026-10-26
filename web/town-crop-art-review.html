@@ -34,7 +34,7 @@ dialog button{padding:8px 14px;background:#455982;border-radius:8px;border:1px s
 <button type="button" data-bg="dark" aria-pressed="false">Dark game UI</button>
 <span class="loading" id="loaded" role="status" aria-live="polite">Loading crop illustrations</span></div>
 <div id="collections"></div>
-<p class="note">Visual checklist: true transparency; stage-to-stage plant morphology, stable root anchor, distinct carrot/wheat/bluebell fruit, no cropped stems or berries, readable on phone-sized garden plots. Vector candidates are not the final high-resolution painted masters.</p>
+<p class="note">Visual checklist: true transparency; stage-to-stage plant morphology, stable root anchor, distinct carrot/wheat/bluebell fruit, no cropped stems or berries, readable on phone-sized garden plots. Eight crops now use sliced 512px painted WebP assets; the other 40 crops use vector illustrations pending painted production.</p>
 <dialog id="inspect"><button id="close" type="button">Close</button><h2 id="inspect-title"></h2><img id="inspect-image" alt=""><p id="inspect-detail"></p></dialog>
 </main>
 <script src="crop-growth-art.js"></script><script>
@@ -56,7 +56,7 @@ dialog button{padding:8px 14px;background:#455982;border-radius:8px;border:1px s
    art.addEventListener('load',()=>{ok++;loaded.textContent=ok+'/240 loaded'+(bad?' · '+bad+' failures':'');});
    art.addEventListener('error',()=>{bad++;loaded.textContent=ok+'/240 loaded · '+bad+' failures';});
    frame.append(art);
-   const label=document.createElement('b');label.textContent=stages[stage];
+   const label=document.createElement('b');label.textContent=stages[stage]+(cropArt.PAINTED.includes(crop)?' · PAINTED':' · VECTOR');
    button.append(frame,label);
    button.addEventListener('click',()=>{
     document.getElementById('inspect-title').textContent=names[crop]+' — '+stages[stage];
