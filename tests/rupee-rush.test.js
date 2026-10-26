@@ -110,14 +110,22 @@ assert.ok(views.screen.innerHTML.includes('class="mine-action-art" src="art/nutv
 assert.ok(views.screen.innerHTML.includes('class="mine-action-art" src="art/nutvale/mining-tools/gloves/'),'Survey mode uses actual glove art');
 const damagedSite={rupeeMine:{},rupeeExpedition:{}};
 Mining.ensure(damagedSite);
-const hardRock=Mining.currentBoard(damagedSite).find(c=>c.hardness>=2);
-assert.ok(hardRock,'seeded site includes multi-hit rock');
+const hardRock=Mining.currentBoard(damagedSite).find(c=>c.hardness===3);
+assert.ok(hardRock,'seeded site includes a three-hit rock for both damage states');
 click('mine-cell',{x:String(hardRock.x),y:String(hardRock.y)});
 assert.match(views.screen.innerHTML,/class="mine-rock-face damage-1"/,'After one strike the raster fracture state renders');
-assert.ok(views.screen.innerHTML.includes('class="mine-rock-fracture" src="art/primary/overlays/void-rock.png"'),'Damage overlays use committed raster art');
+assert.ok(views.screen.innerHTML.includes('class="mine-rock-chunk mine-rock-chunk-a" src="art/primary/blockers/rock.png"'),'Damaged rock fragments keep the imported rock render');
+assert.ok(views.screen.innerHTML.includes('class="mine-rock-chunk mine-rock-chunk-b" src="art/primary/blockers/rock.png"'),'Fractured right-hand section is real imported pixels');
+assert.ok(views.screen.innerHTML.includes('class="mine-rock-chunk mine-rock-chunk-c" src="art/primary/blockers/rock.png"'),'Fractured lower section is real imported pixels');
+assert.ok(!views.screen.innerHTML.includes('class="mine-rock-fracture"'),'Do not overlay the unrelated purple void-rock special tile');
+click('mine-cell',{x:String(hardRock.x),y:String(hardRock.y)});
+assert.match(views.screen.innerHTML,/class="mine-rock-face damage-2"/,'Two strikes show further separation of original rendered rock');
 const styles=fs.readFileSync(path.join(root,'style.css'),'utf8');
 assert.ok(!styles.includes('.excavation-rock'),'Do not reintroduce procedural boulder renderer');
-for(const asset of ['art/primary/blockers/rock.png','art/primary/overlays/void-rock.png','art/embryon/runtime/gems/diamond.webp','art/embryon/runtime/gems/onyx.webp','art/embryon/runtime/gems/garnet.webp','art/nutvale/mining-economy/goods/crate-mining-supplies.png']){
+assert.ok(styles.includes('.mine-rock-chunk-a{clip-path:'),'Breaks must cut up the real imported PNG, not invent rock shapes');
+assert.ok(!styles.includes('.mine-rock-fracture'),'No misleading void-rock styling in the excavation renderer');
+assert.ok(!styles.includes('.mine-empty{'),'Cleared cells must not revert to decorative text placeholder art');
+for(const asset of ['art/primary/blockers/rock.png','art/embryon/runtime/gems/diamond.webp','art/embryon/runtime/gems/onyx.webp','art/embryon/runtime/gems/garnet.webp','art/nutvale/mining-economy/goods/crate-mining-supplies.png']){
  assert.ok(fs.existsSync(path.join(root,asset)),'missing mining gameplay art '+asset);
 }
 click('mine-tab',{tab:'equipment'});
