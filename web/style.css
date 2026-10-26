@@ -117,26 +117,15 @@
 .mine-frame{background:radial-gradient(ellipse at 50% 0%,#747c88,#424452 65%,#282637);border-color:#9e9b8d}
 .rock{position:relative;overflow:hidden;background:linear-gradient(145deg,#6d777c,#4a4f59 65%,#2f333e);border:2px solid #97958e;box-shadow:inset 0 2px 3px #d3d3c755,0 2px 0 #171923}
 .rock.revealed{background:#273741}.rock.exposed{border-color:#ffdd80;box-shadow:0 0 9px #ffe07e66}
-/* Excavation displays the imported Nut Buster PNG itself at every hit count.
-   Split duplicate image pixels for damage; never paint procedural rocks or use
-   the unrelated purple void-rock elemental overlay as a crack texture. */
+/* Use the exact imported rock PNG for all intact and struck excavation states.
+   Persisted CRACK n/hardness labels follow Nut Buster's original mining interface. */
 .mine-rock-face{position:relative;display:block;width:82%;height:70%;max-width:100%;flex:0 0 auto;filter:drop-shadow(0 4px 4px #11121c);pointer-events:none}
-.mine-rock-base,.mine-rock-chunk{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;transition:transform .14s ease}
-.mine-rock-chunk-a{clip-path:polygon(0 0,54% 0,47% 32%,53% 53%,39% 70%,29% 100%,0 100%)}
-.mine-rock-chunk-b{clip-path:polygon(54% 0,100% 0,100% 65%,63% 74%,53% 53%,47% 32%)}
-.mine-rock-chunk-c{clip-path:polygon(29% 100%,39% 70%,53% 53%,63% 74%,100% 65%,100% 100%)}
-.mine-rock-face.damage-1 .mine-rock-chunk-a{transform:translate(-1px,-1px)}
-.mine-rock-face.damage-1 .mine-rock-chunk-b{transform:translate(1px,-1px)}
-.mine-rock-face.damage-1 .mine-rock-chunk-c{transform:translateY(1px)}
-.mine-rock-face.damage-2 .mine-rock-chunk-a{transform:translate(-4px,-3px)}
-.mine-rock-face.damage-2 .mine-rock-chunk-b{transform:translate(4px,-2px)}
-.mine-rock-face.damage-2 .mine-rock-chunk-c{transform:translateY(4px) scale(.96)}
-.mine-survey-indicator{position:absolute;right:2px;top:2px;width:29%;height:29%;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1px 4px #c1dbff)}
+.mine-rock-base{display:block;width:100%;height:100%;object-fit:contain}
 .mine-action-row .mine-action-art{height:28px;width:28px;object-fit:contain;vertical-align:middle;pointer-events:none}
 .mine-counter-art{height:27px;width:27px;object-fit:contain;vertical-align:middle;pointer-events:none}
-.rock:not(.revealed):active .mine-rock-base{transform:scale(.92) rotate(3deg)}
+.rock:not(.revealed):active .mine-rock-base{opacity:.9}
 @media(max-width:620px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.shop-tabs{top:53px}.daily-treasure{flex-wrap:wrap}.top-money img{width:21px;height:21px}.top-money b{font-size:11px}.top-money button{padding:3px}}
-@media(prefers-reduced-motion:reduce){.mine-rock-base{transition:none}.rock:not(.revealed):active .mine-rock-base{transform:none}}
+@media(prefers-reduced-motion:reduce){.rock:not(.revealed):active .mine-rock-base{opacity:1}}
 
 .profile-showcase{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:13px;padding:10px;margin:12px auto;background:#2a2145c9;border:1px solid #b49ccd80;border-radius:14px;width:min(100%,540px)}
 .profile-portrait{position:relative;width:104px;height:104px;flex:0 0 104px}
