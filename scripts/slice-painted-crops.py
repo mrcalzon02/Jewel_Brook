@@ -86,6 +86,34 @@ def slice_beet(img):
     return result
 
 
+def slice_tomato(img):
+    """Five isolated tomato stages from the reviewed 2172x724 source sheet.
+
+    Maturing and harvest foliage comes within a few pixels of neighboring panels,
+    so use measured boundaries rather than relying on alpha-gap detection.
+    Each sprite preserves the source 0.66 scaling and shared baseline y=487.
+    """
+    img = img.convert('RGBA')
+    if img.size != (2172, 724):
+        raise ValueError(f'tomato master must be 2172x724, received {img.size}')
+    bounds = (0, 353, 721, 1150, 1631, 2172)
+    result = {}
+    for i, stage in enumerate(STAGES):
+        panel = img.crop((bounds[i], 0, bounds[i + 1], img.height))
+        bbox = panel.getchannel('A').point(lambda a: 255 if a > 4 else 0).getbbox()
+        if bbox is None:
+            raise ValueError(f'empty tomato stage: {stage}')
+        art = panel.crop(bbox)
+        size = (round(art.width * 0.66), round(art.height * 0.66))
+        if size[0] > 482 or size[1] > 485:
+            raise ValueError(f'tomato {stage} would clip: {size}')
+        frame = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
+        frame.alpha_composite(art.resize(size, Image.Resampling.LANCZOS),
+                              ((512-size[0])//2, 487-size[1]))
+        result[stage] = frame
+    return result
+
+
 def run(crop=None, check=False, directory=PAINTED):
     manifest = json.loads((directory/'manifest.json').read_text())
     crops = [crop] if crop else manifest['crops']
@@ -95,12 +123,14 @@ def run(crop=None, check=False, directory=PAINTED):
         source = directory/'source_sheets'/f'{kind}-growth-source.webp'
         if not source.exists():
             raise FileNotFoundError(source)
-        stages = slice_beet(Image.open(source)) if kind == 'beet' else slice_crop(Image.open(source))
+        stages = (slice_beet(Image.open(source)) if kind == 'beet' else
+                  slice_tomato(Image.open(source)) if kind == 'tomato' else
+                  slice_crop(Image.open(source)))
         for phase, frame in stages.items():
             output = directory/f'{kind}-{phase}.webp'
             payload = io.BytesIO()
-            frame.save(payload, 'WEBP', quality=92 if kind == 'beet' else 88,
-                       method=5 if kind == 'beet' else 1)
+            frame.save(payload, 'WEBP', quality=92 if kind in ('beet','tomato') else 88,
+                       method=5 if kind in ('beet','tomato') else 1)
             data = payload.getvalue()
             meta = next(x for x in manifest['sprites'] if x['crop']==kind and x['stage']==phase)
             if check:

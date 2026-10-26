@@ -18,9 +18,10 @@
     "onion",
     "strawberry",
     "spinach",
-    "beet"
+    "beet",
+    "tomato"
   ],
-  "sprite_count": 50,
+  "sprite_count": 55,
   "transform": "Earlier crops use uniform 0.66 scale and baseline 487; Crimson Beet uses explicit per-panel boundaries and maximum 430px art, same 512 canvas and baseline.",
   "sprites": [
     {
@@ -1527,6 +1528,161 @@
         487
       ],
       "transform": "panel-normalized-430-bottom-487"
+    },
+    {
+      "crop": "tomato",
+      "stage": "seed",
+      "asset": "web/art/embryon/town/gardening/growth/painted/tomato-seed.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/tomato-growth-source.webp",
+      "bytes": 18546,
+      "sha256": "8373329538a04f2f718b26e3a022f3b7b3c72334229f3917de72fa4621eb1c22",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        0,
+        0,
+        353,
+        724
+      ],
+      "source_bbox": [
+        0,
+        524,
+        336,
+        697
+      ],
+      "render_bbox": [
+        145,
+        373,
+        367,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "tomato",
+      "stage": "sprout",
+      "asset": "web/art/embryon/town/gardening/growth/painted/tomato-sprout.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/tomato-growth-source.webp",
+      "bytes": 29730,
+      "sha256": "7c14e4cb46cdb140c0aaca76d6e31ce2fdc250577106b420f82e1ff5629e9bc6",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        353,
+        0,
+        721,
+        724
+      ],
+      "source_bbox": [
+        17,
+        389,
+        355,
+        691
+      ],
+      "render_bbox": [
+        144,
+        288,
+        367,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "tomato",
+      "stage": "growing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/tomato-growing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/tomato-growth-source.webp",
+      "bytes": 68936,
+      "sha256": "26b1acd29147d7462fccc94357b91038dc29204007ddfc8268bf2995159ef5ab",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        721,
+        0,
+        1150,
+        724
+      ],
+      "source_bbox": [
+        14,
+        229,
+        427,
+        699
+      ],
+      "render_bbox": [
+        119,
+        177,
+        392,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "tomato",
+      "stage": "maturing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/tomato-maturing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/tomato-growth-source.webp",
+      "bytes": 103286,
+      "sha256": "ce6ea3546c01f0f746de2c354bc02256fd36a3e477065a71bdbe8b5f2c48cb69",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1150,
+        0,
+        1631,
+        724
+      ],
+      "source_bbox": [
+        2,
+        81,
+        479,
+        702
+      ],
+      "render_bbox": [
+        98,
+        77,
+        413,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "tomato",
+      "stage": "ready",
+      "asset": "web/art/embryon/town/gardening/growth/painted/tomato-ready.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/tomato-growth-source.webp",
+      "bytes": 123408,
+      "sha256": "ea865dd5c7827fd788a6561f7b1eddfb485ba5ed10a81b8afb401161b82358a4",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1631,
+        0,
+        2172,
+        724
+      ],
+      "source_bbox": [
+        5,
+        0,
+        533,
+        710
+      ],
+      "render_bbox": [
+        82,
+        18,
+        430,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
     }
   ],
   "sourceMasters": [
@@ -1639,8 +1795,20 @@
       ],
       "bytes": 1045310,
       "sha256": "166828f71089f8f364a2ef0609347aceb13295305b22e716a4fd9be0f19e786f"
+    },
+    {
+      "crop": "tomato",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/tomato-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 1474242,
+      "sha256": "af7968206b2938cb087d54e7850d39170449ec3916fb4ae2d983171fbde19ec6"
     }
   ],
   "sourceOriginals": "Eight unmodified transparent PNG originals are preserved in the Rupee Rush Painted Crop Art Transfer folder in connected Google Drive; these Git originals are lossless WEBP preserving every RGBA pixel.",
-  "originalCrimsonBeet": "New original five-stage beet painted source; not recolored from the Radish candidate."
+  "originalCrimsonBeet": "New original five-stage beet painted source; not recolored from the Radish candidate.",
+  "blazevineTomatoNotes": "Original five-stage tomato painting with seed, sprout, leafy young plant, yellow flowering and green fruit, and red-tomato harvest; fixed panel boundaries preserve close canopy edges."
 }
