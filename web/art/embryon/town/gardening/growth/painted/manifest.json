@@ -25,7 +25,7 @@
       "crop": "carrot",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/carrot-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.webp",
       "bytes": 12520,
       "sha256": "c76c7e5f690c5537d65dca11d49be725d5182f617451fbf20e80c9f9fb500bc9",
       "dimensions": [
@@ -55,7 +55,7 @@
       "crop": "carrot",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/carrot-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.webp",
       "bytes": 16650,
       "sha256": "3aa53b98f51a66664b963c633ff7aed67cc1c63c45e4f45e6848b19b14d7591f",
       "dimensions": [
@@ -85,7 +85,7 @@
       "crop": "carrot",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/carrot-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.webp",
       "bytes": 35892,
       "sha256": "c19b35b3e6a12b369a8986158b1bd3998746eb7b3817adc1d31e6b9b1fd7c5f0",
       "dimensions": [
@@ -115,7 +115,7 @@
       "crop": "carrot",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/carrot-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.webp",
       "bytes": 54456,
       "sha256": "0acb41744c803dd4bf44fd53f2b7bb2409659a8c4aad35112513fae00b6362ee",
       "dimensions": [
@@ -145,7 +145,7 @@
       "crop": "carrot",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/carrot-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.webp",
       "bytes": 68792,
       "sha256": "3310753072a8fbaea7a20b1e185259aa24fc2c3a59f57e751b57317029bc2a7e",
       "dimensions": [
@@ -175,7 +175,7 @@
       "crop": "radish",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/radish-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.webp",
       "bytes": 13580,
       "sha256": "defbbd7d15464970ffa2fbff5b7ca29ab32616b88e8590b254cc95a447534122",
       "dimensions": [
@@ -205,7 +205,7 @@
       "crop": "radish",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/radish-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.webp",
       "bytes": 20076,
       "sha256": "b78d0126c0b59d426551d2a6fe08cac276b725e90d93c80abd637811dd340179",
       "dimensions": [
@@ -235,7 +235,7 @@
       "crop": "radish",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/radish-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.webp",
       "bytes": 33024,
       "sha256": "71aba9651bef86fc229dd70e69d44cf4c44ae12edf6ac604f4ae473d7a70f1d0",
       "dimensions": [
@@ -265,7 +265,7 @@
       "crop": "radish",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/radish-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.webp",
       "bytes": 52238,
       "sha256": "d5861bdcfc5cbfe950f0ddaf6850f475af894dbecf380a10cae66a8adadcd0f0",
       "dimensions": [
@@ -295,7 +295,7 @@
       "crop": "radish",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/radish-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.webp",
       "bytes": 67814,
       "sha256": "55b0d2810731fc04a3f61c34fc8aabeb4edea4f75065a3d46dd664293dd7f0fa",
       "dimensions": [
@@ -325,7 +325,7 @@
       "crop": "lettuce",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/lettuce-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.webp",
       "bytes": 11884,
       "sha256": "1ca8a93c61ffd09fec989b912b8c787926ce5e159d6843bdbdff10aed5625fa0",
       "dimensions": [
@@ -355,7 +355,7 @@
       "crop": "lettuce",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/lettuce-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.webp",
       "bytes": 17292,
       "sha256": "f619bc549a0f96464d589f0ac4b9cbacb9239ff0d8721a8e83bddc7a8668a11a",
       "dimensions": [
@@ -385,7 +385,7 @@
       "crop": "lettuce",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/lettuce-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.webp",
       "bytes": 32384,
       "sha256": "7f72cd18429563d30bbc098bf9f9b06098ec6a5932bf92fc5932d7218b75915a",
       "dimensions": [
@@ -415,7 +415,7 @@
       "crop": "lettuce",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/lettuce-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.webp",
       "bytes": 43470,
       "sha256": "416fb7d7be1d39f90cba4fd306a31d6e091aab4cd3669678a8b634e217102948",
       "dimensions": [
@@ -445,7 +445,7 @@
       "crop": "lettuce",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/lettuce-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.webp",
       "bytes": 55780,
       "sha256": "ed0ced6010b2a169053a7b8762ae393c84eaced57637f912c972d265ce5a5323",
       "dimensions": [
@@ -475,7 +475,7 @@
       "crop": "pea",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/pea-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.webp",
       "bytes": 11396,
       "sha256": "cd5cfb38deb891280448155255406229df272dad13d4ac3a322d7f5473d8b693",
       "dimensions": [
@@ -505,7 +505,7 @@
       "crop": "pea",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/pea-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.webp",
       "bytes": 20326,
       "sha256": "122e9326b60f1144561854f13f12eb8d35f3c8329e25d27c4045901e6d2e7273",
       "dimensions": [
@@ -535,7 +535,7 @@
       "crop": "pea",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/pea-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.webp",
       "bytes": 38584,
       "sha256": "120445727fad4a95299956c84f319c62d1ccfcb8c505791c0afda63de598b91a",
       "dimensions": [
@@ -565,7 +565,7 @@
       "crop": "pea",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/pea-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.webp",
       "bytes": 65620,
       "sha256": "6f606136c91d2be806645661ba9f3154580c79dbee82782cc9bdfd943da423ca",
       "dimensions": [
@@ -595,7 +595,7 @@
       "crop": "pea",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/pea-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.webp",
       "bytes": 76698,
       "sha256": "3f86d413d5eb090aef8d13ad744ce52921d55e16435c9fa1084e4062e60a17a7",
       "dimensions": [
@@ -625,7 +625,7 @@
       "crop": "mint",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/mint-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.webp",
       "bytes": 10508,
       "sha256": "032907d6addbb778d9a2673eac71267d306e3b6e0e00b0bef40aedf1344c3405",
       "dimensions": [
@@ -655,7 +655,7 @@
       "crop": "mint",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/mint-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.webp",
       "bytes": 17502,
       "sha256": "5abb2c5906dc07b08c7e1bf141f279d90f0124f27e22070d5cb9489d635e84f2",
       "dimensions": [
@@ -685,7 +685,7 @@
       "crop": "mint",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/mint-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.webp",
       "bytes": 33716,
       "sha256": "9b924bb6e5fdda1284cdb33fcc4d840b5a710c76400470bd97ceed0c2aeab54a",
       "dimensions": [
@@ -715,7 +715,7 @@
       "crop": "mint",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/mint-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.webp",
       "bytes": 55290,
       "sha256": "20cfc5b833bdf26a14c8f95e5b15846d2856beedc61299226f588eea4a2eda23",
       "dimensions": [
@@ -745,7 +745,7 @@
       "crop": "mint",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/mint-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.webp",
       "bytes": 82166,
       "sha256": "f5bcf14fbab32e8106d4fc9ab572992659524b009490fc75adbd007bd02ae6af",
       "dimensions": [
@@ -775,7 +775,7 @@
       "crop": "potato",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/potato-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.webp",
       "bytes": 11978,
       "sha256": "b4557a028d3c79eed14eb59469b7078aefeac2c1a8088cb85e188112a318abc1",
       "dimensions": [
@@ -805,7 +805,7 @@
       "crop": "potato",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/potato-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.webp",
       "bytes": 18606,
       "sha256": "8b743fbb76700583fe0af8dd3025726b63e101b24abe5d67b231ef79db1d72c3",
       "dimensions": [
@@ -835,7 +835,7 @@
       "crop": "potato",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/potato-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.webp",
       "bytes": 38994,
       "sha256": "8e0ce0f8ade382a02d7aa41e47cd3771549460e9ca3a455867cbd63b7e8a8f0d",
       "dimensions": [
@@ -865,7 +865,7 @@
       "crop": "potato",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/potato-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.webp",
       "bytes": 58616,
       "sha256": "a7ca2ed674d24640fa5fd8fc3db4fcb7bf10fc0e0a1f317908fa89ee5e6285b8",
       "dimensions": [
@@ -895,7 +895,7 @@
       "crop": "potato",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/potato-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.webp",
       "bytes": 73718,
       "sha256": "85b407d703abf7fd96c432e3898aeecd2f7f9cb4d71ffa76b093aee80026861a",
       "dimensions": [
@@ -925,7 +925,7 @@
       "crop": "onion",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/onion-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.webp",
       "bytes": 12398,
       "sha256": "d069f40027d9c9156bdfefa996a5347f4e11d076e62e18303dfa69ce86923a09",
       "dimensions": [
@@ -955,7 +955,7 @@
       "crop": "onion",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/onion-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.webp",
       "bytes": 17096,
       "sha256": "d5a68324aa8c3bd7403041f7635ea48c9f6b181221c8d135b8a41129cefe70c2",
       "dimensions": [
@@ -985,7 +985,7 @@
       "crop": "onion",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/onion-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.webp",
       "bytes": 29472,
       "sha256": "be6ff6f891f2ecf1697a867dd846681f9f7554199392cb32aaf378e13d3eb230",
       "dimensions": [
@@ -1015,7 +1015,7 @@
       "crop": "onion",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/onion-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.webp",
       "bytes": 41064,
       "sha256": "ebe46c91adb4974d54952643271f4ab1016e16774b566b77c73f7f2b4529291c",
       "dimensions": [
@@ -1045,7 +1045,7 @@
       "crop": "onion",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/onion-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.webp",
       "bytes": 56494,
       "sha256": "3c62791e0221600c8d98fbce07ba0dbc0a54015326e296a9e674783f55962cf4",
       "dimensions": [
@@ -1075,7 +1075,7 @@
       "crop": "strawberry",
       "stage": "seed",
       "asset": "web/art/embryon/town/gardening/growth/painted/strawberry-seed.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.webp",
       "bytes": 10886,
       "sha256": "e53cf2908e4e6120dcd7a97816a6d5768704588c3bf7eb80b10e0b6559eb1edd",
       "dimensions": [
@@ -1105,7 +1105,7 @@
       "crop": "strawberry",
       "stage": "sprout",
       "asset": "web/art/embryon/town/gardening/growth/painted/strawberry-sprout.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.webp",
       "bytes": 15586,
       "sha256": "3cec2f2ea156bed51e8078cba41b615cc84a00460f0d479b2a4ebbc8c288da55",
       "dimensions": [
@@ -1135,7 +1135,7 @@
       "crop": "strawberry",
       "stage": "growing",
       "asset": "web/art/embryon/town/gardening/growth/painted/strawberry-growing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.webp",
       "bytes": 35298,
       "sha256": "b9303209badefcf5ef5c6996287af8932da76ccbd8bd1d90806721209d1eb322",
       "dimensions": [
@@ -1165,7 +1165,7 @@
       "crop": "strawberry",
       "stage": "maturing",
       "asset": "web/art/embryon/town/gardening/growth/painted/strawberry-maturing.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.webp",
       "bytes": 52880,
       "sha256": "dd6ff6ca0773a3fa1e86ed172bd6f43eee28fe4ff4f952d6b2234a367f9a29d5",
       "dimensions": [
@@ -1195,7 +1195,7 @@
       "crop": "strawberry",
       "stage": "ready",
       "asset": "web/art/embryon/town/gardening/growth/painted/strawberry-ready.webp",
-      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.png",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.webp",
       "bytes": 64202,
       "sha256": "caaea363ab87f8c0c4cd256be338e2f331d3be43e98168104a1ce63ff1647bb6",
       "dimensions": [
@@ -1221,5 +1221,96 @@
         486
       ]
     }
-  ]
+  ],
+  "sourceMasters": [
+    {
+      "crop": "carrot",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/carrot-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 882592,
+      "sha256": "c59d8bd7b06fe326bd1e48899b4bc1f855f8280392394c4bcb8955af4317b76e"
+    },
+    {
+      "crop": "radish",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 938440,
+      "sha256": "2f093ce94f6ebc508bfd67c72ee5dd36517a02c21251d3afc83c796b133d0562"
+    },
+    {
+      "crop": "lettuce",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/lettuce-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 858474,
+      "sha256": "c652c61bc8f92cceccf965160d484bee932141782ba5fd293d15cfaf56644572"
+    },
+    {
+      "crop": "pea",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/pea-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 968804,
+      "sha256": "61370d4b1650b2a162161e55139a01bbb3d16132610104776157623e3905fbaf"
+    },
+    {
+      "crop": "mint",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/mint-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 1018188,
+      "sha256": "c2c9f0443f14d9236682086e0aedc32af202932fc5c7f0b84118ed14a65daadc"
+    },
+    {
+      "crop": "potato",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/potato-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 1028620,
+      "sha256": "6a5a5e5a47cae89c43433f12b8dda5720970b9ebf0f4a001bf593ecc048e49e9"
+    },
+    {
+      "crop": "onion",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/onion-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 726102,
+      "sha256": "d9f561dd7fee5bd6d5d5b6677aec923fa0f698fee08154b4a70dd47efa88f5bf"
+    },
+    {
+      "crop": "strawberry",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/strawberry-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 932004,
+      "sha256": "7c62563da7f21cafc9adda1a9a42b511c094809244550b883163dd2d99b74f1d"
+    }
+  ],
+  "sourceOriginals": "Eight unmodified transparent PNG originals are preserved in the Rupee Rush Painted Crop Art Transfer folder in connected Google Drive; these Git originals are lossless WEBP preserving every RGBA pixel."
 }

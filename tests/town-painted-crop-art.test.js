@@ -41,3 +41,22 @@ test('eight crops prefer painted art, other 40 retain old tested transparent SVG
  assert.equal(Crops.fromStatus({crop:'carrot',state:'ready'}),Crops.image('carrot','ready'));
  assert.equal(Crops.fromStatus({crop:'wheat',state:'ready'}),Crops.image('wheat','ready'));
 });
+
+test('all eight lossless source sheets are archived with reproducible dimensions and digests',()=>{
+ assert.equal(meta.sourceMasters.length,8);
+ const seen=new Set();
+ for(const master of meta.sourceMasters){
+  const bytes=fs.readFileSync(path.join(root,master.path.replace(/^web\\//,'')));
+  assert.equal(bytes.length,master.bytes,master.crop);
+  assert.equal(crypto.createHash('sha256').update(bytes).digest('hex'),master.sha256,master.crop);
+  assert.equal(bytes.toString('ascii',0,4),'RIFF');
+  assert.equal(bytes.toString('ascii',8,12),'WEBP');
+  assert.equal(bytes.toString('ascii',12,16),'VP8L','master must be pixel-lossless');
+  assert.equal(bytes[20],0x2f);
+  const width=1+(bytes[21]|((bytes[22]&63)<<8));
+  const height=1+((bytes[22]>>6)|(bytes[23]<<2)|((bytes[24]&15)<<10));
+  assert.deepEqual([width,height],master.dimensions);
+  seen.add(master.crop);
+ }
+ assert.deepEqual([...seen],meta.crops);
+});
