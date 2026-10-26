@@ -71,3 +71,11 @@ Batch 2 begins with Nightshade Spinach: five additional approved-quality painted
 
 ## Reproducing the painted growth sprite cuts
 The exact executable cropping recipe is now versioned at `scripts/slice-painted-crops.py`. From a Python environment with `Pillow==12.3.0`, run `python scripts/slice-painted-crops.py --check` to validate all 45 painted stage sprites against the recorded digests without modifying game assets. Each original lossless 2172×724 source sheet is stored under `growth/painted/source_sheets/`; new crops should follow five transparent columns, four sufficiently broad alpha gaps, consistent light direction and no labels. To render any one crop use `python scripts/slice-painted-crops.py --crop spinach`. Always inspect mobile-scale details before enabling newly painted species in `web/crop-growth-art.js`.
+
+## Crimson Beet candidate — review only, not approved
+
+The painting generator repeatedly produced unrelated eight-category charts when a single five-stage Crimson Beet sprite sheet was requested. Those unrelated outputs were discarded, not added to the runtime. To continue with a tangible review artifact, we built a provisional five-stage **radish-derived** beet palette study using the existing approved Radish transparent painted asset as a starting point.
+
+Review path: `web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/review.png`. Five alpha-enabled `beet-{seed,sprout,growing,maturing,ready}.webp` candidates are stored in the same directory, with a digest manifest and reproducible script `scripts/generate-crimson-beet-candidate.py`. Requirements: Pillow 12.3.0, NumPy 2.3.5. The draft retains root/shoot morphology from Radish and **is not an original painted beet master**. In particular, assess the radish-like tail and lack of beet-specific ruby veins before approval.
+
+**Do not wire this into `web/crop-growth-art.js` without specific art acceptance.** The playable Crimson Beet crop continues to use `beet-*.svg`; this review-only import changes no gameplay, saves, economics or approved painting assets.
