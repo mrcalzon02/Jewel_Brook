@@ -9,15 +9,15 @@ const base='web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/';
 const manifest=require('../web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/manifest.json');
 const resolver=require('../web/crop-growth-art.js');
 
-test('Crimson Beet draft has five distinct verifiable transparent images but is never deployed as approved art',()=>{
+test('Crimson Beet draft has five distinct verifiable transparent images and stays archived after original art replaced it',()=>{
  assert.equal(manifest.crop,'beet');
  assert.equal(manifest.approval_status,'draft_only_not_approved');
  assert.equal(manifest.runtime_integrated,false);
  assert.equal(manifest.source_reuse_approved_for_production,false);
  assert.equal(manifest.assets.length,5);
  assert.deepEqual(manifest.stages,['seed','sprout','growing','maturing','ready']);
- assert.ok(!resolver.PAINTED.includes('beet'),'Only an approved painted beet should replace the SVG in the live game');
- assert.equal(resolver.image('beet','ready'),'art/embryon/town/gardening/growth/beet-ready.svg');
+ assert.ok(resolver.PAINTED.includes('beet'),'Original Crimson Beet painting must now be active');
+ assert.equal(resolver.image('beet','ready'),'art/embryon/town/gardening/growth/painted/beet-ready.webp');
  const hashes=new Set();
  for(const item of manifest.assets){
   assert(item.path.startsWith(base));

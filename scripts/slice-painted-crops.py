@@ -60,6 +60,32 @@ def slice_crop(img):
     return result
 
 
+def slice_beet(img):
+    """Precisely separate original Crimson Beet where mature foliage nearly touches.
+
+    Alpha-gap splitting cannot find the fourth division, hence measured bounds.
+    Stages share one 512px canvas and the y=487 soil baseline.
+    """
+    img = img.convert('RGBA')
+    if img.size != (2172, 724):
+        raise ValueError(f'original beet sheet must be 2172x724, received {img.size}')
+    bounds = (0, 338, 700, 1129, 1634, 2172)
+    result = {}
+    for i, stage in enumerate(STAGES):
+        panel = img.crop((bounds[i], 0, bounds[i + 1], img.height))
+        bbox = panel.getchannel('A').point(lambda a: 255 if a > 3 else 0).getbbox()
+        if bbox is None:
+            raise ValueError('empty beet stage: '+stage)
+        art = panel.crop(bbox)
+        factor = min(430/art.width, 430/art.height, 1)
+        size = (max(1, round(art.width*factor)), max(1, round(art.height*factor)))
+        frame = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
+        frame.alpha_composite(art.resize(size, Image.Resampling.LANCZOS),
+                              ((512-size[0])//2, 487-size[1]))
+        result[stage] = frame
+    return result
+
+
 def run(crop=None, check=False, directory=PAINTED):
     manifest = json.loads((directory/'manifest.json').read_text())
     crops = [crop] if crop else manifest['crops']
@@ -69,11 +95,12 @@ def run(crop=None, check=False, directory=PAINTED):
         source = directory/'source_sheets'/f'{kind}-growth-source.webp'
         if not source.exists():
             raise FileNotFoundError(source)
-        stages = slice_crop(Image.open(source))
+        stages = slice_beet(Image.open(source)) if kind == 'beet' else slice_crop(Image.open(source))
         for phase, frame in stages.items():
             output = directory/f'{kind}-{phase}.webp'
             payload = io.BytesIO()
-            frame.save(payload, 'WEBP', quality=88, method=1)
+            frame.save(payload, 'WEBP', quality=92 if kind == 'beet' else 88,
+                       method=5 if kind == 'beet' else 1)
             data = payload.getvalue()
             meta = next(x for x in manifest['sprites'] if x['crop']==kind and x['stage']==phase)
             if check:

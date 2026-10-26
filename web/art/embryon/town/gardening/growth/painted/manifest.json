@@ -17,10 +17,11 @@
     "potato",
     "onion",
     "strawberry",
-    "spinach"
+    "spinach",
+    "beet"
   ],
-  "sprite_count": 45,
-  "transform": "five-column isolated alpha sprites; common 0.66 scale and baseline 487 on transparent 512 square canvas",
+  "sprite_count": 50,
+  "transform": "Earlier crops use uniform 0.66 scale and baseline 487; Crimson Beet uses explicit per-panel boundaries and maximum 430px art, same 512 canvas and baseline.",
   "sprites": [
     {
       "crop": "carrot",
@@ -1371,6 +1372,161 @@
         434,
         487
       ]
+    },
+    {
+      "crop": "beet",
+      "stage": "seed",
+      "asset": "web/art/embryon/town/gardening/growth/painted/beet-seed.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/beet-growth-source.webp",
+      "bytes": 21978,
+      "sha256": "e395fb76a3b6b2e77857380318f2ff2f12199a99610e1252d73bdc8e6b41dfbf",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        0,
+        0,
+        338,
+        724
+      ],
+      "source_bbox": [
+        23,
+        512,
+        326,
+        682
+      ],
+      "render_bbox": [
+        104,
+        317,
+        407,
+        487
+      ],
+      "transform": "panel-normalized-430-bottom-487"
+    },
+    {
+      "crop": "beet",
+      "stage": "sprout",
+      "asset": "web/art/embryon/town/gardening/growth/painted/beet-sprout.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/beet-growth-source.webp",
+      "bytes": 33752,
+      "sha256": "f002713b0db97403421fa797913e319e6395578fa390eac58f8214ee7c141c39",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        338,
+        0,
+        700,
+        724
+      ],
+      "source_bbox": [
+        40,
+        424,
+        358,
+        688
+      ],
+      "render_bbox": [
+        97,
+        223,
+        415,
+        487
+      ],
+      "transform": "panel-normalized-430-bottom-487"
+    },
+    {
+      "crop": "beet",
+      "stage": "growing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/beet-growing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/beet-growth-source.webp",
+      "bytes": 64996,
+      "sha256": "cf1bc049329ef7b39be0b3043737af7af096ff546dae3f254366eafc5a72afa1",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        700,
+        0,
+        1129,
+        724
+      ],
+      "source_bbox": [
+        25,
+        264,
+        424,
+        688
+      ],
+      "render_bbox": [
+        56,
+        63,
+        455,
+        487
+      ],
+      "transform": "panel-normalized-430-bottom-487"
+    },
+    {
+      "crop": "beet",
+      "stage": "maturing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/beet-maturing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/beet-growth-source.webp",
+      "bytes": 78272,
+      "sha256": "32b4defa253998cf43a6969d347099ecb991c7715d27c214ef16ad4540369b90",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1129,
+        0,
+        1634,
+        724
+      ],
+      "source_bbox": [
+        19,
+        152,
+        502,
+        688
+      ],
+      "render_bbox": [
+        62,
+        57,
+        449,
+        487
+      ],
+      "transform": "panel-normalized-430-bottom-487"
+    },
+    {
+      "crop": "beet",
+      "stage": "ready",
+      "asset": "web/art/embryon/town/gardening/growth/painted/beet-ready.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/beet-growth-source.webp",
+      "bytes": 66488,
+      "sha256": "f8959a38e3790fcbed3ba06d94f28c31ebd467916b331e86292cfc6fcfdab4f3",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1634,
+        0,
+        2172,
+        724
+      ],
+      "source_bbox": [
+        7,
+        20,
+        532,
+        698
+      ],
+      "render_bbox": [
+        89,
+        57,
+        422,
+        487
+      ],
+      "transform": "panel-normalized-430-bottom-487"
     }
   ],
   "sourceMasters": [
@@ -1472,7 +1628,19 @@
       ],
       "bytes": 1125594,
       "sha256": "271beafae6511c9228db88ab5faec47c1fb07148f015a744f351c6fa43268f6c"
+    },
+    {
+      "crop": "beet",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/beet-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 1045310,
+      "sha256": "166828f71089f8f364a2ef0609347aceb13295305b22e716a4fd9be0f19e786f"
     }
   ],
-  "sourceOriginals": "Eight unmodified transparent PNG originals are preserved in the Rupee Rush Painted Crop Art Transfer folder in connected Google Drive; these Git originals are lossless WEBP preserving every RGBA pixel."
+  "sourceOriginals": "Eight unmodified transparent PNG originals are preserved in the Rupee Rush Painted Crop Art Transfer folder in connected Google Drive; these Git originals are lossless WEBP preserving every RGBA pixel.",
+  "originalCrimsonBeet": "New original five-stage beet painted source; not recolored from the Radish candidate."
 }
