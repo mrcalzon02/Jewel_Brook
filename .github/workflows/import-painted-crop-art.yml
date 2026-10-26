@@ -1,0 +1,38 @@
+name: Import Painted Crop Sprites
+on:
+  push:
+    paths:
+      - asset-imports/rupee-growth-painted-v1-runtime.zip
+      - scripts/import-painted-crop-art.py
+      - .github/workflows/import-painted-crop-art.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: import-painted-crop-v1
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Restore and verify 40 individual painted crop sprites
+        run: python3 scripts/import-painted-crop-art.py
+      - name: Preserve painted images in Git and remove temporary transfer archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "Rupee Rush Asset Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add web/art/embryon/town/gardening/growth/painted/
+          git rm -f asset-imports/rupee-growth-painted-v1-runtime.zip
+          git diff --cached --quiet && exit 0
+          git commit -m "art(farm): install 40 verified hand-painted crop sprites"
+          git pull --rebase origin main
+          git push origin HEAD:main
