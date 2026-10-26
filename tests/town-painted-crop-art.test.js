@@ -2,9 +2,9 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../web'),Crops=require('../web/crop-growth-art.js');
 const meta=require('../web/art/embryon/town/gardening/growth/painted/manifest.json');
-test('all 55 actual painted sprites match source SHA256 and are alpha-enabled 512px WebP',()=>{
- assert.equal(meta.sprite_count,55);
- assert.equal(meta.sprites.length,55);
+test('all 60 actual painted sprites match source SHA256 and are alpha-enabled 512px WebP',()=>{
+ assert.equal(meta.sprite_count,60);
+ assert.equal(meta.sprites.length,60);
  assert.deepEqual(Crops.PAINTED,meta.crops);
  assert.deepEqual(Crops.STAGES,meta.stages);
  const paths=new Set(),hashes=new Set();
@@ -27,9 +27,9 @@ test('all 55 actual painted sprites match source SHA256 and are alpha-enabled 51
   assert(!paths.has(expected),'duplicate sprite path');
   paths.add(expected);hashes.add(entry.sha256);
  }
- assert.equal(paths.size,55);assert.equal(hashes.size,55);
+ assert.equal(paths.size,60);assert.equal(hashes.size,60);
 });
-test('eleven crops prefer painted art, other 37 retain old tested transparent SVGs',()=>{
+test('twelve crops prefer painted art, other 36 retain old tested transparent SVGs',()=>{
  assert.equal(Crops.CROPS.length,48);
  for(const c of Crops.CROPS)for(const st of Crops.STAGES){
   const expected=Crops.PAINTED.includes(c)?'.webp':'.svg';
@@ -42,8 +42,8 @@ test('eleven crops prefer painted art, other 37 retain old tested transparent SV
  assert.equal(Crops.fromStatus({crop:'wheat',state:'ready'}),Crops.image('wheat','ready'));
 });
 
-test('all eleven lossless source sheets are archived with reproducible dimensions and digests',()=>{
- assert.equal(meta.sourceMasters.length,11);
+test('all twelve lossless source sheets are archived with reproducible dimensions and digests',()=>{
+ assert.equal(meta.sourceMasters.length,12);
  const seen=new Set();
  for(const master of meta.sourceMasters){
   const bytes=fs.readFileSync(path.join(root,master.path.slice(4)));
@@ -90,4 +90,18 @@ test('Blazevine Tomato original painting has five distinct verifiable stage imag
   assert.equal(Crops.image('tomato',art.stage),'art/embryon/town/gardening/growth/painted/tomato-'+art.stage+'.webp');
  }
  assert.equal(Crops.vector('tomato','ready'),'art/embryon/town/gardening/growth/tomato-ready.svg');
+});
+
+test('Pearl Cabbage is five independent painted stages from its own archived master',()=>{
+ const cabbage=meta.sprites.filter(x=>x.crop==='cabbage');
+ assert.equal(cabbage.length,5);
+ assert.deepEqual(cabbage.map(x=>x.stage),Crops.STAGES);
+ const master=meta.sourceMasters.find(x=>x.crop==='cabbage');
+ assert(master && master.format==='lossless_WEBP');
+ for(const x of cabbage){
+  assert.equal(x.source,master.path);
+  assert.equal(x.render_bbox[3],487);
+  assert.equal(Crops.image('cabbage',x.stage),'art/embryon/town/gardening/growth/painted/cabbage-'+x.stage+'.webp');
+ }
+ assert.equal(new Set(cabbage.map(x=>x.sha256)).size,5);
 });

@@ -114,6 +114,33 @@ def slice_tomato(img):
     return result
 
 
+def slice_cabbage(img):
+    """Five stages of Pearl Cabbage with fixed reviewed source panel boundaries.
+
+    The growing and maturing leaves almost reach the next panel, so use fixed
+    x cuts to keep every leaf inside the proper stage. Keep common y=487 baseline.
+    """
+    img = img.convert('RGBA')
+    if img.size != (2172, 724):
+        raise ValueError(f'cabbage master must be 2172x724, received {img.size}')
+    bounds = (0, 354, 704, 1128, 1623, 2172)
+    result = {}
+    for i, stage in enumerate(STAGES):
+        panel = img.crop((bounds[i], 0, bounds[i+1], img.height))
+        bbox = panel.getchannel('A').point(lambda a: 255 if a > 4 else 0).getbbox()
+        if bbox is None:
+            raise ValueError(f'empty cabbage stage: {stage}')
+        art = panel.crop(bbox)
+        size = (round(art.width*0.66), round(art.height*0.66))
+        if size[0] > 482 or size[1] > 485:
+            raise ValueError(f'cabbage stage clipped: {stage} at {size}')
+        frame = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
+        frame.alpha_composite(art.resize(size, Image.Resampling.LANCZOS),
+                              ((512-size[0])//2, 487-size[1]))
+        result[stage] = frame
+    return result
+
+
 def run(crop=None, check=False, directory=PAINTED):
     manifest = json.loads((directory/'manifest.json').read_text())
     crops = [crop] if crop else manifest['crops']
@@ -125,12 +152,13 @@ def run(crop=None, check=False, directory=PAINTED):
             raise FileNotFoundError(source)
         stages = (slice_beet(Image.open(source)) if kind == 'beet' else
                   slice_tomato(Image.open(source)) if kind == 'tomato' else
+                  slice_cabbage(Image.open(source)) if kind == 'cabbage' else
                   slice_crop(Image.open(source)))
         for phase, frame in stages.items():
             output = directory/f'{kind}-{phase}.webp'
             payload = io.BytesIO()
-            frame.save(payload, 'WEBP', quality=92 if kind in ('beet','tomato') else 88,
-                       method=5 if kind in ('beet','tomato') else 1)
+            frame.save(payload, 'WEBP', quality=92 if kind in ('beet','tomato','cabbage') else 88,
+                       method=5 if kind in ('beet','tomato','cabbage') else 1)
             data = payload.getvalue()
             meta = next(x for x in manifest['sprites'] if x['crop']==kind and x['stage']==phase)
             if check:

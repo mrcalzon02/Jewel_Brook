@@ -34,13 +34,13 @@ dialog button{padding:8px 14px;background:#455982;border-radius:8px;border:1px s
 <button type="button" data-bg="dark" aria-pressed="false">Dark game UI</button>
 <span class="loading" id="loaded" role="status" aria-live="polite">Loading crop illustrations</span></div>
 <div id="collections"></div>
-<p class="note">Visual checklist: true transparency; stage-to-stage plant morphology, stable root anchor, distinct carrot/wheat/bluebell fruit, no cropped stems or berries, readable on phone-sized garden plots. Eleven crops use 512px painted WebP stages; 37 crops retain individual transparent SVG stages pending original painting.</p>
+<p class="note">Visual checklist: true transparency; stage-to-stage plant morphology, stable root anchor, distinct carrot/wheat/bluebell fruit, no cropped stems or berries, readable on phone-sized garden plots. Twelve crops now use 512px painted WebP stages; 36 crops use original transparent SVG stages pending individual painting.</p>
 <dialog id="inspect"><button id="close" type="button">Close</button><h2 id="inspect-title"></h2><img id="inspect-image" alt=""><p id="inspect-detail"></p></dialog>
 </main>
 <script src="crop-growth-art.js"></script><script>
 (function(){
  'use strict';
- const names={carrot:'Hawseed Carrot',wheat:'Sunwheat',berry:'Bluebell Berry',beet:'Crimson Beet',tomato:'Blazevine Tomato'};
+ const names={carrot:'Hawseed Carrot',wheat:'Sunwheat',berry:'Bluebell Berry',beet:'Crimson Beet',tomato:'Blazevine Tomato',cabbage:'Pearl Cabbage'};
  const stages={seed:'Seeded Soil',sprout:'Germination',growing:'Young Plant',maturing:'Flowering / Ripening',ready:'Harvest Ready'};
  const cropArt=window.RupeeCropGrowthArt,root=document.getElementById('collections'),loaded=document.getElementById('loaded');
  const inspect=document.getElementById('inspect');let ok=0,bad=0;

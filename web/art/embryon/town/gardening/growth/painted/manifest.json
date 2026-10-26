@@ -19,9 +19,10 @@
     "strawberry",
     "spinach",
     "beet",
-    "tomato"
+    "tomato",
+    "cabbage"
   ],
-  "sprite_count": 55,
+  "sprite_count": 60,
   "transform": "Earlier crops use uniform 0.66 scale and baseline 487; Crimson Beet uses explicit per-panel boundaries and maximum 430px art, same 512 canvas and baseline.",
   "sprites": [
     {
@@ -1683,6 +1684,161 @@
         487
       ],
       "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "cabbage",
+      "stage": "seed",
+      "asset": "web/art/embryon/town/gardening/growth/painted/cabbage-seed.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/cabbage-growth-source.webp",
+      "bytes": 19064,
+      "sha256": "f47024c8cb76e2a7bc267b4f3f347b3121421b2b9b7df25f880b6bffbf40a291",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        0,
+        0,
+        354,
+        724
+      ],
+      "source_bbox": [
+        5,
+        508,
+        347,
+        693
+      ],
+      "render_bbox": [
+        143,
+        365,
+        369,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "cabbage",
+      "stage": "sprout",
+      "asset": "web/art/embryon/town/gardening/growth/painted/cabbage-sprout.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/cabbage-growth-source.webp",
+      "bytes": 29572,
+      "sha256": "51fc26eb0d81001b80c33539a022607d6374778e5f39e8fc51cee64e54f63326",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        354,
+        0,
+        704,
+        724
+      ],
+      "source_bbox": [
+        9,
+        374,
+        350,
+        692
+      ],
+      "render_bbox": [
+        143,
+        277,
+        368,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "cabbage",
+      "stage": "growing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/cabbage-growing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/cabbage-growth-source.webp",
+      "bytes": 48272,
+      "sha256": "f8c9b19e0fe1a77e7229a9fd26e75b21f9dfb94cf669c07e01857955ab22fc01",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        704,
+        0,
+        1128,
+        724
+      ],
+      "source_bbox": [
+        0,
+        288,
+        424,
+        693
+      ],
+      "render_bbox": [
+        116,
+        220,
+        396,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "cabbage",
+      "stage": "maturing",
+      "asset": "web/art/embryon/town/gardening/growth/painted/cabbage-maturing.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/cabbage-growth-source.webp",
+      "bytes": 65874,
+      "sha256": "21f63f49052dac3e0778a7254a6978a2562eea7cc72a92a20534b80c051bff87",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1128,
+        0,
+        1623,
+        724
+      ],
+      "source_bbox": [
+        0,
+        222,
+        488,
+        700
+      ],
+      "render_bbox": [
+        95,
+        172,
+        417,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
+    },
+    {
+      "crop": "cabbage",
+      "stage": "ready",
+      "asset": "web/art/embryon/town/gardening/growth/painted/cabbage-ready.webp",
+      "source": "web/art/embryon/town/gardening/growth/painted/source_sheets/cabbage-growth-source.webp",
+      "bytes": 82410,
+      "sha256": "e9ccfb3cb67b2c237c791f1a5a340175e213662050c9f0f7ab994e1544a64c38",
+      "dimensions": [
+        512,
+        512
+      ],
+      "origin_cell": [
+        1623,
+        0,
+        2172,
+        724
+      ],
+      "source_bbox": [
+        6,
+        139,
+        549,
+        711
+      ],
+      "render_bbox": [
+        77,
+        109,
+        435,
+        487
+      ],
+      "transform": "fixed-bounds-uniform-0.66-bottom-487"
     }
   ],
   "sourceMasters": [
@@ -1806,9 +1962,21 @@
       ],
       "bytes": 1474242,
       "sha256": "af7968206b2938cb087d54e7850d39170449ec3916fb4ae2d983171fbde19ec6"
+    },
+    {
+      "crop": "cabbage",
+      "path": "web/art/embryon/town/gardening/growth/painted/source_sheets/cabbage-growth-source.webp",
+      "format": "lossless_WEBP",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "bytes": 1228790,
+      "sha256": "e1bccb4d63cb97d4432f9978e86b3a8ed2881149238bea99ed3e37dd260816bc"
     }
   ],
   "sourceOriginals": "Eight unmodified transparent PNG originals are preserved in the Rupee Rush Painted Crop Art Transfer folder in connected Google Drive; these Git originals are lossless WEBP preserving every RGBA pixel.",
   "originalCrimsonBeet": "New original five-stage beet painted source; not recolored from the Radish candidate.",
-  "blazevineTomatoNotes": "Original five-stage tomato painting with seed, sprout, leafy young plant, yellow flowering and green fruit, and red-tomato harvest; fixed panel boundaries preserve close canopy edges."
+  "blazevineTomatoNotes": "Original five-stage tomato painting with seed, sprout, leafy young plant, yellow flowering and green fruit, and red-tomato harvest; fixed panel boundaries preserve close canopy edges.",
+  "pearlCabbageNotes": "Original five-stage Pearl Cabbage painting: sprout, rosette leaves, tightly heading cabbage. Uses fixed alpha-safe boundaries."
 }
