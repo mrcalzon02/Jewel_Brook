@@ -17,3 +17,7 @@ android/**/build/
 android/local.properties
 *.p12
 **/store-password.txt
+
+# Windows/Linux desktop packaging
+/desktop/node_modules/
+/release-desktop/
