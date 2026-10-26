@@ -1,6 +1,6 @@
 # Rupee Rush
 
-**Deployment targets:** Android phones, Amazon Fire tablets (Fire OS 7+ via the same signed Android APK), Windows x64 installer/portable executable, and Linux x64 AppImage/tar.gz. See [Deployment Targets](docs/DEPLOYMENT_TARGETS.md). Windows/Linux installers are produced by GitHub's desktop packaging matrix; hardware runtime verification is separate.
+**Deployment targets:** Android phones and Amazon Fire tablets use the existing signed APK. Windows/Linux use a separate **genuine native C++/SDL3 application**, with no packaged browser or JavaScript runtime. Native desktop gameplay parity is in progress. See [Deployment Targets](docs/DEPLOYMENT_TARGETS.md).
 
 **Android APK delivery:** [GitHub-built signed Releases](docs/GITHUB_ANDROID_RELEASES.md) are the normal workflow; no local Android build is needed. [Download APK releases](https://github.com/mrcalzon02/Rupee-rush/releases).
 

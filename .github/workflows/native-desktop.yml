@@ -1,0 +1,88 @@
+name: Rupee Rush native Windows and Linux
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'native/**'
+      - 'web/art/embryon/generated/gems/**'
+      - 'web/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png'
+      - '.github/workflows/native-desktop.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: rupeerush-native-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: Windows
+            archive: RupeeRush-Native-Windows-x64.zip
+          - os: ubuntu-latest
+            target: Linux
+            archive: RupeeRush-Native-Linux-x64.tar.gz
+    name: Build genuine native ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure C++ / SDL3 (no browser runtime)
+        shell: bash
+        run: cmake -S native -B build/native -DCMAKE_BUILD_TYPE=Release
+      - name: Compile native executable and functional diagnostics
+        shell: bash
+        run: cmake --build build/native --config Release --parallel 4
+      - name: Run native gameplay functional diagnostics
+        shell: bash
+        run: ctest --test-dir build/native -C Release --output-on-failure
+      - name: Stage executable, SDL3 and original approved PNG assets
+        shell: bash
+        run: cmake --install build/native --config Release --prefix "$GITHUB_WORKSPACE/stage/RupeeRush"
+      - name: Ensure no browser or web package has been included
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s stage/RupeeRush/data/art/embryon/generated/gems/ruby.png
+          test -s stage/RupeeRush/data/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png
+          test -z "$(find stage/RupeeRush -type f \( -name '*.html' -o -name '*.js' -o -name 'chrome.exe' -o -name 'libcef*' -o -name 'electron*' \) -print -quit)"
+      - name: Archive Windows application
+        if: matrix.target == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path 'stage/RupeeRush' -DestinationPath '${{ matrix.archive }}'
+      - name: Archive Linux application
+        if: matrix.target == 'Linux'
+        shell: bash
+        run: tar -czf "${{ matrix.archive }}" -C stage RupeeRush
+      - name: Upload executable distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: rupeerush-native-${{ matrix.target }}
+          path: ${{ matrix.archive }}
+          retention-days: 30
+          if-no-files-found: error
+  native-release:
+    name: Publish explicitly incomplete native desktop preview
+    needs: [native]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rupeerush-native-*
+          path: release-native
+          merge-multiple: true
+      - name: Verify and publish prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -s release-native/RupeeRush-Native-Windows-x64.zip
+          test -s release-native/RupeeRush-Native-Linux-x64.tar.gz
+          (cd release-native && sha256sum *.zip *.tar.gz > SHA256SUMS.txt)
+          gh release create "rupeerush-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
+            release-native/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --prerelease --title "Rupee Rush Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
+            --notes 'Experimental native C++/SDL3 desktop build. Functional match-three drag swapping, basic 4x4 mining with the original approved ore atlas, and local native saves. This is NOT gameplay-complete parity with Android: boosters, full economy, farming, cooking, audio, shop, and full campaign design are not ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'
