@@ -40,6 +40,20 @@ check("window.RupeePlayCloudMessage" in js and "window.RupeePlayCloud.backup" in
 result = subprocess.run(["node", "--check", str(ROOT/"web/game.js")], capture_output=True, text=True)
 check(result.returncode == 0, "Game JavaScript parses", 
       "Fix web/game.js syntax: " + result.stderr[-400:])
+main_activity = (ROOT/"android/app/src/main/java/io/github/mrcalzon02/rupeerush/MainActivity.java").read_text()
+check('prepareGameWebView(game);' in main_activity and
+        main_activity.index('prepareGameWebView(game);') < main_activity.index('game.loadUrl('),
+        "Cloud bridge hooks before the first game page navigation",
+        "Call prepareGameWebView(game) before game.loadUrl() in MainActivity.")
+check('prepareGameWebView(WebView game)' in launcher and
+        '"RupeePlayCloud"' in launcher,
+        "Play subclass registers the cloud JavaScript API at pre-navigation hook",
+        "Override prepareGameWebView(WebView game) and attach the bridge there.")
+check('SnapshotsClient.RESOLUTION_POLICY_MANUAL' in java and
+        'RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED' not in java,
+        "Cloud snapshot conflicts are never auto-resolved by last-modified timestamp",
+        "Use RESOLUTION_POLICY_MANUAL and reject or explicitly reconcile divergent remote snapshots.")
+
 for reason,fix in errors: print("::error title=Play cloud contract::" + reason + " | FIX: " + fix)
 print("RUPEE PLAY CLOUD CONTRACT: " + ("FAIL" if errors else "PASS"))
 sys.exit(1 if errors else 0)
