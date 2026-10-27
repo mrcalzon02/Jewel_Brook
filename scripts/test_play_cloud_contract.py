@@ -56,7 +56,7 @@ check('SnapshotsClient.RESOLUTION_POLICY_MANUAL' in java and
 
 check(all(x in bridge for x in ('void replace(String json, String inspectedVersion)',
       'fingerprint(current).equals(inspectedVersion)', 'Arrays.equals(current, data)',
-      'different progress', 'RESOLUTION_POLICY_MANUAL')),
+      'Different cloud progress', 'RESOLUTION_POLICY_MANUAL')),
       "Cloud writes require previewed version and explicit conflict choice",
       "Reject diverged snapshots unless the user explicitly chooses to replace the inspected remote revision.")
 check(all(x in js for x in ('pendingCloudVersion', 'cloud-replace',
