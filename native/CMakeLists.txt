@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-25.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-27.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -41,6 +41,17 @@ execute_process(
 )
 if(NOT ROW_EXPORT_STATUS EQUAL 0)
   message(FATAL_ERROR "Approved Row Rocket image could not be converted for SDL3")
+endif()
+# Column Rocket uses the same approved runtime sprite as the Android engine.
+set(COLUMN_BOOSTER_PNG "${CMAKE_BINARY_DIR}/column.png")
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/boosters/column.webp"
+    "${COLUMN_BOOSTER_PNG}"
+  RESULT_VARIABLE COLUMN_EXPORT_STATUS
+)
+if(NOT COLUMN_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Approved Column Rocket sprite could not be converted")
 endif()
 # Reuse the existing authored runtime Shuffle sprite without changing the
 # web/progression.js artwork catalog (currently unassigned) or currency art.
@@ -106,6 +117,10 @@ add_executable(rupee_collect_shuffle_tests tests/collect_shuffle_test.cpp)
 target_link_libraries(rupee_collect_shuffle_tests PRIVATE rupee_native_logic)
 add_test(NAME native_collect_objective_and_shuffle
     COMMAND rupee_collect_shuffle_tests "${INTRO_CATALOG}")
+add_executable(rupee_column_tests tests/column_rocket_test.cpp)
+target_link_libraries(rupee_column_tests PRIVATE rupee_native_logic)
+add_test(NAME native_column_rocket_first_clear_and_save
+    COMMAND rupee_column_tests "${INTRO_CATALOG}")
 add_executable(rupee_fire_elemental_tests tests/fire_elemental_test.cpp)
 target_link_libraries(rupee_fire_elemental_tests PRIVATE rupee_native_logic)
 add_test(NAME native_fire_elemental_and_delayed_auras
@@ -171,6 +186,8 @@ install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/additions/economy/hourglass.png"
   DESTINATION data/art/additions/economy)
 install(FILES "${ROW_BOOSTER_PNG}"
+  DESTINATION data/art/embryon/runtime/boosters)
+install(FILES "${COLUMN_BOOSTER_PNG}"
   DESTINATION data/art/embryon/runtime/boosters)
 install(FILES "${SHUFFLE_BOOSTER_PNG}"
   DESTINATION data/art/embryon/runtime/boosters)

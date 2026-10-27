@@ -129,6 +129,7 @@ void Game::grantMilestoneIfWon(){
     if(level==5 && !claimedExtra){extraCount+=3;claimedExtra=true;}
     if(level==10 && !claimedRow){rowCount+=3;claimedRow=true;}
     if(level==18 && !claimedShuffle){shuffleCount+=3;claimedShuffle=true;}
+    if(level==26 && !claimedColumn){columnCount+=3;claimedColumn=true;}
 }
 void Game::updateOutcome(){
     won=objectiveKind==1?iceCleared>=objectiveTarget:objectiveKind==2?collected>=objectiveTarget:score>=objectiveTarget;
@@ -337,6 +338,24 @@ bool Game::useRowRocket(int cell){
     updateOutcome();
     return true;
 }
+bool Game::useColumnRocket(int cell){
+    // Source Column Rocket: one hit per present tile in the selected column.
+    if(won||columnCount<=0||cell<0||cell>=static_cast<int>(cells.size())||cells[cell]<0)return false;
+    --columnCount;
+    const int x=cell%width;
+    int affected=0;
+    for(int y=0;y<height;++y){
+        const int at=y*width+x;
+        if(cells[at]<0)continue; // preserve authored voids
+        ++affected;
+        clearGem(at);           // exactly one ice layer, or destroy gem
+    }
+    resolveFire();
+    score+=affected*35;
+    refill();clearAndFill();
+    updateOutcome();
+    return true;
+}
 void Game::initMine(uint32_t seed) {
     for(int i=0;i<16;++i){
         const int x=i%4,y=i/4;
@@ -360,9 +379,9 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>25)return false;
+    if(stage<1||stage>27)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN5"||count!=25)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN6"||count!=27)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;int selectedColor=-1;
@@ -412,13 +431,14 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
     return false;
 }
 bool Game::save(std::ostream& out) const {
-    out<<"RRNATIVE6 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
+    out<<"RRNATIVE7 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
        <<score<<' '<<goal<<' '<<ore<<' '<<strikes<<' '<<won<<' '<<lost<<' '
        <<randomState<<' '<<objectiveKind<<' '<<objectiveTarget<<' '
        <<iceCleared<<' '<<hammerCount<<' '<<extraCount<<' '<<rowCount<<' '
        <<claimedExtra<<' '<<claimedRow<<' '<<waterActivations<<' '
        <<shuffleCount<<' '<<claimedShuffle<<' '<<collectColor<<' '
-       <<collected<<' '<<fireActivations<<' '<<fireDetonations<<' '<<cells.size()<<'\n';
+       <<collected<<' '<<fireActivations<<' '<<fireDetonations<<' '
+       <<columnCount<<' '<<claimedColumn<<' '<<cells.size()<<'\n';
     for(int v:cells)out<<v<<' ';out<<'\n';
     for(int v:ice)out<<v<<' ';out<<'\n';
     out<<activeRoster.size()<<' ';
@@ -432,7 +452,7 @@ bool Game::save(std::ostream& out) const {
 bool Game::load(std::istream& in) {
     Game tmp(7919);
     std::string magic;size_t n=0;
-    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"&&magic!="RRNATIVE4"&&magic!="RRNATIVE5"&&magic!="RRNATIVE6"))return false;
+    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"&&magic!="RRNATIVE4"&&magic!="RRNATIVE5"&&magic!="RRNATIVE6"&&magic!="RRNATIVE7"))return false;
     if(!(in>>tmp.level>>tmp.width>>tmp.height>>tmp.moves>>
        tmp.score>>tmp.goal>>tmp.ore>>tmp.strikes>>tmp.won>>tmp.lost>>
        tmp.randomState))return false;
@@ -441,7 +461,7 @@ bool Game::load(std::istream& in) {
     } else {
         tmp.objectiveKind=0;tmp.objectiveTarget=tmp.goal;tmp.iceCleared=0;
     }
-    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"){
+    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"){
         if(!(in>>tmp.hammerCount>>tmp.extraCount>>tmp.rowCount>>
              tmp.claimedExtra>>tmp.claimedRow))return false;
     } else {
@@ -450,15 +470,20 @@ bool Game::load(std::istream& in) {
         tmp.claimedExtra=tmp.level>=6;
         tmp.claimedRow=tmp.level>=10&&tmp.won;
     }
-    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6") && !(in>>tmp.waterActivations))return false;
-    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"){
+    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7") && !(in>>tmp.waterActivations))return false;
+    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"){
         if(!(in>>tmp.shuffleCount>>tmp.claimedShuffle>>tmp.collectColor>>tmp.collected))return false;
     }else{
         tmp.shuffleCount=0;tmp.claimedShuffle=false;
         tmp.collectColor=-1;tmp.collected=0;
     }
-    if(magic=="RRNATIVE6" &&
+    if((magic=="RRNATIVE6"||magic=="RRNATIVE7") &&
         !(in>>tmp.fireActivations>>tmp.fireDetonations))return false;
+    if(magic=="RRNATIVE7"){
+        if(!(in>>tmp.columnCount>>tmp.claimedColumn))return false;
+    }else{
+        tmp.columnCount=0;tmp.claimedColumn=false;
+    }
     if(!(in>>n))return false;
     if(tmp.level<1||tmp.level>1000 ||tmp.width<4||tmp.width>8||
        tmp.height!=tmp.width+1||n!=static_cast<size_t>(tmp.width*tmp.height)||
@@ -469,6 +494,7 @@ bool Game::load(std::istream& in) {
        tmp.hammerCount<0||tmp.hammerCount>999999||
        tmp.extraCount<0||tmp.extraCount>999999||
        tmp.rowCount<0||tmp.rowCount>999999||
+       tmp.columnCount<0||tmp.columnCount>999999||
        tmp.waterActivations<0||tmp.waterActivations>1000||
        tmp.shuffleCount<0||tmp.shuffleCount>999999||
        tmp.collected<0||tmp.collected>1000000||
@@ -477,13 +503,14 @@ bool Game::load(std::istream& in) {
        (tmp.objectiveKind==2 && (tmp.collectColor<0||tmp.collectColor>=19))||
        (tmp.objectiveKind!=2&&tmp.collectColor!=-1)||
        (tmp.claimedExtra&&tmp.level<5)||(tmp.claimedRow&&tmp.level<10)||
-       (tmp.claimedShuffle&&tmp.level<18))return false;
+       (tmp.claimedShuffle&&tmp.level<18)||
+       (tmp.claimedColumn&&tmp.level<26))return false;
     tmp.cells.resize(n);
     for(auto& t:tmp.cells)if(!(in>>t)||t < -2||t>=19||t==-1)return false;
     tmp.ice.assign(n,0);
     if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>3)return false;
-    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"){
+    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"){
         size_t rosterCount=0;
         if(!(in>>rosterCount)||rosterCount<3||rosterCount>7)return false;
         tmp.activeRoster.resize(rosterCount);
@@ -495,7 +522,7 @@ bool Game::load(std::istream& in) {
         tmp.elementals.assign(n,0);
     }
     tmp.fireAuras.assign(n,0);
-    if(magic=="RRNATIVE6")
+    if(magic=="RRNATIVE6"||magic=="RRNATIVE7")
         for(auto& duration:tmp.fireAuras)if(!(in>>duration)||duration<0||duration>2)return false;
     for(size_t i=0;i<n;++i){
         if(tmp.cells[i]==-2&&(tmp.ice[i]!=0||tmp.elementals[i]!=0||tmp.fireAuras[i]!=0))return false;

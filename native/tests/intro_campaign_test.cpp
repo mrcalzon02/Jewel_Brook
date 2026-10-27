@@ -11,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=25;++stage) {
+    for(int stage=1;stage<=27;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -44,6 +44,12 @@ int main(int argc,char** argv) {
             assert(g.collected==0);
             assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
         }
+        else if(stage>=26&&stage<=27){
+            // Android determines the authored collection/score/ice profile.
+            assert(g.objectiveKind>=0 && g.objectiveKind<=2);
+            if(g.objectiveKind==2)
+                assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
+        }
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
             int frozen=0, layers=0;
@@ -66,6 +72,7 @@ int main(int argc,char** argv) {
         assert(restored.randomState==g.randomState);
         assert(restored.collected==g.collected && restored.collectColor==g.collectColor);
         assert(restored.shuffleCount==g.shuffleCount && restored.claimedShuffle==g.claimedShuffle);
+        assert(restored.columnCount==g.columnCount && restored.claimedColumn==g.claimedColumn);
         assert(restored.activeRoster==g.activeRoster);
         assert(restored.elementals==g.elementals);
         assert(restored.waterActivations==g.waterActivations);
@@ -146,7 +153,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(26,source));
+    assert(!previous.startIntro(28,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -158,6 +165,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 25 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
+    std::cout<<"Native campaign: 27 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
     return 0;
 }

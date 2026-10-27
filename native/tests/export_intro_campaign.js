@@ -1,13 +1,13 @@
 'use strict';
-// Build-time only: export *authoritative* Rupee Rush stage-1..25 state from
+// Build-time only: export *authoritative* Rupee Rush stage-1..27 state from
 // web/engine.js. No JavaScript/Chromium is shipped in the native desktop game.
 const fs=require('node:fs');
 const path=require('node:path');
 const E=require('../../web/engine.js');
 const out=process.argv[2];
 if(!out)throw Error('Export path required');
-const content=['RRCAMPAIGN5 25'];
-for(let stage=1;stage<=25;stage++){
+const content=['RRCAMPAIGN6 27'];
+for(let stage=1;stage<=27;stage++){
   const g=E.create(stage,stage*7919);
   const snapshot=E.snapshot(g);
   const cfg=g.cfg;

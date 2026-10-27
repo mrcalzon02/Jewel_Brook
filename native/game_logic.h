@@ -38,8 +38,8 @@ public:
     // Square-anchored fire auras (0 off, 1 next tick, 2 newly ignited).
     std::vector<int> fireAuras;
     // Starter supply and milestone unlocks from web/progression.js LADDER.
-    int hammerCount = 3, extraCount = 0, rowCount = 0, shuffleCount = 0;
-    bool claimedExtra = false, claimedRow = false, claimedShuffle = false;
+    int hammerCount = 3, extraCount = 0, rowCount = 0, shuffleCount = 0, columnCount = 0;
+    bool claimedExtra = false, claimedRow = false, claimedShuffle = false, claimedColumn = false;
     std::array<MineTile, 16> rocks{};
 
     explicit Game(uint32_t seed = 7919);
@@ -51,6 +51,7 @@ public:
     bool useHammer(int cell);
     bool useExtraMoves();
     bool useRowRocket(int cell);
+    bool useColumnRocket(int cell);
     bool useShuffle();
     bool hasMove();
     bool mine(int index);
