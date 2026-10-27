@@ -1,17 +1,17 @@
 'use strict';
-// Build-time only: export *authoritative* Rupee Rush stage-1..30 state from
+// Build-time only: export *authoritative* Rupee Rush stage-1..31 state from
 // web/engine.js. No JavaScript/Chromium is shipped in the native desktop game.
 const fs=require('node:fs');
 const path=require('node:path');
 const E=require('../../web/engine.js');
 const out=process.argv[2];
 if(!out)throw Error('Export path required');
-const content=['RRCAMPAIGN7 30'];
-for(let stage=1;stage<=30;stage++){
+const content=['RRCAMPAIGN8 31'];
+for(let stage=1;stage<=31;stage++){
   const g=E.create(stage,stage*7919);
   const snapshot=E.snapshot(g);
   const cfg=g.cfg;
-  if(cfg.width!==(stage<=10?4:5)||cfg.height!==cfg.width+1||cfg.objectives.length!==1)
+  if(cfg.width!==(stage<=10?4:stage<=30?5:6)||cfg.height!==cfg.width+1||cfg.objectives.length!==1)
     throw Error('Intro stage '+stage+' changed dimensions/objective contract');
   const objective=cfg.objectives[0];
   const kind=objective.kind==='score'?0:objective.kind==='ice'?1:objective.kind==='collect'?2:objective.kind==='locks'?3:-1;

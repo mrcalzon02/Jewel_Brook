@@ -54,7 +54,7 @@ Level 1 grants exactly three Hammers. Clearing level 5 grants three Extra Moves 
 
 ## Known missing native ports
 
-These features remain in the existing Android implementation and **are not yet present on desktop**: authored levels 31+, blockers beyond early ice, remaining boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native scoring and the more advanced mini-game integrations are still provisional; the native mining economic transactions and ore generator now follow the authoritative mining module and receive cross-runtime functional checks. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
+These features remain in the existing Android implementation and **are not yet present on desktop**: authored levels 32+, blockers beyond early ice, remaining boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native scoring and the more advanced mini-game integrations are still provisional; the native mining economic transactions and ore generator now follow the authoritative mining module and receive cross-runtime functional checks. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
 
 ## Verification and distributions
 
@@ -64,7 +64,7 @@ GitHub Actions workflow artifacts and prerelease source verification attest to s
 
 The Android `web/engine.js` stage exporter rejects unexpected new overlays, statuses, abilities or roster changes. It exports the exact level-15 Opal identity (ID 11), the original source-defined stage roster, and the single level-15 Water elemental gem. The C++ game moves the Water flag with the gem, triggers the Water ability only when that gem is destroyed, clears the flag on activation, and persists its state in backwards-compatible `RRNATIVE5` saves. The original `web/art/embryon/runtime/gems/opal.webp` is converted to PNG during compilation without redrawing or changing the approved artwork. No Python or browser runtime is shipped.
 
-The native campaign currently enables only levels 1–30. Levels 18–19 introduce source-authored gem-color collection objectives and level 18 grants three Shuffle boosters after its first clear. The native UI uses the existing Rupee Rush runtime `shuffle.webp` sprite, converted losslessly to PNG at build time. The original web/progression.js BOOSTER_ART entry remains intentionally unchanged; no currency artwork is remapped. All visual work is secondary to build/runtime and functional mechanics tests; cosmetic tests must not block releases.
+The native campaign currently enables levels 1–31. Levels 18–19 introduce source-authored gem-color collection objectives and level 18 grants three Shuffle boosters after its first clear. The native UI uses the existing Rupee Rush runtime `shuffle.webp` sprite, converted losslessly to PNG at build time. The original web/progression.js BOOSTER_ART entry remains intentionally unchanged; no currency artwork is remapped. All visual work is secondary to build/runtime and functional mechanics tests; cosmetic tests must not block releases.
 
 ## Native collection goals and Shuffle (levels 18–20)
 
@@ -111,4 +111,28 @@ Android's stage exporter now imports the original lock layers separately from ic
 
 The Ice elemental seeded by level 28 is a *gem-carried power*, distinct from pinned ice blockers. Destroying it freezes up to two adjacent valid unpinned gems for two normal turns. Frozen positions cannot be swapped or matched until they thaw and are shown with the existing `web/art/primary/overlays/frost.png`. Native saved boards now use `RRNATIVE8` (lock layers, removed-lock progress, freeze flags and activations) with read compatibility for `RRNATIVE1`–`RRNATIVE7`. There are no new or blocking cosmetic tests: release gates exercise gameplay rules, save/load, packaging, and actual native executable startup.
 
-Level 31 changes the board width and remains gated for later native progression work. All Android and Fire OS code, approved currency mappings and gameplay art remain unchanged. The native Windows/Linux versions continue to exclude Chromium, HTML runtimes, Python and any packaged browser.
+## Native six-column stage 31 (first expansion after the original thirty)
+
+Stage 31 is exported from the unchanged Android `web/engine.js` using the
+same deterministic stage seed as the earlier levels. The source-authored
+**6×7 board has 12 actual void cells**, a 31-move budget, an Opal collection
+objective of 20, four ice-covered cells, and one locked cell. The build-time
+exporter refuses any unsupported future overlays, elemental powers, blocker
+types or roster changes instead of fabricating replacements. Its catalog
+format is `RRCAMPAIGN8` with exactly 31 entries and is packaged as
+`data/campaign-31.txt`. No JavaScript interpreter is included.
+
+The C++ loader validates each authored entry at its own actual width,
+including the 5→6-column transition, and the SDL3 board/input layout uses
+that width. Native functional tests pin the source-authored void positions,
+objective, RNG state and blocker stock, then exercise stage 30→31 with
+earned inventory retained and a stage-31 `RRNATIVE8` save/reload roundtrip.
+Existing RRNATIVE1–8 saves remain readable; no save migration or extra
+booster award is needed at this milestone.
+
+**Stage 32 and later remain gated** until their mechanics are independently
+ported and tested. Android and Fire OS code, approved currency mappings
+and gameplay art remain unchanged. Windows/Linux still ship no Chromium,
+HTML runtimes, Python, or packaged browser. GitHub Actions compilation,
+functional tests and headless packaged launch do not replace installed
+Windows/Linux gameplay and save acceptance.

@@ -11,13 +11,13 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=30;++stage) {
+    for(int stage=1;stage<=31;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
         assert(g.startIntro(stage,source));
         assert(g.level==stage);
-        assert(g.width==(stage<=10?4:5));
+        assert(g.width==(stage<=10?4:stage<=30?5:6));
         assert(g.height==g.width+1);
         assert(g.cells.size()==static_cast<size_t>(g.width*g.height));
         assert(g.ice.size()==g.cells.size());
@@ -52,7 +52,7 @@ int main(int argc,char** argv) {
             if(g.objectiveKind==2)
                 assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
         }
-        else if(stage>=28&&stage<=30)
+        else if(stage>=28&&stage<=31)
             assert(g.objectiveKind>=0&&g.objectiveKind<=3);
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
@@ -127,6 +127,46 @@ int main(int argc,char** argv) {
             assert(waterRestored.elementals==g.elementals);
             assert(waterRestored.activeRoster==g.activeRoster);
         }
+        if(stage==31){
+            // Pin the actual Android-authored six-column first expansion,
+            // not a native-invented 5x6 layout or a rectangular fill.
+            const std::vector<int> voids{0,1,6,7,30,31,34,35,36,37,40,41};
+            for(int i=0;i<42;++i)
+                assert((g.cells[i]==-2)==(std::find(voids.begin(),voids.end(),i)!=voids.end()));
+            assert(g.width==6 && g.height==7 && holes==12);
+            assert(g.moves==31 && g.goal==6290 && g.randomState==2847946430u);
+            assert(g.objectiveKind==2 && g.collectColor==11 && g.objectiveTarget==20);
+            assert(g.activeRoster==std::vector<int>({0,1,2,11}));
+            assert(std::count_if(g.ice.begin(),g.ice.end(),[](int n){return n>0;})==4);
+            assert(std::count_if(g.locks.begin(),g.locks.end(),[](int n){return n>0;})==1);
+            assert(g.locks[24]>0 && g.ice[3]>0 && g.ice[11]>0 &&
+                   g.ice[21]>0 && g.ice[27]>0);
+            assert(std::all_of(g.elementals.begin(),g.elementals.end(),[](int n){return n==0;}));
+            // Stage 30 -> 31 is a real progression boundary. The new board
+            // must not discard earned booster inventory or previous unlocks.
+            Game crossing;
+            std::ifstream stage30(argv[1]);
+            assert(crossing.startIntro(30,stage30));
+            crossing.hammerCount=2;
+            crossing.columnCount=2;
+            crossing.claimedColumn=true;
+            std::ifstream stage31(argv[1]);
+            assert(crossing.startIntro(31,stage31));
+            assert(crossing.hammerCount==2 && crossing.columnCount==2 && crossing.claimedColumn);
+            assert(crossing.cells==g.cells && crossing.ice==g.ice &&
+                   crossing.locks==g.locks && crossing.elementals==g.elementals);
+            std::stringstream saved;
+            assert(crossing.save(saved));
+            Game reopened;
+            assert(reopened.load(saved));
+            assert(reopened.level==31 && reopened.width==6 && reopened.height==7);
+            assert(reopened.cells==g.cells && reopened.ice==g.ice &&
+                   reopened.locks==g.locks && reopened.elementals==g.elementals);
+            assert(reopened.hammerCount==2 && reopened.columnCount==2 &&
+                   reopened.claimedColumn && reopened.randomState==g.randomState);
+            assert(reopened.objectiveKind==2 && reopened.collectColor==11 &&
+                   reopened.objectiveTarget==20 && reopened.collected==0);
+        }
         if(stage==28){
             int frozenSeed=-1;
             for(int i=0;i<static_cast<int>(g.elementals.size());++i)
@@ -167,7 +207,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(31,source));
+    assert(!previous.startIntro(32,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -179,6 +219,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 30 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
+    std::cout<<"Native campaign: 31 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
     return 0;
 }

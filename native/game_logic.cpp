@@ -404,14 +404,14 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>30)return false;
+    if(stage<1||stage>31)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN7"||count!=30)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN8"||count!=31)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;int selectedColor=-1;
         if(!(authoredCatalog>>number>>w>>h>>budget>>stageGoal>>kind>>target>>rng>>n>>selectedColor)
-           ||number!=k||w!=(k<=10?4:5)||h!=w+1||budget<12||budget>36||stageGoal<1||
+           ||number!=k||w!=(k<=10?4:k<=30?5:6)||h!=w+1||budget<12||budget>36||stageGoal<1||
            (kind!=0&&kind!=1&&kind!=2&&kind!=3)||target<1||target>2000000||!rng||
            n!=static_cast<size_t>(w*h))return false;
         std::vector<int> types(n),frost(n);
