@@ -205,9 +205,10 @@ void Game::resolveFire(){
 void Game::advanceFireTurn(){
     if(won||lost||fireAuras.empty())return;
     std::vector<int> expired;
-    for(int i=0;i<static_cast<int>(fireAuras.size());++i)
+    for(int i=0;i<static_cast<int>(fireAuras.size());++i){
         if(frozen[i]>0)--frozen[i];
         if(fireAuras[i]>0 && --fireAuras[i]==0)expired.push_back(i);
+    }
     if(expired.empty())return;
     for(int origin:expired){
         ++fireDetonations;
