@@ -11,6 +11,7 @@ on:
       - 'web/art/primary/powerups/hammer.png'
       - 'web/art/additions/economy/hourglass.png'
       - 'web/art/embryon/runtime/boosters/row.webp'
+      - 'web/art/embryon/runtime/boosters/shuffle.webp'
       - 'web/art/embryon/runtime/gems/opal.webp'
       - 'web/board-features.js'
       - 'web/elemental-challenges.js'
@@ -112,6 +113,7 @@ jobs:
           test -s stage/RupeeRush/data/art/primary/powerups/hammer.png
           test -s stage/RupeeRush/data/art/additions/economy/hourglass.png
           test -s stage/RupeeRush/data/art/embryon/runtime/boosters/row.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/shuffle.png
           test -s stage/RupeeRush/data/art/embryon/runtime/gems/opal.png
           test -z "$(find stage/RupeeRush -type f \( -name '*.html' -o -name '*.js' -o -name 'chrome.exe' -o -name 'libcef*' -o -name 'electron*' \) -print -quit)"
       - name: Archive Windows application
@@ -151,4 +153,4 @@ jobs:
           gh release create "rupeerush-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
             release-native/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --prerelease --title "Rupee Rush Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
-            --notes 'Experimental native C++/SDL3 desktop build. Seventeen Android-authored match-three stages, including approved opal gem, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'
+            --notes 'Experimental native C++/SDL3 desktop build. Twenty Android-authored match-three stages including collect-color goals, Shuffle unlock, opal, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'

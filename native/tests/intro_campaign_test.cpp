@@ -3,6 +3,7 @@
 #endif
 #include "../game_logic.h"
 #include <cassert>
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -10,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=17;++stage) {
+    for(int stage=1;stage<=20;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -38,6 +39,11 @@ int main(int argc,char** argv) {
         if(stage<=10)
             assert((stage==3||stage==6||stage==8||stage==9||stage==10)?
                 g.objectiveKind==1 : g.objectiveKind==0);
+        else if(stage==18||stage==19){
+            assert(g.objectiveKind==2);
+            assert(g.collected==0);
+            assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
+        }
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
             int frozen=0, layers=0;
@@ -58,6 +64,8 @@ int main(int argc,char** argv) {
         assert(restored.objectiveTarget==g.objectiveTarget);
         assert(restored.objectiveKind==g.objectiveKind);
         assert(restored.randomState==g.randomState);
+        assert(restored.collected==g.collected && restored.collectColor==g.collectColor);
+        assert(restored.shuffleCount==g.shuffleCount && restored.claimedShuffle==g.claimedShuffle);
         assert(restored.activeRoster==g.activeRoster);
         assert(restored.elementals==g.elementals);
         assert(restored.waterActivations==g.waterActivations);
@@ -128,7 +136,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(18,source));
+    assert(!previous.startIntro(21,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -140,6 +148,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 17 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
+    std::cout<<"Native campaign: 20 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
     return 0;
 }

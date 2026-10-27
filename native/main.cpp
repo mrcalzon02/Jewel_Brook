@@ -145,6 +145,7 @@ struct Art {
     SDL_Texture* hammer=nullptr;
     SDL_Texture* extra=nullptr;
     SDL_Texture* rowRocket=nullptr;
+    SDL_Texture* shuffle=nullptr;
     bool load(SDL_Renderer* r,const fs::path& root){
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
         for(int i=0;i<5;++i)gem[i]=png(r,root/"art/embryon/generated/gems"/(std::string(names[i])+".png"));
@@ -156,6 +157,7 @@ struct Art {
         hammer=png(r,root/"art/primary/powerups/hammer.png");
         extra=png(r,root/"art/additions/economy/hourglass.png");
         rowRocket=png(r,root/"art/embryon/runtime/boosters/row.png");
+        shuffle=png(r,root/"art/embryon/runtime/boosters/shuffle.png");
         for(int i=0;i<40;++i) {
             pick[i]=png(r,root/rupee::PickaxeArt[i]);
             glove[i]=png(r,root/rupee::GloveArt[i]);
@@ -164,7 +166,7 @@ struct Art {
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
         return std::all_of(gem.begin(),gem.begin()+5,[](SDL_Texture* t){return t!=nullptr;})
-               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&hammer&&extra&&rowRocket;
+               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&hammer&&extra&&rowRocket&&shuffle;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -176,18 +178,22 @@ struct Art {
         if(hammer)SDL_DestroyTexture(hammer);
         if(extra)SDL_DestroyTexture(extra);
         if(rowRocket)SDL_DestroyTexture(rowRocket);
+        if(shuffle)SDL_DestroyTexture(shuffle);
     }
 };
-std::array<Rect,3> boosterIcons(int ww,int hh){
-    return {Rect{ww*.5f-128.0f,static_cast<float>(hh-74),60,60},
-            Rect{ww*.5f-30.0f,static_cast<float>(hh-74),60,60},
-            Rect{ww*.5f+68.0f,static_cast<float>(hh-74),60,60}};
+std::array<Rect,4> boosterIcons(int ww,int hh){
+    return {Rect{ww*.5f-181.0f,static_cast<float>(hh-74),60,60},
+            Rect{ww*.5f-86.0f,static_cast<float>(hh-74),60,60},
+            Rect{ww*.5f+9.0f,static_cast<float>(hh-74),60,60},
+            Rect{ww*.5f+104.0f,static_cast<float>(hh-74),60,60}};
 }
 void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArmed,bool rowArmed){
     label(r,28,26,"RUPEE RUSH - NATIVE MATCH 3",2);
     label(r,28,59,"STAGE "+std::to_string(game.level)+"   MOVES "+std::to_string(game.moves)+
           (game.objectiveKind==1?
              "   BREAK ICE "+std::to_string(game.iceCleared)+" / "+std::to_string(game.objectiveTarget):
+           game.objectiveKind==2?
+             "   COLLECT "+std::to_string(game.collectColor)+" : "+std::to_string(game.collected)+" / "+std::to_string(game.objectiveTarget):
              "   SCORE "+std::to_string(game.score)+" / "+std::to_string(game.objectiveTarget)),2);
     const auto b=gameBoard(ww,hh,game);
     SDL_SetRenderDrawColor(r,67,191,128,255);
@@ -227,10 +233,15 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
             SDL_RenderTexture(r,art.rowRocket,nullptr,&rowRect);
             label(r,icons[2].x+43,icons[2].y+44,std::to_string(game.rowCount),2);
         }
+        if(game.claimedShuffle){
+            SDL_FRect shuffled{icons[3].x,icons[3].y,icons[3].w,icons[3].h};
+            SDL_RenderTexture(r,art.shuffle,nullptr,&shuffled);
+            label(r,icons[3].x+43,icons[3].y+44,std::to_string(game.shuffleCount),2);
+        }
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<17)
+        if(game.level<20)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
         else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
@@ -341,7 +352,7 @@ int main(int argc,char** argv){
     const fs::path storage=savePath();
     Game game=restore(storage);
     auto loadAuthoredIntro=[&](int stage){
-        std::ifstream campaign(dataRoot()/"campaign-17.txt");
+        std::ifstream campaign(dataRoot()/"campaign-20.txt");
         if(!campaign)return false;
         return game.startIntro(stage,campaign);
     };
@@ -389,7 +400,7 @@ int main(int argc,char** argv){
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=17 && loadAuthoredIntro(next)){
+                        if(next<=20 && loadAuthoredIntro(next)){
                             hammerArmed=false;rowArmed=false;persist();
                         }
                     }else{
@@ -400,6 +411,8 @@ int main(int argc,char** argv){
                             if(game.useExtraMoves())persist();
                         } else if(!game.won && game.claimedRow && icons[2].contains(x,y)){
                             if(game.rowCount>0){rowArmed=!rowArmed;hammerArmed=false;}
+                        } else if(!game.won && game.claimedShuffle && icons[3].contains(x,y)){
+                            if(game.useShuffle()){hammerArmed=false;rowArmed=false;persist();}
                         } else{
                             const int target=hit(gameBoard(ww,hh,game),game.width,game.height,x,y);
                             if(target>=0&&hammerArmed) {

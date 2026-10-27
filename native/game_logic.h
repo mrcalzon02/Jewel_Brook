@@ -26,8 +26,9 @@ public:
     uint32_t randomState = 1;
     std::vector<int> cells;
     // Android-authored introductory campaign objectives and blocker state.
-    // objectiveKind: 0=score, 1=ice; later kinds are not exposed until ported.
+    // objectiveKind: 0=score, 1=ice, 2=collect a specific authored gem.
     int objectiveKind = 0, objectiveTarget = 850, iceCleared = 0;
+    int collectColor = -1, collected = 0;
     std::vector<int> ice;
     // Exact authored gem IDs: 0 ruby, 1 sapphire, 2 emerald, 11 opal.
     std::vector<int> activeRoster{0,1,2};
@@ -35,8 +36,8 @@ public:
     std::vector<int> elementals;
     int waterActivations=0;
     // Starter supply and milestone unlocks from web/progression.js LADDER.
-    int hammerCount = 3, extraCount = 0, rowCount = 0;
-    bool claimedExtra = false, claimedRow = false;
+    int hammerCount = 3, extraCount = 0, rowCount = 0, shuffleCount = 0;
+    bool claimedExtra = false, claimedRow = false, claimedShuffle = false;
     std::array<MineTile, 16> rocks{};
 
     explicit Game(uint32_t seed = 7919);
@@ -48,6 +49,7 @@ public:
     bool useHammer(int cell);
     bool useExtraMoves();
     bool useRowRocket(int cell);
+    bool useShuffle();
     bool hasMove();
     bool mine(int index);
     void replenishStrikes(); // diagnostic only: not exposed in gameplay
@@ -59,6 +61,7 @@ private:
     uint32_t next();
     int range(int limit);
     bool clearAndFill();
+    bool shuffleBoard();
     void refill();
     void clearGem(int cell); // preserves independent blocker and elemental state
     void updateOutcome();

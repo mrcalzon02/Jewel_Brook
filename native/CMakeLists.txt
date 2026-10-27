@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-17.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-20.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -42,6 +42,19 @@ execute_process(
 if(NOT ROW_EXPORT_STATUS EQUAL 0)
   message(FATAL_ERROR "Approved Row Rocket image could not be converted for SDL3")
 endif()
+# Reuse the existing authored runtime Shuffle sprite without changing the
+# web/progression.js artwork catalog (currently unassigned) or currency art.
+set(SHUFFLE_BOOSTER_PNG "${CMAKE_BINARY_DIR}/shuffle.png")
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/boosters/shuffle.webp"
+    "${SHUFFLE_BOOSTER_PNG}"
+  RESULT_VARIABLE SHUFFLE_EXPORT_STATUS
+)
+if(NOT SHUFFLE_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Existing runtime Shuffle image could not be converted")
+endif()
+
 # Exact pre-approved opal artwork; preserve gem identity and original pixels.
 set(OPAL_GEM_PNG "${CMAKE_BINARY_DIR}/opal.png")
 execute_process(
@@ -89,6 +102,10 @@ add_executable(rupee_early_booster_tests tests/early_boosters_test.cpp)
 target_link_libraries(rupee_early_booster_tests PRIVATE rupee_native_logic)
 add_test(NAME native_early_boosters_inventory_and_actions
     COMMAND rupee_early_booster_tests "${INTRO_CATALOG}")
+add_executable(rupee_collect_shuffle_tests tests/collect_shuffle_test.cpp)
+target_link_libraries(rupee_collect_shuffle_tests PRIVATE rupee_native_logic)
+add_test(NAME native_collect_objective_and_shuffle
+    COMMAND rupee_collect_shuffle_tests "${INTRO_CATALOG}")
 
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
@@ -145,6 +162,8 @@ install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/additions/economy/hourglass.png"
   DESTINATION data/art/additions/economy)
 install(FILES "${ROW_BOOSTER_PNG}"
+  DESTINATION data/art/embryon/runtime/boosters)
+install(FILES "${SHUFFLE_BOOSTER_PNG}"
   DESTINATION data/art/embryon/runtime/boosters)
 
 
