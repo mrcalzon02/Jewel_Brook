@@ -22,6 +22,13 @@ if (versionNumber < 1 || versionNumber > 2100000000) {
     throw new GradleException('Invalid Rupee Rush versionCode')
 }
 
+// A Play build can compile in CI with ID=0, but production eligibility
+// is blocked until the actual Play Console Games services project ID is set.
+def playGamesProjectId = (project.findProperty('playGamesProjectId') ?: '0').toString()
+if (!(playGamesProjectId ==~ /[0-9]{1,24}/)) {
+    throw new GradleException('Invalid playGamesProjectId: use the decimal Games services project ID shown in Play Console')
+}
+
 android {
     namespace 'io.github.mrcalzon02.rupeerush'
     compileSdk 36
@@ -74,6 +81,7 @@ android {
         }
         // Play AAB only: do not inject the historical GitHub sideload signer.
         play {
+            resValue 'string', 'game_services_project_id', playGamesProjectId
             initWith release
             signingConfig = null
             if (havePlaySigning) signingConfig signingConfigs.playUpload
@@ -83,6 +91,8 @@ android {
 }
 
 dependencies {
+    playImplementation 'com.google.android.gms:play-services-games-v2:22.1.0'
+
     implementation 'androidx.webkit:webkit:1.16.0'
 }
 
