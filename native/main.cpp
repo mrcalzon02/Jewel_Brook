@@ -334,7 +334,7 @@ int main(int argc,char** argv){
     const fs::path storage=savePath();
     Game game=restore(storage);
     auto loadAuthoredIntro=[&](int stage){
-        std::ifstream campaign(dataRoot()/"intro-campaign-v1.txt");
+        std::ifstream campaign(dataRoot()/"campaign-14.txt");
         if(!campaign)return false;
         return game.startIntro(stage,campaign);
     };
