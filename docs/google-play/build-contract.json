@@ -1,0 +1,9 @@
+{
+  "package": "io.github.mrcalzon02.rupeerush",
+  "module": "android/app",
+  "modules": [
+    "android/app"
+  ],
+  "allowed_permissions": [],
+  "remove_install_permission": false
+}
