@@ -75,7 +75,7 @@ public final class PlayCloudBridge {
         }
         authorized("backup", () -> {
             SnapshotsClient client = PlayGames.getSnapshotsClient(activity);
-            client.open(SLOT, true, SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED)
+            client.open(SLOT, true, SnapshotsClient.RESOLUTION_POLICY_MANUAL)
                 .addOnCompleteListener(activity, task -> {
                     if (!task.isSuccessful() || task.getResult().isConflict()) {
                         send("backup", false, "Cloud snapshot unavailable or conflicting; do not discard local progress.", null);
@@ -107,7 +107,7 @@ public final class PlayCloudBridge {
     @JavascriptInterface public void restore() {
         authorized("restore", () -> {
             SnapshotsClient client = PlayGames.getSnapshotsClient(activity);
-            client.open(SLOT, false, SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED)
+            client.open(SLOT, false, SnapshotsClient.RESOLUTION_POLICY_MANUAL)
                 .addOnCompleteListener(activity, task -> {
                     if (!task.isSuccessful() || task.getResult().isConflict()) {
                         send("restore", false, "No accessible cloud snapshot, or an unresolved conflict. Local progress was not modified.", null);
