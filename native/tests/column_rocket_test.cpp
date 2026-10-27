@@ -96,10 +96,17 @@ int main(int argc,char** argv){
     for(std::string word;header>>word;)fields.push_back(word);
     assert(fields.size()>8);
     fields[0]="RRNATIVE6";
-    fields.erase(fields.end()-3,fields.end()-1);
+    // RRNative8 adds four header fields beyond v6: Column Rocket stock,
+    // its claimed flag, cleared locks, and Ice activations. Remove all four.
+    fields.erase(fields.end()-5,fields.end()-1);
+    std::string board, ice, locks, frozen;
+    assert(static_cast<bool>(std::getline(v7,board)));
+    assert(static_cast<bool>(std::getline(v7,ice)));
+    assert(static_cast<bool>(std::getline(v7,locks)));
+    assert(static_cast<bool>(std::getline(v7,frozen)));
     std::ostringstream converted;
     for(const auto& item:fields)converted<<item<<" ";
-    converted<<"\n"<<v7.rdbuf();
+    converted<<"\n"<<board<<"\n"<<ice<<"\n"<<v7.rdbuf();
     std::stringstream legacy(converted.str());
     Game migrated;
     assert(migrated.load(legacy));
