@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/intro-campaign-v1.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-14.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -29,6 +29,20 @@ execute_process(
 if(NOT INTRO_EXPORT_STATUS EQUAL 0)
   message(FATAL_ERROR "Could not export authoritative Android intro campaign")
 endif()
+# Convert an already approved runtime Row Rocket asset to a format understood
+# by SDL3's built-in PNG loader; Pillow runs only on the build machine.
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+set(ROW_BOOSTER_PNG "${CMAKE_BINARY_DIR}/row.png")
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/boosters/row.webp"
+    "${ROW_BOOSTER_PNG}"
+  RESULT_VARIABLE ROW_EXPORT_STATUS
+)
+if(NOT ROW_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Approved Row Rocket image could not be converted for SDL3")
+endif()
+
 
 add_library(rupee_native_logic STATIC game_logic.cpp)
 add_library(rupee_mine_logic STATIC mine_economy.cpp)
@@ -115,6 +129,8 @@ install(FILES
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/additions/economy/hourglass.png"
   DESTINATION data/art/additions/economy)
+install(FILES "${ROW_BOOSTER_PNG}"
+  DESTINATION data/art/embryon/runtime/boosters)
 
 
 # Install original equipment art under its original relative path (not flattened).

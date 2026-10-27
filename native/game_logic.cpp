@@ -80,6 +80,7 @@ void Game::startLevel(int stage) {
 }
 bool Game::adjacent(int a,int b) const {
     if(a<0||b<0||a>=static_cast<int>(cells.size())||b>=static_cast<int>(cells.size()))return false;
+    if(cells[a]<0||cells[b]<0)return false; // -2 is an authored board void
     if(ice.size()==cells.size() && (ice[a]>0||ice[b]>0))return false;
     return std::abs(a-b)==width || (a/width==b/width && std::abs(a-b)==1);
 }
@@ -102,10 +103,10 @@ void Game::refill(){
     // Source gravity is segmented around each immovable ice blocker.
     for(int x=0;x<width;++x){
         for(int y=height-1;y>=0;){
-            while(y>=0&&ice[y*width+x]>0)--y;
+            while(y>=0&&(ice[y*width+x]>0||cells[y*width+x]==-2))--y;
             if(y<0)break;
             const int bottom=y;
-            while(y>=0&&ice[y*width+x]==0)--y;
+            while(y>=0&&ice[y*width+x]==0&&cells[y*width+x]!=-2)--y;
             const int top=y+1;
             int write=bottom;
             for(int from=bottom;from>=top;--from)
@@ -144,6 +145,7 @@ bool Game::clearAndFill() {
             }
         }
         for(int i:affected){
+            if(cells[i]==-2)continue;
             if(ice[i]>0){--ice[i];++iceCleared;}
             else cells[i]=-1;
         }
@@ -164,7 +166,7 @@ bool Game::swap(int a,int b) {
         // Preserve authored blocker positions and layers during deadlock repair.
         std::vector<int> free;
         for(int i=0;i<static_cast<int>(cells.size());++i)
-            if(ice.empty()||ice[i]==0)free.push_back(i);
+            if(cells[i]>=0&&(ice.empty()||ice[i]==0))free.push_back(i);
         for(int tries=0;tries<120;++tries) {
             for(int i=static_cast<int>(free.size())-1;i>0;--i)
                 std::swap(cells[free[i]],cells[free[range(i+1)]]);
@@ -194,7 +196,7 @@ bool Game::useExtraMoves(){
     return true;
 }
 bool Game::useHammer(int cell){
-    if(won||hammerCount<=0||cell<0||cell>=static_cast<int>(cells.size()))return false;
+    if(won||hammerCount<=0||cell<0||cell>=static_cast<int>(cells.size())||cells[cell]<0)return false;
     --hammerCount;
     // web/engine.js hammer: twenty successive blows; the final blow can
     // remove the gem beneath the last ice layer. Do not invent extra strikes.
@@ -209,15 +211,18 @@ bool Game::useHammer(int cell){
     return true;
 }
 bool Game::useRowRocket(int cell){
-    if(won||rowCount<=0||cell<0||cell>=static_cast<int>(cells.size()))return false;
+    if(won||rowCount<=0||cell<0||cell>=static_cast<int>(cells.size())||cells[cell]<0)return false;
     --rowCount;
     const int y=cell/width;
+    int affected=0;
     for(int x=0;x<width;++x){
         const int i=y*width+x;
+        if(cells[i]==-2)continue;
+        ++affected;
         if(ice[i]>0){--ice[i];++iceCleared;}
         else cells[i]=-1;
     }
-    score+=width*35;
+    score+=affected*35;
     refill();clearAndFill();
     updateOutcome();
     return true;
@@ -245,18 +250,20 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>10)return false;
+    if(stage<1||stage>14)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRINTRO1"||count!=10)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN2"||count!=14)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;
         if(!(authoredCatalog>>number>>w>>h>>budget>>stageGoal>>kind>>target>>rng>>n)
-           ||number!=k||w!=4||h!=5||budget<12||budget>36||stageGoal<1||
-           (kind!=0&&kind!=1)||target<1||target>2000000||!rng||n!=20)return false;
+           ||number!=k||w!=(k<=10?4:5)||h!=w+1||budget<12||budget>36||stageGoal<1||
+           (kind!=0&&kind!=1)||target<1||target>2000000||!rng||
+           n!=static_cast<size_t>(w*h))return false;
         std::vector<int> types(n),frost(n);
-        for(auto& x:types)if(!(authoredCatalog>>x)||x<0||x>=5)return false;
+        for(auto& x:types)if(!(authoredCatalog>>x)||x < -2||x>=3||x==-1)return false;
         for(auto& x:frost)if(!(authoredCatalog>>x)||x<0||x>3)return false;
+        for(size_t i=0;i<n;++i)if(types[i]==-2&&frost[i]!=0)return false;
         if(k!=stage)continue;
         Game candidate=*this;
         candidate.level=number;candidate.width=w;candidate.height=h;
@@ -317,10 +324,11 @@ bool Game::load(std::istream& in) {
        tmp.rowCount<0||tmp.rowCount>999999||
        (tmp.claimedExtra&&tmp.level<5)||(tmp.claimedRow&&tmp.level<10))return false;
     tmp.cells.resize(n);
-    for(auto& t:tmp.cells)if(!(in>>t)||t<0||t>=5)return false;
+    for(auto& t:tmp.cells)if(!(in>>t)||t < -2||t>=5||t==-1)return false;
     tmp.ice.assign(n,0);
     if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>3)return false;
+    for(size_t i=0;i<n;++i)if(tmp.cells[i]==-2&&tmp.ice[i]!=0)return false;
     for(auto& r:tmp.rocks){
        if(!(in>>r.kind>>r.hardness>>r.hits>>r.done)
           ||r.kind<0||r.kind>3||r.hardness<1||r.hardness>3

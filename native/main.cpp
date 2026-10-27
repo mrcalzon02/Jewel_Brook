@@ -144,6 +144,7 @@ struct Art {
     SDL_Texture* ice2=nullptr;
     SDL_Texture* hammer=nullptr;
     SDL_Texture* extra=nullptr;
+    SDL_Texture* rowRocket=nullptr;
     bool load(SDL_Renderer* r,const fs::path& root){
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
         for(int i=0;i<5;++i)gem[i]=png(r,root/"art/embryon/generated/gems"/(std::string(names[i])+".png"));
@@ -153,6 +154,7 @@ struct Art {
         // Only original approved PNGs (source: web/progression.js BOOSTER_ART).
         hammer=png(r,root/"art/primary/powerups/hammer.png");
         extra=png(r,root/"art/additions/economy/hourglass.png");
+        rowRocket=png(r,root/"art/embryon/runtime/boosters/row.png");
         for(int i=0;i<40;++i) {
             pick[i]=png(r,root/rupee::PickaxeArt[i]);
             glove[i]=png(r,root/rupee::GloveArt[i]);
@@ -160,7 +162,7 @@ struct Art {
         const auto ready=[](const auto& list){
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
-        return ready(gem)&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&hammer&&extra;
+        return ready(gem)&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&hammer&&extra&&rowRocket;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -171,13 +173,15 @@ struct Art {
         if(ice2)SDL_DestroyTexture(ice2);
         if(hammer)SDL_DestroyTexture(hammer);
         if(extra)SDL_DestroyTexture(extra);
+        if(rowRocket)SDL_DestroyTexture(rowRocket);
     }
 };
-std::array<Rect,2> boosterIcons(int ww,int hh){
-    return {Rect{ww*.5f-88.0f,static_cast<float>(hh-74),60,60},
-            Rect{ww*.5f+30.0f,static_cast<float>(hh-74),60,60}};
+std::array<Rect,3> boosterIcons(int ww,int hh){
+    return {Rect{ww*.5f-128.0f,static_cast<float>(hh-74),60,60},
+            Rect{ww*.5f-30.0f,static_cast<float>(hh-74),60,60},
+            Rect{ww*.5f+68.0f,static_cast<float>(hh-74),60,60}};
 }
-void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArmed){
+void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArmed,bool rowArmed){
     label(r,28,26,"RUPEE RUSH - NATIVE MATCH 3",2);
     label(r,28,59,"STAGE "+std::to_string(game.level)+"   MOVES "+std::to_string(game.moves)+
           (game.objectiveKind==1?
@@ -190,6 +194,7 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
     float tile=b.w/game.width;
     for(int y=0;y<game.height;++y)for(int x=0;x<game.width;++x){
         int i=y*game.width+x;
+        if(game.cells[i]==-2)continue; // Respect authored empty board-space silhouettes
         SDL_FRect dest{b.x+x*tile+2,b.y+y*tile+2,tile-4,tile-4};
         fill(r,{dest.x,dest.y,dest.w,dest.h},{30,50,55,255});
         // Source identity is the same approved gemstone file already in web/.
@@ -210,16 +215,22 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
             SDL_RenderTexture(r,art.extra,nullptr,&extraRect);
             label(r,icons[1].x+43,icons[1].y+44,std::to_string(game.extraCount),2);
         }
+        if(game.claimedRow){
+            SDL_FRect rowRect{icons[2].x,icons[2].y,icons[2].w,icons[2].h};
+            SDL_RenderTexture(r,art.rowRocket,nullptr,&rowRect);
+            label(r,icons[2].x+43,icons[2].y+44,std::to_string(game.rowCount),2);
+        }
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<10)
+        if(game.level<14)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
-        else label(r,ww*.5f-155,hh-32,"INTRO COMPLETE",2);
+        else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
         label(r,ww*.5f-90,hh-72,"OUT OF MOVES",2);
         button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"RETRY");
     }else if(hammerArmed) label(r,ww*.5f-200,hh-106,"HAMMER: CLICK ONE TILE",2);
+    else if(rowArmed) label(r,ww*.5f-200,hh-106,"ROW ROCKET: PICK ONE ROW",2);
     else label(r,ww*.5f-200,hh-106,"DRAG TO SWAP OR PICK A BOOSTER",2);
 }
 void drawMine(SDL_Renderer* r,Art& art,const MineEconomy& n,int ww,int hh,bool surveyMode){
@@ -334,7 +345,7 @@ int main(int argc,char** argv){
     const fs::path mineStorage=storage.parent_path()/"mine-state-v1.txt";
     MineEconomy mine=restoreMine(mineStorage,game,fs::exists(storage));
     Screen screen=Screen::Home;
-    bool running=true;bool surveyMode=false;bool hammerArmed=false;int pressed=-1;int renderedFrames=0;
+    bool running=true;bool surveyMode=false;bool hammerArmed=false;bool rowArmed=false;int pressed=-1;int renderedFrames=0;
     auto persist=[&](){if(!writeSave(game,storage))SDL_Log("Native board save write failed.");};
     auto persistMine=[&](){if(!writeSave(mine,mineStorage))SDL_Log("Native mining save write failed.");};
     if(mine.resetForDay([](){
@@ -352,7 +363,7 @@ int main(int argc,char** argv){
         while(SDL_PollEvent(&e)){
             if(e.type==SDL_EVENT_QUIT){running=false;break;}
             if(e.type==SDL_EVENT_KEY_DOWN){
-                if(e.key.key==SDLK_ESCAPE){if(hammerArmed)hammerArmed=false;else screen=Screen::Home;pressed=-1;}
+                if(e.key.key==SDLK_ESCAPE){if(hammerArmed||rowArmed){hammerArmed=false;rowArmed=false;}else screen=Screen::Home;pressed=-1;}
                 else if(e.key.key==SDLK_Q&&screen==Screen::Home){running=false;}
             }
             if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&e.button.button==SDL_BUTTON_LEFT){
@@ -367,23 +378,27 @@ int main(int argc,char** argv){
                     else if(actions[2].contains(x,y))running=false;
                 }else if(screen==Screen::Board){
                     if(Rect{20.0f,static_cast<float>(hh-64),154,44}.contains(x,y)) {
-                        screen=Screen::Home;hammerArmed=false;
+                        screen=Screen::Home;hammerArmed=false;rowArmed=false;
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=10 && loadAuthoredIntro(next)){
-                            hammerArmed=false;persist();
+                        if(next<=14 && loadAuthoredIntro(next)){
+                            hammerArmed=false;rowArmed=false;persist();
                         }
                     }else{
                         const auto icons=boosterIcons(ww,hh);
                         if(!game.won && icons[0].contains(x,y)) {
-                            if(game.hammerCount>0)hammerArmed=!hammerArmed;
+                            if(game.hammerCount>0){hammerArmed=!hammerArmed;rowArmed=false;}
                         } else if(!game.won && game.claimedExtra && icons[1].contains(x,y)){
                             if(game.useExtraMoves())persist();
+                        } else if(!game.won && game.claimedRow && icons[2].contains(x,y)){
+                            if(game.rowCount>0){rowArmed=!rowArmed;hammerArmed=false;}
                         } else{
                             const int target=hit(gameBoard(ww,hh,game),game.width,game.height,x,y);
                             if(target>=0&&hammerArmed) {
                                 if(game.useHammer(target)){persist();hammerArmed=false;}
+                            }else if(target>=0&&rowArmed) {
+                                if(game.useRowRocket(target)){persist();rowArmed=false;}
                             }else if(pressed>=0&&target>=0 && game.swap(pressed,target))persist();
                         }
                     }
@@ -423,7 +438,7 @@ int main(int argc,char** argv){
         }
         SDL_SetRenderDrawColor(render,14,22,30,255);SDL_RenderClear(render);
         if(screen==Screen::Home)drawHome(render,art,game,mine,ww,hh);
-        else if(screen==Screen::Board)drawBoard(render,art,game,ww,hh,hammerArmed);
+        else if(screen==Screen::Board)drawBoard(render,art,game,ww,hh,hammerArmed,rowArmed);
         else drawMine(render,art,mine,ww,hh,surveyMode);
         SDL_RenderPresent(render);
         if(smoke && ++renderedFrames>=3)running=false;

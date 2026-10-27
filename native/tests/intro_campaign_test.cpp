@@ -10,18 +10,33 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=10;++stage) {
+    for(int stage=1;stage<=14;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
         assert(g.startIntro(stage,source));
         assert(g.level==stage);
-        assert(g.width==4&&g.height==5&&g.cells.size()==20&&g.ice.size()==20);
+        assert(g.width==(stage<=10?4:5));
+        assert(g.height==g.width+1);
+        assert(g.cells.size()==static_cast<size_t>(g.width*g.height));
+        assert(g.ice.size()==g.cells.size());
+        int holes=0;
+        for(size_t i=0;i<g.cells.size();++i){
+            if(g.cells[i]==-2){
+                ++holes;
+                assert(g.ice[i]==0);
+                assert(!g.adjacent(static_cast<int>(i),static_cast<int>(i)+1));
+                assert(!g.adjacent(static_cast<int>(i),static_cast<int>(i)+g.width));
+            }
+        }
+        if(stage>=11)assert(holes>0);
         assert(g.moves>=12 && g.moves<=36);
         assert(g.matchedCells()==0&&g.hasMove());
         assert(g.objectiveTarget>0);
-        assert((stage==3||stage==6||stage==8||stage==9||stage==10)?
-            g.objectiveKind==1 : g.objectiveKind==0);
+        if(stage<=10)
+            assert((stage==3||stage==6||stage==8||stage==9||stage==10)?
+                g.objectiveKind==1 : g.objectiveKind==0);
+        else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
             int frozen=0, layers=0;
             for(size_t i=0;i<g.ice.size();++i)if(g.ice[i]>0){
@@ -57,10 +72,31 @@ int main(int argc,char** argv) {
             Game reloaded;assert(reloaded.load(resumed));
             assert(reloaded.ice==g.ice&&reloaded.iceCleared==g.iceCleared);
         }
+        if(stage==11){
+            int voidAt=-1, active=-1;
+            for(int i=0;i<static_cast<int>(g.cells.size());++i){
+                if(g.cells[i]==-2)voidAt=i;
+                else if(active<0)active=i;
+            }
+            assert(voidAt>=0 && active>=0);
+            g.claimedRow=true;g.rowCount=3;
+            const int oldScore=g.score;
+            assert(!g.useRowRocket(voidAt));
+            assert(g.rowCount==3);
+            assert(g.useRowRocket(active));
+            assert(g.rowCount==2&&g.score>oldScore);
+            assert(g.cells[voidAt]==-2); // blasts cannot fill original voids
+            assert(g.matchedCells()==0);
+            std::stringstream archive;
+            assert(g.save(archive));
+            Game restored;
+            assert(restored.load(archive));
+            assert(restored.cells==g.cells&&restored.rowCount==2);
+        }
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(11,source));
+    assert(!previous.startIntro(15,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -72,6 +108,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native authored intro: 10 source-derived stages, ice blockers, drag swaps, and v1/v2 saves passed\n";
+    std::cout<<"Native campaign: 14 source-derived stages, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
     return 0;
 }
