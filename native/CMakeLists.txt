@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-38.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-44.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."

@@ -11,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=38;++stage) {
+    for(int stage=1;stage<=44;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -52,7 +52,7 @@ int main(int argc,char** argv) {
             if(g.objectiveKind==2)
                 assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
         }
-        else if(stage>=28&&stage<=38)
+        else if(stage>=28&&stage<=44)
             assert(g.objectiveKind>=0&&g.objectiveKind<=3);
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
@@ -169,6 +169,17 @@ int main(int argc,char** argv) {
             assert(reopened.objectiveKind==2 && reopened.collectColor==11 &&
                    reopened.objectiveTarget==20 && reopened.collected==0);
         }
+        if(stage==42){
+            int fireGems=0,fireIndex=-1;
+            for(size_t i=0;i<g.elementals.size();++i)
+                if(g.elementals[i]==2){++fireGems;fireIndex=static_cast<int>(i);}
+            assert(fireGems==1 && fireIndex>=0);
+            assert(g.cells[fireIndex]==11 || g.cells[fireIndex]==18);
+            assert(g.ice[fireIndex]==0 && g.locks[fireIndex]==0);
+            std::stringstream seeded;assert(g.save(seeded));
+            Game fireLoaded;assert(fireLoaded.load(seeded));
+            assert(fireLoaded.elementals==g.elementals);
+        }
         if(stage==35){
             assert(g.activeRoster==std::vector<int>({0,1,2,11,18}));
             bool originalAlexandrite=false;
@@ -218,7 +229,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(39,source));
+    assert(!previous.startIntro(45,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -230,6 +241,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 38 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
+    std::cout<<"Native campaign: 44 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
     return 0;
 }

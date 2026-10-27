@@ -426,9 +426,9 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>38)return false;
+    if(stage<1||stage>44)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN9"||count!=38)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN10"||count!=44)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;int selectedColor=-1;
@@ -451,8 +451,8 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         std::vector<int> effects(n,0);
         int powered=0;
         for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>3)return false;if(x>0)++powered;}
-        if(powered!=(k==15||k==21||k==28||k==35?1:0))return false;
-        for(int effect:effects)if(((k!=15&&k!=35)&&effect==1)||(k!=21&&effect==2)||(k!=28&&effect==3))return false;
+        if(powered!=(k==15||k==21||k==28||k==35||k==42?1:0))return false;
+        for(int effect:effects)if(((k!=15&&k!=35)&&effect==1)||(k!=21&&k!=42&&effect==2)||(k!=28&&effect==3))return false;
         for(size_t i=0;i<n;++i)
             if((types[i]==-2&&(frost[i]!=0||locked[i]!=0||effects[i]!=0))||
                 (types[i]!=-2&&std::find(roster.begin(),roster.end(),types[i])==roster.end()))
