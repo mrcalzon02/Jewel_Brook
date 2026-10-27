@@ -187,13 +187,22 @@ std::array<Rect,4> boosterIcons(int ww,int hh){
             Rect{ww*.5f+9.0f,static_cast<float>(hh-74),60,60},
             Rect{ww*.5f+104.0f,static_cast<float>(hh-74),60,60}};
 }
+const char* gemLabel(int sourceId){
+    switch(sourceId){
+        case 0:return "RUBY";
+        case 1:return "SAPPHIRE";
+        case 2:return "EMERALD";
+        case 11:return "OPAL";
+        default:return "GEM";
+    }
+}
 void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArmed,bool rowArmed){
     label(r,28,26,"RUPEE RUSH - NATIVE MATCH 3",2);
     label(r,28,59,"STAGE "+std::to_string(game.level)+"   MOVES "+std::to_string(game.moves)+
           (game.objectiveKind==1?
              "   BREAK ICE "+std::to_string(game.iceCleared)+" / "+std::to_string(game.objectiveTarget):
            game.objectiveKind==2?
-             "   COLLECT "+std::to_string(game.collectColor)+" : "+std::to_string(game.collected)+" / "+std::to_string(game.objectiveTarget):
+             "   COLLECT "+std::string(gemLabel(game.collectColor))+" "+std::to_string(game.collected)+" / "+std::to_string(game.objectiveTarget):
              "   SCORE "+std::to_string(game.score)+" / "+std::to_string(game.objectiveTarget)),2);
     const auto b=gameBoard(ww,hh,game);
     SDL_SetRenderDrawColor(r,67,191,128,255);
