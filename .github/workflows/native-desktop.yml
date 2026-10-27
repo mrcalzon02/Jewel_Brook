@@ -54,7 +54,10 @@ jobs:
         run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
       - name: Configure C++ / SDL3 (no browser runtime)
         shell: bash
-        run: cmake -S native -B build/native -DCMAKE_BUILD_TYPE=Release
+        run: |
+          set -euo pipefail
+          BUILD_PYTHON="$(python -c 'import sys; print(sys.executable.replace(chr(92), "/"))')"
+          cmake -S native -B build/native -DCMAKE_BUILD_TYPE=Release "-DPython3_EXECUTABLE=$BUILD_PYTHON"
       - name: Compile native executable and functional diagnostics
         shell: bash
         run: cmake --build build/native --config Release --parallel 4
