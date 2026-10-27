@@ -11,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=20;++stage) {
+    for(int stage=1;stage<=25;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -69,6 +69,9 @@ int main(int argc,char** argv) {
         assert(restored.activeRoster==g.activeRoster);
         assert(restored.elementals==g.elementals);
         assert(restored.waterActivations==g.waterActivations);
+        assert(restored.fireActivations==g.fireActivations);
+        assert(restored.fireDetonations==g.fireDetonations);
+        assert(restored.fireAuras==g.fireAuras);
         if(stage==3){
             int original=g.moves;
             // Adjacent swaps consume a turn even without a match.
@@ -109,7 +112,14 @@ int main(int argc,char** argv) {
             assert(waterRestored.elementals==g.elementals);
             assert(waterRestored.activeRoster==g.activeRoster);
         }
-        if(stage==16||stage==17){
+        if(stage==21){
+            int fireAt=-1;
+            for(int i=0;i<static_cast<int>(g.elementals.size());++i)
+                if(g.elementals[i]==2){assert(fireAt<0);fireAt=i;}
+            assert(fireAt>=0&&g.ice[fireAt]==0);
+            assert(g.fireActivations==0&&g.fireDetonations==0);
+        }
+        if((stage>=16&&stage<=20)||(stage>=22&&stage<=25)){
             for(int e:g.elementals)assert(e==0);
         }
         if(stage==11){
@@ -136,7 +146,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(21,source));
+    assert(!previous.startIntro(26,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -148,6 +158,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 20 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
+    std::cout<<"Native campaign: 25 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
     return 0;
 }

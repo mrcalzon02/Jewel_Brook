@@ -46,7 +46,7 @@ desktop application branding, not a currency assignment. See
 
 ## Source-authored early match-three stage port
 
-The first twenty levels are imported **at native build time** from `web/engine.js` by `native/tests/export_intro_campaign.js`. The executable packages only a compact numeric stage data file, **not** a JavaScript interpreter or webpage. The native stage loader uses the source's exact starting board, irregular void-mask silhouette, move allowance, score/ice objective, ice layers and RNG state. It refuses unsupported source changes instead of inventing alternative gameplay. The original `web/art/primary/blockers/ice-1.png` and `ice-2.png` are used as the ice overlays, and pinned tiles cannot be dragged. Native saves advance to RRNATIVE3 with backward-compatible loading for the old preview. Levels 15–17 now support the approved opal asset (source ID 11) and the level-15 Water elemental. Water's row-washing ability is tracked only when its gem is actually destroyed; statuses it washes do not appear yet in the first 20 levels. Later elemental kinds and level 18's Shuffle unlock remain unported. and are not falsely presented as implemented.
+The first twenty-five levels are imported **at native build time** from `web/engine.js` by `native/tests/export_intro_campaign.js`. The executable packages only a compact numeric stage data file, **not** a JavaScript interpreter or webpage. The native stage loader uses the source's exact starting board, irregular void-mask silhouette, move allowance, score/ice objective, ice layers and RNG state. It refuses unsupported source changes instead of inventing alternative gameplay. The original `web/art/primary/blockers/ice-1.png` and `ice-2.png` are used as the ice overlays, and pinned tiles cannot be dragged. Native saves advance to RRNATIVE3 with backward-compatible loading for the old preview. Levels 15–17 now support the approved opal asset (source ID 11) and the level-15 Water elemental. Water's row-washing ability is tracked only when its gem is actually destroyed; statuses it washes do not appear yet in the first 25 levels. Later elemental kinds and level 18's Shuffle unlock remain unported. and are not falsely presented as implemented.
 
 ## Early authored boosters
 
@@ -54,7 +54,7 @@ Level 1 grants exactly three Hammers. Clearing level 5 grants three Extra Moves 
 
 ## Known missing native ports
 
-These features remain in the existing Android implementation and **are not yet present on desktop**: authored levels 21+, blockers beyond early ice, remaining boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native scoring and the more advanced mini-game integrations are still provisional; the native mining economic transactions and ore generator now follow the authoritative mining module and receive cross-runtime functional checks. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
+These features remain in the existing Android implementation and **are not yet present on desktop**: authored levels 26+, blockers beyond early ice, remaining boosters/power-ups, combo specials, elemental levels, full campaign stage definitions, mining tiers and refinery economy, farming, cooking, houses/avatar, inventory/shop/exchanges, daily rewards, refined typography, existing sound/music/announcer, enhanced animation and sound, touch/controller navigation. Native scoring and the more advanced mini-game integrations are still provisional; the native mining economic transactions and ore generator now follow the authoritative mining module and receive cross-runtime functional checks. Do not silently replace approved art or claim complete cross-platform parity. Do not introduce cosmetic release-blocking tests.
 
 ## Verification and distributions
 
@@ -64,7 +64,7 @@ GitHub Actions workflow artifacts and prerelease source verification attest to s
 
 The Android `web/engine.js` stage exporter rejects unexpected new overlays, statuses, abilities or roster changes. It exports the exact level-15 Opal identity (ID 11), the original source-defined stage roster, and the single level-15 Water elemental gem. The C++ game moves the Water flag with the gem, triggers the Water ability only when that gem is destroyed, clears the flag on activation, and persists its state in backwards-compatible `RRNATIVE5` saves. The original `web/art/embryon/runtime/gems/opal.webp` is converted to PNG during compilation without redrawing or changing the approved artwork. No Python or browser runtime is shipped.
 
-Only levels 1–17 are enabled. Levels 18–19 introduce source-authored gem-color collection objectives and level 18 grants three Shuffle boosters after its first clear. The native UI uses the existing Rupee Rush runtime `shuffle.webp` sprite, converted losslessly to PNG at build time. The original web/progression.js BOOSTER_ART entry remains intentionally unchanged; no currency artwork is remapped. All visual work is secondary to build/runtime and functional mechanics tests; cosmetic tests must not block releases.
+The native campaign currently enables only levels 1–25. Levels 18–19 introduce source-authored gem-color collection objectives and level 18 grants three Shuffle boosters after its first clear. The native UI uses the existing Rupee Rush runtime `shuffle.webp` sprite, converted losslessly to PNG at build time. The original web/progression.js BOOSTER_ART entry remains intentionally unchanged; no currency artwork is remapped. All visual work is secondary to build/runtime and functional mechanics tests; cosmetic tests must not block releases.
 
 ## Native collection goals and Shuffle (levels 18–20)
 
@@ -72,4 +72,27 @@ The stage exporter records the source's exact per-color collection objective (ki
 
 Rupee Rush already contains `web/art/embryon/runtime/boosters/shuffle.webp`; the desktop app converts **those exact existing pixels** at build time and displays that image instead of an emoji, SVG, or arbitrary substitute. The separate `web/progression.js` gameplay icon catalog still lists Shuffle as null and has **not** been modified. This is desktop-only artwork reuse, not a retroactive currency assignment or an Android change. There are no appearance-based release-blocking tests; only functional diagnostics and needed runtime packaging checks gate native releases.
 
-Level 21 seeds a new elemental activation, so it is deliberately not enabled until that ability is implemented with matching mechanics and assets. Full parity with Android is still incomplete.
+Level 21 now seeds a Fire elemental. Later levels through 25 use the Android-authored stage data, while level 26's Column Rocket unlock remains the next unported booster milestone. Full parity with Android is still incomplete.
+
+## Native Fire elemental and authored levels 21–25
+
+The build-time Android stage exporter now supports Fire as a second gem-carried
+elemental flag (2; Water stays 1). It still rejects unexpected overlay,
+roster, blocker and element changes. Destroying a Fire gem queues an
+activation, damages the four orthogonally adjacent valid tiles for one hit,
+and ignites the nearest surviving movable square for two turn ticks. Fire
+auras attach to **board positions**, not gem identities; expiration hits the
+square and its four valid neighbors, then processes any subsequent elemental
+reactions, gravity, and cascades. The exact
+`web/art/primary/overlays/fire.png` is installed for the native tile overlay.
+No substitute art is generated.
+
+`RRNATIVE6` persists fire counters and aura countdowns and preserves read
+compatibility for earlier `RRNATIVE1`–`RRNATIVE5` saves. Native tests check
+level-21 Fire seeding, destruction, two-turn delayed activation, continued
+save/load, the five newly authored levels and existing functional game/mine
+contracts. Android gameplay and currency artwork mappings are unchanged.
+
+The next campaign milestone is **level 26**, which introduces the Column
+Rocket. Desktop remains an experimental, incomplete native port; these
+stage milestones do not establish full Android parity.

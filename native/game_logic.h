@@ -32,9 +32,11 @@ public:
     std::vector<int> ice;
     // Exact authored gem IDs: 0 ruby, 1 sapphire, 2 emerald, 11 opal.
     std::vector<int> activeRoster{0,1,2};
-    // Gem-carried Water elemental flag (1). 0 = ordinary gem.
+    // Gem-carried elemental flags: 1 Water, 2 Fire, 0 ordinary.
     std::vector<int> elementals;
-    int waterActivations=0;
+    int waterActivations=0, fireActivations=0, fireDetonations=0;
+    // Square-anchored fire auras (0 off, 1 next tick, 2 newly ignited).
+    std::vector<int> fireAuras;
     // Starter supply and milestone unlocks from web/progression.js LADDER.
     int hammerCount = 3, extraCount = 0, rowCount = 0, shuffleCount = 0;
     bool claimedExtra = false, claimedRow = false, claimedShuffle = false;
@@ -63,6 +65,9 @@ private:
     bool clearAndFill();
     bool shuffleBoard();
     void refill();
+    std::vector<int> pendingFire;
+    void resolveFire();
+    void advanceFireTurn();
     void clearGem(int cell); // preserves independent blocker and elemental state
     void updateOutcome();
     void grantMilestoneIfWon();
