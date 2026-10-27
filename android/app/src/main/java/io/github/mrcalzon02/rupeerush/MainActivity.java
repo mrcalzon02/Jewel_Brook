@@ -62,8 +62,11 @@ public class MainActivity extends Activity {
         });
         game.setOverScrollMode(View.OVER_SCROLL_NEVER);
         setContentView(game);
+        prepareGameWebView(game);
         game.loadUrl(ENTRY);
     }
+
+    protected void prepareGameWebView(WebView view) { }
 
     protected final WebView packagedGameView() { return game; }
 
