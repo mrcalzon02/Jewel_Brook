@@ -382,7 +382,7 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
           ||(kind!=2&&selectedColor!=-1))return false;
         std::vector<int> effects(n,0);
         int powered=0;
-        for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>2)return false;powered+=x;}
+        for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>2)return false;if(x>0)++powered;}
         if(powered!=(k==15||k==21?1:0))return false;
         for(int effect:effects)if((k!=15&&effect==1)||(k!=21&&effect==2))return false;
         for(size_t i=0;i<n;++i)

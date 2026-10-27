@@ -39,7 +39,7 @@ int main(int argc,char** argv) {
         if(stage<=10)
             assert((stage==3||stage==6||stage==8||stage==9||stage==10)?
                 g.objectiveKind==1 : g.objectiveKind==0);
-        else if(stage==18||stage==19){
+        else if(stage==18||stage==19||stage==22||stage==23||stage==25){
             assert(g.objectiveKind==2);
             assert(g.collected==0);
             assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
