@@ -136,7 +136,7 @@ MineEconomy restoreMine(const fs::path& path,const Game& oldGame,bool hasPreviou
     return n;
 }
 struct Art {
-    std::array<SDL_Texture*,12> gem{};
+    std::array<SDL_Texture*,19> gem{};
     std::array<SDL_Texture*,40> pick{};
     std::array<SDL_Texture*,40> glove{};
     SDL_Texture* ore=nullptr;
@@ -155,6 +155,7 @@ struct Art {
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
         for(int i=0;i<5;++i)gem[i]=png(r,root/"art/embryon/generated/gems"/(std::string(names[i])+".png"));
         gem[11]=png(r,root/"art/embryon/runtime/gems/opal.png");
+        gem[18]=png(r,root/"art/embryon/runtime/gems/alexandrite.png");
         ore=png(r,root/"art/nutvale/mines/nutvale-mines-ore-atlas-approved.png");
         ice1=png(r,root/"art/primary/blockers/ice-1.png");
         ice2=png(r,root/"art/primary/blockers/ice-2.png");
@@ -176,7 +177,7 @@ struct Art {
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
         return std::all_of(gem.begin(),gem.begin()+5,[](SDL_Texture* t){return t!=nullptr;})
-               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&frostSprite&&fireOverlay&&hammer&&extra&&rowRocket&&columnRocket&&blast&&shuffle;
+               &&gem[11]&&gem[18]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&frostSprite&&fireOverlay&&hammer&&extra&&rowRocket&&columnRocket&&blast&&shuffle;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -213,6 +214,7 @@ const char* gemLabel(int sourceId){
         case 1:return "SAPPHIRE";
         case 2:return "EMERALD";
         case 11:return "OPAL";
+        case 18:return "ALEXANDRITE";
         default:return "GEM";
     }
 }

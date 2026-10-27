@@ -442,10 +442,10 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         std::vector<int> locked(n);
         for(auto& x:locked)if(!(authoredCatalog>>x)||x<0||x>3)return false;
         size_t rosterCount=0;
-        if(!(authoredCatalog>>rosterCount)||rosterCount!=(k<15?3u:4u))return false;
+        if(!(authoredCatalog>>rosterCount)||rosterCount!=(k<15?3u:k<35?4u:5u))return false;
         std::vector<int> roster(rosterCount);
         for(auto& x:roster)if(!(authoredCatalog>>x)||x<0||x>=19)return false;
-        if(roster!=(k<15?std::vector<int>{0,1,2}:std::vector<int>{0,1,2,11}))return false;
+        if(roster!=(k<15?std::vector<int>{0,1,2}:k<35?std::vector<int>{0,1,2,11}:std::vector<int>{0,1,2,11,18}))return false;
         if((kind==2&&std::find(roster.begin(),roster.end(),selectedColor)==roster.end())
           ||(kind!=2&&selectedColor!=-1))return false;
         std::vector<int> effects(n,0);

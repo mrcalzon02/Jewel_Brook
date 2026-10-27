@@ -169,6 +169,10 @@ int main(int argc,char** argv) {
                    reopened.objectiveTarget==20 && reopened.collected==0);
         }
         if(stage==35){
+            assert(g.activeRoster==std::vector<int>({0,1,2,11,18}));
+            bool originalAlexandrite=false;
+            for(int type:g.cells)if(type==18)originalAlexandrite=true;
+            assert(originalAlexandrite);
             int count=0;
             for(int power:g.elementals)if(power==1)++count;
             assert(count==1);

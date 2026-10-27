@@ -23,6 +23,9 @@ int main(int argc,char**argv){
         loadStage(check,level);
         assert(check.width==6&&check.height==7&&check.cells.size()==42);
         assert(check.matchedCells()==0&&check.hasMove());
+        if(level>=35){
+            assert(check.activeRoster==std::vector<int>({0,1,2,11,18}));
+        }
         if(level==35){
             int count=0;for(int effect:check.elementals)if(effect==1)++count;
             assert(count==1);  // exact authored Water seed, not a generic icon

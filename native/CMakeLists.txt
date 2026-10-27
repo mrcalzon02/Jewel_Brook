@@ -88,6 +88,18 @@ execute_process(
 if(NOT OPAL_EXPORT_STATUS EQUAL 0)
   message(FATAL_ERROR "Approved opal gem image could not be converted for SDL3")
 endif()
+# Level 35 introduces AlexANDRITE at its original source ID 18.
+# Convert the EXISTING approved WebP rather than remapping its artwork.
+set(ALEXANDRITE_GEM_PNG "${CMAKE_BINARY_DIR}/alexandrite.png")
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/gems/alexandrite.webp"
+    "${ALEXANDRITE_GEM_PNG}"
+  RESULT_VARIABLE ALEXANDRITE_EXPORT_STATUS
+)
+if(NOT ALEXANDRITE_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Approved alexandrite gem could not be converted")
+endif()
 
 
 
@@ -179,6 +191,8 @@ install(FILES
   DESTINATION data/art/embryon/generated/gems
 )
 install(FILES "${OPAL_GEM_PNG}"
+  DESTINATION data/art/embryon/runtime/gems)
+install(FILES "${ALEXANDRITE_GEM_PNG}"
   DESTINATION data/art/embryon/runtime/gems)
 
 install(FILES

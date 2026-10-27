@@ -15,6 +15,7 @@ on:
       - 'web/art/embryon/runtime/boosters/blast.webp'
       - 'web/art/embryon/runtime/boosters/shuffle.webp'
       - 'web/art/embryon/runtime/gems/opal.webp'
+      - 'web/art/embryon/runtime/gems/alexandrite.webp'
       - 'web/board-features.js'
       - 'web/elemental-challenges.js'
       - 'web/art/primary/blockers/ice-*.png'
@@ -123,6 +124,7 @@ jobs:
           test -s stage/RupeeRush/data/art/embryon/runtime/boosters/blast.png
           test -s stage/RupeeRush/data/art/embryon/runtime/boosters/shuffle.png
           test -s stage/RupeeRush/data/art/embryon/runtime/gems/opal.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/gems/alexandrite.png
           test -s stage/RupeeRush/data/art/primary/overlays/fire.png
           test -s stage/RupeeRush/data/art/primary/overlays/frost.png
           test -s stage/RupeeRush/data/art/primary/blockers/lock.png

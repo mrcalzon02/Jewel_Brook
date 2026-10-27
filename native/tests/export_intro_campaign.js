@@ -27,7 +27,7 @@ for(let stage=1;stage<=38;stage++){
       (c.elemental!==null && !(stage===15 && c.elemental==='water') && !(stage===21 && c.elemental==='fire') && !(stage===28 && c.elemental==='ice') && !(stage===35 && c.elemental==='water')))
       throw Error('Stage '+stage+' added a feature not yet ported to desktop');
   }
-  const expectedRoster=stage<15?[0,1,2]:[0,1,2,11];
+  const expectedRoster=stage<15?[0,1,2]:stage<35?[0,1,2,11]:[0,1,2,11,18];
   if(cfg.roster.join(',')!==expectedRoster.join(','))
     throw Error('Authoritative gem roster changed at stage '+stage);
   const powered=cells.filter(c=>c?.elemental).length;

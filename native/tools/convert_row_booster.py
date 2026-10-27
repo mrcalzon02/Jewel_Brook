@@ -17,6 +17,7 @@ allowed = {
     "web/art/embryon/runtime/boosters/blast.webp": "blast.png",
     "web/art/embryon/runtime/boosters/shuffle.webp": "shuffle.png",
     "web/art/embryon/runtime/gems/opal.webp": "opal.png",
+    "web/art/embryon/runtime/gems/alexandrite.webp": "alexandrite.png",
 }
 normalized = original.as_posix()
 kind = next((dest for path, dest in allowed.items() if normalized.endswith("/"+path)), None)
