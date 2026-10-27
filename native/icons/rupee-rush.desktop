@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Rupee Rush
+GenericName=Gem matching and mining game
+Comment=Native Rupee Rush desktop application
+Exec=RupeeRushNative
+Icon=rupee-rush
+Terminal=false
+Categories=Game;LogicGame;

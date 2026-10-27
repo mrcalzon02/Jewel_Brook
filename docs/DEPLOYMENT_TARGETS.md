@@ -15,6 +15,21 @@ No Chromium, Electron, WebView, NW.js, CEF, packaged website or JS engine. The d
 
 The latest native build removes the earlier Electron proof-of-concept completely. `.github/workflows/native-desktop.yml` compiles and archives real Windows/Linux executables and ships only their dynamic SDL3 runtime plus the approved raster assets required by this first step. The existing Android signing/release workflow continues independently. The Android release tests may still validate Fire manifest/API eligibility, but this does not certify physical hardware.
 
+## Native desktop application identity
+
+Windows uses an EXE icon resource built from the existing approved emerald
+gem `web/art/embryon/generated/gems/emerald.png`, with the original PNG
+embedded unmodified inside an ICO wrapper. Linux ships the original gemstone
+PNG as a Freedesktop application icon, a native `.desktop` entry and portable
+shell launcher. SDL3 uses the same original art for the live window icon.
+The native main menu displays the emerald as the official crest and uses
+a dark jewel/ink palette with emerald highlights and high-contrast text.
+
+Currency-icon mappings, source gem tile artwork, mining atlas, Android/Fire OS
+application icons, and approved booster art are **not** modified. This is
+desktop application branding, not a currency assignment. See
+`native/icons/ART_IDENTITY.md`.
+
 ## Current native functionality (not a claim of full parity)
 
 - Native main menu, game board and mining screen.

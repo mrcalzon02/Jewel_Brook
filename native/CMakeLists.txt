@@ -38,6 +38,13 @@ add_executable(RupeeRushNative main.cpp)
 target_link_libraries(RupeeRushNative PRIVATE rupee_native_logic rupee_mine_logic SDL3::SDL3)
 if(WIN32)
   set_target_properties(RupeeRushNative PROPERTIES WIN32_EXECUTABLE TRUE)
+  # ICO file packages the exact approved emerald render; Windows resource
+  # compiler embeds the icon directly into the genuine native executable.
+  set(RUPEE_WIN_ICON "${CMAKE_CURRENT_SOURCE_DIR}/icons/rupee-rush.ico")
+  configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/icons/rupee-rush.rc.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/rupee-rush.rc" @ONLY)
+  target_sources(RupeeRushNative PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/rupee-rush.rc")
 endif()
 if(UNIX AND NOT APPLE)
   set_target_properties(RupeeRushNative PROPERTIES INSTALL_RPATH "$ORIGIN")
@@ -62,6 +69,18 @@ add_test(NAME native_mining_source_parity_and_economy
     COMMAND rupee_mine_tests "${CMAKE_BINARY_DIR}/mine-fixture.txt")
 
 install(TARGETS RupeeRushNative RUNTIME DESTINATION ".")
+if(UNIX AND NOT APPLE)
+  # Native desktop integration; original emerald art, not generated art.
+  install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/generated/gems/emerald.png"
+    DESTINATION "share/icons/hicolor/192x192/apps"
+    RENAME "rupee-rush.png")
+  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/icons/rupee-rush.desktop"
+    DESTINATION "share/applications")
+  install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/icons/rupee-rush-launch.sh"
+    DESTINATION ".")
+endif()
+
 if(WIN32)
   install(FILES "$<TARGET_FILE:SDL3-shared>" DESTINATION ".")
 else()

@@ -25,13 +25,16 @@ void fill(SDL_Renderer* r,Rect v,SDL_Color c){
     SDL_FRect area{v.x,v.y,v.w,v.h};SDL_RenderFillRect(r,&area);
 }
 void label(SDL_Renderer* r,float x,float y,const std::string& s,int size=2){
-    SDL_SetRenderDrawColor(r,246,235,255,255);
+    SDL_SetRenderDrawColor(r,226,248,235,255);
     SDL_SetRenderScale(r,static_cast<float>(size),static_cast<float>(size));
     SDL_RenderDebugText(r,x/size,y/size,s.c_str());
     SDL_SetRenderScale(r,1,1);
 }
 Rect button(SDL_Renderer* r,Rect box,const char* text){
-    fill(r,box,{72,49,112,255});
+    fill(r,box,{28,68,57,255});
+    SDL_SetRenderDrawColor(r,88,207,142,255);
+    SDL_FRect outline{box.x,box.y,box.w,box.h};
+    SDL_RenderRect(r,&outline);
     float length=static_cast<float>(std::char_traits<char>::length(text)*16);
     label(r,box.x+std::max(6.0f,(box.w-length)*0.5f),box.y+(box.h-16)*0.5f,text);
     return box;
@@ -181,11 +184,14 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
              "   BREAK ICE "+std::to_string(game.iceCleared)+" / "+std::to_string(game.objectiveTarget):
              "   SCORE "+std::to_string(game.score)+" / "+std::to_string(game.objectiveTarget)),2);
     const auto b=gameBoard(ww,hh,game);
+    SDL_SetRenderDrawColor(r,67,191,128,255);
+    SDL_FRect boardOutline{b.x-3,b.y-3,b.w+6,b.h+6};
+    SDL_RenderRect(r,&boardOutline);
     float tile=b.w/game.width;
     for(int y=0;y<game.height;++y)for(int x=0;x<game.width;++x){
         int i=y*game.width+x;
         SDL_FRect dest{b.x+x*tile+2,b.y+y*tile+2,tile-4,tile-4};
-        fill(r,{dest.x,dest.y,dest.w,dest.h},{48,36,81,255});
+        fill(r,{dest.x,dest.y,dest.w,dest.h},{30,50,55,255});
         // Source identity is the same approved gemstone file already in web/.
         SDL_RenderTexture(r,art.gem[game.cells[i]],nullptr,&dest);
         if(game.ice.size()==game.cells.size()&&game.ice[i]>0){
@@ -221,7 +227,11 @@ void drawMine(SDL_Renderer* r,Art& art,const MineEconomy& n,int ww,int hh,bool s
     label(r,24,55,"STRIKES "+std::to_string(n.strikes)+"/"+std::to_string(MineEconomy::strikeLimit(n.pickTier))+
           "   SCANS "+std::to_string(n.scans)+"   MINE "+std::to_string(n.mineTier+1),2);
     const int count=n.size();
-    Rect b=mineBoard(ww,hh,count);float tile=b.w/count;
+    Rect b=mineBoard(ww,hh,count);
+    SDL_SetRenderDrawColor(r,67,191,128,255);
+    SDL_FRect mineOutline{b.x-3,b.y-3,b.w+6,b.h+6};
+    SDL_RenderRect(r,&mineOutline);
+    float tile=b.w/count;
     static constexpr int xs[]={37,270,504,736,968,1200};
     static constexpr int ys[]={55,295,536,777};
     for(int i=0;i<static_cast<int>(n.cells.size());++i){
@@ -265,24 +275,46 @@ void drawMine(SDL_Renderer* r,Art& art,const MineEconomy& n,int ww,int hh,bool s
     label(r,24,hh-87,surveyMode?"SURVEY MODE: CLICK UNEXCAVATED ROCKS":"CLICK TO DIG / COLLECT EXPOSED ORE",1);
     button(r,{20.0f,static_cast<float>(hh-58),155,42},"MAIN MENU");
 }
-void drawHome(SDL_Renderer* r,const Game& g,const MineEconomy& mine,int ww,int hh){
-    label(r,ww*.5f-125,hh*.19f,"RUPEE RUSH",3);
-    label(r,ww*.5f-170,hh*.19f+48,"NATIVE DESKTOP FOUNDATION",2);
-    button(r,{ww*.5f-170,hh*.37f,340,62},"PLAY MATCH 3");
-    button(r,{ww*.5f-170,hh*.37f+82,340,62},"GO MINING");
-    button(r,{ww*.5f-170,hh*.37f+164,340,62},"QUIT GAME");
-    label(r,ww*.5f-175,hh-70,"STAGE "+std::to_string(g.level)+
+std::array<Rect,3> homeActions(int ww,int hh){
+    const float middle=ww*.5f, top=hh*.43f;
+    return {Rect{middle-170,top,340,62},
+            Rect{middle-170,top+82,340,62},
+            Rect{middle-170,top+164,340,62}};
+}
+void drawHome(SDL_Renderer* r,const Art& art,const Game& g,const MineEconomy& mine,int ww,int hh){
+    // The official, approved emerald tile doubles as the native game's crest.
+    // No new currency art, no placeholders, no arbitrary replacements.
+    const float iconSize=std::min(132.0f,hh*.19f);
+    const float iconY=hh*.08f;
+    SDL_FRect crest{ww*.5f-iconSize*.5f,iconY,iconSize,iconSize};
+    SDL_RenderTexture(r,art.gem[2],nullptr,&crest);
+    const float headingY=iconY+iconSize+12;
+    label(r,ww*.5f-125,headingY,"RUPEE RUSH",3);
+    label(r,ww*.5f-141,headingY+40,"NATIVE DESKTOP",2);
+    fill(r,{ww*.5f-170,headingY+67,340,2},{78,193,127,255});
+    const auto actions=homeActions(ww,hh);
+    button(r,actions[0],"PLAY MATCH 3");
+    button(r,actions[1],"GO MINING");
+    button(r,actions[2],"QUIT GAME");
+    label(r,ww*.5f-175,hh-34,"STAGE "+std::to_string(g.level)+
           "   STORED ORE "+std::to_string(mine.ore),2);
 }
 }
 int main(int argc,char** argv){
     const bool smoke=argc>1 && std::string(argv[1])=="--smoke";
+    SDL_SetAppMetadata("Rupee Rush","0.1","io.github.mrcalzon02.rupeerush");
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS)){SDL_Log("SDL init failed: %s",SDL_GetError());return 1;}
     SDL_Window* window=nullptr;SDL_Renderer* render=nullptr;
-    if(!SDL_CreateWindowAndRenderer("Rupee Rush - Native",1080,740,SDL_WINDOW_RESIZABLE,&window,&render)){
+    if(!SDL_CreateWindowAndRenderer("Rupee Rush",1080,740,SDL_WINDOW_RESIZABLE,&window,&render)){
         SDL_Log("Failed to create desktop window: %s",SDL_GetError());SDL_Quit();return 1;
     }
     SDL_SetWindowMinimumSize(window,640,520);
+    // SDL native window icon: use exactly the approved emerald artwork.
+    const auto iconFile=dataRoot()/"art/embryon/generated/gems/emerald.png";
+    if(SDL_Surface* iconSurface=SDL_LoadPNG(iconFile.string().c_str())){
+        SDL_SetWindowIcon(window,iconSurface);
+        SDL_DestroySurface(iconSurface);
+    } else SDL_Log("Could not load approved desktop window icon: %s",SDL_GetError());
     Art art;
     if(!art.load(render,dataRoot())){
         SDL_Log("Native release is missing required approved sprites; refusing placeholder rendering.");
@@ -329,12 +361,10 @@ int main(int argc,char** argv){
             if(e.type==SDL_EVENT_MOUSE_BUTTON_UP&&e.button.button==SDL_BUTTON_LEFT){
                 const float x=e.button.x,y=e.button.y;
                 if(screen==Screen::Home){
-                    Rect play{ww*.5f-170,hh*.37f,340,62};
-                    Rect mine{ww*.5f-170,hh*.37f+82,340,62};
-                    Rect quit{ww*.5f-170,hh*.37f+164,340,62};
-                    if(play.contains(x,y))screen=Screen::Board;
-                    else if(mine.contains(x,y))screen=Screen::Mine;
-                    else if(quit.contains(x,y))running=false;
+                    const auto actions=homeActions(ww,hh);
+                    if(actions[0].contains(x,y))screen=Screen::Board;
+                    else if(actions[1].contains(x,y))screen=Screen::Mine;
+                    else if(actions[2].contains(x,y))running=false;
                 }else if(screen==Screen::Board){
                     if(Rect{20.0f,static_cast<float>(hh-64),154,44}.contains(x,y)) {
                         screen=Screen::Home;hammerArmed=false;
@@ -391,8 +421,8 @@ int main(int argc,char** argv){
                 pressed=-1;
             }
         }
-        SDL_SetRenderDrawColor(render,23,17,40,255);SDL_RenderClear(render);
-        if(screen==Screen::Home)drawHome(render,game,mine,ww,hh);
+        SDL_SetRenderDrawColor(render,14,22,30,255);SDL_RenderClear(render);
+        if(screen==Screen::Home)drawHome(render,art,game,mine,ww,hh);
         else if(screen==Screen::Board)drawBoard(render,art,game,ww,hh,hammerArmed);
         else drawMine(render,art,mine,ww,hh,surveyMode);
         SDL_RenderPresent(render);
