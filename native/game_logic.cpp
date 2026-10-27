@@ -98,6 +98,36 @@ bool Game::hasMove() {
     }
     return false;
 }
+void Game::refill(){
+    // Source gravity is segmented around each immovable ice blocker.
+    for(int x=0;x<width;++x){
+        for(int y=height-1;y>=0;){
+            while(y>=0&&ice[y*width+x]>0)--y;
+            if(y<0)break;
+            const int bottom=y;
+            while(y>=0&&ice[y*width+x]==0)--y;
+            const int top=y+1;
+            int write=bottom;
+            for(int from=bottom;from>=top;--from)
+                if(cells[from*width+x]>=0)
+                    cells[write--*width+x]=cells[from*width+x];
+            for(;write>=top;--write)
+                cells[write*width+x]=range(rosterSize());
+        }
+    }
+}
+void Game::grantMilestoneIfWon(){
+    if(!won)return;
+    // Only award starter bundles once after completing the unlock stage.
+    if(level==5 && !claimedExtra){extraCount+=3;claimedExtra=true;}
+    if(level==10 && !claimedRow){rowCount+=3;claimedRow=true;}
+}
+void Game::updateOutcome(){
+    won=objectiveKind==1?iceCleared>=objectiveTarget:score>=objectiveTarget;
+    lost=moves<=0&&!won;
+    grantMilestoneIfWon();
+}
+
 bool Game::clearAndFill() {
     bool changed=false;
     for(int cascade=1;cascade<=60;++cascade){
@@ -118,22 +148,7 @@ bool Game::clearAndFill() {
             else cells[i]=-1;
         }
         score+=static_cast<int>(affected.size())*60*std::min(cascade,6);
-        // Gravity must never displace a pinned piece, even in the same column.
-        for(int x=0;x<width;++x){
-            for(int y=height-1;y>=0;){
-                while(y>=0&&ice[y*width+x]>0)--y;
-                if(y<0)break;
-                int bottom=y;
-                while(y>=0&&ice[y*width+x]==0)--y;
-                int top=y+1;
-                int write=bottom;
-                for(int from=bottom;from>=top;--from)
-                    if(cells[from*width+x]>=0)
-                        cells[write--*width+x]=cells[from*width+x];
-                for(;write>=top;--write)
-                    cells[write*width+x]=range(rosterSize());
-            }
-        }
+        refill();
     }
     return changed;
 }
@@ -143,8 +158,7 @@ bool Game::swap(int a,int b) {
     std::swap(cells[a],cells[b]);
     --moves;
     clearAndFill(); // non-match swaps stay swapped and consume the move
-    won=objectiveKind==1?iceCleared>=objectiveTarget:score>=objectiveTarget;
-    lost=moves<=0&&!won;
+    updateOutcome();
     if(!won&&!lost&&!hasMove()) {
         // Repair a trapped board while preserving current progression.
         // Preserve authored blocker positions and layers during deadlock repair.
@@ -170,6 +184,42 @@ bool Game::swap(int a,int b) {
         }
 
     }
+    return true;
+}
+bool Game::useExtraMoves(){
+    if(won||extraCount<=0||moves>995)return false;
+    --extraCount;
+    moves+=5;
+    lost=false;
+    return true;
+}
+bool Game::useHammer(int cell){
+    if(won||hammerCount<=0||cell<0||cell>=static_cast<int>(cells.size()))return false;
+    --hammerCount;
+    // web/engine.js hammer: twenty successive blows; the final blow can
+    // remove the gem beneath the last ice layer. Do not invent extra strikes.
+    for(int hit=0;hit<20;++hit){
+        if(ice[cell]>0){--ice[cell];++iceCleared;}
+        else if(cells[cell]>=0){cells[cell]=-1;break;}
+        else break;
+    }
+    score+=35;
+    refill();clearAndFill();
+    updateOutcome();
+    return true;
+}
+bool Game::useRowRocket(int cell){
+    if(won||rowCount<=0||cell<0||cell>=static_cast<int>(cells.size()))return false;
+    --rowCount;
+    const int y=cell/width;
+    for(int x=0;x<width;++x){
+        const int i=y*width+x;
+        if(ice[i]>0){--ice[i];++iceCleared;}
+        else cells[i]=-1;
+    }
+    score+=width*35;
+    refill();clearAndFill();
+    updateOutcome();
     return true;
 }
 void Game::initMine(uint32_t seed) {
@@ -222,10 +272,11 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
     return false;
 }
 bool Game::save(std::ostream& out) const {
-    out<<"RRNATIVE2 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
+    out<<"RRNATIVE3 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
        <<score<<' '<<goal<<' '<<ore<<' '<<strikes<<' '<<won<<' '<<lost<<' '
        <<randomState<<' '<<objectiveKind<<' '<<objectiveTarget<<' '
-       <<iceCleared<<' '<<cells.size()<<'\n';
+       <<iceCleared<<' '<<hammerCount<<' '<<extraCount<<' '<<rowCount<<' '
+       <<claimedExtra<<' '<<claimedRow<<' '<<cells.size()<<'\n';
     for(int v:cells)out<<v<<' ';out<<'\n';
     for(int v:ice)out<<v<<' ';out<<'\n';
     for(auto r:rocks)out<<r.kind<<' '<<r.hardness<<' '<<r.hits<<' '<<r.done<<' ';
@@ -235,14 +286,24 @@ bool Game::save(std::ostream& out) const {
 bool Game::load(std::istream& in) {
     Game tmp(7919);
     std::string magic;size_t n=0;
-    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"))return false;
+    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"))return false;
     if(!(in>>tmp.level>>tmp.width>>tmp.height>>tmp.moves>>
        tmp.score>>tmp.goal>>tmp.ore>>tmp.strikes>>tmp.won>>tmp.lost>>
        tmp.randomState))return false;
-    if(magic=="RRNATIVE2") {
+    if(magic!="RRNATIVE1") {
         if(!(in>>tmp.objectiveKind>>tmp.objectiveTarget>>tmp.iceCleared))return false;
     } else {
         tmp.objectiveKind=0;tmp.objectiveTarget=tmp.goal;tmp.iceCleared=0;
+    }
+    if(magic=="RRNATIVE3"){
+        if(!(in>>tmp.hammerCount>>tmp.extraCount>>tmp.rowCount>>
+             tmp.claimedExtra>>tmp.claimedRow))return false;
+    } else {
+        // Preserve old native saves and make earned early unlocks available.
+        tmp.hammerCount=3;tmp.extraCount=tmp.level>=6?3:0;
+        tmp.rowCount=tmp.level>=10&&tmp.won?3:0;
+        tmp.claimedExtra=tmp.level>=6;
+        tmp.claimedRow=tmp.level>=10&&tmp.won;
     }
     if(!(in>>n))return false;
     if(tmp.level<1||tmp.level>1000 ||tmp.width<4||tmp.width>8||
@@ -250,11 +311,15 @@ bool Game::load(std::istream& in) {
        tmp.moves<0||tmp.moves>1000||tmp.score<0||tmp.goal<1||tmp.ore<0||
        tmp.strikes<0||tmp.strikes>12||!tmp.randomState||
        tmp.objectiveKind<0||tmp.objectiveKind>1||tmp.objectiveTarget<1||
-       tmp.iceCleared<0||tmp.iceCleared>1000||(tmp.won&&tmp.lost))return false;
+       tmp.iceCleared<0||tmp.iceCleared>1000||(tmp.won&&tmp.lost)||
+       tmp.hammerCount<0||tmp.hammerCount>999999||
+       tmp.extraCount<0||tmp.extraCount>999999||
+       tmp.rowCount<0||tmp.rowCount>999999||
+       (tmp.claimedExtra&&tmp.level<5)||(tmp.claimedRow&&tmp.level<10))return false;
     tmp.cells.resize(n);
     for(auto& t:tmp.cells)if(!(in>>t)||t<0||t>=5)return false;
     tmp.ice.assign(n,0);
-    if(magic=="RRNATIVE2")
+    if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>3)return false;
     for(auto& r:tmp.rocks){
        if(!(in>>r.kind>>r.hardness>>r.hits>>r.done)

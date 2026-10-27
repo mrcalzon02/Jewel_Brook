@@ -7,6 +7,9 @@ on:
       - 'web/mining.js'
       - 'web/engine.js'
       - 'web/level-design.js'
+      - 'web/progression.js'
+      - 'web/art/primary/powerups/hammer.png'
+      - 'web/art/additions/economy/hourglass.png'
       - 'web/board-features.js'
       - 'web/elemental-challenges.js'
       - 'web/art/primary/blockers/ice-*.png'
@@ -54,6 +57,9 @@ jobs:
       - name: Generate native mining contract vectors from existing JavaScript gameplay
         shell: bash
         run: node native/tests/mine_fixture.js build/native/mine-fixture.txt
+      - name: Verify source booster unlock levels and original asset identity
+        shell: bash
+        run: node native/tests/check_early_booster_contract.js
       - name: Run native gameplay functional diagnostics
         shell: bash
         run: ctest --test-dir build/native -C Release --output-on-failure
@@ -95,6 +101,8 @@ jobs:
           set -euo pipefail
           test -s stage/RupeeRush/data/art/embryon/generated/gems/ruby.png
           test -s stage/RupeeRush/data/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png
+          test -s stage/RupeeRush/data/art/primary/powerups/hammer.png
+          test -s stage/RupeeRush/data/art/additions/economy/hourglass.png
           test -z "$(find stage/RupeeRush -type f \( -name '*.html' -o -name '*.js' -o -name 'chrome.exe' -o -name 'libcef*' -o -name 'electron*' \) -print -quit)"
       - name: Archive Windows application
         if: matrix.target == 'Windows'
@@ -133,4 +141,4 @@ jobs:
           gh release create "rupeerush-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
             release-native/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --prerelease --title "Rupee Rush Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
-            --notes 'Experimental native C++/SDL3 desktop build. Functional match-three drag swapping, basic 4x4 mining with the original approved ore atlas, and local native saves. This is NOT gameplay-complete parity with Android: boosters, full economy, farming, cooking, audio, shop, and full campaign design are not ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'
+            --notes 'Experimental native C++/SDL3 desktop build. Ten Android-authored intro match-three stages, native drag swapping, ice objectives, Hammer/Extra Moves starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'

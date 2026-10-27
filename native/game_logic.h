@@ -29,6 +29,9 @@ public:
     // objectiveKind: 0=score, 1=ice; later kinds are not exposed until ported.
     int objectiveKind = 0, objectiveTarget = 850, iceCleared = 0;
     std::vector<int> ice;
+    // Starter supply and milestone unlocks from web/progression.js LADDER.
+    int hammerCount = 3, extraCount = 0, rowCount = 0;
+    bool claimedExtra = false, claimedRow = false;
     std::array<MineTile, 16> rocks{};
 
     explicit Game(uint32_t seed = 7919);
@@ -37,6 +40,9 @@ public:
     bool adjacent(int first, int second) const;
     // A valid adjacent non-matching swap is an intentional, move-consuming action.
     bool swap(int first, int second);
+    bool useHammer(int cell);
+    bool useExtraMoves();
+    bool useRowRocket(int cell);
     bool hasMove();
     bool mine(int index);
     void replenishStrikes(); // diagnostic only: not exposed in gameplay
@@ -48,6 +54,9 @@ private:
     uint32_t next();
     int range(int limit);
     bool clearAndFill();
+    void refill();
+    void updateOutcome();
+    void grantMilestoneIfWon();
     void populateBoard();
     void initMine(uint32_t seed);
 };

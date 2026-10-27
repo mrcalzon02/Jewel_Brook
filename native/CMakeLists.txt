@@ -51,6 +51,10 @@ add_executable(rupee_intro_tests tests/intro_campaign_test.cpp)
 target_link_libraries(rupee_intro_tests PRIVATE rupee_native_logic)
 add_test(NAME native_authoritative_intro_levels
     COMMAND rupee_intro_tests "${INTRO_CATALOG}")
+add_executable(rupee_early_booster_tests tests/early_boosters_test.cpp)
+target_link_libraries(rupee_early_booster_tests PRIVATE rupee_native_logic)
+add_test(NAME native_early_boosters_inventory_and_actions
+    COMMAND rupee_early_booster_tests "${INTRO_CATALOG}")
 
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
@@ -84,6 +88,13 @@ install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/blockers/ice-2.png"
   DESTINATION data/art/primary/blockers
 )
+# Approved gameplay booster icons from web/progression.js; NO substitutions.
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/powerups/hammer.png"
+  DESTINATION data/art/primary/powerups)
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/additions/economy/hourglass.png"
+  DESTINATION data/art/additions/economy)
 
 
 # Install original equipment art under its original relative path (not flattened).
