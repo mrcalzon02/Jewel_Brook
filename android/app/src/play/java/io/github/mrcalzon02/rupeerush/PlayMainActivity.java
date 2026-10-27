@@ -1,14 +1,11 @@
 package io.github.mrcalzon02.rupeerush;
 
-import android.os.Bundle;
+import android.webkit.WebView;
 
-/** The only Play launcher; binds cloud controls exclusively to packaged game content. */
+/** Play-only launcher: bridge registration precedes the packaged page load. */
 public final class PlayMainActivity extends MainActivity {
-    @Override public void onCreate(Bundle state) {
-        super.onCreate(state);
-        if (packagedGameView() != null) {
-            packagedGameView().addJavascriptInterface(
-                new PlayCloudBridge(this, packagedGameView()), "RupeePlayCloud");
-        }
+    @Override protected void prepareGameWebView(WebView game) {
+        game.addJavascriptInterface(
+            new PlayCloudBridge(this, game), "RupeePlayCloud");
     }
 }
