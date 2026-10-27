@@ -37,6 +37,7 @@ target_include_directories(rupee_native_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR
 add_executable(RupeeRushNative main.cpp)
 target_link_libraries(RupeeRushNative PRIVATE rupee_native_logic rupee_mine_logic SDL3::SDL3)
 if(WIN32)
+  enable_language(RC)
   set_target_properties(RupeeRushNative PROPERTIES WIN32_EXECUTABLE TRUE)
   # ICO file packages the exact approved emerald render; Windows resource
   # compiler embeds the icon directly into the genuine native executable.
