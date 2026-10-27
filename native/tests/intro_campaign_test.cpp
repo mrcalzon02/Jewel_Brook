@@ -29,7 +29,9 @@ int main(int argc,char** argv) {
                 assert(!g.adjacent(static_cast<int>(i),static_cast<int>(i)+g.width));
             }
         }
-        if(stage>=11)assert(holes>0);
+        if(stage==11||stage==12||stage==14)assert(holes>0);
+        // Level 13's authored double-chamber mask is fully connected at width 5.
+        if(stage==13)assert(holes==0);
         assert(g.moves>=12 && g.moves<=36);
         assert(g.matchedCells()==0&&g.hasMove());
         assert(g.objectiveTarget>0);
