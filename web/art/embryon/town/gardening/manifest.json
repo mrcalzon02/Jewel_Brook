@@ -1,0 +1,311 @@
+{
+  "schema": "rupee-rush/town-garden-icon-library/v1",
+  "collection": "Town Gardening Seeds and Fertilizers",
+  "project": "Rupee Rush — Heroes of Embryon",
+  "stage": "art assets; not runtime-wired",
+  "source": {
+    "path": "source/fantasy_gardening_supplies_icon_sheet.png",
+    "size": [
+      1448,
+      1086
+    ],
+    "sha256": "700b7732580cc8d82d5691cbc7a91847b4f56619acd1db2fc9f9ba696ccb06e5"
+  },
+  "iconSize": [
+    512,
+    512
+  ],
+  "alpha": true,
+  "icons": [
+    {
+      "id": "seeds-carrot",
+      "label": "Carrot seeds",
+      "category": "seed",
+      "path": "icons/seeds-carrot.png",
+      "sourceCrop": [
+        0,
+        110,
+        280,
+        532
+      ],
+      "contentBBox": [
+        9,
+        64,
+        280,
+        409
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 304390,
+      "sha256": "cacfb313fca42858e1cdc94c73ab9e31bc7f2f575d0e7890c769eb6ef3309e0d",
+      "gameplayMapping": {
+        "kind": "seed",
+        "id": "carrot",
+        "availability": "existing Town economy"
+      }
+    },
+    {
+      "id": "seeds-wheat",
+      "label": "Wheat seeds",
+      "category": "seed",
+      "path": "icons/seeds-wheat.png",
+      "sourceCrop": [
+        281,
+        110,
+        564,
+        532
+      ],
+      "contentBBox": [
+        6,
+        52,
+        283,
+        418
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 283810,
+      "sha256": "748285989b43516314dcaae4bead69f939919e49c9830e1d382172b510037066",
+      "gameplayMapping": {
+        "kind": "seed",
+        "id": "wheat",
+        "availability": "existing Town economy"
+      }
+    },
+    {
+      "id": "seeds-bluebell-berry",
+      "label": "Bluebell berry seeds",
+      "category": "seed",
+      "path": "icons/seeds-bluebell-berry.png",
+      "sourceCrop": [
+        565,
+        110,
+        847,
+        532
+      ],
+      "contentBBox": [
+        6,
+        51,
+        282,
+        418
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 297141,
+      "sha256": "80853954c97cd59db5390f52fe6b15f2c456f3c2539cffe8a3ea36924572c795",
+      "gameplayMapping": {
+        "kind": "seed",
+        "id": "berry",
+        "availability": "existing Town economy"
+      }
+    },
+    {
+      "id": "seeds-onion",
+      "label": "Onion seeds",
+      "category": "seed",
+      "path": "icons/seeds-onion.png",
+      "sourceCrop": [
+        848,
+        110,
+        1121,
+        532
+      ],
+      "contentBBox": [
+        16,
+        54,
+        273,
+        416
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 272912,
+      "sha256": "0cf9e2bc41556afcc8f1a38753997f529622ff47f7323ad5e5a30c8a699d7fcf",
+      "gameplayMapping": {
+        "kind": "seed",
+        "id": null,
+        "availability": "reserved future asset only"
+      }
+    },
+    {
+      "id": "seeds-cabbage",
+      "label": "Cabbage seeds",
+      "category": "seed",
+      "path": "icons/seeds-cabbage.png",
+      "sourceCrop": [
+        1122,
+        110,
+        1448,
+        532
+      ],
+      "contentBBox": [
+        34,
+        52,
+        319,
+        417
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 300999,
+      "sha256": "06dca02028b22fdb600ed156560c1c0f3633fd817c7e339d01cd209a9f5dc2f8",
+      "gameplayMapping": {
+        "kind": "seed",
+        "id": null,
+        "availability": "reserved future asset only"
+      }
+    },
+    {
+      "id": "seeds-herbs",
+      "label": "Herb seeds",
+      "category": "seed",
+      "path": "icons/seeds-herbs.png",
+      "sourceCrop": [
+        0,
+        533,
+        282,
+        958
+      ],
+      "contentBBox": [
+        7,
+        35,
+        282,
+        396
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 295462,
+      "sha256": "9c58694d7bb63b9b2f99edcceb0ea94a82ec86e03c94571da6c4d39c9aa6d556",
+      "gameplayMapping": {
+        "kind": "seed",
+        "id": null,
+        "availability": "reserved future asset only"
+      }
+    },
+    {
+      "id": "fertilizer-compost",
+      "label": "Compost",
+      "category": "fertilizer",
+      "path": "icons/fertilizer-compost.png",
+      "sourceCrop": [
+        283,
+        533,
+        560,
+        958
+      ],
+      "contentBBox": [
+        0,
+        36,
+        277,
+        402
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 315381,
+      "sha256": "04198a9377ba92a1455bd8fcff875ab3e3f97f1af8dff4b513b51365a954ee8d",
+      "gameplayMapping": {
+        "kind": "fertilizer",
+        "id": "compost",
+        "availability": "existing Town economy"
+      }
+    },
+    {
+      "id": "fertilizer-enriched",
+      "label": "Enriched fertilizer",
+      "category": "fertilizer",
+      "path": "icons/fertilizer-enriched.png",
+      "sourceCrop": [
+        561,
+        533,
+        825,
+        958
+      ],
+      "contentBBox": [
+        0,
+        81,
+        264,
+        409
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 343314,
+      "sha256": "03885b96b4a0fdd454737582e55741aac6f5b87eafc15212bf3519ee293638ff",
+      "gameplayMapping": {
+        "kind": "fertilizer",
+        "id": "quality",
+        "availability": "existing Town economy"
+      }
+    },
+    {
+      "id": "fertilizer-crystal-tonic",
+      "label": "Crystal growth tonic",
+      "category": "fertilizer",
+      "path": "icons/fertilizer-crystal-tonic.png",
+      "sourceCrop": [
+        826,
+        533,
+        1079,
+        958
+      ],
+      "contentBBox": [
+        19,
+        9,
+        241,
+        420
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 209102,
+      "sha256": "094a165b4a35bc36115769d0ae6d56e35debe4dc72269cf306162223968c9efc",
+      "gameplayMapping": {
+        "kind": "fertilizer",
+        "id": "royal",
+        "availability": "existing Town economy"
+      }
+    },
+    {
+      "id": "seed-store-bundle",
+      "label": "Seed store bundle",
+      "category": "store",
+      "path": "icons/seed-store-bundle.png",
+      "sourceCrop": [
+        1036,
+        533,
+        1448,
+        958
+      ],
+      "contentBBox": [
+        38,
+        42,
+        406,
+        425
+      ],
+      "size": [
+        512,
+        512
+      ],
+      "bytes": 401849,
+      "sha256": "241c7c6f3049adf0f457844e00b96b6f93b66b95045a62c9cfb1a9d62dd59bc4",
+      "gameplayMapping": {
+        "kind": "store",
+        "id": null,
+        "availability": "reserved future asset only"
+      }
+    }
+  ]
+}

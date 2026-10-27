@@ -165,7 +165,7 @@ $gradle=Setup-Gradle
 Setup-Sdk $sdk
 
 # Inject signing material into Gradle process environment, never into Git/command arguments.
-$fields=@{rupeeKeystorePath=$store;rupeeStorePassword=$secret;rupeeKeyAlias=$alias;rupeeKeyPassword=$secret;rupeeVersionCode="$code"}
+$fields=@{rupeeKeystorePath=$store;rupeeStorePassword=$secret;rupeeKeyAlias=$alias;rupeeKeyPassword=$secret;rupeeVersionCode="$code";rupeePublisherSha256=$fingerprint}
 $before=@{}
 foreach ($name in $fields.Keys) {
     $var='ORG_GRADLE_PROJECT_'+$name

@@ -1,5 +1,7 @@
 # Rupee Rush
 
+**Deployment targets:** Android phones and Amazon Fire tablets use the existing signed APK. Windows/Linux use a separate **genuine native C++/SDL3 application**, with no packaged browser or JavaScript runtime. Native desktop gameplay parity is in progress. See [Deployment Targets](docs/DEPLOYMENT_TARGETS.md).
+
 **Android APK delivery:** [GitHub-built signed Releases](docs/GITHUB_ANDROID_RELEASES.md) are the normal workflow; no local Android build is needed. [Download APK releases](https://github.com/mrcalzon02/Rupee-rush/releases).
 
 
@@ -24,7 +26,7 @@ The owner-approved **Daysha** visual identity and **Rupee Rush** high-gloss prod
 
 ## Shared asset family
 
-Portable, visually screened blocker/status/booster/reward art is tracked in [the asset-family audit](docs/SHARED_ASSET_FAMILY.md) and [source-hash manifest](web/art/shared-family.json). The audit rejects acorn/walnut-bearing art even when its filename sounds generic. All 16 status overlays are drawn above gems with transparent-center masks in browser and Android WebView CSS. Run `node tests/agnostic-art.test.js` to check image binaries, art paths and rendering contracts.
+Portable, visually screened blocker/status/booster/reward art is tracked in [the asset-family audit](docs/SHARED_ASSET_FAMILY.md) and [source-hash manifest](web/art/shared-family.json). The audit rejects acorn/walnut-bearing art even when its filename sounds generic. All 16 status overlays are drawn above gems with transparent-center masks in browser and Android WebView CSS. Art preservation references are documentary and are not release-blocking tests.
 
 ## Art ownership and migration
 
@@ -41,4 +43,4 @@ The original Nut Buster **rocks, pickaxes and gloves** are allowed as visual ass
 
 ## Validation
 
-Run the standalone gameplay tests with `node tests/rupee-rush.test.js` and shared-art checks with `node tests/agnostic-art.test.js` (Node.js 18+). Browser/device rendering and packaging still require their own end-to-end checks. No claim of release readiness is implied.
+The Android GitHub Actions workflow runs only the nine functional diagnostics explicitly listed in `.github/workflows/rupee-rush-android.yml`: application/packaging and signed-update contracts, playable match-three navigation and swaps, mining, farming, kitchen preparation/serving, store packages, and power-up economy. Artwork, visual presentation, sprite hashes, portrait appearance, and palette tests are not run and cannot gate builds. Android Gradle assembly and signed APK verification are separate release-blocking build steps. Node smoke tests do not replace device interaction checks.

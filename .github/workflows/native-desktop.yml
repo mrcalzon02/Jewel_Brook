@@ -1,0 +1,169 @@
+name: Rupee Rush native Windows and Linux
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'native/**'
+      - 'web/mining.js'
+      - 'web/engine.js'
+      - 'web/level-design.js'
+      - 'web/progression.js'
+      - 'web/art/primary/powerups/hammer.png'
+      - 'web/art/additions/economy/hourglass.png'
+      - 'web/art/embryon/runtime/boosters/row.webp'
+      - 'web/art/embryon/runtime/boosters/column.webp'
+      - 'web/art/embryon/runtime/boosters/blast.webp'
+      - 'web/art/embryon/runtime/boosters/shuffle.webp'
+      - 'web/art/embryon/runtime/gems/opal.webp'
+      - 'web/art/embryon/runtime/gems/alexandrite.webp'
+      - 'web/board-features.js'
+      - 'web/elemental-challenges.js'
+      - 'web/art/primary/blockers/ice-*.png'
+      - 'web/art/primary/overlays/fire.png'
+      - 'web/art/primary/overlays/frost.png'
+      - 'web/art/primary/blockers/lock.png'
+      - 'web/elemental-powers.js'
+      - 'web/mining-gear.js'
+      - 'web/art/embryon/generated/gems/**'
+      - 'web/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png'
+      - '.github/workflows/native-desktop.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: rupeerush-native-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: Windows
+            archive: RupeeRush-Native-Windows-x64.zip
+          - os: ubuntu-latest
+            target: Linux
+            archive: RupeeRush-Native-Linux-x64.tar.gz
+    name: Build genuine native ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Linux desktop development headers
+        if: matrix.target == 'Linux'
+        shell: bash
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libx11-dev libxext-dev libxrandr-dev libxfixes-dev libxcursor-dev libxi-dev libxss-dev libxkbcommon-dev libegl1-mesa-dev libgl1-mesa-dev libwayland-dev wayland-protocols libxtst-dev libdecor-0-dev libasound2-dev libpulse-dev libudev-dev libdrm-dev libgbm-dev
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install build-time approved WebP asset converter
+        shell: bash
+        run: python -m pip install --disable-pip-version-check "Pillow==11.3.0"
+      - name: Configure C++ / SDL3 (no browser runtime)
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD_PYTHON="$(python -c 'import sys; print(sys.executable.replace(chr(92), "/"))')"
+          cmake -S native -B build/native -DCMAKE_BUILD_TYPE=Release "-DPython3_EXECUTABLE=$BUILD_PYTHON"
+      - name: Compile native executable and functional diagnostics
+        shell: bash
+        run: cmake --build build/native --config Release --parallel 4
+      - name: Generate native mining contract vectors from existing JavaScript gameplay
+        shell: bash
+        run: node native/tests/mine_fixture.js build/native/mine-fixture.txt
+      - name: Verify source booster unlock levels and original asset identity
+        shell: bash
+        run: node native/tests/check_early_booster_contract.js
+      - name: Run native gameplay functional diagnostics
+        shell: bash
+        run: ctest --test-dir build/native -C Release --output-on-failure
+      - name: Stage executable, SDL3 and original approved PNG assets
+        shell: bash
+        run: cmake --install build/native --config Release --prefix "$GITHUB_WORKSPACE/stage/RupeeRush"
+      - name: Headless functional launch of packaged Windows executable
+        if: matrix.target == 'Windows'
+        shell: pwsh
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+        run: |
+          $exe = Join-Path $env:GITHUB_WORKSPACE 'stage/RupeeRush/RupeeRushNative.exe'
+          if (-not (Test-Path $exe)) { throw "Missing packaged native Windows executable" }
+          # The target has WIN32_EXECUTABLE, so direct PowerShell invocation
+          # leaves LASTEXITCODE unset. An explicit waited process gives a real code.
+          $process = Start-Process -FilePath $exe -ArgumentList '--smoke' -Wait -PassThru
+          if ($null -eq $process.ExitCode -or $process.ExitCode -ne 0) {
+            throw "Native Windows executable failed its packaged launch check: $($process.ExitCode)"
+          }
+      - name: Headless functional launch using staged Linux binary and approved art
+        if: matrix.target == 'Linux'
+        shell: bash
+        env:
+          SDL_VIDEODRIVER: dummy
+          SDL_RENDER_DRIVER: software
+        run: |
+          set -euo pipefail
+          ls -lah stage/RupeeRush
+          test -x stage/RupeeRush/RupeeRushNative
+          test -s stage/RupeeRush/libSDL3.so.0
+          ldd stage/RupeeRush/RupeeRushNative | tee native-dependencies.txt
+          ! grep -q 'not found' native-dependencies.txt
+          stage/RupeeRush/RupeeRushNative --smoke
+      - name: Ensure no browser or web package has been included
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s stage/RupeeRush/data/art/embryon/generated/gems/ruby.png
+          test -s stage/RupeeRush/data/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png
+          test -s stage/RupeeRush/data/art/primary/powerups/hammer.png
+          test -s stage/RupeeRush/data/art/additions/economy/hourglass.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/row.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/column.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/blast.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/shuffle.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/gems/opal.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/gems/alexandrite.png
+          test -s stage/RupeeRush/data/art/primary/overlays/fire.png
+          test -s stage/RupeeRush/data/art/primary/overlays/frost.png
+          test -s stage/RupeeRush/data/art/primary/blockers/lock.png
+          test -z "$(find stage/RupeeRush -type f \( -name '*.html' -o -name '*.js' -o -name 'chrome.exe' -o -name 'libcef*' -o -name 'electron*' \) -print -quit)"
+      - name: Archive Windows application
+        if: matrix.target == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path 'stage/RupeeRush' -DestinationPath '${{ matrix.archive }}'
+      - name: Archive Linux application
+        if: matrix.target == 'Linux'
+        shell: bash
+        run: tar -czf "${{ matrix.archive }}" -C stage RupeeRush
+      - name: Upload executable distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: rupeerush-native-${{ matrix.target }}
+          path: ${{ matrix.archive }}
+          retention-days: 30
+          if-no-files-found: error
+  native-release:
+    name: Publish explicitly incomplete native desktop preview
+    needs: [native]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rupeerush-native-*
+          path: release-native
+          merge-multiple: true
+      - name: Verify and publish prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -s release-native/RupeeRush-Native-Windows-x64.zip
+          test -s release-native/RupeeRush-Native-Linux-x64.tar.gz
+          (cd release-native && sha256sum *.zip *.tar.gz > SHA256SUMS.txt)
+          gh release create "rupeerush-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
+            release-native/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --prerelease --title "Rupee Rush Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
+            --notes 'Experimental native C++/SDL3 desktop build. Forty-eight Android-authored match-three stages with original lock art and Ice elemental, including Column Rocket and the delayed Fire elemental aura, collect-color goals, Shuffle unlock, opal, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'

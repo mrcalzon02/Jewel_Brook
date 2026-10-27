@@ -7,6 +7,8 @@ def rrStorePass = (project.findProperty('rupeeStorePassword') ?: '').toString()
 def rrKeyAlias = (project.findProperty('rupeeKeyAlias') ?: '').toString()
 def rrKeyPass = (project.findProperty('rupeeKeyPassword') ?: '').toString()
 def versionNumber = (project.findProperty('rupeeVersionCode') ?: '1').toString().toInteger()
+def publisherSha = (project.findProperty('rupeePublisherSha256') ?: '').toString().toLowerCase()
+def trustedPublisher = (publisherSha ==~ /[0-9a-f]{64}/)
 def expectedAlias = 'rupeerush-local-apk-v1'
 def signerAvailable = keystorePath && rrStorePass && rrKeyPass &&
     rrKeyAlias == expectedAlias && file(keystorePath).isFile()
@@ -23,6 +25,7 @@ if (versionNumber < 1 || versionNumber > 2100000000) {
 }
 
 android {
+    buildFeatures { buildConfig true }
     namespace 'io.github.mrcalzon02.rupeerush'
     compileSdk 36
 
@@ -32,6 +35,8 @@ android {
         targetSdk 36
         versionCode versionNumber
         versionName '0.1.0-local.' + versionNumber
+        buildConfigField 'String', 'DISTRIBUTION_SIGNER_SHA256', '"' + publisherSha + '"'
+        buildConfigField 'boolean', 'UPDATE_CHANNEL_ENABLED', (signerAvailable && trustedPublisher).toString()
     }
 
     // Embedded current web game, including its complete asset family.
@@ -65,7 +70,10 @@ android {
         }
     }
     buildTypes {
-        debug { debuggable true }
+        debug {
+            debuggable true
+            buildConfigField 'boolean', 'UPDATE_CHANNEL_ENABLED', 'false'
+        }
         release {
             debuggable false
             minifyEnabled false
@@ -84,11 +92,12 @@ android {
 
 dependencies {
     implementation 'androidx.webkit:webkit:1.16.0'
+    implementation 'androidx.core:core:1.13.1'
 }
 
 tasks.register('requirePermanentLocalSigner') {
     doLast {
-        if (!signerAvailable) {
+        if (!signerAvailable || !trustedPublisher) {
             throw new GradleException(
                 'Refusing an unsigned or debug-signed update APK. ' +
                 'Run scripts/build-android-apk.ps1 to create/reuse the permanent Rupee Rush local signer.'

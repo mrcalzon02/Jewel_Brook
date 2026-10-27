@@ -56,3 +56,243 @@
 @keyframes embryon-impact{0%{opacity:0;transform:translate(-50%,-50%) scale(.45)}22%{opacity:1}70%{opacity:.9}100%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}}
 @keyframes embryon-reward{0%{opacity:0;transform:scale(.6)}40%{opacity:1}100%{opacity:1;transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){.board-impact{animation:none;opacity:.8;transform:translate(-50%,-50%) scale(1)}.result-vfx{animation:none}}
+
+/* Board-motion parity: move only gemstone payloads, never tile-attached hazards. */
+.board{position:relative;isolation:isolate}
+.cell .gem-payload,.flying-gem .gem-payload{position:relative;display:grid;place-items:center;width:94%;height:94%;z-index:2;pointer-events:none;will-change:transform}
+.cell .gem-payload .gem,.flying-gem .gem-payload .gem{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.flying-gem{position:absolute;z-index:25;display:grid;place-items:center;pointer-events:none;will-change:transform}
+.flying-gem .gem-payload{width:94%;height:94%}
+.gem-special,.gem-elemental,.gem-held{position:absolute;z-index:4;display:grid;place-items:center;pointer-events:none;font-weight:900;text-shadow:0 1px 3px #1a092f}
+.gem-special{right:1%;top:0;width:38%;height:38%;font-size:clamp(13px,3vw,24px);color:#ffec90;filter:drop-shadow(0 0 4px #fad779)}
+.gem-special.line-h,.gem-special.line-v{color:#b8f8ff;background:#12486daa;border-radius:50%}
+.gem-special.blast{color:#ffd09a;background:#a34437ac;border-radius:50%}
+.gem-special.rainbow{background:#281850bd;border-radius:50%}
+.gem-elemental{left:0;top:0;font-size:clamp(10px,2.3vw,18px);color:#fff4b3}
+.gem-held{right:0;bottom:0;padding:0 2px;border-radius:4px;background:#294c74de;color:#e6faff;font-size:clamp(8px,2vw,12px)}
+.cell .board-feature{position:absolute;z-index:6;pointer-events:none;font-size:clamp(13px,3vw,20px);font-weight:900;line-height:1;color:#adeaf9;text-shadow:0 1px 3px #090c2a,0 0 5px #2399c5}
+.board-feature.conveyor{left:3px;bottom:1px;color:#ffdc9c}
+.board-feature.portal{top:0;left:3px;color:#b9a4ff}
+.board-feature.wind{right:3px;bottom:1px;color:#9ff9e0}
+.gem-impact{position:absolute;inset:1%;z-index:18;width:98%;height:98%;object-fit:contain;pointer-events:none;animation:rupee-gem-impact .58s ease-out both}
+.gem-shaking .gem-payload{animation:rupee-gem-shake .15s linear both}
+.gem-clearing .gem-payload{animation:rupee-gem-clear .2s ease-in both}
+.gem-shuffling .gem-payload{animation:rupee-gem-shuffle .17s ease-in-out both}
+.board-busy .board{touch-action:none}
+@keyframes rupee-gem-shake{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-3px) rotate(-4deg)}75%{transform:translateX(3px) rotate(4deg)}}
+@keyframes rupee-gem-clear{0%{opacity:1;transform:scale(1)}65%{opacity:.85;transform:scale(1.2)}100%{opacity:0;transform:scale(.25)}}
+@keyframes rupee-gem-impact{0%{opacity:0;transform:scale(.5)}20%{opacity:1}65%{opacity:.9}100%{opacity:0;transform:scale(1.7)}}
+@keyframes rupee-gem-shuffle{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.48;transform:scale(.88)}}
+@media(prefers-reduced-motion:reduce){.gem-impact,.gem-shaking .gem-payload,.gem-clearing .gem-payload,.gem-shuffling .gem-payload{animation:none}}
+
+/* Approved Rupee system-icon library: images, not provisional vector glyphs. */
+.bottom .nav-art{width:31px;height:31px;object-fit:contain;filter:drop-shadow(0 2px 4px #080510a0)}
+.bottom button.active .nav-art{filter:brightness(1.18) drop-shadow(0 0 6px #b9a9ffb8)}
+.top-money img{width:28px;height:28px;object-fit:contain}
+.cell .gem-special-art{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 3px #ecbfff80)}
+.cell .board-feature .feature-art{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 3px #0c0717a6)}
+.cell .board-feature.conveyor{bottom:0;left:1%;width:45%;height:31%;opacity:.92}
+.cell .board-feature.portal{top:0;left:0;width:35%;height:35%}
+.cell .board-feature.wind{right:0;bottom:0;width:36%;height:40%}
+@media(max-width:620px){.bottom .nav-art{width:27px;height:27px}}
+
+/* Deep Crystal Market & imported original mining artwork. */
+.top-money{gap:5px}.top-money button{padding:4px 6px}.top-money b{font-size:13px}
+.stats{grid-template-columns:repeat(5,minmax(0,1fr))}
+.shop-tabs{position:sticky;top:57px;z-index:7;background:#171327eb;padding:5px;border-radius:11px;justify-content:flex-start}
+.shop-tabs .btn{flex:0 1 auto}
+.loot-card .market-art,.daily-treasure .market-art{height:85px;width:85px;object-fit:contain;filter:drop-shadow(0 5px 7px #120d2280)}
+.cosmetic-card .cosmetic-art{width:min(100%,125px);height:122px;object-fit:contain;border-radius:10px}
+.cosmetic-card{justify-content:space-between}
+.loot-card .odds,.odds{font-size:11px;line-height:1.4;color:#bce4dc;display:block}
+.reward-receipt{border:2px solid #ffde9b;background:linear-gradient(135deg,#49365b,#2d264a);border-radius:12px;padding:12px;margin:12px 0}
+.reward-receipt p{color:#f6e4ca;margin:8px 0}
+.daily-treasure{display:flex;gap:16px;align-items:center;margin:12px 0 16px}
+.daily-treasure .market-art{width:115px;height:115px;flex:0 0 115px}
+.daily-treasure .btn{margin-top:11px}
+.reward-history{margin-top:14px}.reward-history p{padding:5px;border-bottom:1px solid #5b4569}
+.mine-economy-art{height:43px;width:43px;object-fit:contain;filter:drop-shadow(0 3px 5px #120e2390)}
+.mine-reward-sprite{width:75%;height:68%;object-fit:contain}
+.mine-tool-art{height:49px;width:49px;filter:drop-shadow(0 2px 3px #0b082099)}
+.mine-frame{background:radial-gradient(ellipse at 50% 0%,#747c88,#424452 65%,#282637);border-color:#9e9b8d}
+.rock{position:relative;overflow:hidden;background:linear-gradient(145deg,#6d777c,#4a4f59 65%,#2f333e);border:2px solid #97958e;box-shadow:inset 0 2px 3px #d3d3c755,0 2px 0 #171923}
+.rock.revealed{background:#273741}.rock.exposed{border-color:#ffdd80;box-shadow:0 0 9px #ffe07e66}
+/* Use the exact imported rock PNG for all intact and struck excavation states.
+   Persisted CRACK n/hardness labels follow Nut Buster's original mining interface. */
+.mine-rock-face{position:relative;display:block;width:82%;height:70%;max-width:100%;flex:0 0 auto;filter:drop-shadow(0 4px 4px #11121c);pointer-events:none}
+.mine-rock-base{display:block;width:100%;height:100%;object-fit:contain}
+.mine-action-row .mine-action-art{height:28px;width:28px;object-fit:contain;vertical-align:middle;pointer-events:none}
+.mine-counter-art{height:27px;width:27px;object-fit:contain;vertical-align:middle;pointer-events:none}
+.rock:not(.revealed):active .mine-rock-base{opacity:.9}
+@media(max-width:620px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.shop-tabs{top:53px}.daily-treasure{flex-wrap:wrap}.top-money img{width:21px;height:21px}.top-money b{font-size:11px}.top-money button{padding:3px}}
+@media(prefers-reduced-motion:reduce){.rock:not(.revealed):active .mine-rock-base{opacity:1}}
+
+.profile-showcase{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:13px;padding:10px;margin:12px auto;background:#2a2145c9;border:1px solid #b49ccd80;border-radius:14px;width:min(100%,540px)}
+.profile-portrait{position:relative;width:104px;height:104px;flex:0 0 104px}
+.profile-avatar{width:100%;height:100%;object-fit:contain;border-radius:11px}
+.profile-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.profile-outfit img{width:80px;height:104px;object-fit:contain}
+.profile-label{display:flex;flex-direction:column;align-items:flex-start;gap:3px;flex:1;min-width:130px}
+.profile-label b{color:#f7e2b7}.profile-label small{color:#cfc1db}
+.profile-label .btn{margin:7px 0 0}
+@media(max-width:390px){.profile-portrait{width:82px;height:82px;flex-basis:82px}.profile-outfit img{height:82px;width:60px}.profile-label{min-width:120px}}
+
+/* Distinct farming, mining and match-three booster shelves */
+.bottom{grid-template-columns:repeat(7,minmax(0,1fr))}
+.mode-bundle{display:inline-flex;vertical-align:top;width:min(100%,260px);margin:6px;padding:13px;min-height:135px}
+.powerup-art{width:64px;height:64px;object-fit:contain;filter:drop-shadow(0 3px 5px #120d2290)}
+.mode-power-card{min-height:176px}
+.mine-tabs{align-items:center}
+.rock.focused{outline:3px solid #ffda7a;outline-offset:-4px;box-shadow:0 0 0 3px #ffe8a780}
+.location-garden{background:linear-gradient(110deg,#294e47,#293854 72%,#332b51);border-radius:16px;padding:15px;margin-bottom:13px}
+.farm-selector{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0}
+.farm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px;margin:13px 0 18px}
+.farm-plot{padding:8px;border-radius:12px;background:linear-gradient(145deg,#34423c,#2b303f);border:2px solid #72836f;display:flex;flex-direction:column;gap:8px;justify-content:space-between}
+.farm-plot.selected{border-color:#eddb88;box-shadow:0 0 9px #e8c97955}
+.farm-plot-pick{color:#f5e8ce;background:transparent;border:0;min-width:0;display:flex;flex-direction:column;gap:4px;align-items:center;width:100%;padding:8px}
+.farm-plot-pick img{height:85px;width:85px;object-fit:contain}
+.farm-plot-pick b{color:#f7d998}
+.farm-plot-pick small{color:#d0ddd4;text-align:center;line-height:1.25}
+.farm-plot>.btn{margin:0;width:100%}
+@media(max-width:620px){.bottom button{font-size:9px}.bottom .nav-art{width:23px;height:23px}.farm-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mode-bundle{width:calc(50% - 14px);min-height:158px}}
+
+/* Farming visuals are tied to existing Town IDs; the kitchen shelf is read-only. */
+.farm-item-art{width:78px;height:78px;object-fit:contain;filter:drop-shadow(0 4px 8px #0b111595)}
+.farm-art-shelf{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:9px;margin:12px 0 18px}
+.farm-art-entry{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0;padding:9px 5px;border:1px solid #7569a0;border-radius:11px;background:linear-gradient(135deg,#322c4a,#222b3e)}
+.farm-art-entry img{width:min(100%,95px);height:92px;object-fit:contain}
+.farm-art-entry strong{font-size:13px;color:#f7e8bb}
+.farm-art-entry small{font-size:11px;color:#d0cedf;line-height:1.3}
+.farm-kitchen{margin:22px 0 8px;padding:15px;border:1px solid #826eae;border-radius:16px;background:linear-gradient(160deg,#292b40,#26203e)}
+.farm-kitchen h2,.farm-kitchen h3{margin:0 0 10px}
+.farm-recipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:9px}
+.farm-recipe{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid #675b82;border-radius:11px;background:#261d39}
+.farm-recipe img{width:62px;height:62px;object-fit:contain;flex-shrink:0}
+.farm-recipe span{min-width:0;display:flex;flex-direction:column;gap:4px}
+.farm-recipe b{font-size:13px;color:#fae5b8}
+.farm-recipe small{font-size:11px;color:#d5cbe1;line-height:1.3}
+@media(max-width:620px){.farm-art-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}.farm-art-entry img{height:76px}.farm-recipe-grid{grid-template-columns:1fr}}
+
+
+/* Approved Rupee Rush kitchen and dining environments.
+   Scenes remain scenic artwork; all mechanics and controls are accessible HTML. */
+.kitchen-room-section{margin:22px 0 20px;padding:0 0 13px;border:1px solid #6e5a8a;border-radius:15px;overflow:hidden;background:linear-gradient(165deg,#282238,#201d31)}
+.kitchen-room-banner{position:relative;width:100%;min-height:230px;height:clamp(230px,34vw,415px);overflow:hidden;isolation:isolate;background:#443b3b}
+.kitchen-room-art{display:block;width:100%;height:100%;object-fit:cover;object-position:center 55%;pointer-events:none;user-select:none}
+.kitchen-room-heading{position:absolute;inset:auto 0 0;z-index:1;padding:50px 18px 16px;color:#fff9e8;background:linear-gradient(to bottom,transparent 0%,#150d16e3 75%,#150d16f5 100%);text-shadow:0 1px 5px #130d11}
+.kitchen-room-heading h3{font-size:clamp(19px,3vw,27px);margin:0 0 5px;color:#ffdf9b}
+.kitchen-room-heading p{font-size:clamp(12px,1.8vw,15px);line-height:1.35;max-width:670px;margin:0;color:#fff5df}
+.kitchen-room-section .farm-recipe-grid{padding:14px;gap:10px}
+.kitchen-room-section .farm-recipe{background:#302a3e;border-color:#7b6991;flex-wrap:wrap;align-content:center}
+.kitchen-room-section .farm-recipe>span{flex:1 1 120px}
+.kitchen-room-section .farm-recipe button{flex:1 0 100%;min-height:40px}
+.kitchen-room-dining .kitchen-room-heading{background:linear-gradient(to bottom,transparent,#121a2acc 65%,#121a2af5)}
+.kitchen-future{margin-top:20px}
+@media(max-width:620px){
+ .kitchen-room-banner{height:clamp(205px,59vw,300px);min-height:205px}
+ .kitchen-room-heading{padding:40px 12px 12px}
+ .kitchen-room-heading h3{font-size:20px}
+ .kitchen-room-section .farm-recipe-grid{padding:9px}
+ .kitchen-room-section .farm-recipe img{width:55px;height:55px}
+}
+@media(prefers-reduced-motion:reduce){.kitchen-room-banner,.kitchen-room-art{transition:none!important;animation:none!important}}
+
+/* Recovered Daysha Town portraits. Portrait level follows campaign; house uses independent town.houseLevel. */
+.town-avatar-panel{display:flex;align-items:center;gap:clamp(10px,2.8vw,24px);margin:14px 0;padding:12px 20px 12px 12px;background:linear-gradient(120deg,#302852,#202b52 55%,#151a34);border:1px solid #d4b66b;border-radius:16px;box-shadow:0 8px 22px #07071650;overflow:hidden}
+.town-avatar-art{display:block;flex:0 0 auto;width:clamp(96px,25vw,144px);height:clamp(160px,42vw,240px);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 10px #0506199c)}
+.town-avatar-copy{min-width:0;flex:1}.town-avatar-copy h2{font-size:clamp(19px,3.5vw,28px);margin:4px 0 8px}.town-avatar-copy p{font-size:clamp(12px,2.7vw,15px);color:#ece4f9;line-height:1.5}.town-avatar-eyebrow{display:block;color:#ffdd93;font-size:11px;font-weight:800;letter-spacing:.12em}
+@media(max-width:390px){.town-avatar-panel{padding:8px;gap:8px}.town-avatar-art{width:94px;height:156px}.town-avatar-copy h2{font-size:18px}.town-avatar-copy p{font-size:12px}}
+
+/* Independent House level display; illustrations are explicitly unapproved art previews. */
+.town-house-panel{display:flex;gap:18px;align-items:center;margin:15px 0;border:1px solid #d7b874;border-radius:17px;overflow:hidden;padding:12px 20px 12px 8px;background:radial-gradient(ellipse at 17% 42%,#495174,#303b55 44%,#232844 92%);box-shadow:0 10px 26px #07071d55}
+.town-house-frame{position:relative;isolation:isolate;display:flex;flex:0 0 clamp(152px,34%,260px);align-items:center;justify-content:center;min-width:0;aspect-ratio:1}
+.town-yard-layer{position:absolute;z-index:0;inset:0;display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.town-house-illustration{position:relative;z-index:1;display:block;width:min(100%,260px);height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 8px 9px #0b123077)}
+
+.town-house-summary{flex:1;min-width:0}.town-house-summary h2{margin:4px 0 9px;font-size:clamp(19px,3.2vw,27px)}.town-house-summary p{font-size:clamp(12px,2.4vw,15px);line-height:1.45;color:#e8eaf3}
+.town-house-kicker{font-size:10px;letter-spacing:.12em;color:#ffdea2;font-weight:800}.town-house-summary>small:last-child{font-size:11px;color:#ccc7d1}
+.farm-bed-scene{position:relative;display:block;width:100%;max-width:132px;height:110px;margin:0 auto 4px;isolation:isolate}
+.farm-bed-base{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 5px 6px #0007)}
+.farm-bed-scene.state-locked{opacity:.42;filter:grayscale(.9)}
+.farm-bed-crop{position:absolute;bottom:-9px;left:50%;width:min(100%,126px);height:126px;object-fit:contain;transform:translateX(-50%);pointer-events:none;filter:drop-shadow(0 3px 4px #12252e55)}
+.farm-bed-scene.state-ready .farm-bed-crop{filter:drop-shadow(0 0 8px #ffe09a88) drop-shadow(0 3px 5px #182d3075);animation:harvest-shimmer 2.4s ease-in-out infinite}
+.farm-bed-scene.state-maturing .farm-bed-crop{filter:drop-shadow(0 3px 5px #182d306b)}
+@keyframes harvest-shimmer{0%,100%{filter:drop-shadow(0 0 4px #ffe7a66c) drop-shadow(0 3px 5px #13202d88)}50%{filter:drop-shadow(0 0 11px #ffe7a6c7) drop-shadow(0 3px 5px #13202d88)}}
+@media(prefers-reduced-motion:reduce){.farm-bed-scene.state-ready .farm-bed-crop{animation:none}}
+.farm-bed-fertilized{position:absolute;right:11px;top:5px;display:grid;place-items:center;width:22px;height:22px;color:#e7ffff;background:#4866a999;border:1px solid #c1e6ee;border-radius:50%;font-size:20px;line-height:1}
+.farm-plot-pick .farm-bed-base,.farm-plot-pick .farm-bed-crop{pointer-events:none}
+@media(max-width:430px){.town-house-panel{gap:7px;padding:8px}.town-house-frame{flex-basis:42%}.town-house-summary h2{font-size:17px}.farm-bed-scene{height:90px} .farm-bed-crop{width:110px;height:110px;bottom:-8px}}
+
+/* Full 48-species farm seed browser: compact, scrollable by category, actual art and economy data. */
+.farm-categories{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+.farm-categories .btn{font-size:12px;padding:8px 11px;min-height:37px}
+.farm-seed-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:12px 0 16px}
+.farm-seed-choice{border:2px solid #6c766d;border-radius:12px;background:linear-gradient(140deg,#334447,#282c45);color:#f7eed9;display:flex;align-items:center;gap:7px;padding:8px;text-align:left;min-width:0;cursor:pointer}
+.farm-seed-choice.selected{border-color:#ffdd91;box-shadow:0 0 10px #ffdb8950}
+.farm-seed-choice img{height:64px;width:64px;object-fit:contain;flex-shrink:0}
+.farm-seed-choice span{display:flex;flex-direction:column;min-width:0;gap:2px}
+.farm-seed-choice strong{font-size:13px}.farm-seed-choice small{color:#d7dace;font-size:11px;line-height:1.3}
+.farm-seed-choice:focus-visible{outline:3px solid #f9dc93;outline-offset:2px}
+@media(max-width:430px){.farm-seed-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.farm-seed-choice{flex-direction:column;text-align:center}.farm-seed-choice img{width:62px;height:62px}}
+.farm-unlock-preview{margin:15px 0 20px;padding:12px;border:1px solid #788fa3;border-radius:14px;background:linear-gradient(135deg,#272f4a,#263b40)}
+.farm-seed-locked{opacity:.65;filter:saturate(.55);cursor:default}
+.farm-seed-locked img{filter:grayscale(.25)}
+
+/* Compact, viewport-constrained Nut Buster gameplay: the full board is touch-owned. */
+#app.playing{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+#app.playing .top{height:42px;flex:0 0 42px;padding:3px 7px;gap:3px}
+#app.playing .logo{font-size:clamp(13px,4vw,19px);letter-spacing:-.5px}
+#app.playing .top-money{gap:3px;min-width:0}
+#app.playing .top-money button{gap:2px;min-width:0;padding:2px 3px}
+#app.playing .top-money img{width:17px;height:17px}
+#app.playing .top-money b{font-size:10px;max-width:45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#app.playing .bottom{height:calc(48px + env(safe-area-inset-bottom));padding:2px 3px env(safe-area-inset-bottom)}
+#app.playing .bottom button{gap:0;padding:1px 0;font-size:9px}
+#app.playing .bottom .nav-art{width:22px;height:22px}
+#screen.game-active{flex:1;min-height:0;overflow:hidden;padding:3px 5px calc(52px + env(safe-area-inset-bottom))}
+.game-active .play-layout{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;align-items:center;gap:4px}
+.game-active .play-hud{width:100%;height:32px;min-height:32px;display:grid;grid-template-columns:minmax(58px,1fr) repeat(4,minmax(30px,auto)) 29px;gap:3px;align-items:center}
+.game-active .play-title{min-width:0;white-space:nowrap;overflow:hidden}
+.game-active .play-title b{display:block;font-size:12px;line-height:1.1;color:#ffe3a2}
+.game-active .play-title span{display:block;font-size:9px;line-height:1.1;color:#cfc1dd;overflow:hidden;text-overflow:ellipsis}
+.game-active .play-count{text-align:center;min-width:0;font-variant-numeric:tabular-nums}
+.game-active .play-count small{display:block;font-size:8px;line-height:1.15;color:#cfc1dd}
+.game-active .play-count b{display:block;font-size:clamp(10px,2.9vw,13px);color:#ffe3a2;line-height:1.2;white-space:nowrap}
+.game-active .play-exit{width:29px;height:29px;padding:0;border:1px solid #8668a5;background:#33274c;border-radius:6px;color:#ffe3a2;font-size:23px;line-height:1}
+.game-active .play-objective{width:100%;max-width:550px;min-height:27px;height:27px;display:flex;align-items:center;gap:5px;padding:3px 5px;background:#2d2442;border:1px solid #725990;border-radius:7px}
+.game-active .play-objective>small{font-size:9px;color:#e3c3ff}
+.game-active .play-objective>b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+.game-active .play-objective>span{font-size:10px;white-space:nowrap;color:#ffe5a7;font-variant-numeric:tabular-nums}
+.game-active .play-help{position:relative;z-index:8;flex:none}
+.game-active .play-help summary{width:18px;height:18px;display:grid;place-items:center;list-style:none;cursor:pointer;font-size:11px;border:1px solid #ab8dca;border-radius:50%}
+.game-active .play-help summary::-webkit-details-marker{display:none}
+.game-active .play-help p{position:absolute;top:20px;right:0;width:min(265px,84vw);padding:8px;border:1px solid #ab8dca;border-radius:8px;background:#291f3d;box-shadow:0 6px 14px #0b0716a8;font-size:11px;line-height:1.35}
+#screen.game-active .board-frame{flex:none;box-sizing:border-box;height:min(calc(100dvh - 285px),calc(var(--board-vw) - 16px),var(--board-max-h));width:auto;max-width:calc(100% - 4px);aspect-ratio:var(--board-w)/var(--board-h);margin:0 auto;padding:3px;border:2px solid #ac89c4;border-radius:10px;overflow:hidden;touch-action:none;overscroll-behavior:contain}
+#screen.game-active .board{height:100%;width:100%;display:grid;grid-template-columns:repeat(var(--columns),minmax(0,1fr));grid-template-rows:repeat(var(--board-h),minmax(0,1fr));gap:2px;touch-action:none;overscroll-behavior:contain;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#screen.game-active .cell{aspect-ratio:auto;min-width:0;min-height:0;padding:1px;border-radius:5px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#screen.game-active .cell .gem{user-select:none;-webkit-user-drag:none;pointer-events:none}
+.game-active .play-instruction{flex:none;min-height:16px;line-height:16px;margin:0;text-align:center;font-size:10px;color:#cfc1dd}
+#screen.game-active .booster-grid{flex:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-auto-rows:48px;gap:3px;width:min(100%,500px);max-height:99px;margin:0;padding:0;overflow-y:auto;overscroll-behavior:contain}
+#screen.game-active .booster{min-height:0;height:48px;min-width:0;padding:2px 1px;gap:0;border-radius:7px}
+#screen.game-active .booster .booster-art,#screen.game-active .booster .icon{height:26px;width:26px;max-width:95%;object-fit:contain;pointer-events:none}
+#screen.game-active .booster b{font-size:8px;line-height:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+#screen.game-active .booster small{font-size:9px;line-height:1}
+@media (orientation:landscape) and (max-height:600px){
+ #screen.game-active .play-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,.92fr);grid-template-rows:32px 27px 17px minmax(0,1fr);gap:3px 6px;align-items:start}
+ #screen.game-active .play-hud{grid-column:2;grid-row:1}
+ #screen.game-active .play-objective{grid-column:2;grid-row:2}
+ #screen.game-active .board-frame{grid-column:1;grid-row:1/5;justify-self:center;align-self:start;height:min(calc(100dvh - 100px),calc(50vw),var(--board-max-h));max-width:100%}
+ #screen.game-active .play-instruction{grid-column:2;grid-row:3}
+ #screen.game-active .booster-grid{grid-column:2;grid-row:4;max-height:100%;overflow-y:auto}
+}
+
+/* Approved Nutvale six-column ore atlas; crop coordinates are fixed by
+   mine-ore-atlas.js, never by an unrelated match-three overlay. */
+.mine-ore-slice{
+ display:block;width:82%;aspect-ratio:212/215;max-height:74%;flex:0 0 auto;
+ background-image:url('art/nutvale/mines/nutvale-mines-ore-atlas-approved.png');
+ background-repeat:no-repeat;background-size:683.0189% 505.1163%;
+ border-radius:6px;pointer-events:none;
+}
+.rock .mine-ore-slice{filter:drop-shadow(0 3px 3px #101019)}
+.rock small{position:relative;z-index:1;padding:1px 2px;border-radius:3px;background:#151726b8;text-shadow:0 1px 2px #000}

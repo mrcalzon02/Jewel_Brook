@@ -1,0 +1,208 @@
+{
+  "schema": "rupee-rush/house-svg-preview/v1",
+  "status": "illustrated_preview; not approved final hand-painted transparent house sprites",
+  "camera": "stable isometric-front-right; 512 square alpha-transparent SVG; common door anchor",
+  "bases": "The shared preview generator creates one individual illustration per house level. Ground and crop beds are independent.",
+  "assets": [
+    {
+      "level": 1,
+      "path": "web/art/embryon/town/houses/previews/house_lv_01.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 2,
+      "path": "web/art/embryon/town/houses/previews/house_lv_02.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 3,
+      "path": "web/art/embryon/town/houses/previews/house_lv_03.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 4,
+      "path": "web/art/embryon/town/houses/previews/house_lv_04.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 5,
+      "path": "web/art/embryon/town/houses/previews/house_lv_05.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 6,
+      "path": "web/art/embryon/town/houses/previews/house_lv_06.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 7,
+      "path": "web/art/embryon/town/houses/previews/house_lv_07.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 8,
+      "path": "web/art/embryon/town/houses/previews/house_lv_08.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 9,
+      "path": "web/art/embryon/town/houses/previews/house_lv_09.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 10,
+      "path": "web/art/embryon/town/houses/previews/house_lv_10.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 11,
+      "path": "web/art/embryon/town/houses/previews/house_lv_11.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 12,
+      "path": "web/art/embryon/town/houses/previews/house_lv_12.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 13,
+      "path": "web/art/embryon/town/houses/previews/house_lv_13.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 14,
+      "path": "web/art/embryon/town/houses/previews/house_lv_14.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 15,
+      "path": "web/art/embryon/town/houses/previews/house_lv_15.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 16,
+      "path": "web/art/embryon/town/houses/previews/house_lv_16.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 17,
+      "path": "web/art/embryon/town/houses/previews/house_lv_17.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 18,
+      "path": "web/art/embryon/town/houses/previews/house_lv_18.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 19,
+      "path": "web/art/embryon/town/houses/previews/house_lv_19.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 20,
+      "path": "web/art/embryon/town/houses/previews/house_lv_20.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 21,
+      "path": "web/art/embryon/town/houses/previews/house_lv_21.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 22,
+      "path": "web/art/embryon/town/houses/previews/house_lv_22.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 23,
+      "path": "web/art/embryon/town/houses/previews/house_lv_23.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 24,
+      "path": "web/art/embryon/town/houses/previews/house_lv_24.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 25,
+      "path": "web/art/embryon/town/houses/previews/house_lv_25.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 26,
+      "path": "web/art/embryon/town/houses/previews/house_lv_26.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 27,
+      "path": "web/art/embryon/town/houses/previews/house_lv_27.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 28,
+      "path": "web/art/embryon/town/houses/previews/house_lv_28.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 29,
+      "path": "web/art/embryon/town/houses/previews/house_lv_29.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 30,
+      "path": "web/art/embryon/town/houses/previews/house_lv_30.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 31,
+      "path": "web/art/embryon/town/houses/previews/house_lv_31.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 32,
+      "path": "web/art/embryon/town/houses/previews/house_lv_32.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 33,
+      "path": "web/art/embryon/town/houses/previews/house_lv_33.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 34,
+      "path": "web/art/embryon/town/houses/previews/house_lv_34.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 35,
+      "path": "web/art/embryon/town/houses/previews/house_lv_35.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 36,
+      "path": "web/art/embryon/town/houses/previews/house_lv_36.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 37,
+      "path": "web/art/embryon/town/houses/previews/house_lv_37.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 38,
+      "path": "web/art/embryon/town/houses/previews/house_lv_38.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 39,
+      "path": "web/art/embryon/town/houses/previews/house_lv_39.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    },
+    {
+      "level": 40,
+      "path": "web/art/embryon/town/houses/previews/house_lv_40.svg",
+      "status": "illustrated_svg_preview_not_approved"
+    }
+  ]
+}

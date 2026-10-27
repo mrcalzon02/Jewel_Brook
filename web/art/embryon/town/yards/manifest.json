@@ -1,0 +1,36 @@
+{
+  "schema": "rupee-rush/town-yard-visual-candidates/v1",
+  "status": "transparent_landscape_preview; pending_final_painted_scene_masters",
+  "source": "scripts/generate-town-yards.js",
+  "dimensions": [
+    512,
+    512
+  ],
+  "notes": [
+    "Four independently composited landscape-only ground modules.",
+    "No grow beds, crops, harvest patches or functional hitboxes are painted into yard.",
+    "Level band switches at 1/11/21/31; farm upgrades and plot availability remain original."
+  ],
+  "assets": [
+    {
+      "path": "art/embryon/town/yards/hawseed-yard.svg",
+      "band": 1,
+      "bytes": 8134
+    },
+    {
+      "path": "art/embryon/town/yards/garden-yard.svg",
+      "band": 2,
+      "bytes": 8028
+    },
+    {
+      "path": "art/embryon/town/yards/merchant-yard.svg",
+      "band": 3,
+      "bytes": 8083
+    },
+    {
+      "path": "art/embryon/town/yards/royal-yard.svg",
+      "band": 4,
+      "bytes": 7951
+    }
+  ]
+}

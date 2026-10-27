@@ -1,0 +1,70 @@
+{
+  "schema": "rupee-rush/painted-crop-candidate/v1",
+  "crop": "beet",
+  "display_name": "Crimson Beet",
+  "approval_status": "draft_only_not_approved",
+  "provenance": "Color-adapted from the approved Radish painted sprite sheet; NOT newly generated original beet painting",
+  "source_asset": "web/art/embryon/town/gardening/growth/painted/source_sheets/radish-growth-source.webp",
+  "source_reuse_approved_for_production": false,
+  "runtime_integrated": false,
+  "stages": [
+    "seed",
+    "sprout",
+    "growing",
+    "maturing",
+    "ready"
+  ],
+  "note": "Review botanical identity, leaf venation, mature bulb and radish-like tail before accepting. Separate reference PNG is visual review only.",
+  "assets": [
+    {
+      "stage": "seed",
+      "path": "web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/beet-seed.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "3a2da119c693ff87f48b304ee37c7516c17fa124d09f322d7d87915256763782",
+      "bytes": 13048
+    },
+    {
+      "stage": "sprout",
+      "path": "web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/beet-sprout.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "f610b761c17a5f34a983aa8783fb7a10cab9170b58ac2308bdb678d19cc382bb",
+      "bytes": 18610
+    },
+    {
+      "stage": "growing",
+      "path": "web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/beet-growing.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "876bb31eb2b7877e5c982010514e555b0fc030c56f32b59da1983fd87ad130ec",
+      "bytes": 29616
+    },
+    {
+      "stage": "maturing",
+      "path": "web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/beet-maturing.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "53ff4cb6d123ec92cd8d356baa947277e4cfc24038bab3740e031508a4f40a12",
+      "bytes": 45314
+    },
+    {
+      "stage": "ready",
+      "path": "web/art/embryon/town/gardening/growth/candidates/crimson-beet-v1/beet-ready.webp",
+      "dimensions": [
+        512,
+        512
+      ],
+      "sha256": "6e8fd69ef9800bdb5c276cc58769a2df9fcb8bd2162f9f41234824a2f2aae80c",
+      "bytes": 57502
+    }
+  ]
+}

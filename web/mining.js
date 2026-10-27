@@ -53,6 +53,7 @@ function ensure(save,at=Date.now()){
  for(const id of ['tileHitsByXY','tileScansByXY','exposedOreByXY','tileContentsByXY']){
   if(!n[id]||typeof n[id]!=='object'||Array.isArray(n[id]))n[id]={};
  }
+ n.bonusStrikes=clamp(n.bonusStrikes,999999);n.bonusScans=clamp(n.bonusScans,999999);
  n.cartOre=clamp(n.cartOre);n.ore=clamp(n.ore);n.metal=clamp(n.metal);n.goods=clamp(n.goods);n.writs=clamp(n.writs);
  n.unlocked=clamp(n.unlocked,500)||1;n.completed=clamp(n.completed,500); // independent mine progress
  if(!n.stars||typeof n.stars!=='object'||Array.isArray(n.stars))n.stars={};
@@ -86,7 +87,7 @@ function stats(save,at=Date.now()){
  const n=ensure(save,at);let completed=0,exposed=0,scanned=0;
  eachCoord(n,(x,y,k)=>{const c=contents(n,x,y);if(n.tileHitsByXY[k]>=c.hardness)completed++;if(n.exposedOreByXY[k])exposed++;if(n.tileScansByXY[k])scanned++;});
  return {mineTier:n.mineTier,pickTier:n.pickTier,gloveTier:n.gloveTier,cartTier:n.cartTier,refineryTier:n.refineryTier,
-  size:MAP[n.mineTier].size,strikesLeft:n.strikesLeft,strikeMax:G.dailyLimit('pickaxe',n.pickTier),
+  size:MAP[n.mineTier].size,bonusStrikes:n.bonusStrikes,bonusScans:n.bonusScans,strikesLeft:n.strikesLeft,strikeMax:G.dailyLimit('pickaxe',n.pickTier),
   scansLeft:n.scansLeft,scanMax:G.dailyLimit('gloves',n.gloveTier),cartOre:n.cartOre,cartMax:CART[n.cartTier],
   ore:n.ore,metal:n.metal,goods:n.goods,writs:n.writs,dollars:save.rupeeMine.dollars,
   odds:MAP[n.mineTier].odds.slice(),completed,exposed,scanned,
@@ -108,14 +109,15 @@ function resetIfFinished(n){
  n.tileHitsByXY={};n.tileScansByXY={};n.exposedOreByXY={};n.tileContentsByXY={};
  return true;
 }
-function excavate(save,x,y,at=Date.now()){
+function excavate(save,x,y,at=Date.now(),free=false){
  if(!available(save))return {valid:false,reason:'campaign'};
  const n=ensure(save,at),size=MAP[n.mineTier].size;
  if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=size||y>=size)return {valid:false,reason:'cell'};
  const k=key(x,y),c=contents(n,x,y),hits=n.tileHitsByXY[k];
  if(hits>=c.hardness)return {valid:false,reason:n.exposedOreByXY[k]?'collect':'cleared'};
- if(n.strikesLeft<=0)return {valid:false,reason:'strikes'};
- n.strikesLeft--;n.tileHitsByXY[k]=hits+1;
+ if(!free&&n.strikesLeft<=0&&n.bonusStrikes<=0)return {valid:false,reason:'strikes'};
+ if(!free){if(n.bonusStrikes>0)n.bonusStrikes--;else n.strikesLeft--;}
+ n.tileHitsByXY[k]=hits+1;
  const done=n.tileHitsByXY[k]>=c.hardness;
  let collected=0;
  if(done&&c.ore>0){
@@ -127,15 +129,16 @@ function excavate(save,x,y,at=Date.now()){
  if(done)result.nextSite=resetIfFinished(n);
  return result;
 }
-function survey(save,x,y,at=Date.now()){
+function survey(save,x,y,at=Date.now(),free=false){
  if(!available(save))return {valid:false,reason:'campaign'};
  const n=ensure(save,at),size=MAP[n.mineTier].size;
  if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=size||y>=size)return {valid:false,reason:'cell'};
  const k=key(x,y),c=contents(n,x,y);
  if(n.tileHitsByXY[k]>=c.hardness)return {valid:false,reason:'cleared'};
  if(n.tileScansByXY[k])return {valid:false,reason:'scanned'};
- if(n.scansLeft<=0)return {valid:false,reason:'scans'};
- n.scansLeft--;n.tileScansByXY[k]=true;
+ if(!free&&n.scansLeft<=0&&n.bonusScans<=0)return {valid:false,reason:'scans'};
+ if(!free){if(n.bonusScans>0)n.bonusScans--;else n.scansLeft--;}
+ n.tileScansByXY[k]=true;
  return {valid:true,orePresent:c.ore>0,remaining:n.scansLeft}; // NEVER reveal rarity/yield
 }
 function collect(save,x,y,at=Date.now()){

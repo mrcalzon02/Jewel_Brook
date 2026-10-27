@@ -17,3 +17,8 @@ android/**/build/
 android/local.properties
 *.p12
 **/store-password.txt
+
+# Native Windows/Linux build output
+/build/
+/stage/
+/release-native/

@@ -1,0 +1,3 @@
+// Windows executable icon: unchanged approved emerald art in ICO.
+#define IDI_RUPEE_RUSH 101
+IDI_RUPEE_RUSH ICON "@RUPEE_WIN_ICON@"

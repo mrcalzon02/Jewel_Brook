@@ -1,0 +1,682 @@
+{
+  "schema": "rupee-rush/farming-equipment-runtime/v1",
+  "status": "sliced-qa-not-gameplay-enabled",
+  "archive": {
+    "googleDriveFolder": "https://drive.google.com/drive/folders/1v68b2THrKke3Vui15EFe36JEfHVsxypg",
+    "unmodifiedSources": 2,
+    "additionalOverviewSprites": 79,
+    "overviewReviewFlags": 44,
+    "fullArchive": "RupeeRush_Farming_Art_Dynamic_Slices_v1.zip"
+  },
+  "readyForReview": 41,
+  "sprites": [
+    {
+      "id": "shovel",
+      "category": "equipment",
+      "file": "equipment/shovel.webp",
+      "sha256": "d9f83b93559f344f427731e7730c5770a82c5eaeb1ec167652f8c2e665b2c7b3",
+      "bytes": 9262,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        1
+      ],
+      "flags": []
+    },
+    {
+      "id": "pickaxe",
+      "category": "equipment",
+      "file": "equipment/pickaxe.webp",
+      "sha256": "87c0d007e237dea6e95836acc8a350884136dd6d06afb9cbe18f272531be9a4d",
+      "bytes": 10872,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        2
+      ],
+      "flags": []
+    },
+    {
+      "id": "hoe",
+      "category": "equipment",
+      "file": "equipment/hoe.webp",
+      "sha256": "da4e332f86bdf7b13501fb72283d59c26b7c0dafb2215cc9e657b4fea0908958",
+      "bytes": 9600,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        3
+      ],
+      "flags": [
+        "edge-contact-review"
+      ]
+    },
+    {
+      "id": "watering-can",
+      "category": "equipment",
+      "file": "equipment/watering-can.webp",
+      "sha256": "6e6032c658bad09417e0c629319c00ce52dad5b60d49792ab7aa27edd07d389f",
+      "bytes": 13960,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        4
+      ],
+      "flags": []
+    },
+    {
+      "id": "pruners",
+      "category": "equipment",
+      "file": "equipment/pruners.webp",
+      "sha256": "8a82058cd2db16f4939b0d24be87784946c9a63c8c524503a49c9cb6774c1d2a",
+      "bytes": 10648,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        5
+      ],
+      "flags": []
+    },
+    {
+      "id": "sickle",
+      "category": "equipment",
+      "file": "equipment/sickle.webp",
+      "sha256": "5072f9aa9f93e478bd6c0dd2f418d57d5b92dcf58dc5d6834a210c3d3e95dc31",
+      "bytes": 9932,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        6
+      ],
+      "flags": []
+    },
+    {
+      "id": "rake",
+      "category": "equipment",
+      "file": "equipment/rake.webp",
+      "sha256": "b273e5c9b7aa25b1ae95ab04282f263aa363f858fc2d11ddc1d83d0b02f11394",
+      "bytes": 12380,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        7
+      ],
+      "flags": []
+    },
+    {
+      "id": "broom",
+      "category": "equipment",
+      "file": "equipment/broom.webp",
+      "sha256": "69e5873d538971433077784f57b468e8423554eeecfaa5fca3ea7aebbb30f415",
+      "bytes": 9232,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        1,
+        8
+      ],
+      "flags": []
+    },
+    {
+      "id": "bucket",
+      "category": "equipment",
+      "file": "equipment/bucket.webp",
+      "sha256": "c59209090cd31bf8be380138c02d62366927492549ec4e1c0d0e51eb73d37889",
+      "bytes": 13876,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        1
+      ],
+      "flags": []
+    },
+    {
+      "id": "harvest-basket",
+      "category": "equipment",
+      "file": "equipment/harvest-basket.webp",
+      "sha256": "d129099ed3ddfaa448d96e53f45f6fc803e7b62f2001bd9f9c9d3d9d0a14a8d5",
+      "bytes": 14760,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        2
+      ],
+      "flags": []
+    },
+    {
+      "id": "wheelbarrow",
+      "category": "equipment",
+      "file": "equipment/wheelbarrow.webp",
+      "sha256": "232463a515aeb99aeec073f32d9258f2de9cd0553b73fa9505e62768219c8b2d",
+      "bytes": 11440,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        3
+      ],
+      "flags": []
+    },
+    {
+      "id": "wooden-crate",
+      "category": "equipment",
+      "file": "equipment/wooden-crate.webp",
+      "sha256": "321b60ad71d26a803ac94d9ef4551ea21607321703d450f56f41c3720fff3857",
+      "bytes": 13102,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        4
+      ],
+      "flags": []
+    },
+    {
+      "id": "storage-barrel",
+      "category": "equipment",
+      "file": "equipment/storage-barrel.webp",
+      "sha256": "1386693225db052338fa79f894979ff66d74155f1c75bd48717d937a8b1e789d",
+      "bytes": 13672,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        5
+      ],
+      "flags": []
+    },
+    {
+      "id": "fertilizer-bag",
+      "category": "equipment",
+      "file": "equipment/fertilizer-bag.webp",
+      "sha256": "b4c2c90bbfcc9ce5bec3997f68b9c969cb349e03b50a6c7cee13f044f4efbd61",
+      "bytes": 11772,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        6
+      ],
+      "flags": []
+    },
+    {
+      "id": "seed-bag",
+      "category": "equipment",
+      "file": "equipment/seed-bag.webp",
+      "sha256": "0f34a4f146bb4221e284d117570d712f60efee05790761ee24914e0fa363fe97",
+      "bytes": 12742,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        7
+      ],
+      "flags": []
+    },
+    {
+      "id": "compost-bin",
+      "category": "equipment",
+      "file": "equipment/compost-bin.webp",
+      "sha256": "aa1b3d7fd55597fee3a8e75cb369bb85f1ef006b6c1ebe0ff8a928bb9efce64a",
+      "bytes": 12914,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        2,
+        8
+      ],
+      "flags": []
+    },
+    {
+      "id": "sprinkler",
+      "category": "equipment",
+      "file": "equipment/sprinkler.webp",
+      "sha256": "7525f1dc46ecce297e6f5bd3db7153cea8dfb29360fa6edfd7d720e0abb1ced5",
+      "bytes": 14954,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        1
+      ],
+      "flags": []
+    },
+    {
+      "id": "deluxe-sprinkler",
+      "category": "equipment",
+      "file": "equipment/deluxe-sprinkler.webp",
+      "sha256": "68cb797621fd425361d638907e1afbddbd4a04d6aa7052faaf4c19b1b6c9df1c",
+      "bytes": 13434,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        2
+      ],
+      "flags": []
+    },
+    {
+      "id": "irrigation-pipe",
+      "category": "equipment",
+      "file": "equipment/irrigation-pipe.webp",
+      "sha256": "b439d5dc19eb8997b332b2014c1fa8ce019c14370529b3b6043ef89067b4758f",
+      "bytes": 10860,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        3
+      ],
+      "flags": []
+    },
+    {
+      "id": "water-pump",
+      "category": "equipment",
+      "file": "equipment/water-pump.webp",
+      "sha256": "0d56e1a0c596015ab310725d983709ae9378398a9d042017e5bad9e7ba4952eb",
+      "bytes": 13512,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        4
+      ],
+      "flags": []
+    },
+    {
+      "id": "water-tank",
+      "category": "equipment",
+      "file": "equipment/water-tank.webp",
+      "sha256": "58b665d11fe769f833bb60a39cc5e464c264060f0d396173434bb7da8450bb29",
+      "bytes": 13478,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        5
+      ],
+      "flags": []
+    },
+    {
+      "id": "windmill",
+      "category": "equipment",
+      "file": "equipment/windmill.webp",
+      "sha256": "de1afd530f0223372146008621b7aa7d4dda2e30eeb4a5b526048dbcfea76e2e",
+      "bytes": 13584,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        6
+      ],
+      "flags": []
+    },
+    {
+      "id": "scarecrow",
+      "category": "equipment",
+      "file": "equipment/scarecrow.webp",
+      "sha256": "04b5e38be4844d08b87d539eeed0a21ac5214c9b4eb7f483901a1dabdb78c0dd",
+      "bytes": 13702,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        7
+      ],
+      "flags": []
+    },
+    {
+      "id": "beehive",
+      "category": "equipment",
+      "file": "equipment/beehive.webp",
+      "sha256": "5196d24af862f6b0dbce7210750556c12b67e04da75153f1192281c006df2214",
+      "bytes": 14130,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        3,
+        8
+      ],
+      "flags": []
+    },
+    {
+      "id": "garden-plot",
+      "category": "equipment",
+      "file": "equipment/garden-plot.webp",
+      "sha256": "cd41503d314c780f79aa5f9a4cc732513b5aa8bff65bf48361963bcadd857b6b",
+      "bytes": 13030,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        1
+      ],
+      "flags": []
+    },
+    {
+      "id": "raised-bed",
+      "category": "equipment",
+      "file": "equipment/raised-bed.webp",
+      "sha256": "242bb27a869ed0018b82414ed35c59ef0b836fc23f53876fbca788f4fb9ddc97",
+      "bytes": 12494,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        2
+      ],
+      "flags": []
+    },
+    {
+      "id": "greenhouse",
+      "category": "equipment",
+      "file": "equipment/greenhouse.webp",
+      "sha256": "2d62a64b0104b9eacb1ae0c85be1c524e3ae5962750ca595516f3f4c9f3dc8f2",
+      "bytes": 13398,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        3
+      ],
+      "flags": []
+    },
+    {
+      "id": "trellis",
+      "category": "equipment",
+      "file": "equipment/trellis.webp",
+      "sha256": "b0e1f55812c7d6ddcbfbeea962898dce832265ca8cb0e59e45d1a5c0741087ee",
+      "bytes": 17548,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        4
+      ],
+      "flags": []
+    },
+    {
+      "id": "fence",
+      "category": "equipment",
+      "file": "equipment/fence.webp",
+      "sha256": "8347280ea3a6bbc1b01564f3b67573d89bcf3b209fa7560b7e1219f8cfa137ef",
+      "bytes": 11886,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        5
+      ],
+      "flags": [
+        "edge-contact-review"
+      ]
+    },
+    {
+      "id": "gate",
+      "category": "equipment",
+      "file": "equipment/gate.webp",
+      "sha256": "eae7cbbf6a3a2e97faa71049e5b51a7393fae6ca54c0fcf6b9cc49957ec29f65",
+      "bytes": 11946,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        6
+      ],
+      "flags": []
+    },
+    {
+      "id": "tool-shed",
+      "category": "equipment",
+      "file": "equipment/tool-shed.webp",
+      "sha256": "9e46432655ee84547d83a2b5dffa7f8852602715a200a8c5e14f86bfc26a9119",
+      "bytes": 12468,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        7
+      ],
+      "flags": []
+    },
+    {
+      "id": "well",
+      "category": "equipment",
+      "file": "equipment/well.webp",
+      "sha256": "9b705161c4765dbe48a7d587cdfa8ddab670546844f073e6f1ba74375a1cafcf",
+      "bytes": 15144,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        4,
+        8
+      ],
+      "flags": [
+        "edge-contact-review"
+      ]
+    },
+    {
+      "id": "growth-elixir",
+      "category": "equipment",
+      "file": "equipment/growth-elixir.webp",
+      "sha256": "4a75920564c5090e67b4ad20c78517d83660a4c94941e74d90633fe8947a6efd",
+      "bytes": 11858,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        1
+      ],
+      "flags": []
+    },
+    {
+      "id": "soil-enhancer",
+      "category": "equipment",
+      "file": "equipment/soil-enhancer.webp",
+      "sha256": "326c4bce6bb7b9e3196bf1150fc5a6d6d3787945f802de59b6b66213a199b463",
+      "bytes": 12812,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        2
+      ],
+      "flags": [
+        "edge-contact-review"
+      ]
+    },
+    {
+      "id": "plant-food",
+      "category": "equipment",
+      "file": "equipment/plant-food.webp",
+      "sha256": "e89086e1344a4844a965034704f5c4d84ffc7b2f94bf7d448b1d9f91b87d50e2",
+      "bytes": 10840,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        3
+      ],
+      "flags": []
+    },
+    {
+      "id": "pest-repellent",
+      "category": "equipment",
+      "file": "equipment/pest-repellent.webp",
+      "sha256": "1b0ac215359fb18aee2263605a7708b85e17108b8a1156939f46c1a21e246ff1",
+      "bytes": 12454,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        4
+      ],
+      "flags": []
+    },
+    {
+      "id": "speed-grow",
+      "category": "equipment",
+      "file": "equipment/speed-grow.webp",
+      "sha256": "55ca044eae6a1fa486e29d1c0ae3853121c2f25ce1be4ad2c6a920e960e40a80",
+      "bytes": 10756,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        5
+      ],
+      "flags": []
+    },
+    {
+      "id": "plant-protect",
+      "category": "equipment",
+      "file": "equipment/plant-protect.webp",
+      "sha256": "883536710e105f4b68251293a9d67892b849ce9c88f00ba852c653083f518c4f",
+      "bytes": 11640,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        6
+      ],
+      "flags": []
+    },
+    {
+      "id": "crop-booster",
+      "category": "equipment",
+      "file": "equipment/crop-booster.webp",
+      "sha256": "51d53c57604056ee13fb71f996658e1d8f4191e20b5f7fbe98bc59ad09c90657",
+      "bytes": 10894,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        7
+      ],
+      "flags": []
+    },
+    {
+      "id": "magic-seeds",
+      "category": "equipment",
+      "file": "equipment/magic-seeds.webp",
+      "sha256": "dd154d7546152c51907acfccd227868b0b6ed5edd45287ee43ec211feabb4e47",
+      "bytes": 11492,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        8
+      ],
+      "flags": [
+        "edge-contact-review"
+      ]
+    },
+    {
+      "id": "harvest-boost",
+      "category": "equipment",
+      "file": "equipment/harvest-boost.webp",
+      "sha256": "650ac38447db786ce2f07222b79de929d5aebe9fe62006f4abf305cc8a9017bb",
+      "bytes": 11220,
+      "size": [
+        192,
+        192
+      ],
+      "sourceCell": [
+        5,
+        9
+      ],
+      "flags": [
+        "edge-contact-review"
+      ]
+    }
+  ]
+}

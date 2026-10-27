@@ -1,0 +1,517 @@
+{
+  "schema": "rupee-system-icon-assets/v1",
+  "version": 1,
+  "sets": {
+    "navigation-economy": [
+      "home",
+      "levels",
+      "mine",
+      "shop",
+      "rewards",
+      "settings",
+      "back",
+      "close",
+      "confirm",
+      "info",
+      "warning",
+      "locked",
+      "rupee",
+      "star-gems",
+      "heart",
+      "daily-moves"
+    ],
+    "gameplay-hazards": [
+      "match",
+      "cascade",
+      "objective",
+      "shuffle",
+      "combo",
+      "victory",
+      "defeat",
+      "bomb",
+      "frozen",
+      "poison",
+      "ward",
+      "portal",
+      "conveyor-left",
+      "conveyor-right",
+      "wind-up",
+      "wind-down"
+    ]
+  },
+  "transparent": true,
+  "format": "WebP RGBA",
+  "spriteDimensions": [
+    192,
+    192
+  ],
+  "sourceDimensions": [
+    1254,
+    1254
+  ],
+  "notes": "Two approved image-generation 4x4 atlases; each independently sliced and padded to a 192px RGBA WebP sprite. UI mapping may use only these explicit asset IDs. Preserve original project sources.",
+  "assets": [
+    {
+      "id": "navigation-economy-atlas",
+      "path": "art/embryon/system-icons/navigation-economy-atlas.webp",
+      "sha256": "8ea8782c278e48807344070a65245d7b437fff4ea21a16e324ae27570bbb282a",
+      "bytes": 346982,
+      "type": "atlas"
+    },
+    {
+      "id": "home",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/home.webp",
+      "bytes": 17042,
+      "sha256": "3809c0c4702bd6d2e6ad5bb65f4e6aa688cf4d26a16bc6043bef21758916f313",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        1
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "levels",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/levels.webp",
+      "bytes": 14576,
+      "sha256": "27d5b2069f9f474bd209aea2c0eb7284e53016af0686997645cb01e49ed865eb",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        2
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "mine",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/mine.webp",
+      "bytes": 14948,
+      "sha256": "e469f44dbe7ccdc764ea4e8edfcb3bbd45570594c3eaf4ad32795539e4b490ed",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        3
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "shop",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/shop.webp",
+      "bytes": 16180,
+      "sha256": "41eff2d5114f398f9afc2148e1cd6f4b6ade038541a4bf842b6fff5a12ceb965",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        4
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "rewards",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/rewards.webp",
+      "bytes": 16376,
+      "sha256": "ddf42b7146db25a551ff2312a14d117beb22b350e7d6257fd0e56f410a79d533",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        1
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "settings",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/settings.webp",
+      "bytes": 14876,
+      "sha256": "fe048e4a12c1cd991b35c4e24b29984d04c438c9aed26eed78c29295b2088481",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        2
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "back",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/back.webp",
+      "bytes": 11168,
+      "sha256": "3b67c694edb845321564ab808a6cc3b81532b9bedf51bfd7fb39bcf7d1ea97fb",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        3
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "close",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/close.webp",
+      "bytes": 12608,
+      "sha256": "3488794a34f555a1eba13a55f721eb4f21f1d4de7dbb82fbc0a5cf81f15f88c5",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        4
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "confirm",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/confirm.webp",
+      "bytes": 10464,
+      "sha256": "d0e5154f65637d4298b301664eb8fd5e076271ef620bcb7b2d923fcf8b6c6d81",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        1
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "info",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/info.webp",
+      "bytes": 11210,
+      "sha256": "ac77754818cf2a92bae8fcfd4296531e3198dfd31d0e5143b1c221078b206f51",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "warning",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/warning.webp",
+      "bytes": 8622,
+      "sha256": "438594a06aca064e6a7e1981eb417de4fd97a144008cb9f8774efec98371f62a",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        3
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "locked",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/locked.webp",
+      "bytes": 12740,
+      "sha256": "86c70efaa78c01da9d448381b2b2f1800f5df5fd0f4a0cb92f0b738b4abaa6e4",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        4
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "rupee",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/rupee.webp",
+      "bytes": 11440,
+      "sha256": "6d3cd6e3724eb768a5dcc1d21236be9bf1bcb8053cbca2714b264fd0ffc6adf9",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        1
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "star-gems",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/star-gems.webp",
+      "bytes": 11596,
+      "sha256": "72b678229fae8001a6545a482a409e3f56c6272acaa6320226c424aef58345a8",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        2
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "heart",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/heart.webp",
+      "bytes": 10732,
+      "sha256": "4e74d18d053220143e425d56a0322e2daddee991c9f3597b1d0d8ca128805203",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        3
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "daily-moves",
+      "category": "navigation-economy",
+      "path": "art/embryon/system-icons/navigation-economy/daily-moves.webp",
+      "bytes": 17192,
+      "sha256": "55fdc4f2ed426f6e1ddf0c450a7c9e4124437e8cf2b98bd0c047bcea57a8f4f5",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        4
+      ],
+      "sourceAtlasSha256": "6dcc9501dd6fa1110bdf2e8cf8f88aec62f877fba7b55b0449d49cc36d631003"
+    },
+    {
+      "id": "gameplay-hazards-atlas",
+      "path": "art/embryon/system-icons/gameplay-hazards-atlas.webp",
+      "sha256": "46ea64697f4635c2902d80aca3950103d82a886a309ccad12515b766919606d8",
+      "bytes": 510646,
+      "type": "atlas"
+    },
+    {
+      "id": "match",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/match.webp",
+      "bytes": 19162,
+      "sha256": "4408c90dacea2bfba4b9f0a41560246826f2686abe6edee08efd4131ce8e9d24",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        1
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "cascade",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/cascade.webp",
+      "bytes": 18646,
+      "sha256": "a163ea7fa4479ac412f64f14dd7349982e93d57f1ae371a512c885fbc666a148",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        2
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "objective",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/objective.webp",
+      "bytes": 15122,
+      "sha256": "3f4d07a81a2aec7353df9dad33357fda156b1755aa618815f12213119432dec1",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        3
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "shuffle",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/shuffle.webp",
+      "bytes": 21150,
+      "sha256": "d9ba4fc1cbf310c47b134df208512a239b858c000a08f640dfbe0faad08229de",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        1,
+        4
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "combo",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/combo.webp",
+      "bytes": 18830,
+      "sha256": "f50f6e746f73ff043f948208a7fd919f53f62b93b714b42091d531252cd2a74a",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        1
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "victory",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/victory.webp",
+      "bytes": 20872,
+      "sha256": "a301942ca2f51a3746b8978948ca795f60891dc85c84379060973daba1ed16f7",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        2
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "defeat",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/defeat.webp",
+      "bytes": 19120,
+      "sha256": "ac4e71fdc8020923c2bbf8f51efedad3192997ee335175374bd3f475c9a3346c",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        3
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "bomb",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/bomb.webp",
+      "bytes": 17614,
+      "sha256": "6d9fae17a38be560311194d5d117adee4a4175b16feccea7ae00e3a8daedc3e1",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        2,
+        4
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "frozen",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/frozen.webp",
+      "bytes": 19816,
+      "sha256": "c6fbb9b0ffdd439ec9d484483c7860eb9a2f34d6d3e1aad5180176afdd3f25ad",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        1
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "poison",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/poison.webp",
+      "bytes": 19354,
+      "sha256": "3f42768fb6f0c5e00c55a98fce2fbabbc988fa6442e30efd3429ab231856f654",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        2
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "ward",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/ward.webp",
+      "bytes": 19014,
+      "sha256": "1c50d80cd4e7515426b483f9df405edff5a16a6a923cba38963a9ba7209c56aa",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        3
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "portal",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/portal.webp",
+      "bytes": 18892,
+      "sha256": "a06afcb7f35b7ed411861e965d725c42ec2a65bfaccc74e729fb9db7ec9669f4",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        3,
+        4
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "conveyor-left",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/conveyor-left.webp",
+      "bytes": 11492,
+      "sha256": "1d9fcde50838c5864affd65e7265cd7653b8a6a57c438b82fd7461b1e7329670",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        1
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "conveyor-right",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/conveyor-right.webp",
+      "bytes": 11250,
+      "sha256": "1e7d3e5ec35fb1dcdaf2b174d3cfbc29f20288a9bfa371d729c6c10d7781b1e8",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        2
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "wind-up",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/wind-up.webp",
+      "bytes": 18950,
+      "sha256": "a1a18f62e194668f1a8775af81930b576f24d30a41785146d144c2991e5f5360",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        3
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    },
+    {
+      "id": "wind-down",
+      "category": "gameplay-hazards",
+      "path": "art/embryon/system-icons/gameplay-hazards/wind-down.webp",
+      "bytes": 18974,
+      "sha256": "3fc03a2cd9e4a2914684ea25afbb8ec26fb5b783e9c553c5bfe04063fa42e238",
+      "width": 192,
+      "height": 192,
+      "sourceCell": [
+        4,
+        4
+      ],
+      "sourceAtlasSha256": "ddebe01902122d74dfbdaaedb343d5ef19a1c7e72d7f4586c425dd16b3cff179"
+    }
+  ]
+}

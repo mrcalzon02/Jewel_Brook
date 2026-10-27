@@ -1,0 +1,119 @@
+{
+  "schema": "rupee-rush/town-crop-growth-art/v1",
+  "status": "active_isolated_vector_stage_art; pending_final_painted_master_and_device_qa",
+  "dimensions": [
+    256,
+    256
+  ],
+  "transparent": true,
+  "originalGameCropIds": [
+    "carrot",
+    "wheat",
+    "berry"
+  ],
+  "stages": [
+    "seed",
+    "sprout",
+    "growing",
+    "maturing",
+    "ready"
+  ],
+  "generator": "scripts/generate-crop-growth.js",
+  "notes": [
+    "Dedicated crop growth silhouettes replace generic scaled harvest-item pictures.",
+    "Final high-resolution painted crop masters and mobile art QA remain outstanding.",
+    "Economy, durations, fertilizer, yield, saves and other game modes are unchanged."
+  ],
+  "assets": [
+    {
+      "crop": "carrot",
+      "stage": "seed",
+      "path": "art/embryon/town/gardening/growth/carrot-seed.svg",
+      "bytes": 2026
+    },
+    {
+      "crop": "carrot",
+      "stage": "sprout",
+      "path": "art/embryon/town/gardening/growth/carrot-sprout.svg",
+      "bytes": 2106
+    },
+    {
+      "crop": "carrot",
+      "stage": "growing",
+      "path": "art/embryon/town/gardening/growth/carrot-growing.svg",
+      "bytes": 2665
+    },
+    {
+      "crop": "carrot",
+      "stage": "maturing",
+      "path": "art/embryon/town/gardening/growth/carrot-maturing.svg",
+      "bytes": 3829
+    },
+    {
+      "crop": "carrot",
+      "stage": "ready",
+      "path": "art/embryon/town/gardening/growth/carrot-ready.svg",
+      "bytes": 4568
+    },
+    {
+      "crop": "wheat",
+      "stage": "seed",
+      "path": "art/embryon/town/gardening/growth/wheat-seed.svg",
+      "bytes": 2018
+    },
+    {
+      "crop": "wheat",
+      "stage": "sprout",
+      "path": "art/embryon/town/gardening/growth/wheat-sprout.svg",
+      "bytes": 2096
+    },
+    {
+      "crop": "wheat",
+      "stage": "growing",
+      "path": "art/embryon/town/gardening/growth/wheat-growing.svg",
+      "bytes": 2083
+    },
+    {
+      "crop": "wheat",
+      "stage": "maturing",
+      "path": "art/embryon/town/gardening/growth/wheat-maturing.svg",
+      "bytes": 14150
+    },
+    {
+      "crop": "wheat",
+      "stage": "ready",
+      "path": "art/embryon/town/gardening/growth/wheat-ready.svg",
+      "bytes": 13979
+    },
+    {
+      "crop": "berry",
+      "stage": "seed",
+      "path": "art/embryon/town/gardening/growth/berry-seed.svg",
+      "bytes": 2018
+    },
+    {
+      "crop": "berry",
+      "stage": "sprout",
+      "path": "art/embryon/town/gardening/growth/berry-sprout.svg",
+      "bytes": 2096
+    },
+    {
+      "crop": "berry",
+      "stage": "growing",
+      "path": "art/embryon/town/gardening/growth/berry-growing.svg",
+      "bytes": 3846
+    },
+    {
+      "crop": "berry",
+      "stage": "maturing",
+      "path": "art/embryon/town/gardening/growth/berry-maturing.svg",
+      "bytes": 8800
+    },
+    {
+      "crop": "berry",
+      "stage": "ready",
+      "path": "art/embryon/town/gardening/growth/berry-ready.svg",
+      "bytes": 7521
+    }
+  ]
+}

@@ -50,3 +50,29 @@ test('preexisting values outside current 40-level catalog clamp safely without w
  T.ensure(s);assert.equal(s.town.houseLevel,40);assert.equal(T.plotCount(50),8);assert.equal(s.town.seeds.futureCrop,9);
  assert.equal(T.upgradeHouse(s).reason,'max');
 });
+
+test('48-crop deep catalog has functional progression, bulk seed purchases and complete harvest liquidation',()=>{
+ assert.equal(Object.keys(T.CROPS).length,48);
+ assert.equal(new Set(Object.values(T.CROPS).map(c=>c.house)).size,40,'crops unlock at every house tier');
+ assert.equal(T.CATEGORIES.length,8);
+ const s={coins:1_000_000,stars:{}};T.ensure(s);s.town.houseLevel=40;
+ for(const c of Object.values(T.CROPS)){
+  const b=s.coins;
+  const a=T.purchase(s,'seed',c.id,5);assert(a.valid,c.id);
+  assert.equal(s.town.seeds[c.id],5);assert.equal(s.coins,b-5*c.seedCost);
+  const planted=T.plant(s,0,c.id,null,1_700_000_000_000);assert(planted.valid,c.id);
+  assert.equal(T.plotStatus(s,0,planted.readyAt).state,'ready');
+  const taken=T.harvest(s,0,planted.readyAt);assert(taken.valid,c.id);
+  assert.equal(s.town.harvest[c.id],c.yield);
+  assert.equal(T.sell(s,c.id,c.yield).earned,c.yield*c.sellEach);
+  assert.equal(s.town.harvest[c.id],0);
+ }
+ s.town.harvest.carrot=1200;
+ assert.equal(T.sell(s,'carrot',1200).earned,14400,'Sell All must support inventories above the store purchase batch cap');
+ assert.equal(s.town.harvest.carrot,0);
+ for(const invalid of ['constructor','__proto__','toString']){
+  assert.equal(T.purchase(s,'seed',invalid).valid,false);
+  assert.equal(T.plant(s,0,invalid,null,100).valid,false);
+  assert.equal(T.sell(s,invalid).valid,false);
+ }
+});

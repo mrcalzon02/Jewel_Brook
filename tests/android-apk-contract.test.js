@@ -15,7 +15,7 @@ for(const m of html.matchAll(/<link\s+rel="stylesheet"\s+href="([^"]+)"/g)){
   assert.ok(exists('web/'+m[1]),'Missing APK-packaged stylesheet '+m[1]);
 }
 for(const p of ['web/game.js','web/mining.js','web/engine.js',
- 'web/art/embryon/generated/gems/ruby.png','web/art/primary/blockers/rock.png']) {
+ 'web/update.js','web/economy.js']) {
   assert.ok(exists(p),'Missing game asset '+p);
 }
 
@@ -39,7 +39,9 @@ assert.match(gradle,/signingConfig signingConfigs\.rupeeLocal/);
 assert.doesNotMatch(gradle,/nutbuster-publisher|reverievr-phone-test|PLAY_UPLOAD/);
 assert.match(manifest,/android:allowBackup="false"/);
 assert.match(manifest,/android:exported="true"/);
-assert.doesNotMatch(manifest,/<uses-permission[^>]+android\.permission\.INTERNET/);
+assert.match(manifest,/<uses-permission[^>]+android\.permission\.INTERNET/);
+assert.match(manifest,/android\.permission\.REQUEST_INSTALL_PACKAGES/);
+assert.match(manifest,/androidx\.core\.content\.FileProvider/);
 assert.match(java,/WebViewAssetLoader\.AssetsPathHandler/);
 assert.match(java,/https:\/\/appassets\.androidplatform\.net/);
 assert.match(java,/\/assets\/index\.html/);
@@ -49,6 +51,8 @@ assert.match(java,/setBlockNetworkLoads\(true\)/);
 assert.match(java,/setAllowFileAccess\(false\)/);
 assert.match(java,/shouldInterceptRequest\(/);
 assert.match(java,/data-nav/);
+assert.match(java,/new RupeeUpdateService/);
+assert.match(java,/RUPEE_UPDATE_BRIDGE/);
 assert.match(script,/-genkeypair/);
 assert.match(script,/REUSING permanent Rupee Rush APK key/);
 assert.match(script,/INCOMPLETE existing key\/password pair/);

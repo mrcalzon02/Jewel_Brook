@@ -1,0 +1,11 @@
+'use strict';
+const fs = require('node:fs');
+const path = require('node:path');
+const assert = require('node:assert/strict');
+const gradle = fs.readFileSync(path.join(__dirname, '../android/app/build.gradle'), 'utf8');
+const manifest = fs.readFileSync(path.join(__dirname, '../android/app/src/main/AndroidManifest.xml'), 'utf8');
+const min = Number(gradle.match(/\bminSdk\s+(\d+)/)?.[1]);
+assert.ok(Number.isInteger(min) && min <= 28, 'Fire OS 7 uses Android API 28; check declared minSdk');
+assert.match(manifest, /android:screenOrientation="unspecified"/);
+assert.match(gradle, /assets\.srcDirs\s*=\s*\[rootProject\.file\('\.\.\/web'\)\]/);
+console.log('Fire tablet source compatibility: Android API 28+ and the common offline web bundle. Physical Fire OS runtime/install tests still required.');
