@@ -54,6 +54,16 @@ check('SnapshotsClient.RESOLUTION_POLICY_MANUAL' in java and
         "Cloud snapshot conflicts are never auto-resolved by last-modified timestamp",
         "Use RESOLUTION_POLICY_MANUAL and reject or explicitly reconcile divergent remote snapshots.")
 
+check(all(x in bridge for x in ('void replace(String json, String inspectedVersion)',
+      'fingerprint(current).equals(inspectedVersion)', 'Arrays.equals(current, data)',
+      'different progress', 'RESOLUTION_POLICY_MANUAL')),
+      "Cloud writes require previewed version and explicit conflict choice",
+      "Reject diverged snapshots unless the user explicitly chooses to replace the inspected remote revision.")
+check(all(x in js for x in ('pendingCloudVersion', 'cloud-replace',
+      'RupeePlayCloud.replace(JSON.stringify(saved),pendingCloudVersion)')),
+      "Player chooses cloud replacement only after inspecting remote version",
+      "Wire explicit replacement to the expected SHA-256 cloud fingerprint.")
+
 for reason,fix in errors: print("::error title=Play cloud contract::" + reason + " | FIX: " + fix)
 print("RUPEE PLAY CLOUD CONTRACT: " + ("FAIL" if errors else "PASS"))
 sys.exit(1 if errors else 0)
