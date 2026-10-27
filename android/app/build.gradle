@@ -82,8 +82,8 @@ android {
         }
         // Play AAB only: do not inject the historical GitHub sideload signer.
         play {
-            resValue 'string', 'game_services_project_id', playGamesProjectId
             initWith release
+            resValue 'string', 'game_services_project_id', playGamesProjectId
             signingConfig = null
             if (havePlaySigning) signingConfig signingConfigs.playUpload
             matchingFallbacks = ['release']
