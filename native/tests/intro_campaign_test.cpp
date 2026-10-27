@@ -11,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=44;++stage) {
+    for(int stage=1;stage<=48;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -38,6 +38,12 @@ int main(int argc,char** argv) {
         assert(g.moves>=12 && g.moves<=36);
         assert(g.matchedCells()==0&&g.hasMove());
         assert(g.objectiveTarget>0);
+        int seedFire=0;
+        for(int timer:g.fireAuras){
+            assert(timer>=0&&timer<=2);
+            if(timer>0){assert(timer==2);++seedFire;}
+        }
+        assert(seedFire==(stage>=45?1:0));
         if(stage<=10)
             assert((stage==3||stage==6||stage==8||stage==9||stage==10)?
                 g.objectiveKind==1 : g.objectiveKind==0);
@@ -52,7 +58,7 @@ int main(int argc,char** argv) {
             if(g.objectiveKind==2)
                 assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
         }
-        else if(stage>=28&&stage<=44)
+        else if(stage>=28&&stage<=48)
             assert(g.objectiveKind>=0&&g.objectiveKind<=3);
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
@@ -229,7 +235,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(45,source));
+    assert(!previous.startIntro(49,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -241,6 +247,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 44 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
+    std::cout<<"Native campaign: 48 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
     return 0;
 }

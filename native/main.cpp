@@ -293,7 +293,7 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<44)
+        if(game.level<48)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
         else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
@@ -406,7 +406,7 @@ int main(int argc,char** argv){
     const fs::path storage=savePath();
     Game game=restore(storage);
     auto loadAuthoredIntro=[&](int stage){
-        std::ifstream campaign(dataRoot()/"campaign-44.txt");
+        std::ifstream campaign(dataRoot()/"campaign-48.txt");
         if(!campaign)return false;
         return game.startIntro(stage,campaign);
     };
@@ -454,7 +454,7 @@ int main(int argc,char** argv){
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=44 && loadAuthoredIntro(next)){
+                        if(next<=48 && loadAuthoredIntro(next)){
                             hammerArmed=false;rowArmed=false;columnArmed=false;blastArmed=false;persist();
                         }
                     }else{

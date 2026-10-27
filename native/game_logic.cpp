@@ -193,7 +193,7 @@ void Game::resolveFire(){
         // Nearest surviving movable square: Manhattan distance, then index.
         int nearest=-1,best=999999;
         for(int i=0;i<static_cast<int>(cells.size());++i){
-            if(i==origin||cells[i]<0||ice[i]>0)continue;
+            if(i==origin||cells[i]<0||ice[i]>0||locks[i]>0||frozen[i]>0||fireAuras[i]>0)continue;
             const int distance=std::abs(i/width-row)+std::abs(i%width-col);
             if(distance<best){nearest=i;best=distance;}
         }
@@ -426,9 +426,9 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>44)return false;
+    if(stage<1||stage>48)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN10"||count!=44)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN11"||count!=48)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;int selectedColor=-1;
@@ -451,10 +451,19 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         std::vector<int> effects(n,0);
         int powered=0;
         for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>3)return false;if(x>0)++powered;}
+        // Fire tile auras are anchored to the original board square;
+        // imported separately from any gem-carried elemental.
+        std::vector<int> startingFire(n);
+        int burning=0;
+        for(auto& timer:startingFire){
+            if(!(authoredCatalog>>timer)||timer<0||timer>2)return false;
+            if(timer>0){++burning;if(timer!=2)return false;}
+        }
+        if(burning!=(k>=45?1:0))return false;
         if(powered!=(k==15||k==21||k==28||k==35||k==42?1:0))return false;
         for(int effect:effects)if(((k!=15&&k!=35)&&effect==1)||(k!=21&&k!=42&&effect==2)||(k!=28&&effect==3))return false;
         for(size_t i=0;i<n;++i)
-            if((types[i]==-2&&(frost[i]!=0||locked[i]!=0||effects[i]!=0))||
+            if((types[i]==-2&&(frost[i]!=0||locked[i]!=0||effects[i]!=0||startingFire[i]!=0))||
                 (types[i]!=-2&&std::find(roster.begin(),roster.end(),types[i])==roster.end()))
                 return false;
         if(k!=stage)continue;
@@ -469,7 +478,7 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         candidate.locksCleared=0;candidate.iceActivations=0;candidate.pendingIce.clear();
         candidate.activeRoster=std::move(roster);
         candidate.elementals=std::move(effects);
-        candidate.fireAuras.assign(n,0);
+        candidate.fireAuras=std::move(startingFire);
         candidate.pendingFire.clear();
         candidate.waterActivations=0;
         candidate.fireActivations=0;

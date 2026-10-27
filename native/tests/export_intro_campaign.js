@@ -1,13 +1,13 @@
 'use strict';
-// Build-time only: export *authoritative* Rupee Rush stage-1..44 state from
+// Build-time only: export *authoritative* Rupee Rush stage-1..48 state from
 // web/engine.js. No JavaScript/Chromium is shipped in the native desktop game.
 const fs=require('node:fs');
 const path=require('node:path');
 const E=require('../../web/engine.js');
 const out=process.argv[2];
 if(!out)throw Error('Export path required');
-const content=['RRCAMPAIGN10 44'];
-for(let stage=1;stage<=44;stage++){
+const content=['RRCAMPAIGN11 48'];
+for(let stage=1;stage<=48;stage++){
   const g=E.create(stage,stage*7919);
   const snapshot=E.snapshot(g);
   const cfg=g.cfg;
@@ -23,7 +23,9 @@ for(let stage=1;stage<=44;stage++){
     if(!Number.isInteger(c.type)||c.type<0||!cfg.roster.includes(c.type)||
       !Number.isInteger(c.ice)||c.ice<0||c.ice>3||
       (!Number.isInteger(c.lock)||c.lock<0||c.lock>3)||c.chest||c.jam||c.fuse||c.special||c.hold||c.rock||
-      c.ward||c.frozen||c.poison||c.aura||
+      c.ward||c.frozen||c.poison||
+      (c.aura!==null && !(stage>=45 && c.aura==='fire' && c.auraTurns===2))||
+      (c.aura===null && c.auraTurns!==0)||
       (c.elemental!==null && !(stage===15 && c.elemental==='water') && !(stage===21 && c.elemental==='fire') && !(stage===28 && c.elemental==='ice') && !(stage===35 && c.elemental==='water') && !(stage===42 && c.elemental==='fire')))
       throw Error('Stage '+stage+' added a feature not yet ported to desktop');
   }
@@ -41,6 +43,9 @@ for(let stage=1;stage<=44;stage++){
   content.push(cfg.roster.length+' '+cfg.roster.join(' '));
   // 0=ordinary, 1=Water, 2=Fire, 3=Ice; reject unported powers.
   content.push(cells.map(c=>c?.elemental==='water'?1:c?.elemental==='fire'?2:c?.elemental==='ice'?3:0).join(' '));
+  const burning=cells.filter(c=>c?.aura==='fire');
+  if(burning.length!==(stage>=45?1:0))throw Error('Stage '+stage+' has unexpected Fire aura stock: '+burning.length);
+  content.push(cells.map(c=>c?.aura==='fire'?c.auraTurns:0).join(' '));
   console.log('Android authored stage',stage,'moves',cfg.moves,'goal',cfg.goal,
     'objective',objective.kind,objective.target,
     'ice',cells.reduce((n,c)=>n+(c?c.ice:0),0),'locks',cells.reduce((n,c)=>n+(c?c.lock:0),0),'voids',cells.filter(c=>!c).length,'color',objective.color??'none','seed',snapshot.rngState);

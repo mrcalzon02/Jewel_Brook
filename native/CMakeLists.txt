@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-44.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-48.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -156,6 +156,10 @@ add_executable(rupee_fire_elemental_tests tests/fire_elemental_test.cpp)
 target_link_libraries(rupee_fire_elemental_tests PRIVATE rupee_native_logic)
 add_test(NAME native_fire_elemental_and_delayed_auras
     COMMAND rupee_fire_elemental_tests "${INTRO_CATALOG}")
+add_executable(rupee_tile_fire_tests tests/fire_tile_overlay_test.cpp)
+target_link_libraries(rupee_tile_fire_tests PRIVATE rupee_native_logic)
+add_test(NAME native_source_fire_tile_overlay_and_save
+    COMMAND rupee_tile_fire_tests "${INTRO_CATALOG}")
 
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)

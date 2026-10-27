@@ -18,7 +18,7 @@ int main(int argc,char**argv){
         assert(input.good()&&g.startIntro(n,input));
     };
     Game g(7919);
-    for(int level=32;level<=44;++level){
+    for(int level=32;level<=48;++level{
         Game check;
         loadStage(check,level);
         assert(check.width==6&&check.height==7&&check.cells.size()==42);
