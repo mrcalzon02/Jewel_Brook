@@ -15,7 +15,7 @@ import androidx.webkit.WebViewClientCompat;
  * Permanent-package local APK build: offline game assets + stable origin for
  * localStorage saves across signed APK upgrades (but not uninstall/reinstall).
  */
-public final class MainActivity extends Activity {
+public class MainActivity extends Activity {
     private static final String ORIGIN = "https://appassets.androidplatform.net";
     private static final String ENTRY = ORIGIN + "/assets/index.html";
     private WebView game;
@@ -64,6 +64,8 @@ public final class MainActivity extends Activity {
         setContentView(game);
         game.loadUrl(ENTRY);
     }
+
+    protected final WebView packagedGameView() { return game; }
 
     @Override public void onBackPressed() {
         if (game != null) {
