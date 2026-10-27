@@ -14,6 +14,7 @@ output = pathlib.Path(sys.argv[2])
 allowed = {
     "web/art/embryon/runtime/boosters/row.webp": "row.png",
     "web/art/embryon/runtime/boosters/column.webp": "column.png",
+    "web/art/embryon/runtime/boosters/blast.webp": "blast.png",
     "web/art/embryon/runtime/boosters/shuffle.webp": "shuffle.png",
     "web/art/embryon/runtime/gems/opal.webp": "opal.png",
 }

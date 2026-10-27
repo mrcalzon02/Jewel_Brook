@@ -47,7 +47,7 @@ SDL_Texture* png(SDL_Renderer* r,const fs::path& path){
     return t;
 }
 Rect gameBoard(int ww,int hh,const Game& g){
-    float cell=std::min({110.0f,(ww-120.0f)/g.width,(hh-178.0f)/g.height});
+    float cell=std::min({110.0f,(ww-120.0f)/g.width,(hh-236.0f)/g.height});
     cell=std::max(10.0f,cell);
     return {(ww-g.width*cell)*.5f,96.0f,g.width*cell,g.height*cell};
 }
@@ -149,6 +149,7 @@ struct Art {
     SDL_Texture* extra=nullptr;
     SDL_Texture* rowRocket=nullptr;
     SDL_Texture* columnRocket=nullptr;
+    SDL_Texture* blast=nullptr;
     SDL_Texture* shuffle=nullptr;
     bool load(SDL_Renderer* r,const fs::path& root){
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
@@ -165,6 +166,7 @@ struct Art {
         extra=png(r,root/"art/additions/economy/hourglass.png");
         rowRocket=png(r,root/"art/embryon/runtime/boosters/row.png");
         columnRocket=png(r,root/"art/embryon/runtime/boosters/column.png");
+        blast=png(r,root/"art/embryon/runtime/boosters/blast.png");
         shuffle=png(r,root/"art/embryon/runtime/boosters/shuffle.png");
         for(int i=0;i<40;++i) {
             pick[i]=png(r,root/rupee::PickaxeArt[i]);
@@ -174,7 +176,7 @@ struct Art {
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
         return std::all_of(gem.begin(),gem.begin()+5,[](SDL_Texture* t){return t!=nullptr;})
-               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&frostSprite&&fireOverlay&&hammer&&extra&&rowRocket&&columnRocket&&shuffle;
+               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&frostSprite&&fireOverlay&&hammer&&extra&&rowRocket&&columnRocket&&blast&&shuffle;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -190,16 +192,20 @@ struct Art {
         if(extra)SDL_DestroyTexture(extra);
         if(rowRocket)SDL_DestroyTexture(rowRocket);
         if(columnRocket)SDL_DestroyTexture(columnRocket);
+        if(blast)SDL_DestroyTexture(blast);
         if(shuffle)SDL_DestroyTexture(shuffle);
     }
 };
-std::array<Rect,5> boosterIcons(int ww,int hh){
-    const float mid=ww*.5f, top=static_cast<float>(hh-74);
-    return {Rect{mid-222.0f,top,60,60},
-            Rect{mid-132.0f,top,60,60},
-            Rect{mid-42.0f,top,60,60},
-            Rect{mid+48.0f,top,60,60},
-            Rect{mid+138.0f,top,60,60}};
+std::array<Rect,6> boosterIcons(int ww,int hh){
+    // Dedicated booster bar above the bottom navigation; no overlapping
+    // interactive targets at desktop's minimum supported window size.
+    const float mid=ww*.5f, top=static_cast<float>(hh-132);
+    return {Rect{mid-255.0f,top,60,60},
+            Rect{mid-170.0f,top,60,60},
+            Rect{mid-85.0f,top,60,60},
+            Rect{mid+0.0f,top,60,60},
+            Rect{mid+85.0f,top,60,60},
+            Rect{mid+170.0f,top,60,60}};
 }
 const char* gemLabel(int sourceId){
     switch(sourceId){
@@ -210,7 +216,7 @@ const char* gemLabel(int sourceId){
         default:return "GEM";
     }
 }
-void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArmed,bool rowArmed,bool columnArmed){
+void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArmed,bool rowArmed,bool columnArmed,bool blastArmed){
     label(r,28,26,"RUPEE RUSH - NATIVE MATCH 3",2);
     label(r,28,59,"STAGE "+std::to_string(game.level)+"   MOVES "+std::to_string(game.moves)+
           (game.objectiveKind==1?
@@ -277,19 +283,25 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
             SDL_RenderTexture(r,art.columnRocket,nullptr,&column);
             label(r,icons[4].x+43,icons[4].y+44,std::to_string(game.columnCount),2);
         }
+        if(game.claimedBlast){
+            SDL_FRect bomb{icons[5].x,icons[5].y,icons[5].w,icons[5].h};
+            SDL_RenderTexture(r,art.blast,nullptr,&bomb);
+            label(r,icons[5].x+43,icons[5].y+44,std::to_string(game.blastCount),2);
+        }
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<31)
+        if(game.level<38)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
         else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
         label(r,ww*.5f-90,hh-72,"OUT OF MOVES",2);
         button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"RETRY");
-    }else if(hammerArmed) label(r,ww*.5f-200,hh-106,"HAMMER: CLICK ONE TILE",2);
-    else if(rowArmed) label(r,ww*.5f-200,hh-106,"ROW ROCKET: PICK ONE ROW",2);
-    else if(columnArmed) label(r,ww*.5f-200,hh-106,"COLUMN ROCKET: PICK ONE COLUMN",2);
-    else label(r,ww*.5f-200,hh-106,"DRAG TO SWAP OR PICK A BOOSTER",2);
+    }else if(hammerArmed) label(r,ww*.5f-200,hh-165,"HAMMER: CLICK ONE TILE",2);
+    else if(rowArmed) label(r,ww*.5f-200,hh-165,"ROW ROCKET: PICK ONE ROW",2);
+    else if(columnArmed) label(r,ww*.5f-200,hh-165,"COLUMN ROCKET: PICK ONE COLUMN",2);
+    else if(blastArmed) label(r,ww*.5f-200,hh-165,"CRYSTAL BOMB: PICK A GEM",2);
+    else label(r,ww*.5f-200,hh-165,"DRAG TO SWAP OR PICK A BOOSTER",2);
 }
 void drawMine(SDL_Renderer* r,Art& art,const MineEconomy& n,int ww,int hh,bool surveyMode){
     label(r,24,20,"RUPEE RUSH - NATIVE MINING",2);
@@ -392,7 +404,7 @@ int main(int argc,char** argv){
     const fs::path storage=savePath();
     Game game=restore(storage);
     auto loadAuthoredIntro=[&](int stage){
-        std::ifstream campaign(dataRoot()/"campaign-31.txt");
+        std::ifstream campaign(dataRoot()/"campaign-38.txt");
         if(!campaign)return false;
         return game.startIntro(stage,campaign);
     };
@@ -403,7 +415,7 @@ int main(int argc,char** argv){
     const fs::path mineStorage=storage.parent_path()/"mine-state-v1.txt";
     MineEconomy mine=restoreMine(mineStorage,game,fs::exists(storage));
     Screen screen=Screen::Home;
-    bool running=true;bool surveyMode=false;bool hammerArmed=false;bool rowArmed=false;bool columnArmed=false;int pressed=-1;int renderedFrames=0;
+    bool running=true;bool surveyMode=false;bool hammerArmed=false;bool rowArmed=false;bool columnArmed=false;bool blastArmed=false;int pressed=-1;int renderedFrames=0;
     auto persist=[&](){if(!writeSave(game,storage))SDL_Log("Native board save write failed.");};
     auto persistMine=[&](){if(!writeSave(mine,mineStorage))SDL_Log("Native mining save write failed.");};
     if(mine.resetForDay([](){
@@ -421,7 +433,7 @@ int main(int argc,char** argv){
         while(SDL_PollEvent(&e)){
             if(e.type==SDL_EVENT_QUIT){running=false;break;}
             if(e.type==SDL_EVENT_KEY_DOWN){
-                if(e.key.key==SDLK_ESCAPE){if(hammerArmed||rowArmed||columnArmed){hammerArmed=false;rowArmed=false;columnArmed=false;}else screen=Screen::Home;pressed=-1;}
+                if(e.key.key==SDLK_ESCAPE){if(hammerArmed||rowArmed||columnArmed||blastArmed){hammerArmed=false;rowArmed=false;columnArmed=false;blastArmed=false;}else screen=Screen::Home;pressed=-1;}
                 else if(e.key.key==SDLK_Q&&screen==Screen::Home){running=false;}
             }
             if(e.type==SDL_EVENT_MOUSE_BUTTON_DOWN&&e.button.button==SDL_BUTTON_LEFT){
@@ -436,25 +448,27 @@ int main(int argc,char** argv){
                     else if(actions[2].contains(x,y))running=false;
                 }else if(screen==Screen::Board){
                     if(Rect{20.0f,static_cast<float>(hh-64),154,44}.contains(x,y)) {
-                        screen=Screen::Home;hammerArmed=false;rowArmed=false;columnArmed=false;
+                        screen=Screen::Home;hammerArmed=false;rowArmed=false;columnArmed=false;blastArmed=false;
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=31 && loadAuthoredIntro(next)){
-                            hammerArmed=false;rowArmed=false;columnArmed=false;persist();
+                        if(next<=38 && loadAuthoredIntro(next)){
+                            hammerArmed=false;rowArmed=false;columnArmed=false;blastArmed=false;persist();
                         }
                     }else{
                         const auto icons=boosterIcons(ww,hh);
                         if(!game.won && icons[0].contains(x,y)) {
-                            if(game.hammerCount>0){hammerArmed=!hammerArmed;rowArmed=false;columnArmed=false;}
+                            if(game.hammerCount>0){hammerArmed=!hammerArmed;rowArmed=false;columnArmed=false;blastArmed=false;}
                         } else if(!game.won && game.claimedExtra && icons[1].contains(x,y)){
                             if(game.useExtraMoves())persist();
                         } else if(!game.won && game.claimedRow && icons[2].contains(x,y)){
-                            if(game.rowCount>0){rowArmed=!rowArmed;hammerArmed=false;columnArmed=false;}
+                            if(game.rowCount>0){rowArmed=!rowArmed;hammerArmed=false;columnArmed=false;blastArmed=false;}
                         } else if(!game.won && game.claimedShuffle && icons[3].contains(x,y)){
-                            if(game.useShuffle()){hammerArmed=false;rowArmed=false;columnArmed=false;persist();}
+                            if(game.useShuffle()){hammerArmed=false;rowArmed=false;columnArmed=false;blastArmed=false;persist();}
                         } else if(!game.won && game.claimedColumn && icons[4].contains(x,y)){
-                            if(game.columnCount>0){columnArmed=!columnArmed;hammerArmed=false;rowArmed=false;}
+                            if(game.columnCount>0){columnArmed=!columnArmed;hammerArmed=false;rowArmed=false;blastArmed=false;}
+                        } else if(!game.won && game.claimedBlast && icons[5].contains(x,y)){
+                            if(game.blastCount>0){blastArmed=!blastArmed;hammerArmed=false;rowArmed=false;columnArmed=false;}
                         } else{
                             const int target=hit(gameBoard(ww,hh,game),game.width,game.height,x,y);
                             if(target>=0&&hammerArmed) {
@@ -463,6 +477,8 @@ int main(int argc,char** argv){
                                 if(game.useRowRocket(target)){persist();rowArmed=false;}
                             }else if(target>=0&&columnArmed){
                                 if(game.useColumnRocket(target)){persist();columnArmed=false;}
+                            }else if(target>=0&&blastArmed){
+                                if(game.useBlast(target)){persist();blastArmed=false;}
                             }else if(pressed>=0&&target>=0 && game.swap(pressed,target))persist();
                         }
                     }
@@ -502,7 +518,7 @@ int main(int argc,char** argv){
         }
         SDL_SetRenderDrawColor(render,14,22,30,255);SDL_RenderClear(render);
         if(screen==Screen::Home)drawHome(render,art,game,mine,ww,hh);
-        else if(screen==Screen::Board)drawBoard(render,art,game,ww,hh,hammerArmed,rowArmed,columnArmed);
+        else if(screen==Screen::Board)drawBoard(render,art,game,ww,hh,hammerArmed,rowArmed,columnArmed,blastArmed);
         else drawMine(render,art,mine,ww,hh,surveyMode);
         SDL_RenderPresent(render);
         if(smoke && ++renderedFrames>=3)running=false;

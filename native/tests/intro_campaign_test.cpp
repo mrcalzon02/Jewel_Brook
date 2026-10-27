@@ -11,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=31;++stage) {
+    for(int stage=1;stage<=38;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -52,7 +52,7 @@ int main(int argc,char** argv) {
             if(g.objectiveKind==2)
                 assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
         }
-        else if(stage>=28&&stage<=31)
+        else if(stage>=28&&stage<=38)
             assert(g.objectiveKind>=0&&g.objectiveKind<=3);
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
@@ -81,6 +81,7 @@ int main(int argc,char** argv) {
         assert(restored.collected==g.collected && restored.collectColor==g.collectColor);
         assert(restored.shuffleCount==g.shuffleCount && restored.claimedShuffle==g.claimedShuffle);
         assert(restored.columnCount==g.columnCount && restored.claimedColumn==g.claimedColumn);
+        assert(restored.blastCount==g.blastCount && restored.claimedBlast==g.claimedBlast);
         assert(restored.activeRoster==g.activeRoster);
         assert(restored.elementals==g.elementals);
         assert(restored.waterActivations==g.waterActivations);
@@ -167,6 +168,11 @@ int main(int argc,char** argv) {
             assert(reopened.objectiveKind==2 && reopened.collectColor==11 &&
                    reopened.objectiveTarget==20 && reopened.collected==0);
         }
+        if(stage==35){
+            int count=0;
+            for(int power:g.elementals)if(power==1)++count;
+            assert(count==1);
+        }
         if(stage==28){
             int frozenSeed=-1;
             for(int i=0;i<static_cast<int>(g.elementals.size());++i)
@@ -207,7 +213,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(32,source));
+    assert(!previous.startIntro(39,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -219,6 +225,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 31 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
+    std::cout<<"Native campaign: 38 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
     return 0;
 }

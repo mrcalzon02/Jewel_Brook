@@ -96,9 +96,9 @@ int main(int argc,char** argv){
     for(std::string word;header>>word;)fields.push_back(word);
     assert(fields.size()>8);
     fields[0]="RRNATIVE6";
-    // RRNative8 adds four header fields beyond v6: Column Rocket stock,
-    // its claimed flag, cleared locks, and Ice activations. Remove all four.
-    fields.erase(fields.end()-5,fields.end()-1);
+    // RRNative9 adds six header fields beyond v6: Column Rocket stock,
+    // its claimed flag, cleared locks, Ice activations, Blast stock and claim. Remove all four.
+    fields.erase(fields.end()-7,fields.end()-1);
     std::string board, ice, locks, frozen;
     assert(static_cast<bool>(std::getline(v7,board)));
     assert(static_cast<bool>(std::getline(v7,ice)));

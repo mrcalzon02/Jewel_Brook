@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-31.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-38.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -52,6 +52,17 @@ execute_process(
 )
 if(NOT COLUMN_EXPORT_STATUS EQUAL 0)
   message(FATAL_ERROR "Approved Column Rocket sprite could not be converted")
+endif()
+# Exact runtime Crystal Bomb artwork, build-time conversion only.
+set(BLAST_BOOSTER_PNG "${CMAKE_BINARY_DIR}/blast.png")
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/boosters/blast.webp"
+    "${BLAST_BOOSTER_PNG}"
+  RESULT_VARIABLE BLAST_EXPORT_STATUS
+)
+if(NOT BLAST_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Approved Crystal Bomb sprite could not be converted")
 endif()
 # Reuse the existing authored runtime Shuffle sprite without changing the
 # web/progression.js artwork catalog (currently unassigned) or currency art.
@@ -121,6 +132,10 @@ add_executable(rupee_column_tests tests/column_rocket_test.cpp)
 target_link_libraries(rupee_column_tests PRIVATE rupee_native_logic)
 add_test(NAME native_column_rocket_first_clear_and_save
     COMMAND rupee_column_tests "${INTRO_CATALOG}")
+add_executable(rupee_blast_tests tests/crystal_bomb_test.cpp)
+target_link_libraries(rupee_blast_tests PRIVATE rupee_native_logic)
+add_test(NAME native_crystal_bomb_inventory_and_save
+    COMMAND rupee_blast_tests "${INTRO_CATALOG}")
 add_executable(rupee_locks_ice_tests tests/locks_ice_test.cpp)
 target_link_libraries(rupee_locks_ice_tests PRIVATE rupee_native_logic)
 add_test(NAME native_source_locks_and_ice_elemental
@@ -197,6 +212,8 @@ install(FILES
 install(FILES "${ROW_BOOSTER_PNG}"
   DESTINATION data/art/embryon/runtime/boosters)
 install(FILES "${COLUMN_BOOSTER_PNG}"
+  DESTINATION data/art/embryon/runtime/boosters)
+install(FILES "${BLAST_BOOSTER_PNG}"
   DESTINATION data/art/embryon/runtime/boosters)
 install(FILES "${SHUFFLE_BOOSTER_PNG}"
   DESTINATION data/art/embryon/runtime/boosters)

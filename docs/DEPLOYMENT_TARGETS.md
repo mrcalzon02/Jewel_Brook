@@ -130,9 +130,15 @@ earned inventory retained and a stage-31 `RRNATIVE8` save/reload roundtrip.
 Existing RRNATIVE1–8 saves remain readable; no save migration or extra
 booster award is needed at this milestone.
 
-**Stage 32 and later remain gated** until their mechanics are independently
-ported and tested. Android and Fire OS code, approved currency mappings
-and gameplay art remain unchanged. Windows/Linux still ship no Chromium,
-HTML runtimes, Python, or packaged browser. GitHub Actions compilation,
-functional tests and headless packaged launch do not replace installed
-Windows/Linux gameplay and save acceptance.
+**Stages 32–38 are now imported from the authored Android campaign. The next
+milestone after 38 remains gated until additional source mechanics are ported.
+GitHub Actions compilation, functional tests and packaged startup are automated
+diagnostics, not a substitute for installed Windows/Linux acceptance testing.
+
+## Native 6×7 campaign expansion and Crystal Bomb (levels 32–38)
+
+The original Android engine now supplies the starting board and stage goals for levels 1–38 through the build-time `RRCAMPAIGN9` data file. All seven new levels use the source's six-column geometry and seeded roster; the level-35 Water elemental is exported and handled as a real Water gem (not a made-up replacement). Unsupported art, blockers or powers abort the export instead of silently remapping. Existing currency icons and Android/Fire OS code remain unchanged.
+
+The level-37 first-clear award gives **three** Crystal Bomb charges from the original progression ladder. A Crystal Bomb performs one damage hit against each present square in the selected 3×3 region, including one layer of ice/locks where present. The native HUD uses an exact conversion of the existing `web/art/embryon/runtime/boosters/blast.webp` into PNG as a compile-time step; the original artwork is unchanged and no converter or browser runtime is packaged. The new native `RRNATIVE9` format saves this inventory and its claimed flag, reads `RRNATIVE1`–`RRNATIVE8` without inventing charges, and retains all earlier mining, booster and elemental state.
+
+Functional tests cover stage seed/shape validation, a level-35 Water gem, the level-37 one-time reward, successful/invalid blast actions, area effects on blockers/voids, inventory persistence and old-save migration. Booster controls now occupy their own bar above navigation rather than overlapping it. No cosmetic snapshots or pixel comparisons gate development or release.

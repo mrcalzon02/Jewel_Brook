@@ -133,6 +133,7 @@ void Game::grantMilestoneIfWon(){
     if(level==10 && !claimedRow){rowCount+=3;claimedRow=true;}
     if(level==18 && !claimedShuffle){shuffleCount+=3;claimedShuffle=true;}
     if(level==26 && !claimedColumn){columnCount+=3;claimedColumn=true;}
+    if(level==37 && !claimedBlast){blastCount+=3;claimedBlast=true;}
 }
 void Game::updateOutcome(){
     won=objectiveKind==1?iceCleared>=objectiveTarget:objectiveKind==2?collected>=objectiveTarget:objectiveKind==3?locksCleared>=objectiveTarget:score>=objectiveTarget;
@@ -381,6 +382,27 @@ bool Game::useColumnRocket(int cell){
     updateOutcome();
     return true;
 }
+bool Game::useBlast(int cell){
+    // Exact Android booster('blast'): one damage hit in the 3x3 area,
+    // skip authored voids; inventory is spent only on a valid target.
+    if(won||blastCount<=0||cell<0||
+       cell>=static_cast<int>(cells.size())||cells[cell]<0)return false;
+    --blastCount;
+    const int row=cell/width,col=cell%width;
+    int affected=0;
+    for(int y=std::max(0,row-1);y<=std::min(height-1,row+1);++y)
+      for(int x=std::max(0,col-1);x<=std::min(width-1,col+1);++x){
+        const int at=y*width+x;
+        if(cells[at]<0)continue;
+        ++affected;
+        clearGem(at);
+      }
+    resolveFire();
+    score+=affected*35;
+    refill();clearAndFill();
+    updateOutcome();
+    return true;
+}
 void Game::initMine(uint32_t seed) {
     for(int i=0;i<16;++i){
         const int x=i%4,y=i/4;
@@ -404,9 +426,9 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>31)return false;
+    if(stage<1||stage>38)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN8"||count!=31)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN9"||count!=38)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;int selectedColor=-1;
@@ -429,8 +451,8 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         std::vector<int> effects(n,0);
         int powered=0;
         for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>3)return false;if(x>0)++powered;}
-        if(powered!=(k==15||k==21||k==28?1:0))return false;
-        for(int effect:effects)if((k!=15&&effect==1)||(k!=21&&effect==2)||(k!=28&&effect==3))return false;
+        if(powered!=(k==15||k==21||k==28||k==35?1:0))return false;
+        for(int effect:effects)if(((k!=15&&k!=35)&&effect==1)||(k!=21&&effect==2)||(k!=28&&effect==3))return false;
         for(size_t i=0;i<n;++i)
             if((types[i]==-2&&(frost[i]!=0||locked[i]!=0||effects[i]!=0))||
                 (types[i]!=-2&&std::find(roster.begin(),roster.end(),types[i])==roster.end()))
@@ -460,14 +482,15 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
     return false;
 }
 bool Game::save(std::ostream& out) const {
-    out<<"RRNATIVE8 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
+    out<<"RRNATIVE9 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
        <<score<<' '<<goal<<' '<<ore<<' '<<strikes<<' '<<won<<' '<<lost<<' '
        <<randomState<<' '<<objectiveKind<<' '<<objectiveTarget<<' '
        <<iceCleared<<' '<<hammerCount<<' '<<extraCount<<' '<<rowCount<<' '
        <<claimedExtra<<' '<<claimedRow<<' '<<waterActivations<<' '
        <<shuffleCount<<' '<<claimedShuffle<<' '<<collectColor<<' '
        <<collected<<' '<<fireActivations<<' '<<fireDetonations<<' '
-       <<columnCount<<' '<<claimedColumn<<' '<<locksCleared<<' '<<iceActivations<<' '<<cells.size()<<'\n';
+       <<columnCount<<' '<<claimedColumn<<' '<<locksCleared<<' '<<iceActivations<<' '
+       <<blastCount<<' '<<claimedBlast<<' '<<cells.size()<<'\n';
     for(int v:cells)out<<v<<' ';out<<'\n';
     for(int v:ice)out<<v<<' ';out<<'\n';
     for(int v:locks)out<<v<<' ';out<<'\n';
@@ -483,7 +506,7 @@ bool Game::save(std::ostream& out) const {
 bool Game::load(std::istream& in) {
     Game tmp(7919);
     std::string magic;size_t n=0;
-    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"&&magic!="RRNATIVE4"&&magic!="RRNATIVE5"&&magic!="RRNATIVE6"&&magic!="RRNATIVE7"&&magic!="RRNATIVE8"))return false;
+    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"&&magic!="RRNATIVE4"&&magic!="RRNATIVE5"&&magic!="RRNATIVE6"&&magic!="RRNATIVE7"&&magic!="RRNATIVE8"&&magic!="RRNATIVE9"))return false;
     if(!(in>>tmp.level>>tmp.width>>tmp.height>>tmp.moves>>
        tmp.score>>tmp.goal>>tmp.ore>>tmp.strikes>>tmp.won>>tmp.lost>>
        tmp.randomState))return false;
@@ -492,7 +515,7 @@ bool Game::load(std::istream& in) {
     } else {
         tmp.objectiveKind=0;tmp.objectiveTarget=tmp.goal;tmp.iceCleared=0;
     }
-    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"){
+    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"){
         if(!(in>>tmp.hammerCount>>tmp.extraCount>>tmp.rowCount>>
              tmp.claimedExtra>>tmp.claimedRow))return false;
     } else {
@@ -501,21 +524,27 @@ bool Game::load(std::istream& in) {
         tmp.claimedExtra=tmp.level>=6;
         tmp.claimedRow=tmp.level>=10&&tmp.won;
     }
-    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8") && !(in>>tmp.waterActivations))return false;
-    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"){
+    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9") && !(in>>tmp.waterActivations))return false;
+    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"){
         if(!(in>>tmp.shuffleCount>>tmp.claimedShuffle>>tmp.collectColor>>tmp.collected))return false;
     }else{
         tmp.shuffleCount=0;tmp.claimedShuffle=false;
         tmp.collectColor=-1;tmp.collected=0;
     }
-    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8") &&
+    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9") &&
         !(in>>tmp.fireActivations>>tmp.fireDetonations))return false;
-    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"){
+    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"){
         if(!(in>>tmp.columnCount>>tmp.claimedColumn))return false;
     }else{
         tmp.columnCount=0;tmp.claimedColumn=false;
     }
-    if(magic=="RRNATIVE8" && !(in>>tmp.locksCleared>>tmp.iceActivations))return false;
+    if((magic=="RRNATIVE8"||magic=="RRNATIVE9") &&
+        !(in>>tmp.locksCleared>>tmp.iceActivations))return false;
+    if(magic=="RRNATIVE9"){
+        if(!(in>>tmp.blastCount>>tmp.claimedBlast))return false;
+    }else{
+        tmp.blastCount=0;tmp.claimedBlast=false;
+    }
     if(!(in>>n))return false;
     if(tmp.level<1||tmp.level>1000 ||tmp.width<4||tmp.width>8||
        tmp.height!=tmp.width+1||n!=static_cast<size_t>(tmp.width*tmp.height)||
@@ -527,6 +556,7 @@ bool Game::load(std::istream& in) {
        tmp.extraCount<0||tmp.extraCount>999999||
        tmp.rowCount<0||tmp.rowCount>999999||
        tmp.columnCount<0||tmp.columnCount>999999||
+       tmp.blastCount<0||tmp.blastCount>999999||
        tmp.locksCleared<0||tmp.locksCleared>100000||
        tmp.iceActivations<0||tmp.iceActivations>100000||
        tmp.waterActivations<0||tmp.waterActivations>1000||
@@ -538,18 +568,19 @@ bool Game::load(std::istream& in) {
        (tmp.objectiveKind!=2&&tmp.collectColor!=-1)||
        (tmp.claimedExtra&&tmp.level<5)||(tmp.claimedRow&&tmp.level<10)||
        (tmp.claimedShuffle&&tmp.level<18)||
-       (tmp.claimedColumn&&tmp.level<26))return false;
+       (tmp.claimedColumn&&tmp.level<26)||
+       (tmp.claimedBlast&&tmp.level<37))return false;
     tmp.cells.resize(n);
     for(auto& t:tmp.cells)if(!(in>>t)||t < -2||t>=19||t==-1)return false;
     tmp.ice.assign(n,0);
     if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>3)return false;
     tmp.locks.assign(n,0);tmp.frozen.assign(n,0);
-    if(magic=="RRNATIVE8"){
+    if(magic=="RRNATIVE8"||magic=="RRNATIVE9"){
         for(auto& x:tmp.locks)if(!(in>>x)||x<0||x>3)return false;
         for(auto& x:tmp.frozen)if(!(in>>x)||x<0||x>2)return false;
     }
-    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"){
+    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"){
         size_t rosterCount=0;
         if(!(in>>rosterCount)||rosterCount<3||rosterCount>7)return false;
         tmp.activeRoster.resize(rosterCount);
@@ -561,7 +592,7 @@ bool Game::load(std::istream& in) {
         tmp.elementals.assign(n,0);
     }
     tmp.fireAuras.assign(n,0);
-    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8")
+    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9")
         for(auto& duration:tmp.fireAuras)if(!(in>>duration)||duration<0||duration>2)return false;
     for(size_t i=0;i<n;++i){
         if(tmp.cells[i]==-2&&(tmp.ice[i]!=0||tmp.locks[i]!=0||tmp.frozen[i]!=0||tmp.elementals[i]!=0||tmp.fireAuras[i]!=0))return false;

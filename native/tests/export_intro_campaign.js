@@ -1,13 +1,13 @@
 'use strict';
-// Build-time only: export *authoritative* Rupee Rush stage-1..31 state from
+// Build-time only: export *authoritative* Rupee Rush stage-1..38 state from
 // web/engine.js. No JavaScript/Chromium is shipped in the native desktop game.
 const fs=require('node:fs');
 const path=require('node:path');
 const E=require('../../web/engine.js');
 const out=process.argv[2];
 if(!out)throw Error('Export path required');
-const content=['RRCAMPAIGN8 31'];
-for(let stage=1;stage<=31;stage++){
+const content=['RRCAMPAIGN9 38'];
+for(let stage=1;stage<=38;stage++){
   const g=E.create(stage,stage*7919);
   const snapshot=E.snapshot(g);
   const cfg=g.cfg;
@@ -24,14 +24,14 @@ for(let stage=1;stage<=31;stage++){
       !Number.isInteger(c.ice)||c.ice<0||c.ice>3||
       (!Number.isInteger(c.lock)||c.lock<0||c.lock>3)||c.chest||c.jam||c.fuse||c.special||c.hold||c.rock||
       c.ward||c.frozen||c.poison||c.aura||
-      (c.elemental!==null && !(stage===15 && c.elemental==='water') && !(stage===21 && c.elemental==='fire') && !(stage===28 && c.elemental==='ice')))
+      (c.elemental!==null && !(stage===15 && c.elemental==='water') && !(stage===21 && c.elemental==='fire') && !(stage===28 && c.elemental==='ice') && !(stage===35 && c.elemental==='water')))
       throw Error('Stage '+stage+' added a feature not yet ported to desktop');
   }
   const expectedRoster=stage<15?[0,1,2]:[0,1,2,11];
   if(cfg.roster.join(',')!==expectedRoster.join(','))
     throw Error('Authoritative gem roster changed at stage '+stage);
   const powered=cells.filter(c=>c?.elemental).length;
-  if(powered!==(stage===15||stage===21||stage===28?1:0))
+  if(powered!==(stage===15||stage===21||stage===28||stage===35?1:0))
     throw Error('Stage '+stage+' has unexpected number of elemental pieces: '+powered);
   content.push([stage,cfg.width,cfg.height,cfg.moves,cfg.goal,kind,objective.target,
     snapshot.rngState,cells.length,kind===2?objective.color:-1].join(' '));
