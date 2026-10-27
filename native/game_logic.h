@@ -26,13 +26,17 @@ public:
     uint32_t randomState = 1;
     std::vector<int> cells;
     // Android-authored introductory campaign objectives and blocker state.
-    // objectiveKind: 0=score, 1=ice, 2=collect a specific authored gem.
+    // objectiveKind: 0=score, 1=ice, 2=collect a specific authored gem, 3=locks.
     int objectiveKind = 0, objectiveTarget = 850, iceCleared = 0;
     int collectColor = -1, collected = 0;
     std::vector<int> ice;
+    // Independently damageable anchored blockers and temporary frozen gems.
+    std::vector<int> locks, frozen;
+    int locksCleared=0, iceActivations=0;
+    std::vector<int> pendingIce;
     // Exact authored gem IDs: 0 ruby, 1 sapphire, 2 emerald, 11 opal.
     std::vector<int> activeRoster{0,1,2};
-    // Gem-carried elemental flags: 1 Water, 2 Fire, 0 ordinary.
+    // Gem-carried elemental flags: 1 Water, 2 Fire, 3 Ice, 0 ordinary.
     std::vector<int> elementals;
     int waterActivations=0, fireActivations=0, fireDetonations=0;
     // Square-anchored fire auras (0 off, 1 next tick, 2 newly ignited).
@@ -68,6 +72,7 @@ private:
     void refill();
     std::vector<int> pendingFire;
     void resolveFire();
+    void resolveIce();
     void advanceFireTurn();
     void clearGem(int cell); // preserves independent blocker and elemental state
     void updateOutcome();

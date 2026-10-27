@@ -11,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=27;++stage) {
+    for(int stage=1;stage<=30;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -21,6 +21,8 @@ int main(int argc,char** argv) {
         assert(g.height==g.width+1);
         assert(g.cells.size()==static_cast<size_t>(g.width*g.height));
         assert(g.ice.size()==g.cells.size());
+        assert(g.locks.size()==g.cells.size());
+        assert(g.frozen.size()==g.cells.size());
         int holes=0;
         for(size_t i=0;i<g.cells.size();++i){
             if(g.cells[i]==-2){
@@ -50,6 +52,8 @@ int main(int argc,char** argv) {
             if(g.objectiveKind==2)
                 assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
         }
+        else if(stage>=28&&stage<=30)
+            assert(g.objectiveKind>=0&&g.objectiveKind<=3);
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
             int frozen=0, layers=0;
@@ -66,6 +70,10 @@ int main(int argc,char** argv) {
         assert(restored.load(disk));
         assert(restored.cells==g.cells);
         assert(restored.ice==g.ice);
+        assert(restored.locks==g.locks);
+        assert(restored.frozen==g.frozen);
+        assert(restored.locksCleared==g.locksCleared);
+        assert(restored.iceActivations==g.iceActivations);
         assert(restored.moves==g.moves);
         assert(restored.objectiveTarget==g.objectiveTarget);
         assert(restored.objectiveKind==g.objectiveKind);
@@ -119,6 +127,12 @@ int main(int argc,char** argv) {
             assert(waterRestored.elementals==g.elementals);
             assert(waterRestored.activeRoster==g.activeRoster);
         }
+        if(stage==28){
+            int frozenSeed=-1;
+            for(int i=0;i<static_cast<int>(g.elementals.size());++i)
+                if(g.elementals[i]==3){assert(frozenSeed==-1);frozenSeed=i;}
+            assert(frozenSeed>=0 && g.ice[frozenSeed]==0 && g.locks[frozenSeed]==0);
+        }
         if(stage==21){
             int fireAt=-1;
             for(int i=0;i<static_cast<int>(g.elementals.size());++i)
@@ -153,7 +167,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(28,source));
+    assert(!previous.startIntro(31,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -165,6 +179,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 27 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
+    std::cout<<"Native campaign: 30 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
     return 0;
 }

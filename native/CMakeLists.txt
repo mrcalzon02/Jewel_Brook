@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-27.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-30.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -121,6 +121,10 @@ add_executable(rupee_column_tests tests/column_rocket_test.cpp)
 target_link_libraries(rupee_column_tests PRIVATE rupee_native_logic)
 add_test(NAME native_column_rocket_first_clear_and_save
     COMMAND rupee_column_tests "${INTRO_CATALOG}")
+add_executable(rupee_locks_ice_tests tests/locks_ice_test.cpp)
+target_link_libraries(rupee_locks_ice_tests PRIVATE rupee_native_logic)
+add_test(NAME native_source_locks_and_ice_elemental
+    COMMAND rupee_locks_ice_tests "${INTRO_CATALOG}")
 add_executable(rupee_fire_elemental_tests tests/fire_elemental_test.cpp)
 target_link_libraries(rupee_fire_elemental_tests PRIVATE rupee_native_logic)
 add_test(NAME native_fire_elemental_and_delayed_auras
@@ -176,7 +180,12 @@ install(FILES
 # Source-authored Fire tile overlay, not a new gem or a placeholder.
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/overlays/fire.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/overlays/frost.png"
   DESTINATION data/art/primary/overlays
+)
+install(FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/blockers/lock.png"
+  DESTINATION data/art/primary/blockers
 )
 # Approved gameplay booster icons from web/progression.js; NO substitutions.
 install(FILES

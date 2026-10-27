@@ -142,6 +142,8 @@ struct Art {
     SDL_Texture* ore=nullptr;
     SDL_Texture* ice1=nullptr;
     SDL_Texture* ice2=nullptr;
+    SDL_Texture* lockSprite=nullptr;
+    SDL_Texture* frostSprite=nullptr;
     SDL_Texture* fireOverlay=nullptr;
     SDL_Texture* hammer=nullptr;
     SDL_Texture* extra=nullptr;
@@ -155,6 +157,8 @@ struct Art {
         ore=png(r,root/"art/nutvale/mines/nutvale-mines-ore-atlas-approved.png");
         ice1=png(r,root/"art/primary/blockers/ice-1.png");
         ice2=png(r,root/"art/primary/blockers/ice-2.png");
+        lockSprite=png(r,root/"art/primary/blockers/lock.png");
+        frostSprite=png(r,root/"art/primary/overlays/frost.png");
         fireOverlay=png(r,root/"art/primary/overlays/fire.png");
         // Only original approved PNGs (source: web/progression.js BOOSTER_ART).
         hammer=png(r,root/"art/primary/powerups/hammer.png");
@@ -170,7 +174,7 @@ struct Art {
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
         return std::all_of(gem.begin(),gem.begin()+5,[](SDL_Texture* t){return t!=nullptr;})
-               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&fireOverlay&&hammer&&extra&&rowRocket&&columnRocket&&shuffle;
+               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&frostSprite&&fireOverlay&&hammer&&extra&&rowRocket&&columnRocket&&shuffle;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -179,6 +183,8 @@ struct Art {
         if(ore)SDL_DestroyTexture(ore);
         if(ice1)SDL_DestroyTexture(ice1);
         if(ice2)SDL_DestroyTexture(ice2);
+        if(lockSprite)SDL_DestroyTexture(lockSprite);
+        if(frostSprite)SDL_DestroyTexture(frostSprite);
         if(fireOverlay)SDL_DestroyTexture(fireOverlay);
         if(hammer)SDL_DestroyTexture(hammer);
         if(extra)SDL_DestroyTexture(extra);
@@ -211,6 +217,8 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
              "   BREAK ICE "+std::to_string(game.iceCleared)+" / "+std::to_string(game.objectiveTarget):
            game.objectiveKind==2?
              "   COLLECT "+std::string(gemLabel(game.collectColor))+" "+std::to_string(game.collected)+" / "+std::to_string(game.objectiveTarget):
+           game.objectiveKind==3?
+             "   BREAK LOCKS "+std::to_string(game.locksCleared)+" / "+std::to_string(game.objectiveTarget):
              "   SCORE "+std::to_string(game.score)+" / "+std::to_string(game.objectiveTarget)),2);
     const auto b=gameBoard(ww,hh,game);
     SDL_SetRenderDrawColor(r,67,191,128,255);
@@ -230,13 +238,17 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
         if(game.elementals.size()==game.cells.size()){
             if(game.elementals[i]==1)label(r,dest.x+4,dest.y+4,"WATER",1);
             if(game.elementals[i]==2)label(r,dest.x+4,dest.y+4,"FIRE",1);
+            if(game.elementals[i]==3)label(r,dest.x+4,dest.y+4,"ICE",1);
         }
         // Source tile overlay is anchored to the square, not the moving gem.
         if(game.fireAuras.size()==game.cells.size()&&game.fireAuras[i]>0)
             SDL_RenderTexture(r,art.fireOverlay,nullptr,&dest);
-        if(game.ice.size()==game.cells.size()&&game.ice[i]>0){
+        if(game.ice.size()==game.cells.size()&&game.ice[i]>0)
             SDL_RenderTexture(r,game.ice[i]>=2?art.ice2:art.ice1,nullptr,&dest);
-        }
+        if(game.locks.size()==game.cells.size()&&game.locks[i]>0)
+            SDL_RenderTexture(r,art.lockSprite,nullptr,&dest);
+        if(game.frozen.size()==game.cells.size()&&game.frozen[i]>0)
+            SDL_RenderTexture(r,art.frostSprite,nullptr,&dest);
     }
     button(r,{20.0f,static_cast<float>(hh-64),154,44},"MAIN MENU");
     // Icons ARE the buttons: no surrounding shells or text-only substitutes.
@@ -268,7 +280,7 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<27)
+        if(game.level<30)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
         else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
@@ -380,7 +392,7 @@ int main(int argc,char** argv){
     const fs::path storage=savePath();
     Game game=restore(storage);
     auto loadAuthoredIntro=[&](int stage){
-        std::ifstream campaign(dataRoot()/"campaign-27.txt");
+        std::ifstream campaign(dataRoot()/"campaign-30.txt");
         if(!campaign)return false;
         return game.startIntro(stage,campaign);
     };
@@ -428,7 +440,7 @@ int main(int argc,char** argv){
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=27 && loadAuthoredIntro(next)){
+                        if(next<=30 && loadAuthoredIntro(next)){
                             hammerArmed=false;rowArmed=false;columnArmed=false;persist();
                         }
                     }else{
