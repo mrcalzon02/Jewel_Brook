@@ -1,6 +1,16 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <application android:name=".PlayGamesApplication">
         <meta-data android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/game_services_project_id" />
+        <!-- Replace only this Play variant's launcher; sideload remains unchanged. -->
+        <activity android:name=".MainActivity" tools:node="remove" />
+        <activity android:name=".PlayMainActivity" android:exported="true"
+            android:screenOrientation="unspecified">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
