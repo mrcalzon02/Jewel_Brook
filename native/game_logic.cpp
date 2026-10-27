@@ -50,14 +50,15 @@ uint32_t Game::next() {
 int Game::range(int limit) {
     return static_cast<int>((static_cast<uint64_t>(next())*static_cast<uint64_t>(limit))>>32);
 }
-int Game::rosterSize() const { return std::min(5,3+(level-1)/30); }
+int Game::rosterSize() const { return static_cast<int>(activeRoster.size()); }
 void Game::populateBoard() {
     // No starting cascades, like the established deterministic Android generator.
     cells.assign(width*height,0);
     ice.assign(width*height,0);
+    elementals.assign(width*height,0);
     for(int y=0;y<height;++y) for(int x=0;x<width;++x) {
         std::vector<int> options;
-        for(int t=0;t<rosterSize();++t) {
+        for(int t:activeRoster) {
             if(x>=2 && cells[y*width+x-1]==t && cells[y*width+x-2]==t)continue;
             if(y>=2 && cells[(y-1)*width+x]==t && cells[(y-2)*width+x]==t)continue;
             options.push_back(t);
@@ -71,6 +72,7 @@ void Game::startLevel(int stage) {
     height=width+1;
     moves=std::max(12,24-level/75);
     score=0;goal=700+level*18;
+    activeRoster={0,1,2};waterActivations=0;
     objectiveKind=0;objectiveTarget=goal;iceCleared=0;
     won=false;lost=false;
     for(int attempts=0;attempts<100;++attempts) {
@@ -111,9 +113,11 @@ void Game::refill(){
             int write=bottom;
             for(int from=bottom;from>=top;--from)
                 if(cells[from*width+x]>=0)
-                    cells[write--*width+x]=cells[from*width+x];
+                    cells[write*width+x]=cells[from*width+x],
+                    elementals[write--*width+x]=elementals[from*width+x];
             for(;write>=top;--write)
-                cells[write*width+x]=range(rosterSize());
+                cells[write*width+x]=activeRoster[range(rosterSize())],
+                elementals[write*width+x]=0;
         }
     }
 }
@@ -129,6 +133,17 @@ void Game::updateOutcome(){
     grantMilestoneIfWon();
 }
 
+void Game::clearGem(int index){
+    if(index<0||index>=static_cast<int>(cells.size())||cells[index]<0)return;
+    if(ice[index]>0){--ice[index];++iceCleared;return;}
+    if(elementals[index]==1){
+        // web/elemental-powers.js Water removes row-local sticky/burning
+        // statuses. Those hazards do not occur in the supported 1–17 stages.
+        ++waterActivations;
+    }
+    cells[index]=-1;
+    elementals[index]=0;
+}
 bool Game::clearAndFill() {
     bool changed=false;
     for(int cascade=1;cascade<=60;++cascade){
@@ -146,8 +161,7 @@ bool Game::clearAndFill() {
         }
         for(int i:affected){
             if(cells[i]==-2)continue;
-            if(ice[i]>0){--ice[i];++iceCleared;}
-            else cells[i]=-1;
+            clearGem(i);
         }
         score+=static_cast<int>(affected.size())*60*std::min(cascade,6);
         refill();
@@ -158,6 +172,7 @@ bool Game::clearAndFill() {
 bool Game::swap(int a,int b) {
     if(won||lost||!adjacent(a,b))return false;
     std::swap(cells[a],cells[b]);
+    std::swap(elementals[a],elementals[b]);
     --moves;
     clearAndFill(); // non-match swaps stay swapped and consume the move
     updateOutcome();
@@ -169,7 +184,9 @@ bool Game::swap(int a,int b) {
             if(cells[i]>=0&&(ice.empty()||ice[i]==0))free.push_back(i);
         for(int tries=0;tries<120;++tries) {
             for(int i=static_cast<int>(free.size())-1;i>0;--i)
-                std::swap(cells[free[i]],cells[free[range(i+1)]]);
+                {const int other=free[range(i+1)];
+                 std::swap(cells[free[i]],cells[other]);
+                 std::swap(elementals[free[i]],elementals[other]);}
             if(matchedCells()==0&&hasMove())break;
         }
         if(matchedCells()!=0||!hasMove()){
@@ -179,8 +196,10 @@ bool Game::swap(int a,int b) {
                 for(int b:free) {
                     if(a>=b||cells[a]==cells[b])continue;
                     std::swap(cells[a],cells[b]);
+                    std::swap(elementals[a],elementals[b]);
                     if(matchedCells()==0&&hasMove())break;
                     std::swap(cells[a],cells[b]);
+                    std::swap(elementals[a],elementals[b]);
                 }
             }
         }
@@ -201,8 +220,8 @@ bool Game::useHammer(int cell){
     // web/engine.js hammer: twenty successive blows; the final blow can
     // remove the gem beneath the last ice layer. Do not invent extra strikes.
     for(int hit=0;hit<20;++hit){
-        if(ice[cell]>0){--ice[cell];++iceCleared;}
-        else if(cells[cell]>=0){cells[cell]=-1;break;}
+        if(ice[cell]>0){clearGem(cell);}
+        else if(cells[cell]>=0){clearGem(cell);break;}
         else break;
     }
     score+=35;
@@ -219,8 +238,7 @@ bool Game::useRowRocket(int cell){
         const int i=y*width+x;
         if(cells[i]==-2)continue;
         ++affected;
-        if(ice[i]>0){--ice[i];++iceCleared;}
-        else cells[i]=-1;
+        clearGem(i);
     }
     score+=affected*35;
     refill();clearAndFill();
@@ -250,9 +268,9 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>14)return false;
+    if(stage<1||stage>17)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN2"||count!=14)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN3"||count!=17)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;
@@ -261,9 +279,21 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
            (kind!=0&&kind!=1)||target<1||target>2000000||!rng||
            n!=static_cast<size_t>(w*h))return false;
         std::vector<int> types(n),frost(n);
-        for(auto& x:types)if(!(authoredCatalog>>x)||x < -2||x>=3||x==-1)return false;
+        for(auto& x:types)if(!(authoredCatalog>>x)||x < -2||x>=19||x==-1)return false;
         for(auto& x:frost)if(!(authoredCatalog>>x)||x<0||x>3)return false;
-        for(size_t i=0;i<n;++i)if(types[i]==-2&&frost[i]!=0)return false;
+        size_t rosterCount=0;
+        if(!(authoredCatalog>>rosterCount)||rosterCount!=(k<15?3u:4u))return false;
+        std::vector<int> roster(rosterCount);
+        for(auto& x:roster)if(!(authoredCatalog>>x)||x<0||x>=19)return false;
+        if(roster!=(k<15?std::vector<int>{0,1,2}:std::vector<int>{0,1,2,11}))return false;
+        std::vector<int> effects(n,0);
+        int powered=0;
+        for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>1)return false;powered+=x;}
+        if(powered!=(k==15?1:0))return false;
+        for(size_t i=0;i<n;++i)
+            if((types[i]==-2&&(frost[i]!=0||effects[i]!=0))||
+                (types[i]!=-2&&std::find(roster.begin(),roster.end(),types[i])==roster.end()))
+                return false;
         if(k!=stage)continue;
         Game candidate=*this;
         candidate.level=number;candidate.width=w;candidate.height=h;
@@ -271,6 +301,9 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         candidate.objectiveKind=kind;candidate.objectiveTarget=target;
         candidate.iceCleared=0;candidate.score=0;candidate.won=false;candidate.lost=false;
         candidate.cells=std::move(types);candidate.ice=std::move(frost);
+        candidate.activeRoster=std::move(roster);
+        candidate.elementals=std::move(effects);
+        candidate.waterActivations=0;
         candidate.randomState=rng;
         if(candidate.matchedCells()!=0||!candidate.hasMove())return false;
         *this=std::move(candidate);
@@ -279,13 +312,17 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
     return false;
 }
 bool Game::save(std::ostream& out) const {
-    out<<"RRNATIVE3 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
+    out<<"RRNATIVE4 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
        <<score<<' '<<goal<<' '<<ore<<' '<<strikes<<' '<<won<<' '<<lost<<' '
        <<randomState<<' '<<objectiveKind<<' '<<objectiveTarget<<' '
        <<iceCleared<<' '<<hammerCount<<' '<<extraCount<<' '<<rowCount<<' '
-       <<claimedExtra<<' '<<claimedRow<<' '<<cells.size()<<'\n';
+       <<claimedExtra<<' '<<claimedRow<<' '<<waterActivations<<' '
+       <<cells.size()<<'\n';
     for(int v:cells)out<<v<<' ';out<<'\n';
     for(int v:ice)out<<v<<' ';out<<'\n';
+    out<<activeRoster.size()<<' ';
+    for(int id:activeRoster)out<<id<<' ';out<<'\n';
+    for(int v:elementals)out<<v<<' ';out<<'\n';
     for(auto r:rocks)out<<r.kind<<' '<<r.hardness<<' '<<r.hits<<' '<<r.done<<' ';
     out<<'\n';
     return out.good();
@@ -293,7 +330,7 @@ bool Game::save(std::ostream& out) const {
 bool Game::load(std::istream& in) {
     Game tmp(7919);
     std::string magic;size_t n=0;
-    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"))return false;
+    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"&&magic!="RRNATIVE4"))return false;
     if(!(in>>tmp.level>>tmp.width>>tmp.height>>tmp.moves>>
        tmp.score>>tmp.goal>>tmp.ore>>tmp.strikes>>tmp.won>>tmp.lost>>
        tmp.randomState))return false;
@@ -302,16 +339,16 @@ bool Game::load(std::istream& in) {
     } else {
         tmp.objectiveKind=0;tmp.objectiveTarget=tmp.goal;tmp.iceCleared=0;
     }
-    if(magic=="RRNATIVE3"){
+    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"){
         if(!(in>>tmp.hammerCount>>tmp.extraCount>>tmp.rowCount>>
              tmp.claimedExtra>>tmp.claimedRow))return false;
     } else {
-        // Preserve old native saves and make earned early unlocks available.
         tmp.hammerCount=3;tmp.extraCount=tmp.level>=6?3:0;
         tmp.rowCount=tmp.level>=10&&tmp.won?3:0;
         tmp.claimedExtra=tmp.level>=6;
         tmp.claimedRow=tmp.level>=10&&tmp.won;
     }
+    if(magic=="RRNATIVE4" && !(in>>tmp.waterActivations))return false;
     if(!(in>>n))return false;
     if(tmp.level<1||tmp.level>1000 ||tmp.width<4||tmp.width>8||
        tmp.height!=tmp.width+1||n!=static_cast<size_t>(tmp.width*tmp.height)||
@@ -322,13 +359,28 @@ bool Game::load(std::istream& in) {
        tmp.hammerCount<0||tmp.hammerCount>999999||
        tmp.extraCount<0||tmp.extraCount>999999||
        tmp.rowCount<0||tmp.rowCount>999999||
+       tmp.waterActivations<0||tmp.waterActivations>1000||
        (tmp.claimedExtra&&tmp.level<5)||(tmp.claimedRow&&tmp.level<10))return false;
     tmp.cells.resize(n);
-    for(auto& t:tmp.cells)if(!(in>>t)||t < -2||t>=5||t==-1)return false;
+    for(auto& t:tmp.cells)if(!(in>>t)||t < -2||t>=19||t==-1)return false;
     tmp.ice.assign(n,0);
     if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>3)return false;
-    for(size_t i=0;i<n;++i)if(tmp.cells[i]==-2&&tmp.ice[i]!=0)return false;
+    if(magic=="RRNATIVE4"){
+        size_t rosterCount=0;
+        if(!(in>>rosterCount)||rosterCount<3||rosterCount>7)return false;
+        tmp.activeRoster.resize(rosterCount);
+        for(auto& id:tmp.activeRoster)if(!(in>>id)||id<0||id>=19)return false;
+        tmp.elementals.assign(n,0);
+        for(auto& status:tmp.elementals)if(!(in>>status)||status<0||status>1)return false;
+    } else {
+        tmp.activeRoster={0,1,2,3,4};
+        tmp.elementals.assign(n,0);
+    }
+    for(size_t i=0;i<n;++i){
+        if(tmp.cells[i]==-2&&(tmp.ice[i]!=0||tmp.elementals[i]!=0))return false;
+        if(tmp.cells[i]>=0&&std::find(tmp.activeRoster.begin(),tmp.activeRoster.end(),tmp.cells[i])==tmp.activeRoster.end())return false;
+    }
     for(auto& r:tmp.rocks){
        if(!(in>>r.kind>>r.hardness>>r.hits>>r.done)
           ||r.kind<0||r.kind>3||r.hardness<1||r.hardness>3

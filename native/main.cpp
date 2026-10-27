@@ -136,7 +136,7 @@ MineEconomy restoreMine(const fs::path& path,const Game& oldGame,bool hasPreviou
     return n;
 }
 struct Art {
-    std::array<SDL_Texture*,5> gem{};
+    std::array<SDL_Texture*,12> gem{};
     std::array<SDL_Texture*,40> pick{};
     std::array<SDL_Texture*,40> glove{};
     SDL_Texture* ore=nullptr;
@@ -148,6 +148,7 @@ struct Art {
     bool load(SDL_Renderer* r,const fs::path& root){
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
         for(int i=0;i<5;++i)gem[i]=png(r,root/"art/embryon/generated/gems"/(std::string(names[i])+".png"));
+        gem[11]=png(r,root/"art/embryon/runtime/gems/opal.png");
         ore=png(r,root/"art/nutvale/mines/nutvale-mines-ore-atlas-approved.png");
         ice1=png(r,root/"art/primary/blockers/ice-1.png");
         ice2=png(r,root/"art/primary/blockers/ice-2.png");
@@ -162,7 +163,8 @@ struct Art {
         const auto ready=[](const auto& list){
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
-        return ready(gem)&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&hammer&&extra&&rowRocket;
+        return std::all_of(gem.begin(),gem.begin()+5,[](SDL_Texture* t){return t!=nullptr;})
+               &&gem[11]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&hammer&&extra&&rowRocket;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -198,7 +200,12 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
         SDL_FRect dest{b.x+x*tile+2,b.y+y*tile+2,tile-4,tile-4};
         fill(r,{dest.x,dest.y,dest.w,dest.h},{30,50,55,255});
         // Source identity is the same approved gemstone file already in web/.
-        SDL_RenderTexture(r,art.gem[game.cells[i]],nullptr,&dest);
+        // Approved opal at source ID 11; no remapping to an unrelated jewel.
+        const int id=game.cells[i];
+        if(id>=0&&id<static_cast<int>(art.gem.size())&&art.gem[id])
+            SDL_RenderTexture(r,art.gem[id],nullptr,&dest);
+        if(game.elementals.size()==game.cells.size()&&game.elementals[i]==1)
+            label(r,dest.x+4,dest.y+4,"WATER",1);
         if(game.ice.size()==game.cells.size()&&game.ice[i]>0){
             SDL_RenderTexture(r,game.ice[i]>=2?art.ice2:art.ice1,nullptr,&dest);
         }
@@ -223,7 +230,7 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<14)
+        if(game.level<17)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
         else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
@@ -382,7 +389,7 @@ int main(int argc,char** argv){
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=14 && loadAuthoredIntro(next)){
+                        if(next<=17 && loadAuthoredIntro(next)){
                             hammerArmed=false;rowArmed=false;persist();
                         }
                     }else{

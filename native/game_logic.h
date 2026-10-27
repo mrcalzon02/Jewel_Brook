@@ -29,6 +29,11 @@ public:
     // objectiveKind: 0=score, 1=ice; later kinds are not exposed until ported.
     int objectiveKind = 0, objectiveTarget = 850, iceCleared = 0;
     std::vector<int> ice;
+    // Exact authored gem IDs: 0 ruby, 1 sapphire, 2 emerald, 11 opal.
+    std::vector<int> activeRoster{0,1,2};
+    // Gem-carried Water elemental flag (1). 0 = ordinary gem.
+    std::vector<int> elementals;
+    int waterActivations=0;
     // Starter supply and milestone unlocks from web/progression.js LADDER.
     int hammerCount = 3, extraCount = 0, rowCount = 0;
     bool claimedExtra = false, claimedRow = false;
@@ -55,6 +60,7 @@ private:
     int range(int limit);
     bool clearAndFill();
     void refill();
+    void clearGem(int cell); // preserves independent blocker and elemental state
     void updateOutcome();
     void grantMilestoneIfWon();
     void populateBoard();

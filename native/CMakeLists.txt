@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-14.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-17.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -42,6 +42,18 @@ execute_process(
 if(NOT ROW_EXPORT_STATUS EQUAL 0)
   message(FATAL_ERROR "Approved Row Rocket image could not be converted for SDL3")
 endif()
+# Exact pre-approved opal artwork; preserve gem identity and original pixels.
+set(OPAL_GEM_PNG "${CMAKE_BINARY_DIR}/opal.png")
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/gems/opal.webp"
+    "${OPAL_GEM_PNG}"
+  RESULT_VARIABLE OPAL_EXPORT_STATUS
+)
+if(NOT OPAL_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Approved opal gem image could not be converted for SDL3")
+endif()
+
 
 
 add_library(rupee_native_logic STATIC game_logic.cpp)
@@ -111,6 +123,9 @@ install(FILES
   "${SOURCE_GEMS}/amethyst.png"
   DESTINATION data/art/embryon/generated/gems
 )
+install(FILES "${OPAL_GEM_PNG}"
+  DESTINATION data/art/embryon/runtime/gems)
+
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png"
   DESTINATION data/art/nutvale/mines

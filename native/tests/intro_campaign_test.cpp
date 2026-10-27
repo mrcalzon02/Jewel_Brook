@@ -10,7 +10,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=14;++stage) {
+    for(int stage=1;stage<=17;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -58,6 +58,9 @@ int main(int argc,char** argv) {
         assert(restored.objectiveTarget==g.objectiveTarget);
         assert(restored.objectiveKind==g.objectiveKind);
         assert(restored.randomState==g.randomState);
+        assert(restored.activeRoster==g.activeRoster);
+        assert(restored.elementals==g.elementals);
+        assert(restored.waterActivations==g.waterActivations);
         if(stage==3){
             int original=g.moves;
             // Adjacent swaps consume a turn even without a match.
@@ -73,6 +76,33 @@ int main(int argc,char** argv) {
             std::stringstream resumed;assert(g.save(resumed));
             Game reloaded;assert(reloaded.load(resumed));
             assert(reloaded.ice==g.ice&&reloaded.iceCleared==g.iceCleared);
+        }
+        if(stage>=15){
+            assert(g.activeRoster==std::vector<int>({0,1,2,11}));
+            bool opal=false;
+            for(int type:g.cells)if(type==11)opal=true;
+            assert(opal); // gem comes from the Android-authored starting board
+        }
+        if(stage==15){
+            int waterAt=-1;
+            for(int i=0;i<static_cast<int>(g.elementals.size());++i)
+                if(g.elementals[i]==1){assert(waterAt<0);waterAt=i;}
+            assert(waterAt>=0&&g.ice[waterAt]==0);
+            assert(g.waterActivations==0);
+            assert(g.useHammer(waterAt));
+            assert(g.waterActivations==1);
+            assert(g.elementals[waterAt]==0);
+            assert(g.matchedCells()==0);
+            std::stringstream waterSave;
+            assert(g.save(waterSave));
+            Game waterRestored;
+            assert(waterRestored.load(waterSave));
+            assert(waterRestored.waterActivations==1);
+            assert(waterRestored.elementals==g.elementals);
+            assert(waterRestored.activeRoster==g.activeRoster);
+        }
+        if(stage==16||stage==17){
+            for(int e:g.elementals)assert(e==0);
         }
         if(stage==11){
             int voidAt=-1, active=-1;
@@ -98,7 +128,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(15,source));
+    assert(!previous.startIntro(18,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -110,6 +140,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 14 source-derived stages, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
+    std::cout<<"Native campaign: 17 source-derived stages, opal and Water elemental, void masks, ice, Row Rocket, drag swaps, and old saves passed\n";
     return 0;
 }
