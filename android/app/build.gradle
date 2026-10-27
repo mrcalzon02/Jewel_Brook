@@ -32,6 +32,7 @@ if (!(playGamesProjectId ==~ /[0-9]{1,24}/)) {
 android {
     namespace 'io.github.mrcalzon02.rupeerush'
     compileSdk 36
+    buildFeatures { resValues true }
 
     defaultConfig {
         applicationId 'io.github.mrcalzon02.rupeerush'
