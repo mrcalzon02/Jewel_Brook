@@ -1,4 +1,4 @@
-# One-time Rupee Rush GitHub signer enrollment; NO local Gradle or Android SDK build.
+# One-time Jewelbrook GitHub signer enrollment; NO local Gradle or Android SDK build.
 [CmdletBinding()]
 param([switch]$ReplaceExistingSecrets)
 Set-StrictMode -Version Latest
@@ -49,7 +49,7 @@ function Cert-Sha([string]$secret) {
         [Environment]::SetEnvironmentVariable('RR_SIGNING_PASSWORD',$secret,'Process')
         & $keytool -exportcert -storetype PKCS12 -keystore $store -alias $alias '-storepass:env' 'RR_SIGNING_PASSWORD' -file $der | Out-Null
         if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $der -PathType Leaf)) {
-            throw 'Original Rupee Rush signing keystore/alias cannot be verified; refusing key replacement.'
+            throw 'Original Jewelbrook signing keystore/alias cannot be verified; refusing key replacement.'
         }
         return (Get-FileHash -LiteralPath $der -Algorithm SHA256).Hash.ToLowerInvariant()
     } finally {
@@ -89,7 +89,7 @@ $existing=@(& $gh secret list --repo $repo --json name --jq '.[].name')
 if ($LASTEXITCODE -ne 0) { throw 'Could not inspect existing signing secret names.' }
 $overlap=@($existing | Where-Object { $names -contains $_ })
 if ($overlap.Count -eq $names.Count -and -not $ReplaceExistingSecrets) {
-    Write-Host 'All five Rupee Rush signing secret names already present. Not replacing.'
+    Write-Host 'All five Jewelbrook signing secret names already present. Not replacing.'
     & $gh workflow run rupee-rush-android.yml --repo $repo --ref main
     if ($LASTEXITCODE -ne 0) { throw 'Failed to request cloud APK build.' }
     Write-Host 'RUNNING GITHUB BUILD: https://github.com/mrcalzon02/Rupee-rush/actions'
@@ -102,12 +102,12 @@ if (-not (Test-Path -LiteralPath $homeDir -PathType Container)) {
     $null=New-Item -ItemType Directory -Force -Path $homeDir
     $sid=[Security.Principal.WindowsIdentity]::GetCurrent().User.Value
     & icacls.exe $homeDir '/inheritance:r' '/grant:r' ('*'+$sid+':(OI)(CI)F') '*S-1-5-18:(OI)(CI)F' | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw 'Unable to protect Rupee Rush signing-key directory.' }
+    if ($LASTEXITCODE -ne 0) { throw 'Unable to protect Jewelbrook signing-key directory.' }
 }
 $haveStore=Test-Path -LiteralPath $store -PathType Leaf
 $havePassword=Test-Path -LiteralPath $passwordFile -PathType Leaf
 if ($haveStore -ne $havePassword) {
-    throw 'Incomplete Rupee Rush key/password pair; restore it rather than generating a replacement.'
+    throw 'Incomplete Jewelbrook key/password pair; restore it rather than generating a replacement.'
 }
 if (-not $haveStore) {
     $secret=New-Password
@@ -124,13 +124,13 @@ if (-not $haveStore) {
         [Environment]::SetEnvironmentVariable('RR_SIGNING_PASSWORD',$old,'Process')
         $secret=$null
     }
-} else { Write-Host 'Reusing existing Rupee Rush permanent signing key.' }
+} else { Write-Host 'Reusing existing Jewelbrook permanent signing key.' }
 $secret=[IO.File]::ReadAllText($passwordFile).TrimEnd([char[]]@(13,10))
 if (-not $secret) { throw 'Existing private signing password is empty.' }
 $sha=Cert-Sha $secret
 if (Test-Path -LiteralPath $pin -PathType Leaf) {
     if ([IO.File]::ReadAllText($pin).Trim().ToLowerInvariant() -ne $sha) {
-        throw 'Rupee Rush signing certificate differs from the stored private pin.'
+        throw 'Jewelbrook signing certificate differs from the stored private pin.'
     }
 } else { Write-Private $pin ($sha+[Environment]::NewLine) }
 Write-Host "Signing certificate SHA256: $sha"

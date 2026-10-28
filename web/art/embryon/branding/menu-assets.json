@@ -20,7 +20,8 @@
         674
       ],
       "runtimeBytes": 301308,
-      "sourcePreservedOnDrive": true
+      "sourcePreservedOnDrive": true,
+      "runtimeStatus": "archived-legacy-wordmark-not-active"
     },
     {
       "role": "home-background",
@@ -54,5 +55,13 @@
       "economy",
       "other project assets"
     ]
+  },
+  "publicTitle": "Jewelbrook",
+  "activeHomeTitle": {
+    "title": "Jewelbrook",
+    "subtitle": "Heroes of Embryon",
+    "render": "accessible HTML/CSS wordmark",
+    "cssClass": "home-title-wordmark",
+    "scene": "web/art/embryon/locations/embryon-kingdom.webp"
   }
 }
