@@ -45,7 +45,7 @@ int main(int argc,char**argv){
         for(int effect:g.elementals)if(effect)++active;
         assert(active==(level%7==0?1:0));
         assert(sum(g.fireAuras)==2);
-        if(level>=80)assert(g.activeRoster==std::vector<int>({0,1,2,11,18,15}));
+        if(level>=80)assert(g.activeRoster==std::vector<int>({0,1,2,15,((level-1)/16)%2==0?11:18}));
         if(level<80)assert(g.activeRoster==std::vector<int>({0,1,2,11,18}));
         for(size_t i=0;i<g.cells.size();++i)if(g.cells[i]==-2)
             assert(g.ice[i]==0&&g.locks[i]==0&&g.chests[i]==0);

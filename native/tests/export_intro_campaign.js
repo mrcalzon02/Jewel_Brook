@@ -29,7 +29,7 @@ for(let stage=1;stage<=98;stage++){
       (c.elemental!==null && !(stage>=15 && (stage===15||stage===35||stage%7===0) && c.elemental===cfg.elementPool[Math.floor(stage/7)%cfg.elementPool.length])))
       throw Error('Stage '+stage+' added a feature not yet ported to desktop');
   }
-  const expectedRoster=stage<15?[0,1,2]:stage<35?[0,1,2,11]:stage<80?[0,1,2,11,18]:[0,1,2,11,18,15];
+  const expectedRoster=stage<15?[0,1,2]:stage<35?[0,1,2,11]:stage<80?[0,1,2,11,18]:[0,1,2,15,Math.floor((stage-1)/16)%2===0?11:18];
   if(cfg.roster.join(',')!==expectedRoster.join(','))
     throw Error('Authoritative gem roster changed at stage '+stage);
   const powered=cells.filter(c=>c?.elemental).length;

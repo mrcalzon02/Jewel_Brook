@@ -120,7 +120,7 @@ int main(int argc,char** argv) {
         if(stage>=15){
             if(stage<35)assert(g.activeRoster==std::vector<int>({0,1,2,11}));
             else if(stage<80)assert(g.activeRoster==std::vector<int>({0,1,2,11,18}));
-            else assert(g.activeRoster==std::vector<int>({0,1,2,11,18,15}));
+            else assert(g.activeRoster==std::vector<int>({0,1,2,15,((stage-1)/16)%2==0?11:18}));
             bool opal=false;
             for(int type:g.cells)if(type==11)opal=true;
             assert(opal); // gem comes from the Android-authored starting board
