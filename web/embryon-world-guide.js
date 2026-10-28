@@ -33,6 +33,7 @@ const TABS=Object.freeze([
  Object.freeze({id:'world',title:'World'}),
  Object.freeze({id:'gems',title:'Gems & Stones'}),
  Object.freeze({id:'crops',title:'Foods & Crops'}),
+ Object.freeze({id:'seasons',title:'Seasonal Farming'}),
  Object.freeze({id:'dishes',title:'Cooking'}),
  Object.freeze({id:'tools',title:'Tools'}),
  Object.freeze({id:'story',title:'Royal Chronicle'})
@@ -60,6 +61,15 @@ function catalog(tab,systems,save){
  case 'gems':return E.TYPES.filter(n=>!E.RETIRED_NUTS.includes(n)).map(name=>{
   const arrival=E.NEW_INTRODUCTIONS.find(x=>x.name===name);
   return {name:name[0].toUpperCase()+name.slice(1),detail:arrival?'First added to the campaign at stage '+arrival.level+'.':'An established gemstone type in the original campaign roster.'};
+ });
+ case 'seasons':return Object.values(Garden.CROPS).map(c=>{
+  const day=Garden.campaignDay(save),f=Garden.Seasons.forecast(c.id,day,null,save?.town?.houseLevel||1);
+  return {name:c.name,detail:'Best growing month(s): '+f.peakMonths.join(' / ')+
+   ' · Current '+f.season+' ('+f.civilDate+') · Typical '+f.estimatedDays+
+   ' mission day'+(f.estimatedDays===1?'':'s')+
+   ' until harvest without fertilizer at this season. Faster in peak conditions, up to six days off-season.'+
+   (f.realWorldMaturityDays?' Real-world analogue: approximately '+f.realWorldMaturityDays+' days to maturity; compressed for gameplay.':
+   ' Fantasy cultivar / fruit perennial: broad seasonal analogy only.')};
  });
  case 'crops':return Object.values(Garden.CROPS).map(c=>({
   name:c.name,detail:'Category: '+c.category+' · residence tier '+c.house+

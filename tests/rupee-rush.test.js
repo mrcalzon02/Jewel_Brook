@@ -70,6 +70,7 @@ assert.equal(Observances.forDay(98).festivalWindow.name,'Flowered Sunder');
 assert.match(Observances.warningFor(Observances.forDay(98).festivalWindow),/day 14/);
 assert.equal(Guide.catalog('festivals',{},{}).length,13);
 assert.equal(Guide.catalog('weeks',{},{}).length,52);
+assert.equal(Guide.catalog('seasons',{Garden:TownGarden},{}).length,48);
 const sourceLines=fs.readFileSync(path.join(__dirname,'../docs/ELARANTH_CANONICAL_EVENT_SOURCE.csv'),'utf8')
  .replace(/^\uFEFF/,'').trim().split(/\r?\n/);
 assert.equal(sourceLines.length,84,'Source snapshot includes exactly 83 records plus header');
@@ -195,6 +196,10 @@ click('guide-tab',{tab:'dishes'});
 assert.match(views.screen.innerHTML,/Hawseed Garden Salad/);
 click('guide-tab',{tab:'gems'});
 assert.match(views.screen.innerHTML,/Sapphire/);
+click('guide-tab',{tab:'seasons'});
+assert.match(views.screen.innerHTML,/Seasonal Farming/);
+assert.match(views.screen.innerHTML,/Frostmint/);
+assert.match(views.screen.innerHTML,/mission day/);
 navigate('campaign');
 click('open-chapter',{chapter:1});
 assert.match(views.screen.innerHTML,/Thawcall 282 S\.M\./,'First chapter opens in Thawcall');

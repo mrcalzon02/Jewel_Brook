@@ -103,3 +103,7 @@ These entries are informational world lore, **not automatic gameplay rewards, un
 ### Civic and lunar columns in the 1,000-stage chronology
 
 The CSV ledger also contains `seasonal_week_id`, `seasonal_week`, `annual_festival_window`, `festival_date_precision`, and `full_moon`. Named civic weeks cover all 1,000 days; a festival name appears **throughout its canonical week window** and does not claim an exact day; an astronomical full moon appears **only on the actual day 14** of a month. The existing script regenerates all fields directly from the approved source-backed runtime records. These are informational annotations, not paid rewards, changed level IDs, or extra story days.
+
+### Seasonal planting and campaign-day crop growth
+
+All **48** existing crop IDs now have peak growing months chosen from real-world planting-season analogues, translated to Elaranth’s established year. New crops advance with **first-time match-three mission clears**, not device clock minutes. Peak planting typically matures after one mission; deeply off-season planting takes six days without speed bonuses; shoulders interpolate between. Existing fertilizers, instant maturation, rain boosts, and harvest bonuses still work. Legacy plots keep their existing real-time timers. See [the seasonal crop almanac](TOWN_SEASONAL_CROP_ALMANAC.md) for the complete 48-crop source table and agronomy methodology.
