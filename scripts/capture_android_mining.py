@@ -116,7 +116,10 @@ adb("shell", "wm", "density", "220")
 for scale in ["window_animation_scale", "transition_animation_scale", "animator_duration_scale"]:
     adb("shell", "settings", "put", "global", scale, "0")
 adb("install", "-r", str(apk), timeout=180)
-adb("shell", "am", "start", "-W", "-n", pkg + "/.MainActivity", timeout=90)
+# The installed package ID is Jewel Brook while the Java activity retains its internal namespace.
+# Resolve the fully-qualified manifest activity instead of assuming package + ".MainActivity".
+adb("shell", "am", "start", "-W", "-n",
+    pkg + "/io.github.mrcalzon02.rupeerush.MainActivity", timeout=90)
 time.sleep(3)  # Allow WebView title, assets and the short launch splash to settle.
 try:
     wait_for("Adventure Menu", attempts=12)
