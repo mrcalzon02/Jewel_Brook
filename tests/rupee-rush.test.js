@@ -184,7 +184,7 @@ assert.ok(Royal.EVENTS.filter(e=>e.track==='royal-family').every(e=>e.revealLeve
 click('go-chronicle');
 assert.equal(gameWindow.RupeeRushDebug.getPage(),'chronicle','Royal Chronicle opens from Home');
 assert.match(views.screen.innerHTML,/The Royal Chronicle/);
-assert.match(views.screen.innerHTML,/STAGE 1/,'Chronicle renders story unlock milestones');
+assert.match(views.screen.innerHTML,/STAGE 4/,'First royal story occurs on the first Friday after the wedding');
 navigate('home');
 click('go-manor');
 assert.equal(gameWindow.RupeeRushDebug.getPage(),'manor','Manor House opens as a functional Town location');
