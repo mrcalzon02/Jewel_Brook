@@ -119,7 +119,12 @@ int main(int argc,char**argv){
     assert(static_cast<bool>(std::getline(newer,frozen)));
     std::ostringstream prior;
     for(const auto& part:fields)prior<<part<<' ';
-    prior<<"\n"<<board<<"\n"<<ice<<"\n"<<locks<<"\n"<<frozen<<"\n"<<newer.rdbuf();
+    std::vector<std::string> lines;
+    for(std::string line;std::getline(newer,line);)lines.push_back(line);
+    assert(lines.size()>=4);
+    lines.erase(lines.end()-4,lines.end()-1);
+    prior<<"\n"<<board<<"\n"<<ice<<"\n"<<locks<<"\n"<<frozen<<"\n";
+    for(const auto& line:lines)prior<<line<<"\n";
     std::stringstream oldSave(prior.str());
     Game migrated;assert(migrated.load(oldSave));
     assert(!migrated.claimedBlast&&migrated.blastCount==0);

@@ -146,6 +146,9 @@ struct Art {
     SDL_Texture* chestSprite=nullptr;
     SDL_Texture* frostSprite=nullptr;
     SDL_Texture* fireOverlay=nullptr;
+    SDL_Texture* stickyOverlay=nullptr;
+    SDL_Texture* poisonOverlay=nullptr;
+    SDL_Texture* lightningOverlay=nullptr;
     SDL_Texture* hammer=nullptr;
     SDL_Texture* extra=nullptr;
     SDL_Texture* rowRocket=nullptr;
@@ -169,6 +172,9 @@ struct Art {
         chestSprite=png(r,root/"art/primary/blockers/chest.png");
         frostSprite=png(r,root/"art/primary/overlays/frost.png");
         fireOverlay=png(r,root/"art/primary/overlays/fire.png");
+        stickyOverlay=png(r,root/"art/primary/overlays/sticky-butter.png");
+        poisonOverlay=png(r,root/"art/primary/overlays/poison.png");
+        lightningOverlay=png(r,root/"art/primary/overlays/lightning.png");
         // Only original approved PNGs (source: web/progression.js BOOSTER_ART).
         hammer=png(r,root/"art/primary/powerups/hammer.png");
         extra=png(r,root/"art/additions/economy/hourglass.png");
@@ -188,7 +194,7 @@ struct Art {
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
         return std::all_of(gem.begin(),gem.begin()+5,[](SDL_Texture* t){return t!=nullptr;})
-               &&gem[11]&&gem[18]&&gem[15]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&chestSprite&&frostSprite&&fireOverlay&&hammer&&extra&&rowRocket&&columnRocket&&blast&&cross&&color&&drill&&unlock&&shuffle;
+               &&gem[11]&&gem[18]&&gem[15]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&chestSprite&&frostSprite&&fireOverlay&&stickyOverlay&&poisonOverlay&&lightningOverlay&&hammer&&extra&&rowRocket&&columnRocket&&blast&&cross&&color&&drill&&unlock&&shuffle;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -201,6 +207,9 @@ struct Art {
         if(chestSprite)SDL_DestroyTexture(chestSprite);
         if(frostSprite)SDL_DestroyTexture(frostSprite);
         if(fireOverlay)SDL_DestroyTexture(fireOverlay);
+        if(stickyOverlay)SDL_DestroyTexture(stickyOverlay);
+        if(poisonOverlay)SDL_DestroyTexture(poisonOverlay);
+        if(lightningOverlay)SDL_DestroyTexture(lightningOverlay);
         if(hammer)SDL_DestroyTexture(hammer);
         if(extra)SDL_DestroyTexture(extra);
         if(rowRocket)SDL_DestroyTexture(rowRocket);
@@ -229,6 +238,7 @@ const char* gemLabel(int sourceId){
         case 11:return "OPAL";
         case 18:return "ALEXANDRITE";
         case 15:return "JADE";
+        case 3:return "TOPAZ";
         default:return "GEM";
     }
 }
@@ -243,6 +253,8 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
              "   BREAK LOCKS "+std::to_string(game.locksCleared)+" / "+std::to_string(game.objectiveTarget):
            game.objectiveKind==4?
              "   OPEN CHESTS "+std::to_string(game.chestsCleared)+" / "+std::to_string(game.objectiveTarget):
+           game.objectiveKind==6?
+             "   CLEAN RESIN "+std::to_string(game.jamCleared)+" / "+std::to_string(game.objectiveTarget):
            game.objectiveKind==5?
              "   COLLECT "+std::string(gemLabel(game.collectColor))+" "+
              std::to_string(game.collected)+"/"+std::to_string(game.objectiveTarget)+
@@ -270,10 +282,19 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
             if(game.elementals[i]==1)label(r,dest.x+4,dest.y+4,"WATER",1);
             if(game.elementals[i]==2)label(r,dest.x+4,dest.y+4,"FIRE",1);
             if(game.elementals[i]==3)label(r,dest.x+4,dest.y+4,"ICE",1);
+            if(game.elementals[i]==4)label(r,dest.x+4,dest.y+4,"EARTH",1);
+            if(game.elementals[i]==5)label(r,dest.x+4,dest.y+4,"WIND",1);
+            if(game.elementals[i]==6)label(r,dest.x+4,dest.y+4,"LIGHTNING",1);
         }
         // Source tile overlay is anchored to the square, not the moving gem.
         if(game.fireAuras.size()==game.cells.size()&&game.fireAuras[i]>0)
             SDL_RenderTexture(r,art.fireOverlay,nullptr,&dest);
+        if(game.lightningAuras.size()==game.cells.size()&&game.lightningAuras[i]>0)
+            SDL_RenderTexture(r,art.lightningOverlay,nullptr,&dest);
+        if(game.poison.size()==game.cells.size()&&game.poison[i]>0)
+            SDL_RenderTexture(r,art.poisonOverlay,nullptr,&dest);
+        if(game.jam.size()==game.cells.size()&&game.jam[i]>0)
+            SDL_RenderTexture(r,art.stickyOverlay,nullptr,&dest);
         if(game.ice.size()==game.cells.size()&&game.ice[i]>0)
             SDL_RenderTexture(r,game.ice[i]>=2?art.ice2:art.ice1,nullptr,&dest);
         if(game.locks.size()==game.cells.size()&&game.locks[i]>0)
@@ -327,7 +348,7 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<100)
+        if(game.level<124)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
         else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
@@ -443,7 +464,7 @@ int main(int argc,char** argv){
     const fs::path storage=savePath();
     Game game=restore(storage);
     auto loadAuthoredIntro=[&](int stage){
-        std::ifstream campaign(dataRoot()/"campaign-100.txt");
+        std::ifstream campaign(dataRoot()/"campaign-124.txt");
         if(!campaign)return false;
         return game.startIntro(stage,campaign);
     };
@@ -491,7 +512,7 @@ int main(int argc,char** argv){
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=100 && loadAuthoredIntro(next)){
+                        if(next<=124 && loadAuthoredIntro(next)){
                             hammerArmed=false;rowArmed=false;columnArmed=false;blastArmed=false;crossArmed=false;colorArmed=false;drillArmed=false;persist();
                         }
                     }else{

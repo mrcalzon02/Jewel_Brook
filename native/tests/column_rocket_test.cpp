@@ -107,7 +107,12 @@ int main(int argc,char** argv){
     assert(static_cast<bool>(std::getline(v7,frozen)));
     std::ostringstream converted;
     for(const auto& item:fields)converted<<item<<" ";
-    converted<<"\n"<<board<<"\n"<<ice<<"\n"<<v7.rdbuf();
+    std::vector<std::string> lines;
+    for(std::string line;std::getline(v7,line);)lines.push_back(line);
+    assert(lines.size()>=4);
+    lines.erase(lines.end()-4,lines.end()-1); // skip RRNATIVE12 jam/poison/lightning
+    converted<<"\n"<<board<<"\n"<<ice<<"\n";
+    for(const auto& line:lines)converted<<line<<"\n";
     std::stringstream legacy(converted.str());
     Game migrated;
     assert(migrated.load(legacy));

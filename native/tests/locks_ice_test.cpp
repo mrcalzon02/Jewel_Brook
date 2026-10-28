@@ -84,7 +84,12 @@ int main(int argc,char**argv) {
     std::getline(saved,lockLine);std::getline(saved,chestLine);std::getline(saved,freezeLine);
     std::ostringstream legacy;
     for(const auto& word:fields)legacy<<word<<' ';
-    legacy<<'\n'<<board<<'\n'<<ice<<'\n'<<saved.rdbuf();
+    std::vector<std::string> lines;
+    for(std::string line;std::getline(saved,line);)lines.push_back(line);
+    assert(lines.size()>=4);
+    lines.erase(lines.end()-4,lines.end()-1);
+    legacy<<'\n'<<board<<'\n'<<ice<<'\n';
+    for(const auto& line:lines)legacy<<line<<'\n';
     std::stringstream previous(legacy.str());
     Game migrated;assert(migrated.load(previous));
     assert(migrated.cells==old.cells);

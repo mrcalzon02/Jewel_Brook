@@ -11,7 +11,7 @@ using rupee::Game;
 int main(int argc,char** argv) {
     if(argc!=2){std::cerr<<"Missing exported intro campaign fixture\n";return 2;}
     Game previous;
-    for(int stage=1;stage<=100;++stage) {
+    for(int stage=1;stage<=124;++stage) {
         std::ifstream source(argv[1]);
         assert(source.good());
         Game g(7919);
@@ -23,6 +23,9 @@ int main(int argc,char** argv) {
         assert(g.ice.size()==g.cells.size());
         assert(g.locks.size()==g.cells.size());
         assert(g.chests.size()==g.cells.size());
+        assert(g.jam.size()==g.cells.size());
+        assert(g.poison.size()==g.cells.size());
+        assert(g.lightningAuras.size()==g.cells.size());
         assert(g.frozen.size()==g.cells.size());
         int holes=0;
         for(size_t i=0;i<g.cells.size();++i){
@@ -49,7 +52,7 @@ int main(int argc,char** argv) {
             assert(timer>=0&&timer<=2);
             if(timer>0){assert(timer==2);++seedFire;}
         }
-        assert(seedFire==(stage>=45?1:0));
+        assert(seedFire==(stage>=45&&(stage<115||(stage/7)%2==0)?1:0));
         if(stage<=10)
             assert((stage==3||stage==6||stage==8||stage==9||stage==10)?
                 g.objectiveKind==1 : g.objectiveKind==0);
@@ -64,8 +67,8 @@ int main(int argc,char** argv) {
             if(g.objectiveKind==2)
                 assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),g.collectColor)!=g.activeRoster.end());
         }
-        else if(stage>=28&&stage<=100)
-            assert(g.objectiveKind>=0&&g.objectiveKind<=5);
+        else if(stage>=28&&stage<=124)
+            assert(g.objectiveKind>=0&&g.objectiveKind<=6);
         else assert(g.objectiveKind==0||g.objectiveKind==1);
         if(g.objectiveKind==1) {
             int frozen=0, layers=0;
@@ -84,6 +87,9 @@ int main(int argc,char** argv) {
         assert(restored.ice==g.ice);
         assert(restored.locks==g.locks);
         assert(restored.chests==g.chests);
+        assert(restored.jam==g.jam);
+        assert(restored.poison==g.poison);
+        assert(restored.lightningAuras==g.lightningAuras);
         assert(restored.chestsCleared==g.chestsCleared);
         assert(restored.frozen==g.frozen);
         assert(restored.locksCleared==g.locksCleared);
@@ -126,7 +132,8 @@ int main(int argc,char** argv) {
         if(stage>=15){
             if(stage<35)assert(g.activeRoster==std::vector<int>({0,1,2,11}));
             else if(stage<80)assert(g.activeRoster==std::vector<int>({0,1,2,11,18}));
-            else assert(g.activeRoster==std::vector<int>({0,1,2,15,((stage-1)/16)%2==0?11:18}));
+            else if(stage<=100)assert(g.activeRoster==std::vector<int>({0,1,2,15,((stage-1)/16)%2==0?11:18}));
+            else assert(g.activeRoster==std::vector<int>({0,1,2,3,15,((stage-1)/16)%2==0?11:18}));
             // Starting board must only contain source-roster gems. Opal
             // intentionally rotates out when Jade shares expansion slots
             // with Alexandrite; never invent absent source artwork.
@@ -254,7 +261,7 @@ int main(int argc,char** argv) {
         previous=g;
     }
     std::ifstream source(argv[1]);
-    assert(!previous.startIntro(101,source));
+    assert(!previous.startIntro(125,source));
     Game legacy;
     std::stringstream old;
     // Verify native preview v1 loads without deleting saves.
@@ -266,6 +273,6 @@ int main(int argc,char** argv) {
     assert(legacy.load(old));
     assert(legacy.ice.size()==20);
     assert(legacy.objectiveKind==0&&legacy.objectiveTarget==850);
-    std::cout<<"Native campaign: 100 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
+    std::cout<<"Native campaign: 124 source-derived stages, 6-column stage 31, void masks, objective parity, and old saves passed\n";
     return 0;
 }

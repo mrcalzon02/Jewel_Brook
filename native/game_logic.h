@@ -32,12 +32,13 @@ public:
     int secondaryKind = -1, secondaryTarget = 0;
     std::vector<int> ice;
     // Independently damageable anchored blockers and temporary frozen gems.
-    std::vector<int> locks, frozen, chests;
-    int locksCleared=0, chestsCleared=0, iceActivations=0;
+    std::vector<int> locks, frozen, chests, jam, poison, lightningAuras;
+    int locksCleared=0, chestsCleared=0, jamCleared=0, iceActivations=0, turns=0;
+    int earthActivations=0, windActivations=0, lightningActivations=0, lightningDetonations=0;
     std::vector<int> pendingIce;
     // Exact authored gem IDs: 0 ruby, 1 sapphire, 2 emerald, 11 opal.
     std::vector<int> activeRoster{0,1,2};
-    // Gem-carried elemental flags: 1 Water, 2 Fire, 3 Ice, 0 ordinary.
+    // Gem-carried elemental flags: 1 Water, 2 Fire, 3 Ice, 4 Earth, 5 Wind, 6 Lightning.
     std::vector<int> elementals;
     int waterActivations=0, fireActivations=0, fireDetonations=0;
     // Square-anchored fire auras (0 off, 1 next tick, 2 newly ignited).
@@ -78,6 +79,8 @@ private:
     bool clearAndFill();
     bool shuffleBoard();
     void refill();
+    struct ElementalTrigger {int at, kind, color;};
+    std::vector<ElementalTrigger> pendingNewElementals;
     std::vector<int> pendingFire;
     void resolveFire();
     void resolveIce();

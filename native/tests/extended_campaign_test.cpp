@@ -144,7 +144,12 @@ int main(int argc,char**argv){
     assert(static_cast<bool>(std::getline(out,freeze)));
     std::ostringstream legacy;
     for(const auto& word:words)legacy<<word<<' ';
-    legacy<<"\n"<<cells<<"\n"<<ice<<"\n"<<locksLine<<"\n"<<freeze<<"\n"<<out.rdbuf();
+    std::vector<std::string> lines;
+    for(std::string line;std::getline(out,line);)lines.push_back(line);
+    assert(lines.size()>=4);
+    lines.erase(lines.end()-4,lines.end()-1);
+    legacy<<"\n"<<cells<<"\n"<<ice<<"\n"<<locksLine<<"\n"<<freeze<<"\n";
+    for(const auto& line:lines)legacy<<line<<"\n";
     std::istringstream input(legacy.str());
     Game migrated;assert(migrated.load(input));
     assert(migrated.cells==defaults.cells);

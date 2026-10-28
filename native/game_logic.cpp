@@ -57,6 +57,11 @@ void Game::populateBoard() {
     ice.assign(width*height,0);
     locks.assign(width*height,0);
     chests.assign(width*height,0);
+    jam.assign(width*height,0);
+    poison.assign(width*height,0);
+    lightningAuras.assign(width*height,0);
+    turns=jamCleared=earthActivations=windActivations=lightningActivations=lightningDetonations=0;
+    pendingNewElementals.clear();
     frozen.assign(width*height,0);
     pendingIce.clear();
     elementals.assign(width*height,0);
@@ -141,22 +146,33 @@ void Game::grantMilestoneIfWon(){
     if(level==92 && !claimedUnlock){unlockCount+=3;claimedUnlock=true;}
 }
 void Game::updateOutcome(){
-    won=objectiveKind==1?iceCleared>=objectiveTarget:objectiveKind==2?collected>=objectiveTarget:objectiveKind==3?locksCleared>=objectiveTarget:objectiveKind==4?chestsCleared>=objectiveTarget:objectiveKind==5?(collected>=objectiveTarget && (secondaryKind==1?iceCleared:secondaryKind==3?locksCleared:chestsCleared)>=secondaryTarget):score>=objectiveTarget;
+    won=objectiveKind==1?iceCleared>=objectiveTarget:objectiveKind==2?collected>=objectiveTarget:objectiveKind==3?locksCleared>=objectiveTarget:objectiveKind==4?chestsCleared>=objectiveTarget:objectiveKind==6?jamCleared>=objectiveTarget:objectiveKind==5?(collected>=objectiveTarget && (secondaryKind==1?iceCleared:secondaryKind==3?locksCleared:chestsCleared)>=secondaryTarget):score>=objectiveTarget;
     lost=moves<=0&&!won;
     grantMilestoneIfWon();
 }
 
 void Game::clearGem(int index){
     if(index<0||index>=static_cast<int>(cells.size())||cells[index]<0)return;
+    if(jam[index]>0){--jam[index];++jamCleared;return;}
     if(ice[index]>0){--ice[index];++iceCleared;return;}
     if(locks[index]>0){--locks[index];++locksCleared;return;}
     if(chests[index]>0){--chests[index];++chestsCleared;return;}
     if(elementals[index]==1){
-        ++waterActivations;  // Water cleans row hazards in the authored game.
+        ++waterActivations;
+        // Source Water washes sticky resin, poison, and burning tiles in
+        // the destroyed gem's row without disturbing the gemstone roster.
+        const int row=index/width;
+        for(int col=0;col<width;++col){
+            const int at=row*width+col;
+            jamCleared+=jam[at];jam[at]=0;
+            poison[at]=0;fireAuras[at]=0;
+        }
     }else if(elementals[index]==3){
         pendingIce.push_back(index);
     }else if(elementals[index]==2){
         pendingFire.push_back(index); // Fire resolves after current strike set.
+    }else if(elementals[index]>=4&&elementals[index]<=6){
+        pendingNewElementals.push_back({index,elementals[index],cells[index]});
     }
     if((objectiveKind==2||objectiveKind==5)&&cells[index]==collectColor)++collected;
     cells[index]=-1;
@@ -208,15 +224,83 @@ void Game::resolveFire(){
     // An authored early stage seeds at most one Fire gem; still bound chains.
     pendingFire.clear();
     resolveIce();
+    // Shared trigger dispatcher for second-chapter elemental gems. Each
+    // reaction uses the same source-defined damage and fixed overlay data.
+    int budget=static_cast<int>(cells.size())*3;
+    while(!pendingNewElementals.empty()&&budget-->0){
+        std::sort(pendingNewElementals.begin(),pendingNewElementals.end(),
+                  [](const auto& a,const auto& b){return a.at<b.at;});
+        const auto trigger=pendingNewElementals.front();
+        pendingNewElementals.erase(pendingNewElementals.begin());
+        const int origin=trigger.at, row=origin/width,col=origin%width;
+        std::vector<int> nearest;
+        for(int i=0;i<static_cast<int>(cells.size());++i)
+            if(i!=origin&&cells[i]>=0)nearest.push_back(i);
+        std::sort(nearest.begin(),nearest.end(),[&](int a,int b){
+            const int da=std::abs(a/width-row)+std::abs(a%width-col);
+            const int db=std::abs(b/width-row)+std::abs(b%width-col);
+            return da==db?a<b:da<db;
+        });
+        if(trigger.kind==4){
+            ++earthActivations;int hits=0;
+            for(int i:nearest)if(i%width==col){
+                clearGem(i);if(++hits==3)break;
+            }
+        }else if(trigger.kind==5){
+            ++windActivations;
+            std::vector<int> movable;
+            for(int i:nearest)if(i/width==row&&ice[i]==0&&locks[i]==0
+                  &&chests[i]==0&&frozen[i]==0){
+                movable.push_back(i);if(movable.size()==3)break;
+            }
+            if(movable.size()==3){
+                const int lastType=cells[movable[2]],lastPower=elementals[movable[2]];
+                for(int j=2;j>0;--j){
+                    cells[movable[j]]=cells[movable[j-1]];
+                    elementals[movable[j]]=elementals[movable[j-1]];
+                }
+                cells[movable[0]]=lastType;elementals[movable[0]]=lastPower;
+            }
+        }else if(trigger.kind==6){
+            ++lightningActivations;int hits=0;
+            for(int i:nearest)if(cells[i]==trigger.color){
+                clearGem(i);if(++hits==3)break;
+            }
+            for(int i:nearest)if(cells[i]>=0&&ice[i]==0&&locks[i]==0
+                  &&chests[i]==0&&frozen[i]==0&&fireAuras[i]==0
+                  &&lightningAuras[i]==0){
+                lightningAuras[i]=2;break;
+            }
+        }
+    }
+    // A triggered Earth/Lightning hit can release an existing Fire/Ice gem.
+    if(!pendingFire.empty()||!pendingIce.empty())resolveFire();
 }
 void Game::advanceFireTurn(){
     if(won||lost||fireAuras.empty())return;
-    std::vector<int> expired;
+    ++turns;
+    std::vector<int> expired, lightningExpired;
     for(int i=0;i<static_cast<int>(fireAuras.size());++i){
         if(frozen[i]>0)--frozen[i];
         if(fireAuras[i]>0 && --fireAuras[i]==0)expired.push_back(i);
+        if(lightningAuras[i]>0&&--lightningAuras[i]==0)lightningExpired.push_back(i);
+        if(poison[i]>0&&--poison[i]==0)jam[i]=std::max(jam[i],1);
     }
-    if(expired.empty())return;
+    // One source-defined resin spread every third swap, provided resin is
+    // active. It may occupy a neighboring gem but never a board void.
+    if(turns%3==0){
+        for(int i=0;i<static_cast<int>(cells.size());++i)if(jam[i]>0){
+            std::vector<int> choices;
+            const int row=i/width;
+            for(int n:{i-width,i+width,i-1,i+1}){
+                if(n<0||n>=static_cast<int>(cells.size())||cells[n]<0||jam[n]>0)continue;
+                if(std::abs(n-i)==1&&n/width!=row)continue;
+                choices.push_back(n);
+            }
+            if(!choices.empty()){jam[choices[range(static_cast<int>(choices.size()))]]=1;break;}
+        }
+    }
+    if(expired.empty()&&lightningExpired.empty())return;
     for(int origin:expired){
         ++fireDetonations;
         const int row=origin/width,col=origin%width;
@@ -225,6 +309,20 @@ void Game::advanceFireTurn(){
             if(std::abs(neighbor/width-row)+std::abs(neighbor%width-col)>1)continue;
             if(cells[neighbor]>=0)clearGem(neighbor);
         }
+    }
+    for(int origin:lightningExpired){
+        ++lightningDetonations;
+        if(cells[origin]<0)continue;
+        const int row=origin/width,col=origin%width,type=cells[origin];
+        std::vector<int> same;
+        for(int i=0;i<static_cast<int>(cells.size());++i)if(i!=origin&&cells[i]==type)
+            same.push_back(i);
+        std::sort(same.begin(),same.end(),[&](int a,int b){
+            const int da=std::abs(a/width-row)+std::abs(a%width-col);
+            const int db=std::abs(b/width-row)+std::abs(b%width-col);
+            return da==db?a<b:da<db;
+        });
+        for(int i=0;i<std::min(3,static_cast<int>(same.size()));++i)clearGem(same[i]);
     }
     resolveFire();
     bool empty=false;
@@ -468,15 +566,15 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>100)return false;
+    if(stage<1||stage>124)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN13"||count!=100)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN14"||count!=124)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
         uint32_t rng=0;size_t n=0;int selectedColor=-1,secondaryKind=-1,secondaryTarget=0;
         if(!(authoredCatalog>>number>>w>>h>>budget>>stageGoal>>kind>>target >>rng>>n>>selectedColor>>secondaryKind>>secondaryTarget)
            ||number!=k||w!=(k<=10?4:k<=30?5:k<=70?6:7)||h!=w+1||budget<12||budget>36||stageGoal<1||
-           (kind!=0&&kind!=1&&kind!=2&&kind!=3&&kind!=4&&kind!=5)||target<1||target>2000000||!rng||
+           (kind!=0&&kind!=1&&kind!=2&&kind!=3&&kind!=4&&kind!=5&&kind!=6)||target<1||target>2000000||!rng||
            n!=static_cast<size_t>(w*h))return false;
         std::vector<int> types(n),frost(n);
         for(auto& x:types)if(!(authoredCatalog>>x)||x < -2||x>=19||x==-1)return false;
@@ -485,11 +583,14 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         for(auto& x:locked)if(!(authoredCatalog>>x)||x<0||x>5)return false;
         std::vector<int> chestLayers(n);
         for(auto& x:chestLayers)if(!(authoredCatalog>>x)||x<0||x>5)return false;
+        std::vector<int> resin(n),seedPoison(n);
+        for(auto& x:resin)if(!(authoredCatalog>>x)||x<0||x>1)return false;
+        for(auto& x:seedPoison)if(!(authoredCatalog>>x)||x<0||x>2)return false;
         size_t rosterCount=0;
-        if(!(authoredCatalog>>rosterCount)||rosterCount!=(k<15?3u:k<35?4u:5u))return false;
+        if(!(authoredCatalog>>rosterCount)||rosterCount!=(k<15?3u:k<35?4u:k<=100?5u:6u))return false;
         std::vector<int> roster(rosterCount);
         for(auto& x:roster)if(!(authoredCatalog>>x)||x<0||x>=19)return false;
-        if(roster!=(k<15?std::vector<int>{0,1,2}:k<35?std::vector<int>{0,1,2,11}:k<80?std::vector<int>{0,1,2,11,18}:std::vector<int>{0,1,2,15,((k-1)/16)%2==0?11:18}))return false;
+        if(roster!=(k<15?std::vector<int>{0,1,2}:k<35?std::vector<int>{0,1,2,11}:k<80?std::vector<int>{0,1,2,11,18}:k<=100?std::vector<int>{0,1,2,15,((k-1)/16)%2==0?11:18}:std::vector<int>{0,1,2,3,15,((k-1)/16)%2==0?11:18}))return false;
         if(((kind==2||kind==5)&&std::find(roster.begin(),roster.end(),selectedColor)==roster.end())
           ||(kind!=2&&kind!=5&&selectedColor!=-1)
           ||(kind==5 && (secondaryKind!=1&&secondaryKind!=3&&secondaryKind!=4))
@@ -497,7 +598,7 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
           ||(kind!=5 && (secondaryKind!=-1||secondaryTarget!=0)))return false;
         std::vector<int> effects(n,0);
         int powered=0;
-        for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>3)return false;if(x>0)++powered;}
+        for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>6)return false;if(x>0)++powered;}
         // Fire tile auras are anchored to the original board square;
         // imported separately from any gem-carried elemental.
         std::vector<int> startingFire(n);
@@ -506,15 +607,18 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
             if(!(authoredCatalog>>timer)||timer<0||timer>2)return false;
             if(timer>0){++burning;if(timer!=2)return false;}
         }
-        if(burning!=(k>=45?1:0))return false;
+        if(burning!=(k>=45&&(k<115||(k/7)%2==0)?1:0))return false;
+        int seededPoison=0;for(int value:seedPoison)if(value>0){if(value!=2)return false;++seededPoison;}
+        if(seededPoison!=(k>=115&&(k/7)%2!=0?1:0))return false;
         if(powered!=((k>=15&&(k==15||k==35||k%7==0))?1:0))return false;
         for(int effect:effects)if(effect){
+          const int cycle=(k/7)%(k<=100?3:6);
           const int expected=(k==15||k==35||k%7==0)?
-              ((k/7)%3==0?2:(k/7)%3==1?3:1):0;
+              (cycle==0?2:cycle==1?3:cycle==2?1:cycle==3?4:cycle==4?5:6):0;
           if(effect!=expected)return false;
         }
         for(size_t i=0;i<n;++i)
-            if((types[i]==-2&&(frost[i]!=0||locked[i]!=0||chestLayers[i]!=0||effects[i]!=0||startingFire[i]!=0))||
+            if((types[i]==-2&&(frost[i]!=0||locked[i]!=0||chestLayers[i]!=0||resin[i]!=0||seedPoison[i]!=0||effects[i]!=0||startingFire[i]!=0))||
                 (types[i]!=-2&&std::find(roster.begin(),roster.end(),types[i])==roster.end()))
                 return false;
         if(k!=stage)continue;
@@ -526,8 +630,13 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         candidate.collectColor=selectedColor;candidate.collected=0;
         candidate.secondaryKind=secondaryKind;candidate.secondaryTarget=secondaryTarget;
         candidate.cells=std::move(types);candidate.ice=std::move(frost);
-        candidate.locks=std::move(locked);candidate.chests=std::move(chestLayers);candidate.frozen.assign(n,0);
-        candidate.locksCleared=0;candidate.chestsCleared=0;candidate.iceActivations=0;candidate.pendingIce.clear();
+        candidate.locks=std::move(locked);candidate.chests=std::move(chestLayers);
+        candidate.jam=std::move(resin);candidate.poison=std::move(seedPoison);
+        candidate.lightningAuras.assign(n,0);candidate.frozen.assign(n,0);
+        candidate.locksCleared=0;candidate.chestsCleared=0;candidate.jamCleared=0;
+        candidate.turns=candidate.earthActivations=candidate.windActivations=0;
+        candidate.lightningActivations=candidate.lightningDetonations=0;
+        candidate.pendingNewElementals.clear();candidate.iceActivations=0;candidate.pendingIce.clear();
         candidate.activeRoster=std::move(roster);
         candidate.elementals=std::move(effects);
         candidate.fireAuras=std::move(startingFire);
@@ -543,7 +652,7 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
     return false;
 }
 bool Game::save(std::ostream& out) const {
-    out<<"RRNATIVE11 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
+    out<<"RRNATIVE12 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
        <<score<<' '<<goal<<' '<<ore<<' '<<strikes<<' '<<won<<' '<<lost<<' '
        <<randomState<<' '<<objectiveKind<<' '<<objectiveTarget<<' '
        <<iceCleared<<' '<<hammerCount<<' '<<extraCount<<' '<<rowCount<<' '
@@ -554,7 +663,9 @@ bool Game::save(std::ostream& out) const {
        <<blastCount<<' '<<claimedBlast<<' '<<crossCount<<' '<<claimedCross<<' '
        <<colorCount<<' '<<claimedColor<<' '<<drillCount<<' '<<claimedDrill<<' '
        <<unlockCount<<' '<<claimedUnlock<<' '<<chestsCleared<<' '
-       <<secondaryKind<<' '<<secondaryTarget<<' '<<cells.size()<<'\n';
+       <<secondaryKind<<' '<<secondaryTarget<<' '<<turns<<' '<<jamCleared<<' '
+       <<earthActivations<<' '<<windActivations<<' '<<lightningActivations<<' '
+       <<lightningDetonations<<' '<<cells.size()<<'\n';
     for(int v:cells)out<<v<<' ';out<<'\n';
     for(int v:ice)out<<v<<' ';out<<'\n';
     for(int v:locks)out<<v<<' ';out<<'\n';
@@ -564,6 +675,9 @@ bool Game::save(std::ostream& out) const {
     for(int id:activeRoster)out<<id<<' ';out<<'\n';
     for(int v:elementals)out<<v<<' ';out<<'\n';
     for(int v:fireAuras)out<<v<<' ';out<<'\n';
+    for(int v:jam)out<<v<<' ';out<<'\n';
+    for(int v:poison)out<<v<<' ';out<<'\n';
+    for(int v:lightningAuras)out<<v<<' ';out<<'\n';
     for(auto r:rocks)out<<r.kind<<' '<<r.hardness<<' '<<r.hits<<' '<<r.done<<' ';
     out<<'\n';
     return out.good();
@@ -571,7 +685,7 @@ bool Game::save(std::ostream& out) const {
 bool Game::load(std::istream& in) {
     Game tmp(7919);
     std::string magic;size_t n=0;
-    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"&&magic!="RRNATIVE4"&&magic!="RRNATIVE5"&&magic!="RRNATIVE6"&&magic!="RRNATIVE7"&&magic!="RRNATIVE8"&&magic!="RRNATIVE9"&&magic!="RRNATIVE10"&&magic!="RRNATIVE11"))return false;
+    if(!(in>>magic) || (magic!="RRNATIVE1"&&magic!="RRNATIVE2"&&magic!="RRNATIVE3"&&magic!="RRNATIVE4"&&magic!="RRNATIVE5"&&magic!="RRNATIVE6"&&magic!="RRNATIVE7"&&magic!="RRNATIVE8"&&magic!="RRNATIVE9"&&magic!="RRNATIVE10"&&magic!="RRNATIVE11"&&magic!="RRNATIVE12"))return false;
     if(!(in>>tmp.level>>tmp.width>>tmp.height>>tmp.moves>>
        tmp.score>>tmp.goal>>tmp.ore>>tmp.strikes>>tmp.won>>tmp.lost>>
        tmp.randomState))return false;
@@ -580,7 +694,7 @@ bool Game::load(std::istream& in) {
     } else {
         tmp.objectiveKind=0;tmp.objectiveTarget=tmp.goal;tmp.iceCleared=0;
     }
-    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
+    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12"){
         if(!(in>>tmp.hammerCount>>tmp.extraCount>>tmp.rowCount>>
              tmp.claimedExtra>>tmp.claimedRow))return false;
     } else {
@@ -589,28 +703,28 @@ bool Game::load(std::istream& in) {
         tmp.claimedExtra=tmp.level>=6;
         tmp.claimedRow=tmp.level>=10&&tmp.won;
     }
-    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11") && !(in>>tmp.waterActivations))return false;
-    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
+    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12") && !(in>>tmp.waterActivations))return false;
+    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12"){
         if(!(in>>tmp.shuffleCount>>tmp.claimedShuffle>>tmp.collectColor>>tmp.collected))return false;
     }else{
         tmp.shuffleCount=0;tmp.claimedShuffle=false;
         tmp.collectColor=-1;tmp.collected=0;
     }
-    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11") &&
+    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12") &&
         !(in>>tmp.fireActivations>>tmp.fireDetonations))return false;
-    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
+    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12"){
         if(!(in>>tmp.columnCount>>tmp.claimedColumn))return false;
     }else{
         tmp.columnCount=0;tmp.claimedColumn=false;
     }
-    if((magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11") &&
+    if((magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12") &&
         !(in>>tmp.locksCleared>>tmp.iceActivations))return false;
-    if((magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11")){
+    if((magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12")){
         if(!(in>>tmp.blastCount>>tmp.claimedBlast))return false;
     }else{
         tmp.blastCount=0;tmp.claimedBlast=false;
     }
-    if((magic=="RRNATIVE10"||magic=="RRNATIVE11")){
+    if((magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12")){
         if(!(in>>tmp.crossCount>>tmp.claimedCross>>tmp.colorCount>>tmp.claimedColor>>
              tmp.drillCount>>tmp.claimedDrill>>tmp.unlockCount>>tmp.claimedUnlock>>
              tmp.chestsCleared))return false;
@@ -619,17 +733,21 @@ bool Game::load(std::istream& in) {
         tmp.claimedCross=tmp.claimedColor=tmp.claimedDrill=tmp.claimedUnlock=false;
         tmp.chestsCleared=0;
     }
-    if(magic=="RRNATIVE11"){
+    if((magic=="RRNATIVE11"||magic=="RRNATIVE12")){
         if(!(in>>tmp.secondaryKind>>tmp.secondaryTarget))return false;
     }else{
         tmp.secondaryKind=-1;tmp.secondaryTarget=0;
     }
+    if(magic=="RRNATIVE12" &&
+       !(in>>tmp.turns>>tmp.jamCleared>>tmp.earthActivations>>
+          tmp.windActivations>>tmp.lightningActivations>>tmp.lightningDetonations))
+        return false;
     if(!(in>>n))return false;
     if(tmp.level<1||tmp.level>1000 ||tmp.width<4||tmp.width>8||
        tmp.height!=tmp.width+1||n!=static_cast<size_t>(tmp.width*tmp.height)||
        tmp.moves<0||tmp.moves>1000||tmp.score<0||tmp.goal<1||tmp.ore<0||
        tmp.strikes<0||tmp.strikes>12||!tmp.randomState||
-       tmp.objectiveKind<0||tmp.objectiveKind>5||tmp.objectiveTarget<1||
+       tmp.objectiveKind<0||tmp.objectiveKind>6||tmp.objectiveTarget<1||
        tmp.iceCleared<0||tmp.iceCleared>1000||(tmp.won&&tmp.lost)||
        tmp.hammerCount<0||tmp.hammerCount>999999||
        tmp.extraCount<0||tmp.extraCount>999999||
@@ -641,6 +759,12 @@ bool Game::load(std::istream& in) {
        tmp.drillCount<0||tmp.drillCount>999999||
        tmp.unlockCount<0||tmp.unlockCount>999999||
        tmp.chestsCleared<0||tmp.chestsCleared>100000||
+       tmp.turns<0||tmp.turns>1000000||
+       tmp.jamCleared<0||tmp.jamCleared>100000||
+       tmp.earthActivations<0||tmp.earthActivations>100000||
+       tmp.windActivations<0||tmp.windActivations>100000||
+       tmp.lightningActivations<0||tmp.lightningActivations>100000||
+       tmp.lightningDetonations<0||tmp.lightningDetonations>100000||
        tmp.locksCleared<0||tmp.locksCleared>100000||
        tmp.iceActivations<0||tmp.iceActivations>100000||
        tmp.waterActivations<0||tmp.waterActivations>1000||
@@ -667,30 +791,39 @@ bool Game::load(std::istream& in) {
     if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>5)return false;
     tmp.locks.assign(n,0);tmp.frozen.assign(n,0);tmp.chests.assign(n,0);
-    if(magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
+    if(magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12"){
         for(auto& x:tmp.locks)if(!(in>>x)||x<0||x>5)return false;
-        if((magic=="RRNATIVE10"||magic=="RRNATIVE11"))
+        if((magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12"))
             for(auto& layer:tmp.chests)if(!(in>>layer)||layer<0||layer>5)return false;
         for(auto& x:tmp.frozen)if(!(in>>x)||x<0||x>2)return false;
     }
-    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
+    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12"){
         size_t rosterCount=0;
         if(!(in>>rosterCount)||rosterCount<3||rosterCount>7)return false;
         tmp.activeRoster.resize(rosterCount);
         for(auto& id:tmp.activeRoster)if(!(in>>id)||id<0||id>=19)return false;
         tmp.elementals.assign(n,0);
-        for(auto& status:tmp.elementals)if(!(in>>status)||status<0||status>3)return false;
+        for(auto& status:tmp.elementals)if(!(in>>status)||status<0||status>6)return false;
     } else {
         tmp.activeRoster={0,1,2,3,4};
         tmp.elementals.assign(n,0);
     }
     tmp.fireAuras.assign(n,0);
-    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11")
+    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||magic=="RRNATIVE12")
         for(auto& duration:tmp.fireAuras)if(!(in>>duration)||duration<0||duration>2)return false;
     for(size_t i=0;i<n;++i){
         if(tmp.cells[i]==-2&&(tmp.ice[i]!=0||tmp.locks[i]!=0||tmp.chests[i]!=0||tmp.frozen[i]!=0||tmp.elementals[i]!=0||tmp.fireAuras[i]!=0))return false;
         if(tmp.cells[i]>=0&&std::find(tmp.activeRoster.begin(),tmp.activeRoster.end(),tmp.cells[i])==tmp.activeRoster.end())return false;
     }
+    tmp.jam.assign(n,0);tmp.poison.assign(n,0);
+    tmp.lightningAuras.assign(n,0);
+    if(magic=="RRNATIVE12"){
+        for(int& v:tmp.jam)if(!(in>>v)||v<0||v>1)return false;
+        for(int& v:tmp.poison)if(!(in>>v)||v<0||v>2)return false;
+        for(int& v:tmp.lightningAuras)if(!(in>>v)||v<0||v>2)return false;
+    }
+    for(size_t i=0;i<n;++i)if(tmp.cells[i]==-2 &&
+        (tmp.jam[i]||tmp.poison[i]||tmp.lightningAuras[i]))return false;
     for(auto& r:tmp.rocks){
        if(!(in>>r.kind>>r.hardness>>r.hits>>r.done)
           ||r.kind<0||r.kind>3||r.hardness<1||r.hardness>3

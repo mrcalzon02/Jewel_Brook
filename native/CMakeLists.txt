@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-100.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-124.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -187,6 +187,11 @@ target_link_libraries(rupee_extended_tests PRIVATE rupee_native_logic)
 add_test(NAME native_extended_49_to_98_and_original_assets
     COMMAND rupee_extended_tests "${INTRO_CATALOG}")
 
+add_executable(rupee_chapter_two_tests tests/chapter_two_test.cpp)
+target_link_libraries(rupee_chapter_two_tests PRIVATE rupee_native_logic)
+add_test(NAME native_chapter_two_101_to_124_statuses
+    COMMAND rupee_chapter_two_tests "${INTRO_CATALOG}")
+
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
 add_test(NAME native_mining_source_parity_and_economy
@@ -240,6 +245,9 @@ install(FILES
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/overlays/fire.png"
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/overlays/frost.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/overlays/sticky-butter.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/overlays/poison.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/overlays/lightning.png"
   DESTINATION data/art/primary/overlays
 )
 install(FILES

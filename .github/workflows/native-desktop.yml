@@ -26,6 +26,9 @@ on:
       - 'web/elemental-challenges.js'
       - 'web/art/primary/blockers/ice-*.png'
       - 'web/art/primary/overlays/fire.png'
+      - 'web/art/primary/overlays/sticky-butter.png'
+      - 'web/art/primary/overlays/poison.png'
+      - 'web/art/primary/overlays/lightning.png'
       - 'web/art/primary/overlays/frost.png'
       - 'web/art/primary/blockers/lock.png'
       - 'web/elemental-powers.js'
@@ -138,6 +141,9 @@ jobs:
           test -s stage/RupeeRush/data/art/embryon/runtime/boosters/unlock.png
           test -s stage/RupeeRush/data/art/primary/blockers/chest.png
           test -s stage/RupeeRush/data/art/primary/overlays/fire.png
+          test -s stage/RupeeRush/data/art/primary/overlays/sticky-butter.png
+          test -s stage/RupeeRush/data/art/primary/overlays/poison.png
+          test -s stage/RupeeRush/data/art/primary/overlays/lightning.png
           test -s stage/RupeeRush/data/art/primary/overlays/frost.png
           test -s stage/RupeeRush/data/art/primary/blockers/lock.png
           test -z "$(find stage/RupeeRush -type f \( -name '*.html' -o -name '*.js' -o -name 'chrome.exe' -o -name 'libcef*' -o -name 'electron*' \) -print -quit)"
@@ -178,4 +184,4 @@ jobs:
           gh release create "rupeerush-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
             release-native/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --prerelease --title "Rupee Rush Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
-            --notes 'Experimental native C++/SDL3 desktop build. One hundred Android-authored match-three stages with original lock art and Ice elemental, including Column Rocket and the delayed Fire elemental aura, collect-color goals, Shuffle unlock, opal, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'
+            --notes 'Experimental native C++/SDL3 desktop build. One hundred twenty-four Android-authored match-three stages with original lock art and Ice elemental, including Column Rocket and the delayed Fire elemental aura, collect-color goals, Shuffle unlock, opal, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'
