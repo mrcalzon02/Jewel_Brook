@@ -120,6 +120,22 @@ int main(int argc,char** argv){
     for(size_t i=0;i<shuffle.cells.size();++i)
         assert((shuffle.specials[i]==2)==(shuffle.holds[i]==4));
 
+    // A chest is a fixed board blocker; shuffle may not steal the gem's
+    // carried special or hold from beneath it.
+    Game chest;stage(chest,argv[1],19);
+    chest.shuffleCount=1;chest.claimedShuffle=true;
+    int pinned=-1;
+    for(int i=0;i<static_cast<int>(chest.cells.size());++i)
+        if(chest.cells[i]>=0&&chest.ice[i]==0&&chest.locks[i]==0)
+            {pinned=i;break;}
+    assert(pinned>=0);
+    chest.chests[pinned]=1;
+    chest.specials[pinned]=1;chest.holds[pinned]=3;
+    const auto beforeChest=chest.chests;
+    assert(chest.useShuffle());
+    assert(chest.chests==beforeChest);
+    assert(chest.specials[pinned]==1&&chest.holds[pinned]==3);
+
     // Second chapter's real authored blockers and voids remain square-bound.
     Game later;stage(later,argv[1],124);
     later.specials.assign(later.cells.size(),0);

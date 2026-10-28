@@ -420,7 +420,7 @@ bool Game::shuffleBoard(){
     // authored ice, empty silhouette squares and goal state are untouched.
     std::vector<int> free;
     for(int i=0;i<static_cast<int>(cells.size());++i)
-        if(cells[i]>=0 && ice[i]==0 && locks[i]==0 && frozen[i]==0)free.push_back(i);
+        if(cells[i]>=0 && ice[i]==0 && locks[i]==0 && chests[i]==0 && frozen[i]==0)free.push_back(i);
     if(free.size()<2)return false;
     const auto originalCells=cells,originalElements=elementals;
     const auto originalSpecials=specials,originalHolds=holds;
