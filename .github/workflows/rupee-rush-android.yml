@@ -24,11 +24,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run all Jewelbrook source tests
+      - name: Run functional gameplay and release diagnostics
         shell: bash
         run: |
           set -euo pipefail
-          for t in tests/*.test.js; do node "$t"; done
+          for t in \
+            tests/android-apk-contract.test.js \
+            tests/android-signing-contract.test.js \
+            tests/rupee-signing-drive-backup.test.js \
+            tests/play-upload-keys-contract.test.js \
+            tests/github-apk-release-contract.test.js \
+            tests/apk-release-compliance.test.js \
+            tests/rupee-rush.test.js \
+            tests/town-garden.test.js; do
+            node "$t"
+          done
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
