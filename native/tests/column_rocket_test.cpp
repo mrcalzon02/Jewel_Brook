@@ -98,7 +98,7 @@ int main(int argc,char** argv){
     fields[0]="RRNATIVE6";
     // RRNative9 adds six header fields beyond v6: Column Rocket stock,
     // its claimed flag, cleared locks, Ice activations, Blast stock and claim. Remove all four.
-    fields.erase(fields.end()-16,fields.end()-1);
+    fields.erase(fields.end()-18,fields.end()-1);
     std::string board, ice, locks, chests, frozen;
     assert(static_cast<bool>(std::getline(v7,board)));
     assert(static_cast<bool>(std::getline(v7,ice)));

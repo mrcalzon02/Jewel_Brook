@@ -108,7 +108,7 @@ int main(int argc,char**argv){
     for(std::string word;split>>word;)fields.push_back(word);
     assert(fields.size()>4);
     fields[0]="RRNATIVE8";
-    fields.erase(fields.end()-12,fields.end()-1);
+    fields.erase(fields.end()-14,fields.end()-1);
     // Strip the chest-layer line newly added in the current save layout;
     // historical RRNATIVE8 contains cells/ice/locks/frozen without chests.
     std::string board,ice,locks,chests,frozen;

@@ -34,13 +34,13 @@ static void quickClear(Game& g){
 int main(int argc,char**argv){
     if(argc!=2)return 2;
     const char* catalog=argv[1];
-    for(int level=49;level<=98;++level){
+    for(int level=49;level<=100;++level){
         Game g;stage(g,catalog,level);
         assert(g.width==(level<=70?6:7));
         assert(g.height==g.width+1);
         assert(g.matchedCells()==0&&g.hasMove()&&usable(g)>0);
         assert(g.chests.size()==g.cells.size());
-        assert(g.objectiveKind>=0&&g.objectiveKind<=4);
+        assert(g.objectiveKind>=0&&g.objectiveKind<=5);
         int active=0;
         for(int effect:g.elementals)if(effect)++active;
         assert(active==(level%7==0?1:0));
@@ -53,6 +53,7 @@ int main(int argc,char**argv){
         std::stringstream data;assert(g.save(data));
         Game r;assert(r.load(data));
         assert(r.chests==g.chests&&r.cells==g.cells);
+        assert(r.secondaryKind==g.secondaryKind&&r.secondaryTarget==g.secondaryTarget);
         assert(r.activeRoster==g.activeRoster&&r.fireAuras==g.fireAuras);
     }
     Game g;stage(g,catalog,49);
@@ -102,6 +103,30 @@ int main(int argc,char**argv){
     assert(saved.claimedColor&&saved.colorCount==2);
     assert(saved.claimedDrill&&saved.drillCount==2);
     assert(saved.claimedUnlock&&saved.unlockCount==2);
+    // Dual objectives must require BOTH quotas. Only diagnostic goal
+    // thresholds are adjusted; shipped stages retain Android source targets.
+    for(int level:{99,100}){
+        Game dual;stage(dual,catalog,level);
+        assert(dual.objectiveKind==5);
+        assert(dual.secondaryKind==1||dual.secondaryKind==3||dual.secondaryKind==4);
+        assert(dual.secondaryTarget>0&&dual.collectColor>=0);
+        assert(!dual.won);
+        std::stringstream dualSave;assert(dual.save(dualSave));
+        Game recovered;assert(recovered.load(dualSave));
+        assert(recovered.secondaryKind==dual.secondaryKind);
+        assert(recovered.secondaryTarget==dual.secondaryTarget);
+        assert(recovered.collectColor==dual.collectColor);
+        recovered.objectiveTarget=1;recovered.secondaryTarget=1000;
+        recovered.collected=1;
+        int at=-1;
+        for(int i=0;i<static_cast<int>(recovered.cells.size());++i)
+            if(recovered.cells[i]>=0 && recovered.ice[i]==0 &&
+               recovered.locks[i]==0 && recovered.chests[i]==0){at=i;break;}
+        assert(at>=0);
+        recovered.hammerCount=3;
+        assert(recovered.useHammer(at));
+        assert(!recovered.won);
+    }
     // Convert a *default* v10 snapshot back into the exact old v9 layout.
     Game defaults;
     std::stringstream out;assert(defaults.save(out));
@@ -110,7 +135,7 @@ int main(int argc,char**argv){
     std::vector<std::string> words;
     for(std::string word;fields>>word;)words.push_back(word);
     assert(words.size()>12);words[0]="RRNATIVE9";
-    words.erase(words.end()-10,words.end()-1); // nine new header fields
+    words.erase(words.end()-12,words.end()-1); // nine new header fields
     std::string cells,ice,locksLine,chestLine,freeze;
     assert(static_cast<bool>(std::getline(out,cells)));
     assert(static_cast<bool>(std::getline(out,ice)));
@@ -128,6 +153,6 @@ int main(int argc,char**argv){
     assert(migrated.drillCount==0&&!migrated.claimedDrill);
     assert(migrated.unlockCount==0&&!migrated.claimedUnlock);
     assert(sum(migrated.chests)==0);
-    std::cout<<"Native levels 49–98, chest objective, four source boosters, Jade and backwards save tests passed\n";
+    std::cout<<"Native levels 49–100, chest objective, four source boosters, Jade and backwards save tests passed\n";
     return 0;
 }

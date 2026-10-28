@@ -243,6 +243,13 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
              "   BREAK LOCKS "+std::to_string(game.locksCleared)+" / "+std::to_string(game.objectiveTarget):
            game.objectiveKind==4?
              "   OPEN CHESTS "+std::to_string(game.chestsCleared)+" / "+std::to_string(game.objectiveTarget):
+           game.objectiveKind==5?
+             "   COLLECT "+std::string(gemLabel(game.collectColor))+" "+
+             std::to_string(game.collected)+"/"+std::to_string(game.objectiveTarget)+
+             " & "+std::string(game.secondaryKind==1?"ICE":game.secondaryKind==3?"LOCKS":"CHESTS")+" "+
+             std::to_string(game.secondaryKind==1?game.iceCleared:
+                            game.secondaryKind==3?game.locksCleared:game.chestsCleared)+
+             "/"+std::to_string(game.secondaryTarget):
              "   SCORE "+std::to_string(game.score)+" / "+std::to_string(game.objectiveTarget)),2);
     const auto b=gameBoard(ww,hh,game);
     SDL_SetRenderDrawColor(r,67,191,128,255);
@@ -320,7 +327,7 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
     }
     if(game.won){
         label(r,ww*.5f-90,hh-72,"STAGE CLEARED!",2);
-        if(game.level<98)
+        if(game.level<100)
             button(r,{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44},"NEXT STAGE");
         else label(r,ww*.5f-195,hh-32,"MORE STAGES IN DEVELOPMENT",1);
     }else if(game.lost){
@@ -436,7 +443,7 @@ int main(int argc,char** argv){
     const fs::path storage=savePath();
     Game game=restore(storage);
     auto loadAuthoredIntro=[&](int stage){
-        std::ifstream campaign(dataRoot()/"campaign-98.txt");
+        std::ifstream campaign(dataRoot()/"campaign-100.txt");
         if(!campaign)return false;
         return game.startIntro(stage,campaign);
     };
@@ -484,7 +491,7 @@ int main(int argc,char** argv){
                     }else if((game.won||game.lost)&&
                             Rect{static_cast<float>(ww-200),static_cast<float>(hh-64),176,44}.contains(x,y)){
                         const int next=game.level+(game.won?1:0);
-                        if(next<=98 && loadAuthoredIntro(next)){
+                        if(next<=100 && loadAuthoredIntro(next)){
                             hammerArmed=false;rowArmed=false;columnArmed=false;blastArmed=false;crossArmed=false;colorArmed=false;drillArmed=false;persist();
                         }
                     }else{

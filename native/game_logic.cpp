@@ -141,7 +141,7 @@ void Game::grantMilestoneIfWon(){
     if(level==92 && !claimedUnlock){unlockCount+=3;claimedUnlock=true;}
 }
 void Game::updateOutcome(){
-    won=objectiveKind==1?iceCleared>=objectiveTarget:objectiveKind==2?collected>=objectiveTarget:objectiveKind==3?locksCleared>=objectiveTarget:objectiveKind==4?chestsCleared>=objectiveTarget:score>=objectiveTarget;
+    won=objectiveKind==1?iceCleared>=objectiveTarget:objectiveKind==2?collected>=objectiveTarget:objectiveKind==3?locksCleared>=objectiveTarget:objectiveKind==4?chestsCleared>=objectiveTarget:objectiveKind==5?(collected>=objectiveTarget && (secondaryKind==1?iceCleared:secondaryKind==3?locksCleared:chestsCleared)>=secondaryTarget):score>=objectiveTarget;
     lost=moves<=0&&!won;
     grantMilestoneIfWon();
 }
@@ -158,7 +158,7 @@ void Game::clearGem(int index){
     }else if(elementals[index]==2){
         pendingFire.push_back(index); // Fire resolves after current strike set.
     }
-    if(objectiveKind==2&&cells[index]==collectColor)++collected;
+    if((objectiveKind==2||objectiveKind==5)&&cells[index]==collectColor)++collected;
     cells[index]=-1;
     elementals[index]=0;
 }
@@ -468,15 +468,15 @@ bool Game::mine(int index) {
 }
 void Game::replenishStrikes(){strikes=12;}
 bool Game::startIntro(int stage,std::istream& authoredCatalog){
-    if(stage<1||stage>98)return false;
+    if(stage<1||stage>100)return false;
     std::string magic;int count=0;
-    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN12"||count!=98)return false;
+    if(!(authoredCatalog>>magic>>count)||magic!="RRCAMPAIGN13"||count!=100)return false;
     for(int k=1;k<=count;++k){
         int number=0,w=0,h=0,budget=0,stageGoal=0,kind=0,target=0;
-        uint32_t rng=0;size_t n=0;int selectedColor=-1;
-        if(!(authoredCatalog>>number>>w>>h>>budget>>stageGoal>>kind>>target>>rng>>n>>selectedColor)
+        uint32_t rng=0;size_t n=0;int selectedColor=-1,secondaryKind=-1,secondaryTarget=0;
+        if(!(authoredCatalog>>number>>w>>h>>budget>>stageGoal>>kind>>target >>rng>>n>>selectedColor>>secondaryKind>>secondaryTarget)
            ||number!=k||w!=(k<=10?4:k<=30?5:k<=70?6:7)||h!=w+1||budget<12||budget>36||stageGoal<1||
-           (kind!=0&&kind!=1&&kind!=2&&kind!=3&&kind!=4)||target<1||target>2000000||!rng||
+           (kind!=0&&kind!=1&&kind!=2&&kind!=3&&kind!=4&&kind!=5)||target<1||target>2000000||!rng||
            n!=static_cast<size_t>(w*h))return false;
         std::vector<int> types(n),frost(n);
         for(auto& x:types)if(!(authoredCatalog>>x)||x < -2||x>=19||x==-1)return false;
@@ -490,8 +490,11 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         std::vector<int> roster(rosterCount);
         for(auto& x:roster)if(!(authoredCatalog>>x)||x<0||x>=19)return false;
         if(roster!=(k<15?std::vector<int>{0,1,2}:k<35?std::vector<int>{0,1,2,11}:k<80?std::vector<int>{0,1,2,11,18}:std::vector<int>{0,1,2,15,((k-1)/16)%2==0?11:18}))return false;
-        if((kind==2&&std::find(roster.begin(),roster.end(),selectedColor)==roster.end())
-          ||(kind!=2&&selectedColor!=-1))return false;
+        if(((kind==2||kind==5)&&std::find(roster.begin(),roster.end(),selectedColor)==roster.end())
+          ||(kind!=2&&kind!=5&&selectedColor!=-1)
+          ||(kind==5 && (secondaryKind!=1&&secondaryKind!=3&&secondaryKind!=4))
+          ||(kind==5 && (secondaryTarget<1||secondaryTarget>2000000))
+          ||(kind!=5 && (secondaryKind!=-1||secondaryTarget!=0)))return false;
         std::vector<int> effects(n,0);
         int powered=0;
         for(auto& x:effects){if(!(authoredCatalog>>x)||x<0||x>3)return false;if(x>0)++powered;}
@@ -521,6 +524,7 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         candidate.objectiveKind=kind;candidate.objectiveTarget=target;
         candidate.iceCleared=0;candidate.score=0;candidate.won=false;candidate.lost=false;
         candidate.collectColor=selectedColor;candidate.collected=0;
+        candidate.secondaryKind=secondaryKind;candidate.secondaryTarget=secondaryTarget;
         candidate.cells=std::move(types);candidate.ice=std::move(frost);
         candidate.locks=std::move(locked);candidate.chests=std::move(chestLayers);candidate.frozen.assign(n,0);
         candidate.locksCleared=0;candidate.chestsCleared=0;candidate.iceActivations=0;candidate.pendingIce.clear();
@@ -539,7 +543,7 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
     return false;
 }
 bool Game::save(std::ostream& out) const {
-    out<<"RRNATIVE10 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
+    out<<"RRNATIVE11 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
        <<score<<' '<<goal<<' '<<ore<<' '<<strikes<<' '<<won<<' '<<lost<<' '
        <<randomState<<' '<<objectiveKind<<' '<<objectiveTarget<<' '
        <<iceCleared<<' '<<hammerCount<<' '<<extraCount<<' '<<rowCount<<' '
@@ -549,7 +553,8 @@ bool Game::save(std::ostream& out) const {
        <<columnCount<<' '<<claimedColumn<<' '<<locksCleared<<' '<<iceActivations<<' '
        <<blastCount<<' '<<claimedBlast<<' '<<crossCount<<' '<<claimedCross<<' '
        <<colorCount<<' '<<claimedColor<<' '<<drillCount<<' '<<claimedDrill<<' '
-       <<unlockCount<<' '<<claimedUnlock<<' '<<chestsCleared<<' '<<cells.size()<<'\n';
+       <<unlockCount<<' '<<claimedUnlock<<' '<<chestsCleared<<' '
+       <<secondaryKind<<' '<<secondaryTarget<<' '<<cells.size()<<'\n';
     for(int v:cells)out<<v<<' ';out<<'\n';
     for(int v:ice)out<<v<<' ';out<<'\n';
     for(int v:locks)out<<v<<' ';out<<'\n';
@@ -575,7 +580,7 @@ bool Game::load(std::istream& in) {
     } else {
         tmp.objectiveKind=0;tmp.objectiveTarget=tmp.goal;tmp.iceCleared=0;
     }
-    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"){
+    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
         if(!(in>>tmp.hammerCount>>tmp.extraCount>>tmp.rowCount>>
              tmp.claimedExtra>>tmp.claimedRow))return false;
     } else {
@@ -584,28 +589,28 @@ bool Game::load(std::istream& in) {
         tmp.claimedExtra=tmp.level>=6;
         tmp.claimedRow=tmp.level>=10&&tmp.won;
     }
-    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10") && !(in>>tmp.waterActivations))return false;
-    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"){
+    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11") && !(in>>tmp.waterActivations))return false;
+    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
         if(!(in>>tmp.shuffleCount>>tmp.claimedShuffle>>tmp.collectColor>>tmp.collected))return false;
     }else{
         tmp.shuffleCount=0;tmp.claimedShuffle=false;
         tmp.collectColor=-1;tmp.collected=0;
     }
-    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10") &&
+    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11") &&
         !(in>>tmp.fireActivations>>tmp.fireDetonations))return false;
-    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"){
+    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
         if(!(in>>tmp.columnCount>>tmp.claimedColumn))return false;
     }else{
         tmp.columnCount=0;tmp.claimedColumn=false;
     }
-    if((magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10") &&
+    if((magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11") &&
         !(in>>tmp.locksCleared>>tmp.iceActivations))return false;
-    if((magic=="RRNATIVE9"||magic=="RRNATIVE10")){
+    if((magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11")){
         if(!(in>>tmp.blastCount>>tmp.claimedBlast))return false;
     }else{
         tmp.blastCount=0;tmp.claimedBlast=false;
     }
-    if(magic=="RRNATIVE10"){
+    if((magic=="RRNATIVE10"||magic=="RRNATIVE11")){
         if(!(in>>tmp.crossCount>>tmp.claimedCross>>tmp.colorCount>>tmp.claimedColor>>
              tmp.drillCount>>tmp.claimedDrill>>tmp.unlockCount>>tmp.claimedUnlock>>
              tmp.chestsCleared))return false;
@@ -614,12 +619,17 @@ bool Game::load(std::istream& in) {
         tmp.claimedCross=tmp.claimedColor=tmp.claimedDrill=tmp.claimedUnlock=false;
         tmp.chestsCleared=0;
     }
+    if(magic=="RRNATIVE11"){
+        if(!(in>>tmp.secondaryKind>>tmp.secondaryTarget))return false;
+    }else{
+        tmp.secondaryKind=-1;tmp.secondaryTarget=0;
+    }
     if(!(in>>n))return false;
     if(tmp.level<1||tmp.level>1000 ||tmp.width<4||tmp.width>8||
        tmp.height!=tmp.width+1||n!=static_cast<size_t>(tmp.width*tmp.height)||
        tmp.moves<0||tmp.moves>1000||tmp.score<0||tmp.goal<1||tmp.ore<0||
        tmp.strikes<0||tmp.strikes>12||!tmp.randomState||
-       tmp.objectiveKind<0||tmp.objectiveKind>4||tmp.objectiveTarget<1||
+       tmp.objectiveKind<0||tmp.objectiveKind>5||tmp.objectiveTarget<1||
        tmp.iceCleared<0||tmp.iceCleared>1000||(tmp.won&&tmp.lost)||
        tmp.hammerCount<0||tmp.hammerCount>999999||
        tmp.extraCount<0||tmp.extraCount>999999||
@@ -638,8 +648,11 @@ bool Game::load(std::istream& in) {
        tmp.collected<0||tmp.collected>1000000||
        tmp.fireActivations<0||tmp.fireActivations>1000000||
        tmp.fireDetonations<0||tmp.fireDetonations>1000000||
-       (tmp.objectiveKind==2 && (tmp.collectColor<0||tmp.collectColor>=19))||
-       (tmp.objectiveKind!=2&&tmp.collectColor!=-1)||
+       ((tmp.objectiveKind==2||tmp.objectiveKind==5) && (tmp.collectColor<0||tmp.collectColor>=19))||
+       (tmp.objectiveKind!=2&&tmp.objectiveKind!=5&&tmp.collectColor!=-1)||
+       (tmp.objectiveKind==5&&(tmp.secondaryKind!=1&&tmp.secondaryKind!=3&&tmp.secondaryKind!=4))||
+       (tmp.objectiveKind==5&&(tmp.secondaryTarget<1||tmp.secondaryTarget>2000000))||
+       (tmp.objectiveKind!=5&&(tmp.secondaryKind!=-1||tmp.secondaryTarget!=0))||
        (tmp.claimedExtra&&tmp.level<5)||(tmp.claimedRow&&tmp.level<10)||
        (tmp.claimedShuffle&&tmp.level<18)||
        (tmp.claimedColumn&&tmp.level<26)||
@@ -654,13 +667,13 @@ bool Game::load(std::istream& in) {
     if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>5)return false;
     tmp.locks.assign(n,0);tmp.frozen.assign(n,0);tmp.chests.assign(n,0);
-    if(magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"){
+    if(magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
         for(auto& x:tmp.locks)if(!(in>>x)||x<0||x>5)return false;
-        if(magic=="RRNATIVE10")
+        if((magic=="RRNATIVE10"||magic=="RRNATIVE11"))
             for(auto& layer:tmp.chests)if(!(in>>layer)||layer<0||layer>5)return false;
         for(auto& x:tmp.frozen)if(!(in>>x)||x<0||x>2)return false;
     }
-    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"){
+    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"){
         size_t rosterCount=0;
         if(!(in>>rosterCount)||rosterCount<3||rosterCount>7)return false;
         tmp.activeRoster.resize(rosterCount);
@@ -672,7 +685,7 @@ bool Game::load(std::istream& in) {
         tmp.elementals.assign(n,0);
     }
     tmp.fireAuras.assign(n,0);
-    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10")
+    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11")
         for(auto& duration:tmp.fireAuras)if(!(in>>duration)||duration<0||duration>2)return false;
     for(size_t i=0;i<n;++i){
         if(tmp.cells[i]==-2&&(tmp.ice[i]!=0||tmp.locks[i]!=0||tmp.chests[i]!=0||tmp.frozen[i]!=0||tmp.elementals[i]!=0||tmp.fireAuras[i]!=0))return false;

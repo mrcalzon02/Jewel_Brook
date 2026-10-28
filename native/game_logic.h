@@ -26,9 +26,10 @@ public:
     uint32_t randomState = 1;
     std::vector<int> cells;
     // Android-authored introductory campaign objectives and blocker state.
-    // objectiveKind: 0=score, 1=ice, 2=collect a specific authored gem, 3=locks, 4=chests.
+    // objectiveKind: 0=score, 1=ice, 2=collect a specific authored gem, 3=locks, 4=chests, 5=collect and blocker dual goal.
     int objectiveKind = 0, objectiveTarget = 850, iceCleared = 0;
     int collectColor = -1, collected = 0;
+    int secondaryKind = -1, secondaryTarget = 0;
     std::vector<int> ice;
     // Independently damageable anchored blockers and temporary frozen gems.
     std::vector<int> locks, frozen, chests;
