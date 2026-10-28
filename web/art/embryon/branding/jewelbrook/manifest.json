@@ -10,12 +10,11 @@
   "sourceBytes": 3288108,
   "driveFileId": "1IUoS174gNyp51BlXtyFQd3az5-qMZpoN",
   "driveStagingFolderId": "19BEimI-hfkhrQEREWbE3tdNUaK5N--Ef",
-  "repoBinaryStatus": "pending-verified-import",
+  "repoBinaryStatus": "github-committed",
   "notes": [
     "Approved existing art is source only; no regenerated companions or currency assignments.",
     "The loading crop contains no loading bar or text.",
     "Source crops have original sheet resolution and must not be called full HD masters.",
-    "Until files are committed, do not point production UI at missing paths.",
     "Do not add cosmetic CI gates."
   ],
   "assets": [
@@ -131,5 +130,16 @@
       ],
       "purpose": "Kingdom promo tile"
     }
+  ],
+  "committedAssetCount": 8,
+  "githubAssetPaths": [
+    "web/art/embryon/branding/jewelbrook/title-portrait.webp",
+    "web/art/embryon/branding/jewelbrook/loading-wide.webp",
+    "web/art/embryon/branding/jewelbrook/banner-wide.webp",
+    "web/art/embryon/branding/jewelbrook/banner-medium.webp",
+    "web/art/embryon/branding/jewelbrook/banner-horizontal.webp",
+    "web/art/embryon/branding/jewelbrook/poster-vertical.webp",
+    "web/art/embryon/branding/jewelbrook/promo-daysha-square.webp",
+    "web/art/embryon/branding/jewelbrook/promo-kingdom-square.webp"
   ]
 }
