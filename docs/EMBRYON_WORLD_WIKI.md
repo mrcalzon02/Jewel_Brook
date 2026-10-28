@@ -51,3 +51,16 @@ The authoritative playable gemstone roster, exclusions and exact introduction mi
 - [Mining equipment](../web/mining-gear.js)
 
 **Canon safety:** The same campaign-day ordinal applies to the player and to the royal story. An event assigned to Level N occurs on that day. Exact month, weekday and year labels need the verified Elaranth calendar epoch. Any apparent discrepancy between previously written Friday/Sunday references and game day positions must be reconciled against canon before assigning a named weekday. Elemental gown unlocks are discoveries, not separate, independently dated royal purchases.
+
+### Atelier visit chronology — established relative days
+
+The first Gilded Spindle Friday purchases happen on **Campaign Day 1**.
+The following Sunday is **Day 3**. The following Friday, including the
+boxed-dress procession with Master Garrick Vellmont, is **Day 8**.
+The existing first-birthday placement is **Day 33**; the next Friday
+purchase is **Day 36** and the subsequent Sunday is **Day 38**.
+The first three visits' relative weekdays and the same-day departure
+come from Garrick's established account, not a newly invented month.
+The precise Elaranth month/year and later weekend placements remain
+subject to continuity verification. Both the player and the royal
+family are on those **same** days.

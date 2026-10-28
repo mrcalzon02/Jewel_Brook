@@ -44,13 +44,18 @@ assert.equal(Guide.mainDay(20).calendarDate,null);
 assert.equal(Royal.EVENTS.length,19);
 assert.ok(Royal.EVENTS.every(e=>e.historicalDay===e.revealLevel),'Royal events share their level day');
 assert.deepEqual(Royal.eventsOnDay(1).map(e=>e.id),['RH-E01']);
-assert.equal(Royal.eventsOnDay(9)[0].historicalDay,9);
+assert.equal(Royal.continuityIssues().length,0,'Established Friday/Sunday chronology stays consistent');
+assert.deepEqual(Royal.eventsOnDay(3).map(e=>e.id),['RH-E02'],'Sunday pickup occurs on shared Day 3');
+assert.deepEqual(Royal.eventsOnDay(8).map(e=>e.id),['RH-E03','RH-E04'],'Friday purchase and departure occur on Day 8 together');
+assert.equal(Royal.eventsOnDay(36)[0].id,'RH-E06');
+assert.equal(Royal.eventsOnDay(38)[0].id,'RH-E07');
+assert.equal(Royal.eventsOnDay(9).length,0,'Old erroneous Day 9 staging is retired');
 assert.equal(Royal.eventsOnDay(1250)[0].track,'royal-family');
-const sharedDaySave={stars:{1:1,9:1},unlocked:10};
-assert.equal(Royal.current(sharedDaySave).campaignDay,9);
-assert.equal(Royal.unlocked(sharedDaySave,Royal.eventsOnDay(9)[0]),true);
-assert.equal(Royal.unlocked({unlocked:9,stars:{}},Royal.eventsOnDay(9)[0]),false,'Only first clear advances royal events');
-assert.ok(Guide.catalog('story',{Royal},sharedDaySave).some(e=>e.detail.includes('Campaign Day 9')));
+const sharedDaySave={stars:{1:1,3:1,8:1},unlocked:9};
+assert.equal(Royal.current(sharedDaySave).campaignDay,8);
+assert.equal(Royal.unlocked(sharedDaySave,Royal.eventsOnDay(8)[0]),true);
+assert.equal(Royal.unlocked({unlocked:8,stars:{}},Royal.eventsOnDay(8)[0]),false,'Only first clear advances royal events');
+assert.ok(Guide.catalog('story',{Royal},sharedDaySave).some(e=>e.detail.includes('Campaign Day 3')));
 
 
 for(const n of [1,2,15,35,77,125,250,500,750,1000,1001,1150,1300]){

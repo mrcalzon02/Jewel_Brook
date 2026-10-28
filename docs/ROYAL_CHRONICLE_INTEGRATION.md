@@ -23,3 +23,38 @@ At the opening of the player's story, Daysha and Rome are newly married. Their d
 
 ## Original Daysha elemental gown illustration integration
 Ten source-verified original AI-generated Daysha elemental gowns are bundled offline at `web/art/embryon/story/elemental-gowns/`, with hashes, source IDs and elemental trial mapping in the adjacent `manifest.json`. The Royal Chronicle presents an illustration only after the corresponding optional elemental trial has actually been cleared and the main-story gate reached. A first-time qualifying trial clear shows a playable victory-screen entrypoint to view the dress. These are **original generated portraits of Daysha**, not photographs supplied as dress references or buyable player-avatar replacements; no receipt or canonical purchase date is invented. Earlier known royal visits and Estelle's later childhood episodes retain their own chronology. See the generated image sorting inventory for the 19 as-yet-unpublished original atelier scenes.
+
+## Reconciled relative weekdays — October 2026
+
+Master Garrick Vellmont's canonical atelier history says the first non-wedding visit
+is on a **Friday**, the next visit is **Sunday**, the next pair of gowns is bought
+the **following Friday**, and the box-and-ledger departure occurs after that
+same second Friday visit. Day 1 was already assigned to that first Friday.
+Therefore the established shared day placements are:
+
+| Episode | Campaign day / main stage | Basis |
+|---|---:|---|
+| RH-E01 first blue gowns | 1 | First Friday (pre-existing stage anchor) |
+| RH-E02 pink dress pickup | 3 | Following Sunday |
+| RH-E03 burgundy / violet gowns | 8 | Following Friday |
+| RH-E04 boxed-dress departure | 8 | Same visit, same day |
+| RH-E05 birthday and Lexi | 33 | Existing authoring placement, unverified calendar date |
+| RH-E06 unfinished double gown | 36 | Next Friday after the Day 33 birthday |
+| RH-E07 own-purse gown | 38 | Sunday after Day 36 |
+
+This corrects the earlier incorrect Day 9 / Day 17 / Day 25 / Day 41 /
+Day 49 spacing. **A campaign level is a real day in the same royal and
+citizen history**, not a separate reading unlock. Multiple scenes may
+occur on a single calendar day. No new save field or reward is needed.
+
+**Open chronological review:** RH-E14 describes a gown worn “later that
+weekend,” but its inherited Day 105 placement is not supported by a
+verified weekday relative to the previous episode. Its exact day requires
+source-led reconciliation, as does the full month/year conversion.
+Do not silently relocate this scene or manufacture a new seven-day holiday
+calendar to make it fit. The existing editorial position remains visible
+until a verified source establishes a better one.
+
+The `continuityIssues()` API checks the confirmed relative-day constraints
+as part of the existing *functional* game test. No screenshot or
+cosmetic release gate has been added.
