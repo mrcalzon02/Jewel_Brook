@@ -1,0 +1,135 @@
+{
+  "schema": "jewelbrook.approved-splash-art/v1",
+  "publicTitle": "Jewel Brook: Heroes of Embryon",
+  "sourceArchive": "JewelBrook-Approved-Splash-Art-Pack.zip",
+  "sourceArchiveSha256": "b8c6e1b8662dcd09174176f00ca4bb5a6111550490f55a26ea7ac4db5f958a31",
+  "approvedSheetFilename": "a_crisp_high_detail_promotional_gui_art_montage_i.png",
+  "sourceSHA256": "6763280e4b9b79f3859fae3948424003a944cbd7dd61ae0b604b9b7582dc45c9",
+  "sourceWidth": 1536,
+  "sourceHeight": 1024,
+  "sourceBytes": 3288108,
+  "driveFileId": "1IUoS174gNyp51BlXtyFQd3az5-qMZpoN",
+  "driveStagingFolderId": "19BEimI-hfkhrQEREWbE3tdNUaK5N--Ef",
+  "repoBinaryStatus": "pending-verified-import",
+  "notes": [
+    "Approved existing art is source only; no regenerated companions or currency assignments.",
+    "The loading crop contains no loading bar or text.",
+    "Source crops have original sheet resolution and must not be called full HD masters.",
+    "Until files are committed, do not point production UI at missing paths.",
+    "Do not add cosmetic CI gates."
+  ],
+  "assets": [
+    {
+      "filename": "title-portrait.webp",
+      "width": 549,
+      "height": 970,
+      "bytes": 242422,
+      "sha256": "c33391e085a7820f4642998d7f9d595b89da31d19432c31276420ae361b30ac6",
+      "sourceCrop": [
+        10,
+        1,
+        559,
+        971
+      ],
+      "purpose": "Portrait title splash"
+    },
+    {
+      "filename": "loading-wide.webp",
+      "width": 937,
+      "height": 348,
+      "bytes": 190294,
+      "sha256": "3dbbed50f982de0f3301f78435caec21bbc4e70e5d13069c3acc9bf2201e1ce5",
+      "sourceCrop": [
+        591,
+        1,
+        1528,
+        349
+      ],
+      "purpose": "Wide loading background, no progress bar or caption"
+    },
+    {
+      "filename": "banner-wide.webp",
+      "width": 939,
+      "height": 203,
+      "bytes": 115192,
+      "sha256": "5455284b55d0114a4a522e8b747b7f8b195e31d831a7ddb8d68fe4fd62b907b9",
+      "sourceCrop": [
+        589,
+        391,
+        1528,
+        594
+      ],
+      "purpose": "Wide campaign advertisement"
+    },
+    {
+      "filename": "banner-medium.webp",
+      "width": 735,
+      "height": 105,
+      "bytes": 46846,
+      "sha256": "29d6f49e7c61d4e71682662cfe675f92f7bfd1681336c5db026d58a56c49a1b9",
+      "sourceCrop": [
+        589,
+        630,
+        1324,
+        735
+      ],
+      "purpose": "Medium banner advertisement"
+    },
+    {
+      "filename": "banner-horizontal.webp",
+      "width": 394,
+      "height": 139,
+      "bytes": 35798,
+      "sha256": "a09a7b31955cbf1e144d15f9ef46fa2d488fe0202c9506dd2b7a031518ef7ee2",
+      "sourceCrop": [
+        928,
+        780,
+        1322,
+        919
+      ],
+      "purpose": "Compact horizontal advertisement"
+    },
+    {
+      "filename": "poster-vertical.webp",
+      "width": 182,
+      "height": 335,
+      "bytes": 40184,
+      "sha256": "cd8800997a547ac74fa7637d443fe5fa16e6fc8f4783140003057af34cc10729",
+      "sourceCrop": [
+        1342,
+        630,
+        1524,
+        965
+      ],
+      "purpose": "Vertical poster"
+    },
+    {
+      "filename": "promo-daysha-square.webp",
+      "width": 222,
+      "height": 140,
+      "bytes": 19466,
+      "sha256": "48f407d076af6621daef5987b5faf35e3ee1b5b6ebe372a73c0137d21f7a4c68",
+      "sourceCrop": [
+        590,
+        780,
+        812,
+        920
+      ],
+      "purpose": "Daysha promo tile (original proportions)"
+    },
+    {
+      "filename": "promo-kingdom-square.webp",
+      "width": 151,
+      "height": 140,
+      "bytes": 15804,
+      "sha256": "6a036cceb73b1f213e540bac400547efe30543afb8478b1828386fce9d25ce75",
+      "sourceCrop": [
+        767,
+        780,
+        918,
+        920
+      ],
+      "purpose": "Kingdom promo tile"
+    }
+  ]
+}
