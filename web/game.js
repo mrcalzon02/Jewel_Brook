@@ -2,12 +2,12 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownCharacter=window.RupeeTownCharacter,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownCharacter=window.RupeeTownCharacter,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen,Royal=window.JewelbrookRoyalChronicle;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook,Royal].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
-let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null;
+let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null,storySelected=null;
 let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmCategory='all',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems'),styles=document.getElementById('style-shards');
 if(!root)throw Error('Missing #screen');
@@ -52,7 +52,7 @@ function home(){
  '<div class="home-kingdom-content"><h1 class="home-brand"><img class="home-title-banner" src="art/embryon/branding/jewelbrook/banner-wide.webp" alt="Jewel Brook: Heroes of Embryon" width="939" height="203" decoding="async"></h1>'+
  '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p>'+
  townAvatarPanel()+
- '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+button('go-manor','ENTER RESIDENCE','secondary')+'</div></div></section>'+
+ '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+button('go-manor','ENTER RESIDENCE','secondary')+button('go-chronicle','ROYAL CHRONICLE','secondary')+'</div></div></section>'+
  '<div class="panels"><section class="panel"><h2>Current expedition</h2><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
  '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section>'+ '<section class="panel"><h2>Garden &amp; Farm</h2><p>Plant seeds, harvest crops, expand the homestead, and use magical farming supplies.</p>'+button('go-farm','OPEN GARDEN')+'</section></div>'+townHousePanel(Garden.summary(saved));
 }
@@ -82,7 +82,7 @@ function campaign(){
  Chapters.CHAPTERS.map(c=>'<button class="chapter-hotspot '+(saved.unlocked>=c.start?'open':'pending')+'" style="--x:'+c.x+'%;--y:'+c.y+'%" data-action="open-chapter" data-chapter="'+c.id+'" aria-label="Chapter '+c.id+': '+c.title+(saved.unlocked<c.start?' (stages locked)':'')+'"><span>'+c.id+'</span></button>').join('')+'</div>'+
  '<div class="chapter-cards">'+Chapters.CHAPTERS.map(c=>'<button class="chapter-card" data-action="open-chapter" data-chapter="'+c.id+'"><img alt="" src="'+c.art+'" loading="lazy"><span><b>'+c.id+'. '+c.title+'</b><small>Stages '+c.start+'–'+c.end+' · '+(saved.unlocked>=c.start?'Enter':'Preview — locked')+'</small></span></button>').join('')+'</div>'+
  '<p class="hint">'+entered+' of 5 chapters reached. You may preview later chapters; stages unlock sequentially.</p>'+
- '<section class="panel"><h2>Elemental Trials</h2><p>Bonus challenges unlock alongside your expedition.</p>'+button('go-trials','VIEW TRIALS')+'</section>';
+ '<section class="panel"><h2>The Royal Chronicle</h2><p>Live and work in Embryon as the story of Daysha and Rome unfolds. Original illustrations unlock as you progress.</p>'+button('go-chronicle','READ THE ROYAL CHRONICLE','secondary')+'</section>'+ '<section class="panel"><h2>Elemental Trials</h2><p>Bonus challenges unlock alongside your expedition.</p>'+button('go-trials','VIEW TRIALS')+'</section>';
 }
 function chapter(){
  const c=Chapters.byId(chapterId)||Chapters.CHAPTERS[0];
@@ -92,6 +92,26 @@ function chapter(){
  '<h1>'+escape(c.title)+'</h1><p>Chapter '+c.id+' · '+escape(c.description)+'</p>'+button('go-campaign','← FIVE-CHAPTER MAP','quiet')+'</div>'+
  '<div class="panel campaign-bar">'+button('campaign-prev','← Previous','secondary',campaignPage===0?'disabled':'')+'<strong>'+from+'–'+to+' / '+c.end+'</strong>'+button('campaign-next','Next →','secondary',to===c.end?'disabled':'')+'</div>'+
  '<div class="level-grid">'+levels.map(n=>'<button class="level '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+(n>saved.unlocked?' locked':'')+'"><b>'+n+'</b><small>'+(saved.stars[n]?'★ '+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
+}
+
+function chronicle(){
+ const t=Royal.current(saved),unlocked=t.events.filter(e=>e.unlocked);
+ const chosen=unlocked.find(e=>e.id===storySelected)||unlocked[unlocked.length-1]||null;
+ const scenes=chosen?Royal.ART.filter(a=>a.eventId===chosen.id):[];
+ const portraits=Royal.ART.filter(a=>a.portraitStudy);
+ const future=t.events.filter(e=>!e.unlocked&&e.revealLevel>Royal.campaignSize).length;
+ return header('The Royal Chronicle','You are one of Embryon’s working people: miner, grower, cook and trader. The kingdom’s history unfolds around your everyday life.')+
+ '<section class="panel royal-citizen"><h2>Your Place in Embryon</h2><p>Gemstones travel from the mines to merchants and master artisans. Farms feed the town; cooks prepare meals; traders move the wealth that supports the kingdom. Your own homestead, mine and market are part of that living world.</p>'+
+ '<p><b>Campaign days cleared: '+t.campaignDay+' / 1,000</b> · about '+t.years.toFixed(2)+' years since your adventure began. The royal chronicle spans approximately sixteen years.</p>'+
+ '<p>Royal story unlocks are <b>reading milestones</b>, not claims about the historical date of an event. Daysha and Rome begin as newlyweds; Estelle has only just been conceived on their wedding night, and her childhood stories belong years later.</p>'+
+ '<p>'+unlocked.length+' of '+Royal.EVENTS.length+' established episodes available · '+future+' future family episodes reserved beyond this opening campaign.</p></section>'+
+ '<div class="royal-chronicle-layout"><div class="royal-chapter-list" role="group" aria-label="Unlocked royal stories">'+
+ t.events.filter(e=>e.revealLevel<=Royal.campaignSize).map(e=>'<button class="royal-chapter-entry '+(e.unlocked?'':'royal-entry-locked ')+(chosen?.id===e.id?'royal-entry-current':'')+'" data-action="story-open" data-story="'+escape(e.id)+'" '+(e.unlocked?'':'disabled')+'><small>STAGE '+e.revealLevel+' · THE GILDED SPINDLE</small><strong>'+(e.unlocked?escape(e.title):'Locked episode')+'</strong></button>').join('')+
+ '</div><article class="panel royal-story-detail">'+(chosen?'<small>AN EPISODE FROM PROJECT DAYSHA</small><h2>'+escape(chosen.title)+'</h2><p>'+escape(chosen.summary)+'</p><h3>Meanwhile in the town...</h3><p>'+escape(chosen.tradeNote)+'</p>'+
+ (scenes.length?'<div class="royal-art-grid">'+scenes.map(a=>'<figure><img loading="lazy" decoding="async" src="'+escape(a.src)+'" alt="'+escape(a.title)+'"><figcaption>'+escape(a.title)+'</figcaption></figure>').join('')+'</div>':'<p class="royal-art-pending">No event-specific approved illustration is currently published for this episode. Its story is available without fabricated artwork.</p>')+
+ '<small>Historical dates and Estelle’s age remain unassigned until Project Daysha establishes them.</small>':
+ '<h2>The royal story begins</h2><p>Clear the first Jewel Brook level to reveal the opening chronicle entry.</p>')+'</article></div>'+
+ '<section class="panel royal-portrait-panel"><h2>Approved Atelier Portrait Studies</h2><p>Illustrated dress studies from the existing original-art archive. These are not evidence of particular royal purchases or historical dates.</p><div class="royal-art-grid">'+portraits.map(a=>'<figure><img loading="lazy" decoding="async" src="'+escape(a.src)+'" alt="'+escape(a.title)+'"><figcaption>'+escape(a.title)+'</figcaption></figure>').join('')+'</div></section>';
 }
 function trials(){
  const available=[],locked=[];
@@ -206,16 +226,16 @@ function settle(){
  const g=active;
  if(g.won){
   const id=g.level,trial=id>=T.FIRST;
-  let earned=0,bonus=0;
+  let earned=0,bonus=0,storyNew=[];
   if(trial){const result=R.clear(saved,id,g.score);earned=result.coins||0;bonus=result.gems||0;}
   else {
    const prev=saved.stars[id]||0,starCount=g.score>=g.cfg.goal*2?3:g.score>=g.cfg.goal*1.35?2:1;
    saved.stars[id]=Math.max(prev,starCount);
-   if(!prev){earned=100+Math.floor(id/5);bonus=id%5===0?2:0;saved.coins+=earned;saved.gems+=bonus;}
+   if(!prev){earned=100+Math.floor(id/5);bonus=id%5===0?2:0;saved.coins+=earned;saved.gems+=bonus;storyNew=Royal.newAt(id);}
    saved.unlocked=Math.min(1000,Math.max(saved.unlocked,id+1));
    P.firstClear(saved,id);
   }
-  outcome={won:true,id,earned,bonus,score:g.score};
+  outcome={won:true,id,earned,bonus,score:g.score,storyNew};
  }else if(g.lost){saved.hearts=Math.max(0,saved.hearts-1);outcome={won:false,id:g.level,score:g.score};}
  else return;
  Audio.play(g.won?'victory':'defeat');Audio.speak(g.won?'levelVictory':'levelDefeat');active=null;selected=-1;page='result';save();
@@ -225,7 +245,7 @@ function results(){
  return header(x.won?'Brilliant!':'Try again',x.won?'The vault yields its treasures.':'The crystal board held firm this time.')+
  '<div class="hero"><div class="hero-art">'+(x.won?'<img class="result-vfx" src="'+Assets.effect('victory')+'" alt="">':'')+[0,1,6].map(i=>gem(i)).join('')+'</div><h2>Score: '+number(x.score)+'</h2>'+
  (x.won?'<p>+'+number(x.earned)+' Rupees · +'+number(x.bonus)+' Star Gems</p>':'<p>One life used. Mine resources or claim a refill to keep playing.</p>')+
- button('result-next',x.won?'NEXT LEVEL':'RETRY LEVEL','primary')+button('go-mine','VISIT THE MINES')+button('go-campaign','LEVEL MAP','quiet')+'</div>';
+ (x.won&&x.storyNew?.length?'<div class="royal-reveal"><h3>New Royal Chronicle Episode</h3><p>'+escape(x.storyNew.map(e=>e.title).join(' · '))+'</p>'+button('go-chronicle','READ THE NEW EPISODE','secondary')+'</div>':'')+button('result-next',x.won?'NEXT LEVEL':'RETRY LEVEL','primary')+button('go-mine','VISIT THE MINES')+button('go-campaign','LEVEL MAP','quiet')+'</div>';
 }
 function offerCard(id,o){
  const balance=o.currency==='gems'?saved.gems:saved.coins;
@@ -419,7 +439,7 @@ function render(){
  document.getElementById('app')?.classList?.toggle?.('playing',page==='game');
  root.classList?.toggle?.('game-active',page==='game');
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
-  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='manor'?manor():page==='rewards'?rewards():settings());
+  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='manor'?manor():page==='chronicle'?chronicle():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
  if(page==='settings')window.RupeeUpdates?.syncStatus();
  const navArt={
@@ -437,7 +457,7 @@ function finishMining(result,success){if(result?.valid){const reward=/reward|ref
 function handle(b){
  const a=b.dataset.action,info=b.dataset,now=Date.now();
  if(info.nav){nav(info.nav);return;}
- if(a==='go-farm'){nav('farm');return;}if(a==='go-manor'){nav('manor');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
+ if(a==='go-farm'){nav('farm');return;}if(a==='go-manor'){nav('manor');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}if(a==='go-chronicle'){storySelected=outcome?.storyNew?.[0]?.id||null;nav('chronicle');return;}if(a==='story-open'){const story=Royal.EVENTS.find(e=>e.id===info.story);if(story&&Royal.unlocked(saved,story)){storySelected=story.id;render();}return;}
  if(a==='check-updates'){window.RupeeUpdates?.check();return;}
  if(a==='view-releases'){window.RupeeUpdates?.openReleases();return;}
  if(a==='toggle-sfx'){Audio.configure({sfx:!Audio.settings().sfx});render();return;}if(a==='toggle-music'){Music.configure({music:!Music.settings().music});render();return;}if(a==='toggle-voice'){Audio.configure({voice:!Audio.settings().voice});render();return;}

@@ -353,3 +353,20 @@
 .home-title-banner{display:block;width:100%;height:auto;max-height:160px;object-fit:contain;filter:drop-shadow(0 7px 16px #040617b8)}
 #jewelbrook-loading-splash{position:fixed;inset:0;z-index:1000;pointer-events:none;background:#14152d url("art/embryon/branding/jewelbrook/loading-wide.webp") center center/cover no-repeat}
 @media(max-aspect-ratio:3/4){#jewelbrook-loading-splash{background-image:url("art/embryon/branding/jewelbrook/title-portrait.webp");background-size:cover}}
+
+/* Royal story reader: compact, offline, game-native and non-blocking. */
+.royal-citizen{display:grid;gap:8px;margin:0 0 12px}.royal-citizen p{margin:0}
+.royal-chronicle-layout{display:grid;grid-template-columns:minmax(185px,.75fr) minmax(0,1.4fr);gap:10px}
+.royal-chapter-list{display:grid;gap:6px;max-height:590px;overflow-y:auto;align-content:start}
+.royal-chapter-entry{display:grid;gap:3px;text-align:left;color:#f7efff;background:#2e2445;border:1px solid #785f90;border-radius:9px;padding:9px;min-height:49px}
+.royal-chapter-entry small{font-size:10px;color:#d5bfdc}.royal-chapter-entry strong{font-size:13px}
+.royal-entry-locked{opacity:.55}.royal-entry-current{background:#463058;border-color:#f5cf8e}
+.royal-story-detail{display:grid;align-content:start;gap:10px;min-width:0}.royal-story-detail p{margin:0}
+.royal-story-detail h3{color:#ffe0ad}.royal-art-pending{font-size:12px;color:#c4b5d7}
+.royal-portrait-panel{margin-top:12px}
+.royal-art-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}
+.royal-art-grid figure{margin:0;border:1px solid #6c5789;border-radius:9px;overflow:hidden;background:#231c36}
+.royal-art-grid img{width:100%;display:block;max-height:360px;object-fit:contain}
+.royal-art-grid figcaption{padding:7px 8px;font-size:11px;color:#f3dfa8}
+.royal-reveal{border:1px solid #e7c481;border-radius:9px;padding:9px;display:grid;gap:6px}
+@media(max-width:640px){.royal-chronicle-layout{grid-template-columns:1fr}.royal-chapter-list{max-height:200px}.royal-art-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
