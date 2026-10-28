@@ -1,6 +1,6 @@
 # Frozen Glow 2 — offline music source
 
-Original source: **Frozen Glow 2.mp3** from the Rupee Rush Google Drive folder.
+Original source: **Frozen Glow 2.mp3** from the Jewelbrook Google Drive folder.
 Source size: **5,060,262 bytes**; audio duration: approximately **240.024 seconds**.
 Source SHA-256: `a4235a9b0797c96fca9ad6d9e870983657bece455f35dfa75f406b8688679fc5`.
 

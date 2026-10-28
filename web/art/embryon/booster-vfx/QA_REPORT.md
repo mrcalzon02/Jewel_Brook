@@ -1,4 +1,4 @@
-# Rupee Rush — Six-Atlas Booster and VFX Sprite Extraction QA
+# Jewelbrook — Six-Atlas Booster and VFX Sprite Extraction QA
 
 Extracted **96 named sprites** from **6 source atlases**, each in 384 px and 192 px transparent RGBA PNG.
 

@@ -1,4 +1,4 @@
-# Rupee Rush — approved system icon library
+# Jewelbrook — approved system icon library
 
 Two approved 4×4 sheets: **navigation and economy** (16 icons) and **gameplay hazards** (16 icons). Each icon is exported as an individual alpha-transparent 192×192 WebP for direct use on mobile, with its 1024×1024 optimized atlas also retained.
 

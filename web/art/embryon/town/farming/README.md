@@ -1,4 +1,4 @@
-# Rupee Rush farming equipment — dynamic sliced runtime candidates
+# Jewelbrook farming equipment — dynamic sliced runtime candidates
 
 This directory contains **41 alpha-transparent 192 × 192 WebP equipment sprites** extracted from the approved *Farming Tools & Equipment* sheet via the reproducible alpha-aware dynamic slicer. They are **not yet assigned to live farming mechanics**.
 

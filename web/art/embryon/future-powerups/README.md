@@ -1,4 +1,4 @@
-# Rupee Rush — 32 future booster and power-up icons
+# Jewelbrook — 32 future booster and power-up icons
 
 **Two approved concept-art batches; 32 transparent 192px WebP icons.**
 

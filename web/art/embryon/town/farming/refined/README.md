@@ -1,4 +1,4 @@
-# Rupee Rush refined farming asset library — v2
+# Jewelbrook refined farming asset library — v2
 
 This is a **non-destructive image-only extraction pass** for two user-approved farming art sheets. It preserves all prior Town gardening seed/fertilizer art, game economy, save behavior, and active UI.
 
