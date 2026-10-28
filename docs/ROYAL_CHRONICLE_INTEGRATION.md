@@ -3,21 +3,21 @@
 ## Historical premise
 The player is an ordinary inhabitant of Embryon whose mining, farming, cooking and trading contribute to the working economy. The royal family's storyline unfolds in the same world; do **not** rewrite the player as Daysha or Rome, or credit the player for specific royal orders unless backed by an implemented delivery mechanic.
 
-At the opening of the player's story, Daysha and Rome are newly married. Their daughter Estelle was only just conceived on the wedding night; she **has not been born**. The first 15 established Gilded Spindle episodes are staged as *reveal* milestones across the opening game. Later Estelle childhood episodes are intentionally reserved for future expansions after the first 1000 levels. Each level is approximately one campaign day, and 1000 levels ≈ 2.74 years, not the complete circa sixteen-year chronicle.
+At the opening of the player's story, Daysha and Rome are newly married. Their daughter Estelle was only just conceived on the wedding night; she **has not been born**. The first 15 established Gilded Spindle episodes are assigned to **actual days on the same timeline** as the player's adventures. Completing each main level for the first time advances the royal and citizen chronicle by exactly one day. Estelle's childhood scenes remain future expansions beyond the opening 1,000 levels, an early part of the circa sixteen-year story. Calendar-year conversion awaits the thirteen-month Elaranth canon.
 
-**Historical sequence vs game unlocks:** the first 15 atelier events have established relative order but no confirmed dates/reign years. Unlock stages are milestones to read the story, not assertions about when these scenes occurred. The four undated Estelle episodes are assigned future **reader access targets** at 1250, 1320, 1450, and 1520, beyond today's engine ceiling; do not claim these are canonical dates or the child's age. No birth date or reign-year slot is fabricated.
+**Single canonical chronology:** an event assigned to Level N occurs on Campaign Day N. The same victory advances both the player's story and the royal family's; the associated reader entry becomes available because that day happened. The 15 current atelier events have day positions identical to their stages. Estelle's four future events occupy Days 1250, 1320, 1450, and 1520 beyond the current engine ceiling. Their exact month, regnal year and Estelle's age still require canonical calendar alignment. Existing Friday/Sunday phrasing must be checked for consistency before assigning weekdays.
 
 ## Integration
-- Data registry: `web/royal-chronicle.js` with event IDs, original summaries, trade-perspective notes, nullable historic-day/year/Estelle age, and reveal levels.
+- Data registry: `web/royal-chronicle.js` with event IDs, original summaries, trade-perspective notes, historical day equal to assigned level, nullable calendar year/Estelle age, and established story IDs.
 - Reader: home and expedition-map links; story list/episode reader; archival approved portrait studies.
-- First-time level clear: existing result screen offers reading newly unlocked story entries. Reading access is derived from existing cleared stars, not a new save key, wallet, paid gate or repeating reward.
+- First-time level clear: advances the joint chronology to that day, triggers that day's royal events, and makes their Chronicle entries readable. Reading access uses existing cleared stars, not a new save key, wallet, paid gate or repeating reward.
 - Art: 13 original approved Daysha gallery files from `HB-TTRPG-tools/data/daysha-royal-purchases.json`, copied with exact upstream Git object SHA and no third-party images. Two portrait studies can be shown immediately; 11 future Estelle illustrations remain held in the game bundle until their episodes become narratively appropriate.
 - The five existing cavern chapters, all 1000 puzzles, daily move bank, stage difficulty, house and garden upgrades, kitchen, shop, mining, updater, native implementations, cosmetics and currencies remain otherwise untouched.
 - Do not insert cosmetic image or snapshot checks into blocking release tests.
 
 ## Working expansion backlog
 1. Source and vet Daysha artwork for current (pre-birth) episodes, then add precise per-event image associations.
-2. Continue Project Daysha chronology, preserve existing canon, and only update historical dates/Estelle ages when explicitly established.
+2. Align the verified thirteen-month Elaranth calendar to Campaign Day 1; preserve assigned event-day positions and only assign months, weekdays, years, birth dates, and Estelle ages from supported canon.
 3. When expanding the campaign beyond level 1000, unlock later family episodes without retroactively altering older saved-game progress.
 4. Consider real player-supplied palace contracts only when the existing economy supports honest inventory debits and fulfillment. Until then, narrative trade notes are thematic and do not imply completed palace deliveries.
 

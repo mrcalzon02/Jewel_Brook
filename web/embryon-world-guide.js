@@ -9,7 +9,8 @@ const WIKI_URL='https://github.com/mrcalzon02/Jewel_Brook/blob/main/docs/EMBRYON
 function mainDay(level){
  if(!Number.isInteger(level)||level<1||level>1000)return null;
  return Object.freeze({level,day:level,label:'Campaign Day '+level,
-  calendarDate:null,calendarStatus:CALENDAR.status});
+  calendarDate:null,calendarStatus:CALENDAR.status,
+  storyRule:'Finishing this level advances the player and royal family to the same day.'});
 }
 function trialDay(id,Trials){
  const spec=Trials?.profile(id);
@@ -54,8 +55,8 @@ function catalog(tab,systems,save){
   ...E.BOOSTERS.map(id=>({name:E.BOOSTER_META[id]?.label||id,detail:E.BOOSTER_META[id]?.tip||'Campaign booster.'}))
  ];
  case 'story':return Royal.EVENTS.filter(e=>e.revealLevel<=1000&&Royal.unlocked(save,e)).map(e=>({
-  name:e.title,detail:e.summary+' '+e.tradeNote+' Story access: level '+e.revealLevel+
-  '. Historical date: not assigned; the reader unlock is not the event date.'
+  name:e.title,detail:'Campaign Day '+e.historicalDay+' (Level '+e.revealLevel+'). '+e.summary+' '+e.tradeNote+
+  ' The full Elaranth calendar date is not yet resolved.'
  }));
  default:return [];
  }
