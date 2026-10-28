@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture actual Android WebView gameplay from the signed, installed Rupee Rush APK.
+"""Capture actual Android WebView gameplay from the signed, installed Jewelbrook APK.
 No image generation, mock screenshots, test-mode user saves, or replacement assets.
 """
 import hashlib
@@ -117,7 +117,7 @@ for scale in ["window_animation_scale", "transition_animation_scale", "animator_
     adb("shell", "settings", "put", "global", scale, "0")
 adb("install", "-r", str(apk), timeout=180)
 adb("shell", "am", "start", "-W", "-n", pkg + "/.MainActivity", timeout=90)
-wait_for("Rupee", attempts=12)
+wait_for("Jewelbrook", attempts=12)
 screenshot("01-RupeeRush-Home.png")
 
 # Tap the real application's Mine navigation control.
