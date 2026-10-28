@@ -268,11 +268,15 @@ click('mine-tab',{tab:'equipment'});
 click('mine-tab',{tab:'exchange'});
 navigate('farm');
 assert.match(views.screen.innerHTML,/data-action="farm-buy-seed"/,'Farm store can be opened');
+assert.match(views.screen.innerHTML,/Each first-clear match-3 level advances the season/,'Calendar days are explained in the actual garden');
 const initialSeeds=gameWindow.RupeeRushDebug.getSave().town.seeds.carrot;
 click('farm-buy-seed',{crop:'carrot',qty:'1'});
 assert.equal(gameWindow.RupeeRushDebug.getSave().town.seeds.carrot,initialSeeds+1,'Seed purchase changes inventory');
 click('farm-plant',{plot:'0'});
 assert.equal(gameWindow.RupeeRushDebug.getSave().town.plots[0].crop,'carrot','Farming controls actually plant a crop');
+assert.equal(gameWindow.RupeeRushDebug.getSave().town.plots[0].mode,'campaign-day','Live farm plants on mission time, not wall clock');
+assert.match(views.screen.innerHTML,/mission day/,'Farm shows calendar-driven crop growth forecasts');
+
 assert.match(views.screen.innerHTML,/data-action="farm-category"/,'Farm uses crop family filters');
 assert.match(views.screen.innerHTML,/data-qty="5"/,'Seed purchases offer bulk orders');
 assert.match(views.screen.innerHTML,/data-action="kitchen-cook"/,'real recipe cooking is wired');

@@ -76,3 +76,66 @@ test('48-crop deep catalog has functional progression, bulk seed purchases and c
   assert.equal(T.sell(s,invalid).valid,false);
  }
 });
+
+test('Elaranth seasonal forecast covers all 48 authored crops with 1–6 mission days',()=>{
+ const S=T.Seasons;assert.equal(Object.keys(S.PROFILES).length,48);
+ assert.deepEqual(Object.keys(S.PROFILES).sort(),Object.keys(T.CROPS).sort());
+ for(const id of Object.keys(T.CROPS))for(const day of [0,13,90,180,280,364,600,1000]){
+  const f=S.forecast(id,day);assert(f&&f.baseDays>=1&&f.baseDays<=6,id+' / '+day);
+  assert.equal(S.forecast(id,day).baseDays,f.baseDays,'Deterministic seasonal forecast');
+ }
+ assert.equal(S.baseDays('mint',321),1,'Frostmint peaks in the Elaranthi winter');
+ assert.equal(S.baseDays('mint',503),6,'Winter mint at summer opposite takes six missions');
+ assert.equal(S.baseDays('tomato',195),1,'Tomatoes reach peak during summer');
+ assert.ok(S.baseDays('tomato',0)>S.baseDays('tomato',195),'Summer fruit grows slowly in winter');
+});
+test('Peak season matures with one newly cleared main mission, without wall-clock growth',()=>{
+ const s={coins:10000,stars:{320:1},unlocked:321};T.ensure(s);
+ assert.equal(T.purchase(s,'seed','mint').valid,true);
+ const planted=T.plantCampaign(s,0,'mint');assert(planted.valid);
+ assert.equal(planted.mode,'campaign-day');assert.equal(planted.plantedDay,320);
+ assert.equal(T.plotStatus(s,0,Number.MAX_SAFE_INTEGER).state,'seed','Wall clock must not grow a campaign plot');
+ assert.equal(T.advanceCampaign(s,321).reason,'uncleared','Day must be an actually cleared level');
+ s.stars[321]=1;s.unlocked=322;
+ assert.equal(T.advanceCampaign(s,321).advanced,1);
+ assert.equal(T.plotStatus(s,0,0).state,'ready');
+ assert.equal(T.advanceCampaign(s,321).advanced,0,'Cannot exploit same-day replay');
+ const got=T.harvest(s,0);assert.equal(got.valid,true);
+ assert.equal(s.town.harvest.mint,T.CROPS.mint.yield);
+});
+test('Off-season winter crop takes six missions; replay, optional trials and reloading cannot advance growth',()=>{
+ const s={coins:10000,stars:{502:1},unlocked:503};T.ensure(s);
+ T.purchase(s,'seed','mint');assert(T.plantCampaign(s,0,'mint').valid);
+ const planted=s.town.plots[0];assert.equal(T.Seasons.baseDays('mint',503),6);
+ for(let day=503;day<=507;day++){
+  s.stars[day]=1;s.unlocked=day+1;
+  assert.equal(T.advanceCampaign(s,day).valid,true);
+  assert.notEqual(T.plotStatus(s,0).state,'ready','Still growing after '+(day-502)+' missions');
+  assert.equal(T.advanceCampaign(s,day).advanced,0);
+ }
+ const restored=JSON.parse(JSON.stringify(s));T.ensure(restored);
+ assert.deepEqual(restored.town.plots[0],s.town.plots[0],'Serialized campaign work survives reload');
+ restored.stars[508]=1;restored.unlocked=509;
+ assert.equal(T.advanceCampaign(restored,508).ready,1);
+ assert.equal(T.harvest(restored,0).valid,true);
+});
+test('Fertilizer accelerates off-season mission growth while retaining yield and stock accounting',()=>{
+ const s={coins:10000,stars:{502:1},unlocked:503,town:{houseLevel:30}};T.ensure(s);
+ T.purchase(s,'seed','mint');T.purchase(s,'fertilizer','royal');
+ const planted=T.plantCampaign(s,0,'mint','royal');assert.equal(planted.valid,true);
+ assert.equal(planted.yield,T.CROPS.mint.yield+T.FERTILIZERS.royal.yieldBonus);
+ const before=T.Seasons.forecast('mint',503,null,30).estimatedDays;
+ const after=T.Seasons.forecast('mint',503,T.FERTILIZERS.royal,30).estimatedDays;
+ assert(after<before,'Royal fertilizer reduces mission days at off season');
+ for(let day=503;day<503+after;day++){s.stars[day]=1;T.advanceCampaign(s,day);}
+ assert.equal(T.plotStatus(s,0).state,'ready');
+ assert.equal(T.harvest(s,0).quantity,planted.yield);
+});
+test('Legacy real-time crop timers survive additive campaign save migration',()=>{
+ const old={coins:1000,stars:{4:1},town:{houseLevel:2,plots:[{crop:'carrot',plantedAt:100,readyAt:400,yield:3,fertilizer:null}]}};
+ T.ensure(old);assert.equal(old.town.schemaVersion,2);assert.equal(old.town.plots[0].readyAt,400);
+ assert.equal(T.plotStatus(old,0,399).state!=='ready',true);
+ old.stars[5]=1;T.advanceCampaign(old,5);
+ assert.equal(old.town.plots[0].readyAt,400,'Campaign-day advancement does not overwrite legacy crop clock');
+ assert.equal(T.harvest(old,0,400).quantity,3);
+});
