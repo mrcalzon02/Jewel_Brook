@@ -174,7 +174,7 @@ assert.match(views.screen.innerHTML,/The Opening of Ditches/,'The in-game calend
 assert.match(views.screen.innerHTML,/Ditchfire Supper/,'Festival window is visible during week one');
 click('guide-tab',{tab:'festivals'});
 assert.match(views.screen.innerHTML,/Casked Moon Feast/,'Festival index includes annual observances');
-assert.match(views.screen.innerHTML,/exact day not established/,'Festival index does not invent exact festival days');
+assert.match(views.screen.innerHTML,/no exact day established/,'Festival index does not invent exact festival days');
 click('guide-tab',{tab:'weeks'});
 assert.match(views.screen.innerHTML,/Bridge Oaths/,'Seasonal and political weeks are indexed');
 click('guide-tab',{tab:'calendar'});
