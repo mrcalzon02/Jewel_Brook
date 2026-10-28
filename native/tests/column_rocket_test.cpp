@@ -115,7 +115,13 @@ int main(int argc,char** argv){
     for(const auto& line:lines)converted<<line<<"\n";
     std::stringstream legacy(converted.str());
     Game migrated;
-    assert(migrated.load(legacy));
+    if(!migrated.load(legacy)){
+        // Preserve a concrete failure vector for historical-save debugging.
+        std::cerr<<"RRNATIVE6 migration fixture header tokens="<<fields.size()
+                 <<" tail lines="<<lines.size()<<" bytes="<<converted.str().size()<<"\n"
+                 <<converted.str().substr(0,1800)<<"\n";
+        assert(false && "historical save migration failed");
+    }
     assert(migrated.columnCount==0&&!migrated.claimedColumn);
     assert(migrated.cells==preview.cells);
     std::cout<<"Native Column Rocket: stage 26 unlock, stage 27 use, ice/void/goal integrity and old saves passed\n";
