@@ -1,4 +1,4 @@
-package io.github.mrcalzon02.jewelbrook;
+package io.github.mrcalzon02.rupeerush;
 
 import android.app.Activity;
 import android.app.AlertDialog;
