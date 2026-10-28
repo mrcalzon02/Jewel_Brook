@@ -1,6 +1,6 @@
 (function(root){'use strict';
 /* Gameplay is always offline. Only the trusted Android bridge checks or downloads releases. */
-const RELEASES='https://github.com/mrcalzon02/Rupee-rush/releases';
+const RELEASES='https://github.com/mrcalzon02/Jewel_Brook/releases';
 const api={
  lastStatus:'Signed Android builds check GitHub releases on launch (at most hourly). Download and installation each require your approval.',
  receive(message){api.lastStatus=String(message||'');api.syncStatus();},

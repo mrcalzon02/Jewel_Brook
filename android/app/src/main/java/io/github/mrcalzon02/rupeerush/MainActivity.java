@@ -80,7 +80,7 @@ public final class MainActivity extends Activity {
                 runOnUiThread(() -> {
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-                            "https://github.com/mrcalzon02/Rupee-rush/releases")));
+                            "https://github.com/mrcalzon02/Jewel_Brook/releases")));
                     } catch (ActivityNotFoundException unavailable) {
                         showUpdateStatus("No browser available to open GitHub Releases.");
                     }

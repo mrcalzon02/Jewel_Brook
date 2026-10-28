@@ -1,10 +1,10 @@
-# Jewelbrook
+# Jewel Brook: Heroes of Embryon
 
-**Public game name:** Jewelbrook. The repository, installed Android package, signing identity, save keys, updater endpoints, native executable and release asset filenames deliberately retain their existing Rupee Rush identifiers for update and save compatibility. Do not rename those identifiers as part of public branding.
+**Public game name:** Jewel Brook: Heroes of Embryon (short form: Jewel Brook). The authoritative repository and updater endpoints are `mrcalzon02/Jewel_Brook`. The installed Android package, signing identity, save keys, native executable and release asset filenames deliberately retain their established Rupee Rush identifiers for in-place update and save compatibility. Do not rename those internal identities as part of public branding.
 
 **Deployment targets:** Android phones and Amazon Fire tablets use the existing signed APK. Windows/Linux use a separate **genuine native C++/SDL3 application**, with no packaged browser or JavaScript runtime. Native desktop gameplay parity is in progress. See [Deployment Targets](docs/DEPLOYMENT_TARGETS.md).
 
-**Android APK delivery:** [GitHub-built signed Releases](docs/GITHUB_ANDROID_RELEASES.md) are the normal workflow; no local Android build is needed. [Download APK releases](https://github.com/mrcalzon02/Rupee-rush/releases).
+**Android APK delivery:** [GitHub-built signed Releases](docs/GITHUB_ANDROID_RELEASES.md) are the normal workflow; no local Android build is needed. [Download APK releases](https://github.com/mrcalzon02/Jewel_Brook/releases).
 
 
 **Google Play publication is deferred.** Its separate [future upload-key runbook](docs/GOOGLE_PLAY_NEW_KEYS.md) is not required for the playable GitHub APK channel. No keystores are committed to Git.
@@ -20,7 +20,7 @@ Open `web/index.html` in a browser, or serve the `web/` folder using `python3 -m
 - **Economy loop:** dig ore → unload → refine → craft and sell crystal parcels → buy moves, hearts, boosters, Rupees or Star Gems in the mining exchange.
 - **Shop:** spend earned Rupees or Star Gems to buy lives, moves and boosters with different exchange rates.
 - **Saves:** `rupeerush.save.v1` in localStorage, independent of `nutbuster.v1`. Settings → Advanced Settings → Account Reset has two confirmations.
-- **Monetization:** no real-money payment handler, tracking SDK, cloud account, ad provider, updater or social profile.
+- **Monetization:** no real-money payment handler, tracking SDK, cloud account, ad provider or social profile.
 
 ## Heroes of Embryon — master art direction
 

@@ -28,9 +28,9 @@ import java.util.function.Consumer;
 /** Offline-safe GitHub release discovery with explicit player consent for download and installation. */
 final class RupeeUpdateService implements AutoCloseable {
     private static final String API =
-        "https://api.github.com/repos/mrcalzon02/Rupee-rush/releases?per_page=30";
+        "https://api.github.com/repos/mrcalzon02/Jewel_Brook/releases?per_page=30";
     private static final String RELEASE_PREFIX =
-        "https://github.com/mrcalzon02/Rupee-rush/releases/download/";
+        "https://github.com/mrcalzon02/Jewel_Brook/releases/download/";
     private static final String APK_NAME = "RupeeRush-Android.apk";
     private final Activity activity;
     private final Consumer<String> status;
@@ -265,7 +265,7 @@ final class RupeeUpdateService implements AutoCloseable {
         HttpURLConnection con=(HttpURLConnection)new URL(url).openConnection();
         con.setConnectTimeout(10000); con.setReadTimeout(25000);
         con.setInstanceFollowRedirects(true);
-        con.setRequestProperty("User-Agent", "RupeeRush/0.1 UpdateChecker");
+        con.setRequestProperty("User-Agent", "JewelBrook/0.1 UpdateChecker");
         // APK and manifest are ordinary release assets, not GitHub API JSON.
         con.setRequestProperty("Accept", url.equals(API)
             ? "application/vnd.github+json" : "*/*");
