@@ -127,9 +127,11 @@ int main(int argc,char** argv) {
             if(stage<35)assert(g.activeRoster==std::vector<int>({0,1,2,11}));
             else if(stage<80)assert(g.activeRoster==std::vector<int>({0,1,2,11,18}));
             else assert(g.activeRoster==std::vector<int>({0,1,2,15,((stage-1)/16)%2==0?11:18}));
-            bool opal=false;
-            for(int type:g.cells)if(type==11)opal=true;
-            assert(opal); // gem comes from the Android-authored starting board
+            // Starting board must only contain source-roster gems. Opal
+            // intentionally rotates out when Jade shares expansion slots
+            // with Alexandrite; never invent absent source artwork.
+            for(int type:g.cells)if(type>=0)
+                assert(std::find(g.activeRoster.begin(),g.activeRoster.end(),type)!=g.activeRoster.end());
         }
         if(stage==15){
             int waterAt=-1;
