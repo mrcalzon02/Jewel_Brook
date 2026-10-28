@@ -45,10 +45,10 @@ jobs:
           fi
           test -n "$tag"
           mkdir -p incoming
-          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern 'RupeeRush-Android.apk' --pattern 'SHA256SUMS.txt' --dir incoming
-          test -s incoming/RupeeRush-Android.apk
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --pattern 'Jewel-Brook-Heroes-of-Embryon-Android.apk' --pattern 'SHA256SUMS.txt' --dir incoming
+          test -s incoming/Jewel-Brook-Heroes-of-Embryon-Android.apk
           expected="$(awk 'NR==1 {print $1}' incoming/SHA256SUMS.txt)"
-          actual="$(sha256sum incoming/RupeeRush-Android.apk | cut -d' ' -f1)"
+          actual="$(sha256sum incoming/Jewel-Brook-Heroes-of-Embryon-Android.apk | cut -d' ' -f1)"
           test "$actual" == "$expected"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "Verified published signed APK SHA-256: $actual"
@@ -77,7 +77,7 @@ jobs:
           disable-animations: true
           emulator-boot-timeout: 720
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          script: python3 scripts/capture_android_mining.py incoming/RupeeRush-Android.apk captures
+          script: python3 scripts/capture_android_mining.py incoming/Jewel-Brook-Heroes-of-Embryon-Android.apk captures
       - name: Retain authentic screenshots as a workflow artifact
         if: always()
         uses: actions/upload-artifact@v4

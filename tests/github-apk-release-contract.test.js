@@ -20,6 +20,11 @@ for(const marker of ['push:', 'workflow_dispatch:', ':app:assembleDebug', ':app:
 assert.match(ci,/if: steps\.signer\.outputs\.ready == 'true'/);
 assert.match(ci,/500000000 \+ GITHUB_RUN_NUMBER \* 100 \+ GITHUB_RUN_ATTEMPT/);
 assert.match(ci,/README-DEBUG-UNSTABLE/);
+const screenshots=read('.github/workflows/rupee-rush-android-screenshots.yml');
+const publishedName='Jewel-Brook-Heroes-of-Embryon-Android.apk';
+assert.ok(ci.includes('release/'+publishedName),'Signed release publishes the canonical APK name');
+assert.equal(screenshots.split(publishedName).length-1,4,'Emulator screenshot workflow must download the published APK name at all four call sites');
+assert.doesNotMatch(screenshots,/RupeeRush-Android\.apk/,'Obsolete screenshot APK filename');
 for(const k of ['RUPEE_APK_KEYSTORE_BASE64','RUPEE_APK_STORE_PASSWORD',
  'RUPEE_APK_KEY_ALIAS','RUPEE_APK_KEY_PASSWORD','RUPEE_APK_CERT_SHA256']) {
  assert.ok(script.includes("Set-Secret '"+k+"'"), 'Missing GitHub provisioner secret '+k);
