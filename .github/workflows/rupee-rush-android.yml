@@ -1,4 +1,4 @@
-name: Rupee Rush signed Android APK
+name: Jewelbrook signed Android APK
 on:
   push:
     branches: [main]
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run all Rupee Rush source tests
+      - name: Run all Jewelbrook source tests
         shell: bash
         run: |
           set -euo pipefail
@@ -64,7 +64,7 @@ jobs:
           set -euo pipefail
           if [[ -z "$RUPEE_APK_KEYSTORE_BASE64" || -z "$RUPEE_APK_STORE_PASSWORD" || -z "$RUPEE_APK_KEY_ALIAS" || -z "$RUPEE_APK_KEY_PASSWORD" || -z "$RUPEE_APK_CERT_SHA256" ]]; then
             echo 'ready=false' >> "$GITHUB_OUTPUT"
-            echo '::warning::Signed release is gated until scripts/provision-github-apk-signing.ps1 registers the permanent Rupee Rush key. Debug preview only.'
+            echo '::warning::Signed release is gated until scripts/provision-github-apk-signing.ps1 registers the permanent Jewelbrook key. Debug preview only.'
             exit 0
           fi
           [[ "$RUPEE_APK_KEY_ALIAS" == 'rupeerush-local-apk-v1' ]] || { echo '::error::Wrong signing alias'; exit 1; }
@@ -76,7 +76,7 @@ jobs:
           actual="$(sha256sum "$RUNNER_TEMP/rupee-signing/cert.der" | cut -d' ' -f1)"
           [[ "$actual" == "$RUPEE_APK_CERT_SHA256" ]] || { echo '::error::Wrong signing certificate'; exit 1; }
           echo 'ready=true' >> "$GITHUB_OUTPUT"
-      - name: Assemble and verify signed Rupee Rush APK
+      - name: Assemble and verify signed Jewelbrook APK
         if: steps.signer.outputs.ready == 'true'
         id: release
         shell: bash
@@ -121,4 +121,4 @@ jobs:
         run: |
           set -euo pipefail
           tag="rupeerush-phone-test-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT"
-          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Rupee Rush Android ${{ steps.release.outputs.version }}" --notes 'Persistent-signer offline APK. Install over the previous same-signer Rupee Rush app to retain saves. Do not uninstall first. Development prerelease, independent of Google Play.'
+          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Jewelbrook Android ${{ steps.release.outputs.version }}" --notes 'Persistent-signer offline APK. Install over the previous same-signer Jewelbrook app to retain saves. Do not uninstall first. Development prerelease, independent of Google Play.'
