@@ -1,5 +1,5 @@
 # Encrypt and back up verified ORIGINAL signing identities to a private Google Drive folder.
-# Nut Buster and Rupee Rush reuse one publisher key; ReverieVR has its own key.
+# Nut Buster and Jewelbrook reuse one publisher key; ReverieVR has its own key.
 [CmdletBinding()]
 param(
     [string]$ReverieRoot,
@@ -45,7 +45,7 @@ if (-not (Get-Command age -ErrorAction SilentlyContinue)) { throw 'Install age e
 if (-not $EncryptOnly -and -not (Get-Command rclone -ErrorAction SilentlyContinue)) { throw 'Install rclone and configure your Google Drive remote.' }
 $keytool=Get-Command keytool -ErrorAction SilentlyContinue
 if (-not $keytool) { throw 'JDK keytool is required to verify signing certificates.' }
-# Reverify the pinned original Nut Buster/Rupee Rush signer without mutating anything.
+# Reverify the pinned original Nut Buster/Jewelbrook signer without mutating anything.
 & (Join-Path $PSScriptRoot 'provision-rupee-signing.ps1') | Out-Null
 if (-not $?) { throw 'Nut Buster identity verification failed.' }
 if (-not $SkipReverie) {
@@ -80,7 +80,7 @@ if (Test-Path -LiteralPath $revRecorded -PathType Leaf) {
 }
 }
 $nutFingerprint=[IO.File]::ReadAllText((Join-Path $root 'config/nutbuster-publisher.sha256')).Trim()
-Write-Host "Verified Nut Buster/Rupee Rush: $nutFingerprint"
+Write-Host "Verified Nut Buster/Jewelbrook: $nutFingerprint"
 Write-Host "Verified ReverieVR: $revFingerprint"
 $tag=(Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ') + '-' + [guid]::NewGuid().ToString('N').Substring(0,8)
 $stage=Join-Path $root ('.local/signing-backups/' + $tag)
@@ -106,7 +106,7 @@ foreach ($item in $items) {
 }
 $notes=@"
 Encrypted Android signer recovery. Each AGE file has a prompted passphrase you must store OFFLINE.
-Nut Buster and Rupee Rush share nutbuster-publisher.p12.age and nutbuster-store-password.txt.age.
+Nut Buster and Jewelbrook share nutbuster-publisher.p12.age and nutbuster-store-password.txt.age.
 Canonical Nut Buster Windows location: %USERPROFILE%\.local\share\nutbuster-signing\
 Original ReverieVR Windows checkout location: .local\reverievr-signing\
 Nut Buster publisher cert SHA-256: $nutFingerprint
@@ -131,7 +131,7 @@ if ($LASTEXITCODE -ne 0) { throw "Google Drive copy failed; ciphertext remains l
 & rclone check $stage $target --drive-root-folder-id $DriveFolderId --one-way --checksum --log-level ERROR
 if ($LASTEXITCODE -ne 0) { throw "Remote checksum verification failed. Do NOT count this as a verified backup. Local ciphertext: $stage" }
 if ($SkipReverie) {
-    Write-Warning "PARTIAL BACKUP VERIFIED: Nut Buster/Rupee Rush ciphertext uploaded; ReverieVR NOT backed up. Folder $DriveFolderId / $tag"
+    Write-Warning "PARTIAL BACKUP VERIFIED: Nut Buster/Jewelbrook ciphertext uploaded; ReverieVR NOT backed up. Folder $DriveFolderId / $tag"
 } else {
     Write-Host "VERIFIED both encrypted publisher profiles in Drive folder $DriveFolderId / $tag"
 }

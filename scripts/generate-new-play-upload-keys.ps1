@@ -8,7 +8,7 @@ $ErrorActionPreference='Stop'
 $apps=@(
     [pscustomobject]@{ Name='ReverieVR';Id='reverievr';Package='io.github.mrcalzon02.reverievr';Alias='reverievr-play-upload-v1';Repo='mrcalzon02/ReverieVR' },
     [pscustomobject]@{ Name='Nut Buster';Id='nutbuster';Package='io.github.mrcalzon02.nutbuster';Alias='nutbuster-play-upload-v1';Repo='mrcalzon02/NUTBUSTER-R' },
-    [pscustomobject]@{ Name='Rupee Rush';Id='rupeerush';Package='io.github.mrcalzon02.rupeerush';Alias='rupeerush-play-upload-v1';Repo='mrcalzon02/Rupee-rush' }
+    [pscustomobject]@{ Name='Jewelbrook';Id='rupeerush';Package='io.github.mrcalzon02.rupeerush';Alias='rupeerush-play-upload-v1';Repo='mrcalzon02/Rupee-rush' }
 )
 if (-not $env:LOCALAPPDATA) { throw 'Windows LOCALAPPDATA unavailable. No signing keys generated.' }
 $root=Join-Path $env:LOCALAPPDATA 'Embryon\play-upload-v1'

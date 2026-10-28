@@ -53,7 +53,7 @@ if ($RestoreKeystorePath) {
 }
 $password = Read-Password $passwordFile
 $actual = Assert-OriginalSigner $keystore $password
-Write-Host "Verified Nut Buster/Rupee Rush certificate SHA256: $actual"
+Write-Host "Verified Nut Buster/Jewelbrook certificate SHA256: $actual"
 Write-Host "Existing local signer location: $directory"
 if ($SetGitHubSecrets) {
     $gh = Get-Command gh -ErrorAction SilentlyContinue
@@ -63,7 +63,7 @@ if ($SetGitHubSecrets) {
 
     # GitHub secrets are write-only. Do not silently replace an existing signing lineage.
     $already = @(& $gh.Source secret list --repo $repo --json name --jq '.[].name')
-    if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect existing Rupee Rush secret names.' }
+    if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect existing Jewelbrook secret names.' }
     $clashing = @($already | Where-Object { $_ -match '^PHONE_TEST_(KEYSTORE_BASE64|STORE_PASSWORD|KEY_ALIAS|KEY_PASSWORD)$' })
     if ($clashing.Count -gt 0 -and -not $AllowExistingSecrets) {
         throw 'Signing secret names already exist. Refusing replacement; verify the prior publisher lineage before using -AllowExistingSecrets.'
@@ -105,5 +105,5 @@ if ($SetGitHubSecrets) {
     }
     Write-Host 'Four GitHub signing secret names verified. No build or release triggered.'
 } else {
-    Write-Host 'Original signer verified only; use -SetGitHubSecrets to provision Rupee Rush.'
+    Write-Host 'Original signer verified only; use -SetGitHubSecrets to provision Jewelbrook.'
 }

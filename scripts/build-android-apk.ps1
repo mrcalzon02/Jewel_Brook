@@ -1,5 +1,5 @@
-# Rupee Rush local APK assembler: persistent LOCAL key and monotonic signed updates.
-# Run on Windows PowerShell from the Rupee Rush checkout. No other projects or Play keys touched.
+# Jewelbrook local APK assembler: persistent LOCAL key and monotonic signed updates.
+# Run on Windows PowerShell from the Jewelbrook checkout. No other projects or Play keys touched.
 [CmdletBinding()]
 param([switch]$Install)
 Set-StrictMode -Version Latest
@@ -113,9 +113,9 @@ function Setup-Gradle {
 }
 
 foreach ($asset in @('index.html','game.js','mining.js','style.css','art/embryon/generated/gems/ruby.png','art/primary/blockers/rock.png')) {
-    Require (Join-Path $web $asset) 'Rupee Rush game asset'
+    Require (Join-Path $web $asset) 'Jewelbrook game asset'
 }
-Require (Join-Path $android 'app\build.gradle') 'Rupee Rush Android Gradle project'
+Require (Join-Path $android 'app\build.gradle') 'Jewelbrook Android Gradle project'
 $keytool=Get-Keytool
 if (-not $keytool) { throw 'JDK 17+ keytool missing; install a JDK/Android Studio. No signing key generated.' }
 $env:JAVA_HOME=Split-Path -Parent (Split-Path -Parent $keytool)
@@ -141,12 +141,12 @@ if (-not $existing) {
         if ($LASTEXITCODE -ne 0) { throw 'Local key generation failed. Inspect partial keystore before retrying.' }
         Require $store 'Generated keystore'
         Store-Text $passFile ($secret+[Environment]::NewLine)
-        Write-Host "CREATED permanent Rupee Rush APK key: $store"
+        Write-Host "CREATED permanent Jewelbrook APK key: $store"
     } finally {
         [Environment]::SetEnvironmentVariable('RR_APK_PASSWORD',$old,'Process')
         $secret=$null
     }
-} else { Write-Host "REUSING permanent Rupee Rush APK key: $store" }
+} else { Write-Host "REUSING permanent Jewelbrook APK key: $store" }
 $secret=[IO.File]::ReadAllText($passFile).TrimEnd([char[]]@(13,10))
 if (-not $secret) { throw 'Keystore password is empty; refusing to change identity.' }
 $fingerprint=Cert-Sha $secret
@@ -190,7 +190,7 @@ if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
 $match=[regex]::Match(($check -join [Environment]::NewLine),'Signer #1 certificate SHA-256 digest:\s*([0-9a-fA-F:]+)')
 if (-not $match.Success) { throw 'APK certificate digest missing in apksigner verification.' }
 $actual=$match.Groups[1].Value.Replace(':','').ToLowerInvariant()
-if ($actual -ne $fingerprint) { throw 'APK was not signed with the permanent Rupee Rush key.' }
+if ($actual -ne $fingerprint) { throw 'APK was not signed with the permanent Jewelbrook key.' }
 $badging=@(& $aapt dump badging $built)
 if ($LASTEXITCODE -ne 0) { throw 'Cannot verify packaged Android manifest.' }
 $package=($badging | Where-Object { $_ -match '^package: ' } | Select-Object -First 1)
