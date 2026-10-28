@@ -2,6 +2,8 @@
 (function(root){'use strict';
 const Calendar=typeof module!=='undefined'&&module.exports?require('./elaranth-calendar.js'):root.JewelBrookElaranthCalendar;
 if(!Calendar)throw Error('Missing Elaranth calendar');
+const Observances=typeof module!=='undefined'&&module.exports?require('./elaranth-observances.js'):root.JewelBrookElaranthObservances;
+if(!Observances)throw Error('Missing Elaranth observance catalog');
 const CALENDAR=Object.freeze({name:'Elaranth calendar',months:13,daysPerMonth:28,daysPerYear:364,
  monthNames:Calendar.MONTH_NAMES,weekdays:Calendar.WEEKDAYS,
  epochYear:Calendar.WORKING_ANCHOR.year,epochMonth:1,epochDay:1,
@@ -26,6 +28,8 @@ function trialDay(id,Trials){
 }
 const TABS=Object.freeze([
  Object.freeze({id:'calendar',title:'Calendar'}),
+ Object.freeze({id:'festivals',title:'Festivals'}),
+ Object.freeze({id:'weeks',title:'Seasonal Weeks'}),
  Object.freeze({id:'world',title:'World'}),
  Object.freeze({id:'gems',title:'Gems & Stones'}),
  Object.freeze({id:'crops',title:'Foods & Crops'}),
@@ -36,6 +40,18 @@ const TABS=Object.freeze([
 function catalog(tab,systems,save){
  const {E,Garden,Cook,G,Royal,Chapters}=systems;
  switch(tab){
+ case 'festivals':return Observances.FESTIVALS.map(e=>({
+  name:e.monthName+': '+e.name,
+  detail:'Annual observance during days '+e.start+'–'+e.end+
+   ' (a named festival week; no exact day established). '+
+   (e.flag?Observances.warningFor(e)+' ':'')+
+   ' Source: canonical Elaranth almanac, line '+e.sourceLine+'.'
+ }));
+ case 'weeks':return Observances.WEEKLY.map(e=>({
+  name:e.monthName+' · Week '+Math.floor((e.start-1)/7+1)+': '+e.name,
+  detail:'Recurring civic and seasonal activities, days '+e.start+'–'+e.end+
+   '. Source: canonical Elaranth almanac, line '+e.sourceLine+'.'
+ }));
  case 'world':return [
   {name:'Elaranth',detail:'The nation whose thirteen-month calendar provides the chronology shared by Jewel Brook and the royal stories.'},
   {name:'Embryon',detail:'The kingdom where gem prospectors, growers, cooks, merchants, craftspeople, and the royal household form one living economy.'},
@@ -65,7 +81,8 @@ function catalog(tab,systems,save){
  default:return [];
  }
 }
-const api=Object.freeze({CALENDAR,WIKI_URL,TABS,mainDay,trialDay,catalog,monthsForRange:Calendar.monthsForRange,weeksForRange:Calendar.weeksForRange,civilFromElapsed:Calendar.civilFromElapsed});
+const api=Object.freeze({CALENDAR,WIKI_URL,TABS,mainDay,trialDay,catalog,monthsForRange:Calendar.monthsForRange,weeksForRange:Calendar.weeksForRange,civilFromElapsed:Calendar.civilFromElapsed,observancesForDay:Observances.forDay,
+ monthObservances:Observances.monthOverview,observanceWarning:Observances.warningFor});
 root.JewelBrookWorldGuide=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

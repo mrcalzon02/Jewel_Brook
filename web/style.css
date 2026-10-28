@@ -445,3 +445,10 @@
 .campaign-week-grid .level-marker-art{width:clamp(27px,4.2vw,44px);height:clamp(27px,4.2vw,44px)}
 .campaign-week-grid .level-with-marker small{white-space:nowrap;font-size:10px}
 @media(max-width:440px){.campaign-week-grid{min-width:398px}.campaign-month-tab{font-size:11px}.campaign-bar strong{font-size:12px;text-align:center}.campaign-bar .btn{font-size:10px;padding:7px 5px}}
+
+/* Verified almanac: seasonal weeks, festival windows and exact lunar observances. */
+.guide-observance{border:1px solid #816b9e;border-radius:9px;background:#261e40;padding:9px 11px;display:grid;gap:4px}
+.guide-observance h3{font-size:14px;color:#ffe1a5}
+.guide-observance p{font-size:12px;margin:0;color:#e7dcf1}
+.guide-observance .guide-observance-caveat{font-size:11px;color:#f7d59c}
+.campaign-week .campaign-week-note{font-size:11px;color:#e2cda7;margin:3px 0 6px}

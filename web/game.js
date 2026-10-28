@@ -126,6 +126,7 @@ function chapter(){
  '" aria-pressed="'+(page===i)+'">'+escape(m.name)+' <small>'+m.year+'</small></button>').join('')+'</nav>';
  const contents=weeks.map(w=>{
   const first=Guide.civilFromElapsed(w.firstStage),last=Guide.civilFromElapsed(w.lastStage);
+  const observance=Guide.observancesForDay(w.firstStage);
   const markers=w.levels.map(n=>{
    const date=Guide.mainDay(n),civil=date.civil;
    return '<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+
@@ -136,7 +137,9 @@ function chapter(){
     '<b class="level-marker-number">'+n+'</b><small>'+escape(civil.weekday.slice(0,3))+' '+civil.day+(saved.stars[n]?' · ★'+saved.stars[n]:'')+'</small></button>';
   }).join('');
   return '<section class="campaign-week" aria-label="Week '+w.week+' of '+escape(month.name)+'">'+
-   '<h2>Week '+w.week+' <small>· '+first.day+'–'+last.day+' '+escape(month.name)+'</small></h2>'+
+   '<h2>Week '+w.week+' · '+escape(observance?.week?.name||'Seasonal week')+' <small>· '+first.day+'–'+last.day+' '+escape(month.name)+'</small></h2>'+ 
+  (observance?.festivalWindow?'<p class="campaign-week-note">Festival window: '+escape(observance.festivalWindow.name)+' (day within this week not fixed).</p>':'')+
+  (first.day<=14&&last.day>=14?'<p class="campaign-week-note">Bright Sunder full moon · Hearthday, day 14</p>':'')+
    '<div class="campaign-week-scroll"><div class="level-grid level-marker-grid campaign-week-grid">'+markers+'</div></div></section>';
  }).join('');
  return '<div class="chapter-banner" style="background-image:linear-gradient(90deg,#0b1239e6,#0b12394a),url(\''+c.art+'\')">'+
@@ -187,10 +190,18 @@ function worldGuide(){
  const tabs=Guide.TABS.map(x=>'<button class="guide-tab '+(x.id===guideTab?'selected':'')+'" data-action="guide-tab" data-tab="'+escape(x.id)+'" aria-pressed="'+(x.id===guideTab)+'">'+escape(x.title)+'</button>').join('');
  const catalog=Guide.catalog(guideTab,{E,Garden,Cook,G,Royal,Chapters},saved);
  const date=Guide.mainDay(guideDay);
+ const observances=Guide.observancesForDay(guideDay);
+ const observancePanel=observances?'<section class="guide-observance" aria-label="Civic calendar and lunar observances">'+
+  '<h3>Week '+date.civil.week+' · '+escape(observances.week?.name||'')+'</h3>'+
+  '<p>Seasonal and civic activities span days '+observances.week.start+'–'+observances.week.end+' of '+escape(date.civil.monthName)+'.</p>'+
+  (observances.festivalWindow?'<p><strong>Festival week:</strong> '+escape(observances.festivalWindow.name)+' · Days '+observances.festivalWindow.start+'–'+observances.festivalWindow.end+' (exact day not established).</p>':'')+
+  (observances.fullMoon?'<p><strong>Full moon today:</strong> '+escape(observances.fullMoon.name)+' (Hearthday, day 14).</p>':'')+
+  (observances.festivalWindow?.flag?'<p class="guide-observance-caveat">'+escape(Guide.observanceWarning(observances.festivalWindow))+'</p>':'')+
+  '</section>':'';
  const knownRoyalDays=[...new Set(Royal.EVENTS.filter(e=>e.historicalDay<=1000&&Royal.unlocked(saved,e)).map(e=>e.historicalDay))];
  const calendar=guideTab==='calendar'?
   '<section class="panel guide-day-browser"><h2>'+escape(date.label)+'</h2><p>Expedition stage '+guideDay+' · '+escape(Chapters.forLevel(guideDay)?.title||'Embryon')+'</p>'+
-  '<p><strong>'+escape(date.calendarDate)+'</strong> · '+escape(date.civil.lunar)+' · Week '+date.civil.week+' of '+escape(date.civil.monthName)+'.</p><p>All Elaranthi month and weekday rules are canonical; the 1 Thawcall 282 S.M. wedding is the working history anchor.</p>'+
+  '<p><strong>'+escape(date.calendarDate)+'</strong> · '+escape(date.civil.lunar)+' · Week '+date.civil.week+' of '+escape(date.civil.monthName)+'.</p><p>All Elaranthi month and weekday rules are canonical; the 1 Thawcall 282 S.M. wedding is the working history anchor.</p>'+observancePanel+
   '<div class="guide-controls">'+button('guide-prev','← PREVIOUS DAY','secondary',guideDay===1?'disabled':'')+button('guide-today','CURRENT STAGE','secondary')+button('guide-next','NEXT DAY →','secondary',guideDay===1000?'disabled':'')+'</div>'+ (knownRoyalDays.length?'<div class="guide-day-links" role="group" aria-label="Previously reached royal story days"><strong>Royal story days:</strong>'+knownRoyalDays.map(day=>'<button class="guide-day-link" data-action="guide-day" data-day="'+day+'" title="Review Campaign Day '+day+'" aria-pressed="'+(day===guideDay)+'">Day '+day+'</button>').join('')+'</div>':'')+
   '<p>Each first-time level victory advances the shared citizen and royal timeline by one day. Replays never advance that day twice. Optional elemental trials take place inside this chronology, without adding extra days.</p>'+ (Royal.cleared(saved)>=guideDay?'<div class="guide-date-events"><h3>On this day in Embryon</h3>'+(Royal.eventsOnDay(guideDay).length?Royal.eventsOnDay(guideDay).map(e=>'<p><strong>'+escape(e.title)+'</strong> — '+escape(e.tradeNote)+'</p>').join(''):'<p>Citizens mine, farm, cook and trade while the royal story continues.</p>')+'</div>':'<p>Complete this stage to advance the world to its day and reveal any royal events occurring then.</p>')+'</section>':
   '<div class="guide-entry-list">'+(catalog.length?catalog.map(entry=>
