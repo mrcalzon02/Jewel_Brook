@@ -29,6 +29,19 @@ execute_process(
 if(NOT INTRO_EXPORT_STATUS EQUAL 0)
   message(FATAL_ERROR "Could not export authoritative Android intro campaign")
 endif()
+
+# Build-time Android source vectors for the still-gated stage-125 conveyor.
+# The fixture generator runs the actual engine and board-features.js, not a
+# duplicated approximation; no JS or Node runtime is installed on desktop.
+set(CONVEYOR_FIXTURES "${CMAKE_BINARY_DIR}/conveyor-fixtures.txt")
+execute_process(
+  COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_conveyor_fixtures.js" "${CONVEYOR_FIXTURES}"
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
+  RESULT_VARIABLE CONVEYOR_EXPORT_STATUS
+)
+if(NOT CONVEYOR_EXPORT_STATUS EQUAL 0)
+  message(FATAL_ERROR "Android conveyor source fixture generation failed")
+endif()
 # Convert an already approved runtime Row Rocket asset to a format understood
 # by SDL3's built-in PNG loader; Pillow runs only on the build machine.
 find_package(Python3 COMPONENTS Interpreter REQUIRED)
@@ -191,6 +204,11 @@ add_executable(rupee_chapter_two_tests tests/chapter_two_test.cpp)
 target_link_libraries(rupee_chapter_two_tests PRIVATE rupee_native_logic)
 add_test(NAME native_chapter_two_101_to_124_statuses
     COMMAND rupee_chapter_two_tests "${INTRO_CATALOG}")
+
+add_executable(rupee_conveyor_parity_tests tests/conveyor_parity_test.cpp)
+target_link_libraries(rupee_conveyor_parity_tests PRIVATE rupee_native_logic)
+add_test(NAME native_stage_125_conveyor_source_prerequisite
+    COMMAND rupee_conveyor_parity_tests "${CONVEYOR_FIXTURES}")
 
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
