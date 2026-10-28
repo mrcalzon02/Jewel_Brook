@@ -5,6 +5,10 @@ const path=require('node:path');
 const read=p=>fs.readFileSync(path.join(__dirname,'..',p),'utf8');
 const html=read('web/index.html'),game=read('web/game.js'),css=read('web/style.css');
 const home=game.slice(game.indexOf('function home(){'),game.indexOf('function manor(){'));
+const cssWithoutComments=css.replace(/\/\*[\s\S]*?\*\//g,'');
+let braces=0;
+for(const char of cssWithoutComments){if(char==='{')braces++;else if(char==='}'){braces--;assert.ok(braces>=0,'CSS has an extra closing brace');}}
+assert.equal(braces,0,'Unclosed CSS rule causes mobile layout rules to be ignored');
 assert.match(html, /id="jewelbrook-loading-splash" role="status"/);
 assert.match(html, /class="splash-picture"/);
 assert.match(html, /title-portrait\.webp/);

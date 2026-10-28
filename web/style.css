@@ -22,7 +22,7 @@
 .home-kingdom-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;padding:clamp(15px,3vw,32px);text-align:center}
 .home-brand{width:min(100%,490px);line-height:1.05;margin:0;display:grid;justify-items:center;gap:5px}
 .home-title-wordmark{display:block;max-width:100%;font-family:Georgia,"Times New Roman",serif;font-size:clamp(27px,5.8vw,58px);font-weight:900;letter-spacing:.015em;color:#ffe2a2;text-shadow:0 3px 0 #694031,0 7px 11px #06081ad9,0 0 22px #e8bb68b3}
-.home-title-subtitle{display:block;font-size:clamp(10px,1.8vw,15px);font-weight:900;letter-spacing:.2em;color:#e7eaff;text-shadow:0 2px 8px #040719)
+.home-title-subtitle{display:block;font-size:clamp(10px,1.8vw,15px);font-weight:900;letter-spacing:.2em;color:#e7eaff;text-shadow:0 2px 8px #040719}
 .home-tagline{max-width:35ch;color:#fff6df;font-size:clamp(13px,2.4vw,16px);font-weight:700;line-height:1.4;text-shadow:0 2px 7px #080d27,0 1px 2px #080d27}
 .home-actions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;width:100%}
 .home-actions .btn{font-size:clamp(11px,2vw,13px);min-height:44px;box-shadow:0 5px 10px #070e2db5}
