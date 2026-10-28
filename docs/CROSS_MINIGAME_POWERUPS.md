@@ -1,6 +1,6 @@
 # Active minigame power-up families
 
-Rupee Rush now has **16 original match-3 boosters**, **6 farming consumables**, and **6 mining consumables**. The original match-3 booster stock, level gates and engine are preserved.
+Jewelbrook now has **16 original match-3 boosters**, **6 farming consumables**, and **6 mining consumables**. The original match-3 booster stock, level gates and engine are preserved.
 
 Farming: Sunrise Elixir matures one selected growing plot; Raincaller Bell halves the remaining growth time across all growing plots; Bounty Charm adds two to a ready crop yield; Seed Satchel grants three unlocked crop seeds; Compost Cache gives two unlocked fertilizer units; Festival Cart sells stored harvests for 20 percent more Rupees. These use the original persistent town gardening model. Farming is accessible from Home and the Farm navigation button.
 

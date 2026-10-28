@@ -2,7 +2,7 @@
 
 ## Runtime implementation
 
-Uses the user-approved 192px isolated sprite sheets, not panel crops or newly invented artwork. Sources: six booster/VFX sliced packs and the 160-gem sprite library previously archived in the Rupee Rush Google Drive. Every runtime sprite is its own WebP with original alpha padding and independently verified hashes in `web/art/embryon/runtime/manifest.json`.
+Uses the user-approved 192px isolated sprite sheets, not panel crops or newly invented artwork. Sources: six booster/VFX sliced packs and the 160-gem sprite library previously archived in the Jewelbrook Google Drive. Every runtime sprite is its own WebP with original alpha padding and independently verified hashes in `web/art/embryon/runtime/manifest.json`.
 
 - All **16** existing `RupeeEngine.BOOSTERS` have dedicated high-gloss Embryon icon images rendered on the gameplay board and in the shop. Existing item IDs, prices, unlock gates, effects, achievements and saves stay unchanged.
 - All **16** boosters have mapped effect artwork, together with match, cascade and victory artwork. The game displays each static impact image with a short CSS pulse/fade animation above the board. This is a first-pass functional VFX system, not hand-keyframed frame animation. Visual overlay never receives pointer events or changes gameplay state.

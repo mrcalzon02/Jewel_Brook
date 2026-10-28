@@ -32,4 +32,4 @@ Art approval: concept | revise | approved | integrated | packaged
 **E. Mining:** reuse approved original Nut Buster rocks/pickaxes/gloves, add Embryon-branded surroundings without altering equipment tiers.
 
 ## Stage gates
-Concept → approved reference → isolated production art + alpha inspection → manifest → runtime integration → screenshot verification → commit/push verification → packaged release. Partial work stays marked as partial. Never add a GitHub Actions workflow for an art task. Only the Rupee Rush repository may be changed under this contract.
+Concept → approved reference → isolated production art + alpha inspection → manifest → runtime integration → screenshot verification → commit/push verification → packaged release. Partial work stays marked as partial. Never add a GitHub Actions workflow for an art task. Only the Jewelbrook repository may be changed under this contract.

@@ -1,4 +1,4 @@
-# Rupee Rush — Five chapter runtime integration
+# Jewelbrook — Five chapter runtime integration
 
 This release adds the approved **five-chapter** campaign presentation while preserving the 1,000 seeded match-3 levels and 300 optional elemental trials. Display chapters contain **200 sequential stages each**: Goblin Caves (1–200), Troll Caverns (201–400), Sulfur Sumps (401–600), Mushroom Mire (601–800), Ghost Mines (801–1000). The underlying ten 100-level *difficulty bands* and level-seed identities remain unchanged to protect difficulty scaling, game saves and milestone booster unlocks. Do not treat those internal bands as ten playable chapters.
 

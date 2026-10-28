@@ -1,4 +1,4 @@
-# Rupee Rush Android APK — playable local builds
+# Jewelbrook Android APK — playable local builds
 
 This project builds a directly installable, signed Android APK from the existing web/ game without touching Nut Buster, ReverieVR or Google Play upload keys.
 
@@ -12,13 +12,13 @@ First run: a JDK 17+ is required. The build script searches installed JDK/Androi
 
 ## Permanent signing key and safe updates
 
-Only Rupee Rush's local APK channel uses %LOCALAPPDATA%\Embryon\rupeerush-local-apk-v1\rupeerush-local-release.p12 and store-password.txt. The script generates a new RSA-4096 signing identity once and reuses it thereafter. It refuses to replace a partially missing pair. Back up BOTH secret files privately; losing the original key prevents an in-place APK update.
+Only Jewelbrook's local APK channel uses %LOCALAPPDATA%\Embryon\rupeerush-local-apk-v1\rupeerush-local-release.p12 and store-password.txt. The script generates a new RSA-4096 signing identity once and reuses it thereafter. It refuses to replace a partially missing pair. Back up BOTH secret files privately; losing the original key prevents an in-place APK update.
 
 The Android application ID is always io.github.mrcalzon02.rupeerush. Each successful build increases versionCode, and the output is rejected if apksigner, aapt package/version checks, or embedded assets do not match. Android allows same-ID, same-cert, higher-version updates with application data preserved. Uninstalling wipes locally stored progress. This local APK signing key is NOT a Google Play upload key.
 
 ## Game packaging and offline persistence
 
-android/app/build.gradle packages the entire web/ folder as APK assets. WebViewAssetLoader exposes a local HTTPS origin at https://appassets.androidplatform.net/assets/index.html, not a file:// origin; the game WebView blocks external network traffic and has JavaScript/DOM storage enabled; only the native updater uses Android's INTERNET permission. Rupee Rush's save key is rupeerush.save.v1. The APK must be installed on a physical device to verify actual gameplay and save survival.
+android/app/build.gradle packages the entire web/ folder as APK assets. WebViewAssetLoader exposes a local HTTPS origin at https://appassets.androidplatform.net/assets/index.html, not a file:// origin; the game WebView blocks external network traffic and has JavaScript/DOM storage enabled; only the native updater uses Android's INTERNET permission. Jewelbrook's save key is rupeerush.save.v1. The APK must be installed on a physical device to verify actual gameplay and save survival.
 
 GitHub Actions publishes verified signed test APKs after full test and signing checks. Repository commits alone are not proof of a working APK; inspect the corresponding successful build and verify installation on a device. Keep signing credentials off Git.
 
@@ -28,12 +28,12 @@ The existing all-tests release workflow includes `tests/apk-release-compliance.t
 
 ## Automatic update channel (GitHub test releases)
 
-New signed Rupee Rush APKs include a native update checker copied and adapted from Nut Buster's updater. The check runs on app launch and level entry, at most hourly per running app instance. Settings > Android updates > CHECK FOR UPDATES performs a manual check, and VIEW GITHUB RELEASES opens the browser.
+New signed Jewelbrook APKs include a native update checker copied and adapted from Nut Buster's updater. The check runs on app launch and level entry, at most hourly per running app instance. Settings > Android updates > CHECK FOR UPDATES performs a manual check, and VIEW GITHUB RELEASES opens the browser.
 
-Unlike GitHub's /releases/latest (which skips prereleases), Rupee Rush queries `https://api.github.com/repos/mrcalzon02/Rupee-rush/releases?per_page=30` including prereleases tagged `rupeerush-phone-test-N-N`. Only newer APKs with the expected filename, URL, version scheme, size and SHA-256 digest qualify. Download begins **only after confirmation**. The native service then verifies the downloaded APK checksum, package ID, greater Android versionCode and actual signer certificate against the installed app before separately requesting permission to open Android's system installer. Android requests its own installation approval. The underlying web game remains offline.
+Unlike GitHub's /releases/latest (which skips prereleases), Jewelbrook queries `https://api.github.com/repos/mrcalzon02/Rupee-rush/releases?per_page=30` including prereleases tagged `rupeerush-phone-test-N-N`. Only newer APKs with the expected filename, URL, version scheme, size and SHA-256 digest qualify. Download begins **only after confirmation**. The native service then verifies the downloaded APK checksum, package ID, greater Android versionCode and actual signer certificate against the installed app before separately requesting permission to open Android's system installer. Android requests its own installation approval. The underlying web game remains offline.
 
-The GitHub Actions workflow injects the permanent Rupee Rush signing certificate fingerprint into BuildConfig, after checking the keystore against its secret certificate hash. Local builds use the fingerprint extracted from the reused local keystore. Unsigned/debug builds cannot use the release updater. Neither Nut Buster's signing key nor its package name is reused.
+The GitHub Actions workflow injects the permanent Jewelbrook signing certificate fingerprint into BuildConfig, after checking the keystore against its secret certificate hash. Local builds use the fingerprint extracted from the reused local keystore. Unsigned/debug builds cannot use the release updater. Neither Nut Buster's signing key nor its package name is reused.
 
-**Bootstrap once:** Already-installed Rupee Rush APKs built before this feature have no update checker and cannot update themselves. To start receiving in-app updates, install a new signed Rupee Rush release **over the existing app**, preserving its data. Do not uninstall. If Android blocks the update because the certificate differs, do not uninstall in an attempt to force it; instead inspect the signing identities and recover the matching original APK/key. Approve “Install unknown apps” for Rupee Rush when Android requires it. Connectivity is optional for ordinary offline play.
+**Bootstrap once:** Already-installed Jewelbrook APKs built before this feature have no update checker and cannot update themselves. To start receiving in-app updates, install a new signed Jewelbrook release **over the existing app**, preserving its data. Do not uninstall. If Android blocks the update because the certificate differs, do not uninstall in an attempt to force it; instead inspect the signing identities and recover the matching original APK/key. Approve “Install unknown apps” for Jewelbrook when Android requires it. Connectivity is optional for ordinary offline play.
 
 Android APK release versions on GitHub use `500000000 + run_number * 100 + run_attempt`. A locally built APK with a different version code is not automatically offered to phones via GitHub. Only APKs published in this GitHub prerelease channel appear in update checks.

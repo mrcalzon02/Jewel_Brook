@@ -2,7 +2,7 @@
 
 ## Active integration
 
-Rupee Rush's existing Town economy (`web/town-garden.js`) still owns the save, harvest, plant, fertilizer, house level and crop selling systems. The standalone `web/farming-art.js` registry now loads before gameplay and provides:
+Jewelbrook's existing Town economy (`web/town-garden.js`) still owns the save, harvest, plant, fertilizer, house level and crop selling systems. The standalone `web/farming-art.js` registry now loads before gameplay and provides:
 
 - `harvest(id)`: existing persisted crop `carrot`, `wheat`, `berry` map to refined carrot, wheat and blueberry pictures, respectively. **Do not migrate/rename `berry` save data.**
 - `powerup(id)`: six live farm-mode power-ups map to equipment artwork rather than unrelated old packet placeholders. The market and garden consume the same art lookup.
