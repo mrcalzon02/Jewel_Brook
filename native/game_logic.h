@@ -40,6 +40,9 @@ public:
     std::vector<int> activeRoster{0,1,2};
     // Gem-carried elemental flags: 1 Water, 2 Fire, 3 Ice, 4 Earth, 5 Wind, 6 Lightning.
     std::vector<int> elementals;
+    // Gem-carried Android payloads: 0 none, 1 row, 2 column; hold is a countdown.
+    // These move with type and elemental, never with anchored blocker layers.
+    std::vector<int> specials, holds;
     int waterActivations=0, fireActivations=0, fireDetonations=0;
     // Square-anchored fire auras (0 off, 1 next tick, 2 newly ignited).
     std::vector<int> fireAuras;

@@ -221,6 +221,11 @@ target_link_libraries(rupee_chapter_two_tests PRIVATE rupee_native_logic)
 add_test(NAME native_chapter_two_101_to_124_statuses
     COMMAND rupee_chapter_two_tests "${INTRO_CATALOG}")
 
+add_executable(rupee_payload_state_tests tests/payload_state_test.cpp)
+target_link_libraries(rupee_payload_state_tests PRIVATE rupee_native_logic)
+add_test(NAME native_special_hold_payload_and_legacy_save
+    COMMAND rupee_payload_state_tests "${INTRO_CATALOG}")
+
 add_executable(rupee_conveyor_parity_tests tests/conveyor_parity_test.cpp)
 target_link_libraries(rupee_conveyor_parity_tests PRIVATE rupee_native_logic)
 add_test(NAME native_stage_125_conveyor_source_prerequisite

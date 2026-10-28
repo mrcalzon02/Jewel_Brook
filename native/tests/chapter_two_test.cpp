@@ -120,7 +120,9 @@ int main(int argc,char**argv){
     fields.erase(fields.end()-7,fields.end()-1);
     std::vector<std::string> lines;
     for(std::string line;std::getline(upgraded,line);)lines.push_back(line);
-    assert(lines.size()>=4);
+    assert(lines.size()>=6);
+    // RRNATIVE13 adds special and hold arrays after the old RRNATIVE12 body.
+    lines.erase(lines.end()-2,lines.end());
     lines.erase(lines.end()-4,lines.end()-1);
     std::ostringstream legacy;
     for(const auto& word:fields)legacy<<word<<' ';
