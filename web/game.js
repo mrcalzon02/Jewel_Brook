@@ -693,6 +693,6 @@ function finishStartupSplash(){
  },Math.max(0,splashReadyAt-Date.now()));
 }
 if(document.readyState==='complete')finishStartupSplash();
-else window.addEventListener('load',finishStartupSplash,{once:true});
+else window.addEventListener?.('load',finishStartupSplash,{once:true});
 window.RupeeRushDebug=Object.freeze({getSave:()=>JSON.parse(JSON.stringify(saved)),getPage:()=>page,getChapter:()=>chapterId,activeSnapshot:()=>active?E.snapshot(active):null});
 })();
