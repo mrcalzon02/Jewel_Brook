@@ -117,16 +117,46 @@ for scale in ["window_animation_scale", "transition_animation_scale", "animator_
     adb("shell", "settings", "put", "global", scale, "0")
 adb("install", "-r", str(apk), timeout=180)
 adb("shell", "am", "start", "-W", "-n", pkg + "/.MainActivity", timeout=90)
-wait_for("Jewel Brook", attempts=12)
+time.sleep(3)  # Allow WebView title, assets and the short launch splash to settle.
+try:
+    wait_for("Adventure Menu", attempts=12)
+except AssertionError:
+    # The actual installed APK, not a mock: persist the failed launch evidence.
+    try:
+        screenshot("00-JewelBrook-Launch-Diagnostic.png")
+    except Exception as exc:
+        print("Unable to capture launch diagnostic screenshot:", repr(exc))
+    for name, args in [
+        ("ACTIVITY-DIAGNOSTICS.txt", ("shell", "dumpsys", "activity", "activities")),
+        ("WINDOW-DIAGNOSTICS.txt", ("shell", "dumpsys", "window")),
+        ("LOGCAT-DIAGNOSTICS.txt", ("logcat", "-d", "-t", "400")),
+    ]:
+        try:
+            (out / name).write_bytes(adb(*args, timeout=35))
+        except Exception as exc:
+            print("Unable to capture", name, repr(exc))
+    try:
+        (out / "UI-DIAGNOSTICS.xml").write_bytes(ET.tostring(ui_xml(), encoding="utf-8"))
+    except Exception as exc:
+        print("Unable to capture accessibility tree:", repr(exc))
+    raise
 screenshot("01-JewelBrook-Home.png")
 
 # Tap the real application's Mine navigation control.
 try:
-    tap_text("Mine", exact=True)
+    # Prefer the large accessible in-page button over hard-coded screen pixels.
+    tap_text("ENTER THE MINES")
 except AssertionError:
-    # Bottom navigation: Mine is item 3 of seven, above system navigation.
-    tap(171, 880)
-wait_for("Prism Vale Mines", attempts=10)
+    try:
+        tap_text("Mine", exact=True)
+    except AssertionError:
+        # Last-resort coordinate fallback for 480x960 emulator.
+        tap(171, 880)
+try:
+    wait_for("Prism Vale Mines", attempts=10)
+except AssertionError:
+    screenshot("02-JewelBrook-Mine-Navigation-Diagnostic.png")
+    raise
 screenshot("02-JewelBrook-Mine-Tools.png")
 
 # Capture the actual equipment screen, including imported pickaxe and glove art.
