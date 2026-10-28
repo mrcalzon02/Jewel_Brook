@@ -324,7 +324,7 @@ function settle(){
   else {
    const prev=saved.stars[id]||0,starCount=g.score>=g.cfg.goal*2?3:g.score>=g.cfg.goal*1.35?2:1;
    saved.stars[id]=Math.max(prev,starCount);
-   if(!prev){earned=100+Math.floor(id/5);bonus=id%5===0?2:0;saved.coins+=earned;saved.gems+=bonus;storyNew=Royal.newAt(id);}
+   if(!prev){earned=100+Math.floor(id/5);bonus=id%5===0?2:0;saved.coins+=earned;saved.gems+=bonus;storyNew=Royal.newAt(id);Garden.advanceCampaign(saved,id);}
    saved.unlocked=Math.min(1000,Math.max(saved.unlocked,id+1));
    P.firstClear(saved,id);
   }
@@ -436,19 +436,25 @@ function modePowerCards(family){
   button('use-mode-power',p.targeted?'USE ON SELECTED '+(family==='farm'?'PLOT':'ROCK'):'ACTIVATE','primary','data-power="'+p.id+'" '+(Powerups.count(saved,p.id)<1?'disabled':''))+'</div>').join('')+'</div>';
 }
 function farm(){
- const t=Garden.summary(saved),seeds=Object.values(Garden.CROPS),feeds=Object.values(Garden.FERTILIZERS),time=Date.now();
+ const t=Garden.summary(saved),seeds=Object.values(Garden.CROPS),feeds=Object.values(Garden.FERTILIZERS),time=Date.now(),
+  day=Garden.campaignDay(saved),today=Guide.civilFromElapsed(day),currentSeason=Garden.Seasons.seasonForDay(day);
+ const selectedFeed=farmFeed?Garden.FERTILIZERS[farmFeed]:null;
+ const forecast=c=>Garden.Seasons.forecast(c.id,day,selectedFeed,t.houseLevel);
+ const forecastLabel=c=>{const f=forecast(c);return f.estimatedDays+' mission day'+(f.estimatedDays===1?'':'s')+
+  ' · '+(f.status==='peak'?'PEAK SEASON':f.status==='out-of-season'?'Off-season':'Shoulder season')+
+  ' · Best: '+f.peakMonths.join(' / ');};
  const unlocked=seeds.filter(c=>t.houseLevel>=c.house),categories=['all',...Garden.CATEGORIES.filter(cat=>unlocked.some(c=>c.category===cat))],
   filtered=unlocked.filter(c=>farmCategory==='all'||c.category===farmCategory);
  const cats='<div class="farm-categories" role="group" aria-label="Filter farm crop catalog">'+categories.map(cat=>button('farm-category',(cat==='all'?'All Crops':cat[0].toUpperCase()+cat.slice(1))+' · '+(cat==='all'?unlocked.length:unlocked.filter(c=>c.category===cat).length),farmCategory===cat?'primary':'secondary','data-category="'+cat+'"')).join('')+'</div>';
- const seedSelect=cats+'<div class="farm-seed-grid">'+filtered.map(c=>'<button class="farm-seed-choice '+(farmCrop===c.id?'selected':'')+'" data-action="farm-crop" data-crop="'+c.id+'" aria-pressed="'+(farmCrop===c.id)+'"><img src="'+FarmArt.harvest(c.id)+'" alt="" loading="lazy"><span><strong>'+escape(c.name)+'</strong><small>×'+t.seeds[c.id]+' seeds · '+Math.round(c.growMs/60000)+' min</small><small>Yield '+c.yield+' · '+c.sellEach+' Rupees each</small></span></button>').join('')+'</div>';
+ const seedSelect=cats+'<div class="farm-seed-grid">'+filtered.map(c=>'<button class="farm-seed-choice '+(farmCrop===c.id?'selected':'')+'" data-action="farm-crop" data-crop="'+c.id+'" aria-pressed="'+(farmCrop===c.id)+'"><img src="'+FarmArt.harvest(c.id)+'" alt="" loading="lazy"><span><strong>'+escape(c.name)+'</strong><small>×'+t.seeds[c.id]+' seeds · '+escape(forecastLabel(c))</small><small>Yield '+c.yield+' · '+c.sellEach+' Rupees each</small></span></button>').join('')+'</div>';
  const coming=seeds.filter(c=>c.house>t.houseLevel).sort((a,b)=>a.house-b.house).slice(0,8);
- const unlockPreview=coming.length?'<section class="farm-unlock-preview" aria-label="Upcoming seeds and house levels"><h2 class="subhead">Seed Almanac · Coming Soon</h2><p class="hint">More species become available as your residence improves. These are real future seed unlocks, not shop purchases yet.</p><div class="farm-seed-grid">'+coming.map(c=>'<div class="farm-seed-choice farm-seed-locked"><img src="'+FarmArt.harvest(c.id)+'" alt="" loading="lazy"><span><strong>'+escape(c.name)+'</strong><small>Unlock: House '+c.house+'</small><small>'+escape(c.category)+' · '+Math.round(c.growMs/60000)+' min</small></span></div>').join('')+'</div></section>':'';
+ const unlockPreview=coming.length?'<section class="farm-unlock-preview" aria-label="Upcoming seeds and house levels"><h2 class="subhead">Seed Almanac · Coming Soon</h2><p class="hint">More species become available as your residence improves. These are real future seed unlocks, not shop purchases yet.</p><div class="farm-seed-grid">'+coming.map(c=>'<div class="farm-seed-choice farm-seed-locked"><img src="'+FarmArt.harvest(c.id)+'" alt="" loading="lazy"><span><strong>'+escape(c.name)+'</strong><small>Unlock: House '+c.house+'</small><small>'+escape(c.category)+' · '+escape(forecastLabel(c))</small></span></div>').join('')+'</div></section>':'';
  const feedSelect='<div class="farm-selector">'+button('farm-feed','No Fertilizer',farmFeed===''?'primary':'secondary','data-feed="none"')+
  feeds.filter(f=>t.houseLevel>=f.house).map(f=>button('farm-feed',f.name+' · '+t.fertilizers[f.id],farmFeed===f.id?'primary':'secondary','data-feed="'+f.id+'"')).join('')+'</div>';
  const plots='<div class="farm-grid">'+Array.from({length:8},(_,i)=>t.slots[i]||{state:'locked'}).map((p,i)=>{
   const isSelected=i===farmPlot,which=p.crop&&Garden.CROPS[p.crop],ready=p.state==='ready',
    picture=which?CropGrowth.fromStatus(p):null;
-  const detail=p.state==='empty'?'Available':ready?'READY TO HARVEST':p.state==='locked'?'Locked':p.state.toUpperCase()+' · '+Math.ceil(Math.max(0,p.readyAt-time)/60000)+' min';
+  const detail=p.state==='empty'?'Available':ready?'READY TO HARVEST':p.state==='locked'?'Locked':p.clock==='campaign-day'?p.state.toUpperCase()+' · ~'+p.remainingDays+' mission day'+(p.remainingDays===1?'':'s'):p.state.toUpperCase()+' · '+Math.ceil(Math.max(0,p.readyAt-time)/60000)+' min (legacy crop)';
   const phase=['locked','empty','seed','sprout','growing','maturing','ready'].includes(p.state)?p.state:'empty';
   const bed='<span class="farm-bed-scene state-'+phase+'" aria-hidden="true"><img class="farm-bed-base" src="'+FarmArt.equipment('garden-plot')+'" alt="" loading="lazy">'+
     (picture?'<img class="farm-bed-crop" src="'+picture+'" alt="" loading="lazy" decoding="async">':'')+
@@ -461,7 +467,7 @@ function farm(){
  return '<div class="location-banner location-garden">'+header('Embryon Garden','Grow supplies, expand your homestead, and activate farm-specific power-ups.')+'</div>'+stats()+townHousePanel(t)+
  '<div class="panel"><h2>'+escape(t.houseBand)+' · House '+t.houseLevel+'/40</h2><p>'+t.plots+' growing plots available. House upgrades unlock more crops, fertilizers, and plots.</p>'+
  button('farm-upgrade',t.nextUpgradeCost===null?'FULLY UPGRADED':'UPGRADE HOUSE · '+number(t.nextUpgradeCost)+' RUPEES','secondary',t.nextUpgradeCost===null||saved.coins<t.nextUpgradeCost?'disabled':'')+'</div>'+
- '<h2 class="subhead">Growing Plots · '+unlocked.length+'/'+seeds.length+' crops unlocked</h2><p class="hint">Choose seeds and optional fertilizer, then plant an empty plot. Select a plot before using targeted garden magic.</p>'+
+ '<h2 class="subhead">Growing Plots · '+unlocked.length+'/'+seeds.length+' crops unlocked</h2><p class="hint">Campaign Day '+day+' · '+escape(today?.label||'Wedding Day')+' · '+escape(currentSeason||'Elaranth')+'. Each first-clear match-3 level advances the season and growing plots one day. Peak crops can mature in one day; off-season crops take up to six. Fertilizers and existing power-ups accelerate growth. Replays and optional trials do not advance farm days; existing plants retain their original timers.</p><p class="hint">Choose seeds and optional fertilizer, then plant an empty plot. Select a plot before using targeted garden magic.</p>'+
  seedSelect+feedSelect+plots+unlockPreview+
  '<h2 class="subhead">Buy Seeds &amp; Fertilizer</h2><div class="shop-grid">'+filtered.map(c=>'<div class="shop-item"><img class="powerup-art" src="'+FarmArt.harvest(c.id)+'" loading="lazy" alt=""><strong>'+escape(c.name)+'</strong><small>Unlocks at house '+c.house+' · '+escape(c.category)+'</small><small>Seed stock '+t.seeds[c.id]+' · '+c.seedCost+' Rupees</small>'+
  button('farm-buy-seed','BUY 1','secondary','data-crop="'+c.id+'" data-qty="1" '+(saved.coins<c.seedCost?'disabled':''))+
@@ -591,7 +597,7 @@ function handle(b){
  if(a==='manor-kitchen'){nav('farm');document.getElementById('town-kitchen')?.scrollIntoView?.({block:'start'});return;}
  if(a==='farm-buy-seed')return finishMining(Garden.purchase(saved,'seed',info.crop,Number(info.qty||1)),'Seeds purchased.');
  if(a==='farm-buy-feed')return finishMining(Garden.purchase(saved,'fertilizer',info.feed,1),'Fertilizer purchased.');
- if(a==='farm-plant'){farmPlot=Number(info.plot);return finishMining(Garden.plant(saved,farmPlot,farmCrop,farmFeed||null,now),'New crops planted.');}
+ if(a==='farm-plant'){farmPlot=Number(info.plot);return finishMining(Garden.plantCampaign(saved,farmPlot,farmCrop,farmFeed||null),'New crops planted.');}
  if(a==='farm-harvest'){farmPlot=Number(info.plot);return finishMining(Garden.harvest(saved,farmPlot,now),'Crops harvested.');}
  if(a==='farm-sell'){const qty=Garden.summary(saved).harvest[info.crop];return finishMining(Garden.sell(saved,info.crop,qty),'Harvest sold for Rupees.');}
  if(a==='mine-mode-focus'){mineMode='focus';mineTab='dig';render();return;}
