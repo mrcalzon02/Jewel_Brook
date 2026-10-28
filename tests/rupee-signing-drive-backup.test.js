@@ -17,6 +17,6 @@ assert.match(text,/Rclone\.Rclone/);
 assert.match(text,/--drive-root-folder-id \$DriveFolderId/);
 assert.match(text,/--download --one-way/);
 assert.match(text,/1sAvMvu9prGSUBIg9q5laisgoCmBIY-zT/);
-assert.match(text,/SUCCESS: Encrypted Rupee Rush signing recovery uploaded and verified/);
+assert.match(text,/SUCCESS: Encrypted Jewelbrook signing recovery uploaded and verified/);
 assert.doesNotMatch(text,/-genkeypair|New-SelfSignedCertificate|gh secret set|assembleRelease|gradle -p/);
-console.log('Rupee Rush encrypted signing backup source contracts passed.');
+console.log('Jewelbrook encrypted signing backup source contracts passed.');

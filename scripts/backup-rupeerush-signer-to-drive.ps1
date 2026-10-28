@@ -1,4 +1,4 @@
-# One-time encrypted backup of the CURRENT Rupee Rush publisher key to a private Google Drive folder.
+# One-time encrypted backup of the CURRENT Jewelbrook publisher key to a private Google Drive folder.
 # Run on the Windows PC that holds the original signing key; does not create or rotate keys.
 [CmdletBinding()]
 param(
@@ -119,7 +119,7 @@ if (Test-Path -LiteralPath $pinnedCert -PathType Leaf) {
         throw "Stored signing fingerprint differs from keystore: expected $pin actual $certSha. STOP."
     }
 }
-Write-Host "Verified ORIGINAL Rupee Rush APK signing certificate SHA256: $certSha"
+Write-Host "Verified ORIGINAL Jewelbrook APK signing certificate SHA256: $certSha"
 
 $remote = $DriveRemote + ':'
 $remotes = @(& $rclone listremotes)
@@ -215,7 +215,7 @@ if ($LASTEXITCODE -ne 0) {
     throw "Google Drive ciphertext read-back FAILED. Keep local archive at $stage; do not consider it backed up."
 }
 Write-Host ''
-Write-Host "SUCCESS: Encrypted Rupee Rush signing recovery uploaded and verified in Drive:"
+Write-Host "SUCCESS: Encrypted Jewelbrook signing recovery uploaded and verified in Drive:"
 Write-Host "https://drive.google.com/drive/folders/$DriveFolderId"
 Write-Host "Backup subfolder: $tag"
 Write-Host "Certificate SHA256: $certSha"

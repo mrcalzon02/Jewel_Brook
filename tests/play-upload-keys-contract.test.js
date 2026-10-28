@@ -16,7 +16,7 @@ assert.match(x,/--one-way --checksum/);
 assert.match(x,/PLAY_UPLOAD_KEYSTORE_BASE64/);
 assert.match(x,/\$clashing.Count -gt 0/);
 assert.doesNotMatch(x,/PHONE_TEST_KEYSTORE_BASE64|nutbuster-publisher\.p12|reverievr-phone-test\.keystore/);
-// Play remains an explicit, DEFERRED workflow rather than the Rupee Rush APK default.
+// Play remains an explicit, DEFERRED workflow rather than the Jewelbrook APK default.
 assert.match(s,/provision-github-apk-signing\.ps1/);
 assert.doesNotMatch(s,/generate-new-play-upload-keys\.ps1|Find-Age|winget\.Source/);
 assert.match(x, /if \(\$Name -eq 'age'\)/);

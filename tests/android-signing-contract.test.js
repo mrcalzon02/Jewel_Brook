@@ -27,7 +27,7 @@ assert.match(backup, /age -p -o/);
 assert.match(backup, /rclone check/);
 assert.match(backup, /--one-way --checksum/);
 assert.match(read('.gitignore'), /^\.local\/$/m);
-// Historical signer recovery remains archived. Default entry point now uses new Rupee Rush GitHub APK signing.
+// Historical signer recovery remains archived. Default entry point now uses new Jewelbrook GitHub APK signing.
 assert.match(launcher, /provision-github-apk-signing\.ps1/);
 assert.doesNotMatch(launcher, /provision-rupee-signing\.ps1|backup-android-signing-to-drive\.ps1/);
-console.log('Legacy signing scripts remain archived; default launcher provisions Rupee Rush GitHub APK releases.');
+console.log('Legacy signing scripts remain archived; default launcher provisions Jewelbrook GitHub APK releases.');
