@@ -64,3 +64,18 @@ come from Garrick's established account, not a newly invented month.
 The precise Elaranth month/year and later weekend placements remain
 subject to continuity verification. Both the player and the royal
 family are on those **same** days.
+
+### Downloadable 1,000-day source-derived timeline
+
+[`EMBRYON_LEVEL_TIMELINE.csv`](EMBRYON_LEVEL_TIMELINE.csv) enumerates
+every main stage and its **shared canonical campaign day**, current
+expedition chapter, established royal episode IDs and titles, new
+gem introductions, and tile-overlay introductions. It is derived
+directly from the current playable data, not an independent schedule.
+A blank `elaranth_full_date` means the month/year anchor is **not yet
+established**; it does not mean the campaign day is undated.
+
+To regenerate the ledger after timeline or gameplay changes:
+`node scripts/export-embryon-timeline.js > docs/EMBRYON_LEVEL_TIMELINE.csv`.
+The existing functional diagnostics compare the tracked file to
+this export to prevent stale or silently incorrect dates.
