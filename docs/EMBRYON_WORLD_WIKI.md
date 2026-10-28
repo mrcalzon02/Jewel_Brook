@@ -17,7 +17,7 @@ The Royal Chronicle includes early Daysha and Rome episodes, and original genera
 
 
 ### The calendar and campaign dates
-Elaranth is the nation; Embryon is the setting of Jewel Brook and the shared Daysha–Rome royal story. The Elaranth calendar has **thirteen months**. The definitive list of month names, lengths, leap-day rules, weekdays, epoch and the game's starting calendar date must be sourced from the authoritative Elaranth calendar before converting level numbers to formatted dates. Those details are **not confirmed** in the current game repo.
+Elaranth is the nation; Embryon is the setting of Jewel Brook and the shared Daysha–Rome royal story. The Elaranth calendar is established in the [Home Brew Almanac](https://github.com/mrcalzon02/HB-TTRPG-tools/blob/main/elaranth-almanac.html): 13 months of 28 days each, 364 days per year, and seven named weekdays. Veilday corresponds to Friday and Hearthday to Sunday. The wedding remains provisionally dated to 1 Thawcall 282 S.M. (elapsed Day 0), but the user's **first-Friday-after-the-wedding** rule is canon.
 
 For the existing game, each of the 1,000 main campaign levels has one fixed canonical **campaign-day ordinal**, corresponding to that level number: stage 1 is campaign day 1, and stage 1000 is campaign day 1000. The day number is **the historical day shared by the player and the royal family**, not the device date. First clearing each main stage advances the entire world's story by exactly one day. Replaying a cleared stage does not repeat or advance that day. A month/year conversion is only made once the authoritative calendar anchor is known.
 
@@ -52,18 +52,11 @@ The authoritative playable gemstone roster, exclusions and exact introduction mi
 
 **Canon safety:** The same campaign-day ordinal applies to the player and to the royal story. An event assigned to Level N occurs on that day. Exact month, weekday and year labels need the verified Elaranth calendar epoch. Any apparent discrepancy between previously written Friday/Sunday references and game day positions must be reconciled against canon before assigning a named weekday. Elemental gown unlocks are discoveries, not separate, independently dated royal purchases.
 
-### Atelier visit chronology — established relative days
+### Atelier visit chronology — calendar-aligned opening
 
-The first Gilded Spindle Friday purchases happen on **Campaign Day 1**.
-The following Sunday is **Day 3**. The following Friday, including the
-boxed-dress procession with Master Garrick Vellmont, is **Day 8**.
-The existing first-birthday placement is **Day 33**; the next Friday
-purchase is **Day 36** and the subsequent Sunday is **Day 38**.
-The first three visits' relative weekdays and the same-day departure
-come from Garrick's established account, not a newly invented month.
-The precise Elaranth month/year and later weekend placements remain
-subject to continuity verification. Both the player and the royal
-family are on those **same** days.
+The first Gilded Spindle visit occurs on the **first Veilday (Friday) after Daysha and Rome's wedding**. With the wedding's working placement on Crownday, 1 Thawcall 282 S.M. (elapsed Day 0), her first two gowns are acquired on **Level/Day 4 — Veilday, 5 Thawcall**. The optional pink gown is **Day 6 — Hearthday, 7 Thawcall**. The following Friday purchases and boxed-dress departure occur together on **Day 11 — Veilday, 12 Thawcall**. The Friday visits are seven days apart.
+
+The existing Day 33 birthday scene is a provisional authoring placement; its subsequent first Friday is **Day 39**, its Sunday purchase **Day 41**, and the next Friday **Day 46**. The precise birthday and later royal visit dates are not inferred from generic art or manufactured invoices. All dates use the *working* wedding-day alignment.
 
 ### Downloadable 1,000-day source-derived timeline
 
@@ -72,10 +65,13 @@ every main stage and its **shared canonical campaign day**, current
 expedition chapter, established royal episode IDs and titles, new
 gem introductions, and tile-overlay introductions. It is derived
 directly from the current playable data, not an independent schedule.
-A blank `elaranth_full_date` means the month/year anchor is **not yet
-established**; it does not mean the campaign day is undated.
+The `elaranth_full_date` column now gives the weekday, month and year for all 1,000 stages, with `working-wedding-anchor` recorded separately as its authority status.
 
 To regenerate the ledger after timeline or gameplay changes:
 `node scripts/export-embryon-timeline.js > docs/EMBRYON_LEVEL_TIMELINE.csv`.
 The existing functional diagnostics compare the tracked file to
 this export to prevent stale or silently incorrect dates.
+
+### Month-based level map
+
+Chapters retain their original 200-level boundaries, progression, save identities and approved level crests. Each chapter is browsed by the **actual Elaranthi month**, subdivided into four labeled seven-day weeks. The opening Thawcall includes Levels **1–27** because the wedding is Day 0; Seedwake begins with Level **28**. A chapter boundary may fall within a month; the same month then continues inside the next chapter, without repeating or changing any level.

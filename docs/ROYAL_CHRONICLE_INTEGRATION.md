@@ -68,3 +68,9 @@ no unplayed story titles are shown. The in-game calendar now offers direct
 buttons to previously completed royal event days, including multiple events
 sharing the same day. The chapter-stage controls still launch the original
 gameplay unchanged. No art replacement, save migration, or cosmetic CI check.
+
+## Imported Elaranth calendar and month navigation
+
+Authoritative calendar: [HB-TTRPG-tools Almanac](https://github.com/mrcalzon02/HB-TTRPG-tools/blob/main/elaranth-almanac.html), thirteen 28-day months, seven-day weeks and a 364-day year. **Day 0 = working wedding on Crownday, 1 Thawcall 282 S.M.** The user explicitly confirmed that Daysha's first gown visit is the **first Friday after her wedding**. Calendar-aligned events: Day 4 (Veilday 5 Thawcall), Day 6 (Hearthday 7 Thawcall), Day 11 (Veilday 12 Thawcall; purchase and departure same day). The inherited birthday Day 33 is only a working story position; following Friday, Sunday and Friday fall on Days 39, 41 and 46.
+
+Five unchanged 200-level chapters now have month tabs and week rows, with the original global stage number, full civil-date hover/accessibility label, established marker artwork and unlock behavior. The first Thawcall has 27 playable stages due to Day 0 being the wedding. Later month boundaries continue across chapter borders. The game, Royal Chronicle and source-derived 1,000-row CSV now use the same calendar converter and working-anchor status. Functional tests verify date arithmetic, stage preservation and month navigation. No cosmetic release tests were introduced.

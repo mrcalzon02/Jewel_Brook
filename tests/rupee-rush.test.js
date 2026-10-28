@@ -153,6 +153,21 @@ click('guide-tab',{tab:'dishes'});
 assert.match(views.screen.innerHTML,/Hawseed Garden Salad/);
 click('guide-tab',{tab:'gems'});
 assert.match(views.screen.innerHTML,/Sapphire/);
+navigate('campaign');
+click('open-chapter',{chapter:1});
+assert.match(views.screen.innerHTML,/Thawcall 282 S\.M\./,'First chapter opens in Thawcall');
+assert.match(views.screen.innerHTML,/Week 1/,'Level map contains week rows');
+assert.match(views.screen.innerHTML,/Level 4, Veilday, 5 Thawcall, 282 S\.M\./,'First Friday is level four');
+assert.match(views.screen.innerHTML,/data-level="27"/,'Thawcall ends at level 27');
+click('campaign-next');
+assert.match(views.screen.innerHTML,/Seedwake 282 S\.M\./,'Second month is Seedwake');
+assert.match(views.screen.innerHTML,/data-level="28"/,'Seedwake begins at level 28');
+click('campaign-prev');
+assert.match(views.screen.innerHTML,/Thawcall 282 S\.M\./);
+click('campaign-month',{month:1});
+assert.match(views.screen.innerHTML,/Seedwake 282 S\.M\./,'Direct month navigation works');
+navigate('home');
+
 
 assert.equal(Royal.EVENTS.length,19,'The source royal chronicle is registered');
 assert.equal(Royal.ART.length,13,'The previous approved royal gallery remains unchanged');
