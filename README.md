@@ -62,9 +62,9 @@ Functional checks (Node.js) are in `tests/`. The signed Android release workflow
 
 **Do not rename these casually** even though public branding is Jewel Brook:
 
-- Android package ID and Java namespace: `io.github.mrcalzon02.rupeerush`.
+- Android package ID and Java namespace: `io.github.mrcalzon02.jewelbrook`.
 - Permanent sideload signing identity/certificate, update version progression and local save key `rupeerush.save.v1`.
-- Android update asset `Jewel-Brook-Heroes-of-Embryon-Android.apk` and prerelease tag convention `rupeerush-phone-test-<run>-<attempt>`; the signed updater validates them.
+- Android update asset `Jewel-Brook-Heroes-of-Embryon-Android.apk` and prerelease tag convention `jewelbrook-phone-test-<run>-<attempt>`; the signed updater validates them.
 - Native existing save location `SDL_GetPrefPath("RupeeRush","RupeeRushDesktop")` and compatible save formats.
 - Stable internal APIs, asset paths and some historical workflow/test names where renaming them adds risk rather than user value.
 

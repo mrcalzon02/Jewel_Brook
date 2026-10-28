@@ -39,7 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$EVENT_NAME" == workflow_run ]]; then
-            tag="rupeerush-phone-test-$SOURCE_RUN_NUMBER-$SOURCE_RUN_ATTEMPT"
+            tag="jewelbrook-phone-test-$SOURCE_RUN_NUMBER-$SOURCE_RUN_ATTEMPT"
           else
             tag="$RELEASE_TAG_INPUT"
           fi

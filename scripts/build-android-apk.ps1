@@ -194,7 +194,7 @@ if ($actual -ne $fingerprint) { throw 'APK was not signed with the permanent Jew
 $badging=@(& $aapt dump badging $built)
 if ($LASTEXITCODE -ne 0) { throw 'Cannot verify packaged Android manifest.' }
 $package=($badging | Where-Object { $_ -match '^package: ' } | Select-Object -First 1)
-if ($package -notmatch "name='io.github.mrcalzon02.rupeerush'" -or
+if ($package -notmatch "name='io.github.mrcalzon02.jewelbrook'" -or
     $package -notmatch ("versionCode='"+$code+"'")) { throw "Wrong packaged app/version: $package" }
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $zip=[IO.Compression.ZipFile]::OpenRead($built)
@@ -210,7 +210,7 @@ $null=New-Item -ItemType Directory -Force -Path $outDir
 $dest=Join-Path $outDir 'Jewel-Brook-Heroes-of-Embryon-Android.apk'
 Copy-Item -LiteralPath $built -Destination $dest -Force
 $metadata=[ordered]@{
-    packageId='io.github.mrcalzon02.rupeerush';versionCode=$code
+    packageId='io.github.mrcalzon02.jewelbrook';versionCode=$code
     signingCertificateSha256=$fingerprint
     apkSha256=(Get-FileHash -LiteralPath $dest -Algorithm SHA256).Hash.ToLowerInvariant()
     channel='local-signed-apk'
@@ -218,7 +218,7 @@ $metadata=[ordered]@{
 Store-Text (Join-Path $outDir 'Jewel-Brook-Heroes-of-Embryon-Android-build.json') ($metadata | ConvertTo-Json -Depth 5)
 Store-Text $sequence ("$code"+[Environment]::NewLine)
 Write-Host "SIGNED APK VERIFIED: $dest"
-Write-Host "versionCode $code | package io.github.mrcalzon02.rupeerush | signer $fingerprint"
+Write-Host "versionCode $code | package io.github.mrcalzon02.jewelbrook | signer $fingerprint"
 if ($Install) {
     $adb=Join-Path $sdk 'platform-tools\adb.exe'
     Require $adb 'Android device installer adb'

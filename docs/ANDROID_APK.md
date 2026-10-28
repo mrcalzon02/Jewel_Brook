@@ -10,11 +10,11 @@ Output: release\Jewel-Brook-Heroes-of-Embryon-Android.apk, plus an audit metadat
 
 First run: a JDK 17+ is required. The build script searches installed JDK/Android Studio installations, downloads a pinned Gradle 9.6.1 distribution with SHA-256 verification, and installs missing Android command-line SDK tools, API 36 and build-tools 36.0.0 from Google. An Android SDK license prompt may appear.
 
-## Permanent signing key and safe updates
+## Permanent signing key and new-identity updates
 
-Only Jewelbrook's local APK channel uses %LOCALAPPDATA%\Embryon\rupeerush-local-apk-v1\rupeerush-local-release.p12 and store-password.txt. The script generates a new RSA-4096 signing identity once and reuses it thereafter. It refuses to replace a partially missing pair. Back up BOTH secret files privately; losing the original key prevents an in-place APK update.
+Jewel Brook's local APK signing channel uses %LOCALAPPDATA%\Embryon\rupeerush-local-apk-v1\rupeerush-local-release.p12 and store-password.txt. The script generates a new RSA-4096 signing identity once and reuses it thereafter. It refuses to replace a partially missing pair. Back up BOTH secret files privately; losing the original key prevents an in-place APK update.
 
-The Android application ID is always io.github.mrcalzon02.rupeerush. Each successful build increases versionCode, and the output is rejected if apksigner, aapt package/version checks, or embedded assets do not match. Android allows same-ID, same-cert, higher-version updates with application data preserved. Uninstalling wipes locally stored progress. This local APK signing key is NOT a Google Play upload key.
+The Android application ID is always io.github.mrcalzon02.jewelbrook. Each successful build increases versionCode, and the output is rejected if apksigner, aapt package/version checks, or embedded assets do not match. Android allows same-ID, same-cert, higher-version updates with application data preserved. Uninstalling wipes locally stored progress. This local APK signing key is NOT a Google Play upload key.
 
 ## Game packaging and offline persistence
 
@@ -30,7 +30,7 @@ The existing all-tests release workflow includes `tests/apk-release-compliance.t
 
 New signed Jewelbrook APKs include a native update checker copied and adapted from Nut Buster's updater. The check runs on app launch and level entry, at most hourly per running app instance. Settings > Android updates > CHECK FOR UPDATES performs a manual check, and VIEW GITHUB RELEASES opens the browser.
 
-Unlike GitHub's /releases/latest (which skips prereleases), Jewelbrook queries `https://api.github.com/repos/mrcalzon02/Jewel_Brook/releases?per_page=30` including prereleases tagged `rupeerush-phone-test-N-N`. Only newer APKs with the expected filename, URL, version scheme, size and SHA-256 digest qualify. Download begins **only after confirmation**. The native service then verifies the downloaded APK checksum, package ID, greater Android versionCode and actual signer certificate against the installed app before separately requesting permission to open Android's system installer. Android requests its own installation approval. The underlying web game remains offline.
+Unlike GitHub's /releases/latest (which skips prereleases), Jewelbrook queries `https://api.github.com/repos/mrcalzon02/Jewel_Brook/releases?per_page=30` including prereleases tagged `jewelbrook-phone-test-N-N`. Only newer APKs with the expected filename, URL, version scheme, size and SHA-256 digest qualify. Download begins **only after confirmation**. The native service then verifies the downloaded APK checksum, package ID, greater Android versionCode and actual signer certificate against the installed app before separately requesting permission to open Android's system installer. Android requests its own installation approval. The underlying web game remains offline.
 
 The GitHub Actions workflow injects the permanent Jewelbrook signing certificate fingerprint into BuildConfig, after checking the keystore against its secret certificate hash. Local builds use the fingerprint extracted from the reused local keystore. Unsigned/debug builds cannot use the release updater. Neither Nut Buster's signing key nor its package name is reused.
 
@@ -38,6 +38,8 @@ The GitHub Actions workflow injects the permanent Jewelbrook signing certificate
 
 Android APK release versions on GitHub use `500000000 + run_number * 100 + run_attempt`. A locally built APK with a different version code is not automatically offered to phones via GitHub. Only APKs published in this GitHub prerelease channel appear in update checks.
 
-### Public APK filename migration
+## Jewel Brook independent Android identity (2026-10-28)
 
-Signed downloads and local builds now use `Jewel-Brook-Heroes-of-Embryon-Android.apk`. The Android package ID, keystore alias, trusted certificate fingerprint and historic release-tag scheme remain unchanged. An already-installed updater that recognizes only the former asset filename may require one **manual in-place** installation of the newly named APK to migrate. Do not uninstall: the established signing identity remains mandatory for existing save continuity.
+The app's public installed package is `io.github.mrcalzon02.jewelbrook`, not `io.github.mrcalzon02.rupeerush`. This deliberately **breaks in-place Android compatibility** with older Rupee Rush installs. Both apps may coexist, but their private data is separated and old saves do not automatically transfer. The internal `rupeerush.save.v1` key remains harmless inside each isolated app sandbox.
+
+The permanent signing certificate, SHA-256 verification, keystore secret names and alias `rupeerush-local-apk-v1` are retained. A new certificate is **not required** when the visible name or package ID changes. New GitHub test releases use `jewelbrook-phone-test-N-N` and APK asset `Jewel-Brook-Heroes-of-Embryon-Android.apk`. The signed updater verifies the new package and its signer. No automatic save migration is claimed.

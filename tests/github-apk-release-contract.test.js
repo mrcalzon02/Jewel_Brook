@@ -18,6 +18,10 @@ for(const marker of ['push:', 'workflow_dispatch:', ':app:assembleDebug', ':app:
  assert.ok(ci.includes(marker), 'Missing cloud APK component '+marker);
 }
 assert.match(ci,/if: steps\.signer\.outputs\.ready == 'true'/);
+assert.match(ci,/jewelbrook-phone-test-/);
+assert.doesNotMatch(ci,/tag="rupeerush-phone-test-/);
+assert.match(ci,/name='io\.github\.mrcalzon02\.jewelbrook'/);
+assert.match(read('.github/workflows/rupee-rush-android-screenshots.yml'),/jewelbrook-phone-test-/);
 assert.match(ci,/500000000 \+ GITHUB_RUN_NUMBER \* 100 \+ GITHUB_RUN_ATTEMPT/);
 assert.match(ci,/README-DEBUG-UNSTABLE/);
 const screenshots=read('.github/workflows/rupee-rush-android-screenshots.yml');

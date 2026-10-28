@@ -8,7 +8,7 @@ Push updates to main through GitKraken. GitHub runs all project tests, compiles 
 
 https://github.com/mrcalzon02/Jewel_Brook/releases
 
-Download RupeeRush-Android.apk and install over an older Jewelbrook APK with the same signer. Do not uninstall first if you want to keep localStorage saves. Version codes are monotonically increasing per successful new GitHub workflow run. Package identity is io.github.mrcalzon02.rupeerush.
+Download Jewel-Brook-Heroes-of-Embryon-Android.apk as the NEW independent Jewel Brook application. Older Rupee Rush packages are separate apps; this APK does not update or automatically import their private data. Version codes are monotonically increasing per successful new GitHub workflow run. Package identity is io.github.mrcalzon02.jewelbrook.
 
 ## One-time permanent signer enrollment
 
@@ -28,6 +28,7 @@ GitHub still builds a disposable debug APK artifact at https://github.com/mrcalz
 
 scripts/build-android-apk.ps1 remains an optional advanced manual path that uses the same signer. It is NOT required for ordinary Jewelbrook builds or releases. Google Play app-signing enrollment is separate and deferred.
 
-**Updater migration:** Signed APKs built before the GitHub repository rename hardcode the former repository address and strictly validate release asset URLs. Redirects alone may not make those older update checkers accept assets at the new location. If an installed build does not offer the next Jewel Brook update, download the current signed `RupeeRush-Android.apk` from the new releases page and install it **over** the existing app with the same publisher certificate and a higher versionCode. Do not uninstall; this preserves existing local saves. Once updated, the packaged updater checks `mrcalzon02/Jewel_Brook` directly.
+**New Android package and update channel:** Jewel Brook uses `io.github.mrcalzon02.jewelbrook` and `jewelbrook-phone-test-N-N`. Old Rupee Rush installations use a different app identity/channel, and do not receive Jewel Brook upgrades. The original permanent signing certificate is retained across new Jewel Brook releases; changing the app name does not require rotating the certificate. No automatic save transfer occurs.
+
 
 The GitHub source commit alone does not prove a runner successfully built or published a signed APK. Verify the Actions result and installation on your phone.

@@ -18,7 +18,10 @@ assert.match(activity,/https:\/\/github\.com\/mrcalzon02\/Jewel_Brook\/releases/
 assert.doesNotMatch(activity,/mrcalzon02\/Rupee-rush/,'Native release browsing must use the new repository');
 assert.match(read('web/update.js'),/https:\/\/github\.com\/mrcalzon02\/Jewel_Brook\/releases/);
 assert.doesNotMatch(read('web/update.js'),/mrcalzon02\/Rupee-rush/);
-assert.match(service,/\^rupeerush-phone-test-/);
+assert.match(service,/\^jewelbrook-phone-test-/);
+assert.doesNotMatch(service,/\^rupeerush-phone-test-/,'New channel excludes legacy app');
+assert.match(workflow,/jewelbrook-phone-test-/);
+assert.match(gradle,/applicationId 'io\.github\.mrcalzon02\.jewelbrook'/);
 assert.doesNotMatch(service,/LATEST_MANIFEST|optBoolean\("prerelease", false\)/,'Prereleases must be included in update checks');
 assert.match(service,/500_000_000L \+ run \* 100L \+ attempt/);
 assert.match(service,/Jewel-Brook-Heroes-of-Embryon-Android\.apk/);

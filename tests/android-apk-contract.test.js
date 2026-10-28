@@ -30,7 +30,9 @@ const ignore=read('.gitignore');
 
 assert.match(settings,/include ':app'/);
 assert.match(rootGradle,/com\.android\.application/);
-assert.match(gradle,/applicationId 'io\.github\.mrcalzon02\.rupeerush'/);
+assert.match(gradle,/applicationId 'io\.github\.mrcalzon02\.jewelbrook'/);
+assert.doesNotMatch(gradle,/applicationId 'io\.github\.mrcalzon02\.rupeerush'/,'New app must not replace old installed package');
+assert.match(gradle,/namespace 'io\.github\.mrcalzon02\.rupeerush'/,'Internal Java namespace stays stable');
 assert.match(gradle,/assets\.srcDirs = \[rootProject\.file\('\.\.\/web'\)\]/);
 assert.match(gradle,/rupeerush-local-apk-v1/);
 assert.match(gradle,/requirePermanentLocalSigner/);

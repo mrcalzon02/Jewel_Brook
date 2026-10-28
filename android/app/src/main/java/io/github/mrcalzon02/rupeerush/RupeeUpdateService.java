@@ -1,4 +1,4 @@
-package io.github.mrcalzon02.rupeerush;
+package io.github.mrcalzon02.jewelbrook;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -105,7 +105,7 @@ final class RupeeUpdateService implements AutoCloseable {
             if (entry == null || entry.optBoolean("draft", true)) continue;
             String tag = entry.optString("tag_name", "");
             java.util.regex.Matcher tagMatch = java.util.regex.Pattern
-                .compile("^rupeerush-phone-test-([0-9]+)-([0-9]+)$").matcher(tag);
+                .compile("^jewelbrook-phone-test-([0-9]+)-([0-9]+)$").matcher(tag);
             if (!tagMatch.matches()) continue;
             long run, attempt;
             try {

@@ -114,7 +114,7 @@ jobs:
           "$ANDROID_SDK_ROOT/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$apk" | tee "$RUNNER_TEMP/certificate.txt"
           grep -Fi "Signer #1 certificate SHA-256 digest: $RUPEE_APK_CERT_SHA256" "$RUNNER_TEMP/certificate.txt"
           "$ANDROID_SDK_ROOT/build-tools/36.0.0/aapt" dump badging "$apk" | tee "$RUNNER_TEMP/package.txt"
-          grep -F "name='io.github.mrcalzon02.rupeerush'" "$RUNNER_TEMP/package.txt"
+          grep -F "name='io.github.mrcalzon02.jewelbrook'" "$RUNNER_TEMP/package.txt"
           grep -F "versionCode='$version'" "$RUNNER_TEMP/package.txt"
           for a in assets/index.html assets/game.js assets/update.js assets/mining.js assets/style.css; do
             unzip -Z -1 "$apk" | grep -Fx "$a"
@@ -122,7 +122,7 @@ jobs:
           mkdir -p release
           cp "$apk" release/Jewel-Brook-Heroes-of-Embryon-Android.apk
           sha256sum release/Jewel-Brook-Heroes-of-Embryon-Android.apk > release/SHA256SUMS.txt
-          printf '{"commit":"%s","versionCode":%s,"package":"io.github.mrcalzon02.rupeerush","signerSha256":"%s"}\n' "$GITHUB_SHA" "$version" "$RUPEE_APK_CERT_SHA256" > release/BUILD-EVIDENCE.json
+          printf '{"commit":"%s","versionCode":%s,"package":"io.github.mrcalzon02.jewelbrook","signerSha256":"%s"}\n' "$GITHUB_SHA" "$version" "$RUPEE_APK_CERT_SHA256" > release/BUILD-EVIDENCE.json
           echo "version=$version" >> "$GITHUB_OUTPUT"
       - name: Upload verified signed build
         if: steps.signer.outputs.ready == 'true'
@@ -137,5 +137,5 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          tag="rupeerush-phone-test-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT"
+          tag="jewelbrook-phone-test-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT"
           gh release create "$tag" release/Jewel-Brook-Heroes-of-Embryon-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Jewel Brook: Heroes of Embryon Android ${{ steps.release.outputs.version }}" --notes 'Native GitHub updater enabled in signed builds. Downloads and installations require player consent. To bootstrap on an older app, install this APK once over the currently installed same-signer package. Do not uninstall; retain local saves.'

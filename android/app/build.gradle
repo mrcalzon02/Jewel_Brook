@@ -18,11 +18,12 @@ if (versionNumber < 1 || versionNumber > 2100000000) {
 
 android {
     buildFeatures { buildConfig true }
+    // Internal Java/BuildConfig namespace is not the external Android install identity.
     namespace 'io.github.mrcalzon02.rupeerush'
     compileSdk 36
 
     defaultConfig {
-        applicationId 'io.github.mrcalzon02.rupeerush'
+        applicationId 'io.github.mrcalzon02.jewelbrook'
         minSdk 26
         targetSdk 36
         versionCode versionNumber
