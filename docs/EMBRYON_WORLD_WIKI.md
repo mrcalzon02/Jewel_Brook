@@ -3,6 +3,19 @@
 
 This is a public reference to established game data, **not** a source of newly invented historical dates. The same material is available in-game under **WORLD GUIDE** without a network connection.
 
+### Project implementation and publication status
+
+**Jewel Brook: Heroes of Embryon** is the current game title; **Rupee Rush** is a retired public title. The live source and prerelease downloads are hosted at [mrcalzon02/Jewel_Brook](https://github.com/mrcalzon02/Jewel_Brook). This world reference describes the **broader Android/offline-web gameplay**, not a claim that every system is present in the experimental Windows/Linux native port. As presently implemented, that C++/SDL3 port covers the first 124 source-authored expedition levels and selected core mechanics; farming, cooking, world-guide reading, the Royal Chronicle and much of the remaining game are not ported to desktop.
+
+The working kingdom is not decorative background: the player can run existing mining/refining, cultivate an actual garden, upgrade a **40-level residence**, enter Manor navigation, cook recipes from harvested ingredients, and use the shop/exchange. The Town character art currently depicts Daysha, while the **narrative role of the citizen player is separate from the queen's royal deeds**; do not credit royal history to player transactions. Functional features and artwork completion are distinct: some residence and Manor illustrations remain **preview assets awaiting final owner-approved art**.
+
+This repository also tracks [versioned Wiki source pages](../wiki/Home.md) describing [gameplay systems](../wiki/Gameplay-Systems.md), [supported platforms](../wiki/Platforms-and-Updates.md), [story canon](../wiki/World-and-Story.md) and [development limitations](../wiki/Development-Status.md). They are not automatically synchronized to the separate GitHub Wiki service.
+
+### The Royal Chronicle and original artwork
+
+The Royal Chronicle includes early Daysha and Rome episodes, and original generated images are carefully gated to their supported story or elemental trial milestones. **Ten original elemental gown illustrations** are source-verified and packaged, but their trial reveals are not assertions about when Daysha bought the dresses. A further set of generated atelier illustrations has recorded source identities; some original image bytes are still pending recovery. Never replace them with user-supplied third-party dress references or invented lookalikes. See [the Chronicle integration](ROYAL_CHRONICLE_INTEGRATION.md) and [original generated illustration inventory](DAYSHA_GENERATED_IMAGE_SORTING.md).
+
+
 ### The calendar and campaign dates
 Elaranth is the nation; Embryon is the setting of Jewel Brook and the shared Daysha–Rome royal story. The Elaranth calendar has **thirteen months**. The definitive list of month names, lengths, leap-day rules, weekdays, epoch and the game's starting calendar date must be sourced from the authoritative Elaranth calendar before converting level numbers to formatted dates. Those details are **not confirmed** in the current game repo.
 
