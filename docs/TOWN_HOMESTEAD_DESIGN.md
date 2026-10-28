@@ -1,4 +1,4 @@
-# Rupee Rush — Heroes of Embryon / Town Homestead & Gardening
+# Jewelbrook — Heroes of Embryon / Town Homestead & Gardening
 
 **Status:** Town/garden has **48 implemented playable crop species** and **43 deterministic cook-and-serve dishes** across forty house levels. Illustrated growth sprites cover five states for every crop. The optional cooking minigame and final painted crop art remain future tasks.  
 **Authority:** `docs/ART_STYLE_MASTER.md` (approved high-sheen visual identity), `docs/TOWN_AVATAR_ART.md` (existing Town avatar levels 1–40), `web/mining.js` and `web/mining-gear.js` (existing mining and glove state).  

@@ -1,6 +1,6 @@
 # Town gardening — glossy icon set, batch 01
 
-The Rupee Rush / Heroes of Embryon gardening source sheet has been isolated into ten 512×512 RGBA sprites. Styling: glossy Nut Buster-class fantasy casual-game materials, original Embryon emerald/sapphire/gold packaging, and unobstructed silhouettes. All ten are asset files, not a new economy or unlocked inventory.
+The Jewelbrook / Heroes of Embryon gardening source sheet has been isolated into ten 512×512 RGBA sprites. Styling: glossy Nut Buster-class fantasy casual-game materials, original Embryon emerald/sapphire/gold packaging, and unobstructed silhouettes. All ten are asset files, not a new economy or unlocked inventory.
 
 ## Existing game IDs and icon mappings
 
@@ -17,7 +17,7 @@ Other assets: `icons/seeds-onion.png`, `icons/seeds-cabbage.png`, `icons/seeds-h
 
 ## Reproduction and asset ownership
 
-- Source: `web/art/embryon/town/gardening/source/fantasy_gardening_supplies_icon_sheet.png`, the image generated in the Rupee Rush project chat.
+- Source: `web/art/embryon/town/gardening/source/fantasy_gardening_supplies_icon_sheet.png`, the image generated in the Jewelbrook project chat.
 - Crop logic: `web/art/embryon/town/gardening/slice_garden_icons.py`; requires Python 3 + Pillow + numpy + OpenCV. Re-running the script from its folder rebuilds ten sprites and the manifest. The preview is for QA and is not rendered in game.
 - Machine-readable data, source SHA-256, per-sprite SHA-256, pixel dimensions and game-ID bindings are recorded in `manifest.json`.
 - Visual QA: alpha corners, no opaque backdrop, clean separated icons, fixed 512×512 canvas. Inspect small-scale phone rendering before wiring the shop UI.

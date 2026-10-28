@@ -1,8 +1,8 @@
 # 2026 Google Play publishing: NEW signing generation
 
-This supersedes the legacy publisher-key recovery workflow. Google Play key generation is DEFERRED. The normal Rupee Rush setup-android-signing.ps1 command now registers the permanent GitHub APK signing key; it does not generate Play upload keys. The historical three-app generator remains available only when explicitly requested.
+This supersedes the legacy publisher-key recovery workflow. Google Play key generation is DEFERRED. The normal Jewelbrook setup-android-signing.ps1 command now registers the permanent GitHub APK signing key; it does not generate Play upload keys. The historical three-app generator remains available only when explicitly requested.
 
-From the Rupee Rush checkout in Windows GitKraken PowerShell:
+From the Jewelbrook checkout in Windows GitKraken PowerShell:
 
 ```powershell
 .\scripts\generate-new-play-upload-keys.ps1
@@ -28,9 +28,9 @@ If GitHub CLI is authenticated, the newly generated signing materials are stored
 |---|---|---|
 | ReverieVR | io.github.mrcalzon02.reverievr | reverievr-play-upload-v1 |
 | Nut Buster | io.github.mrcalzon02.nutbuster | nutbuster-play-upload-v1 |
-| Rupee Rush | io.github.mrcalzon02.rupeerush | rupeerush-play-upload-v1 |
+| Jewelbrook | io.github.mrcalzon02.rupeerush | rupeerush-play-upload-v1 |
 
-Rupee Rush package ID is reserved pending its own Android wrapper. ReverieVR and Nut Buster have separate Gradle `play` build variants for the new upload key; those variants use `playUploadKeystorePath`, `playUploadStorePassword`, `playUploadKeyAlias` and `playUploadKeyPassword` Gradle project properties, accepting corresponding `ORG_GRADLE_PROJECT_...` environment variables. No Play bundle should be published until the Gradle build, signing fingerprint and on-device behavior are verified.
+Jewelbrook package ID is reserved pending its own Android wrapper. ReverieVR and Nut Buster have separate Gradle `play` build variants for the new upload key; those variants use `playUploadKeystorePath`, `playUploadStorePassword`, `playUploadKeyAlias` and `playUploadKeyPassword` Gradle project properties, accepting corresponding `ORG_GRADLE_PROJECT_...` environment variables. No Play bundle should be published until the Gradle build, signing fingerprint and on-device behavior are verified.
 
 Google Play App Signing is mandatory for newly published apps and uses a **device signing key managed by Google** separate from the locally generated upload key. The user must enroll each app in Play Console and select Google-managed signing. Changing an upload key alone does not invalidate old installations or prevent save transfers. APKs signed with a different device certificate and the same package ID cannot update one another in place; deliberate application-ID and save migration choices must be made separately. Cross-app `signature` permissions, including ReverieVR companions, require their actual *Play app-signing certificates* to match, not merely upload certificates.
 

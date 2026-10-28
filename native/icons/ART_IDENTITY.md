@@ -1,4 +1,4 @@
-# Rupee Rush native desktop icon and visual identity
+# Jewelbrook native desktop icon and visual identity
 
 Use the approved **emerald gemstone** from
 `web/art/embryon/generated/gems/emerald.png` (192×192 transparent PNG),
