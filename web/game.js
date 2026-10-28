@@ -49,7 +49,7 @@ function townHousePanel(t,showEntry=true){
 }
 function home(){
  return '<section class="home-kingdom" aria-label="Embryon Kingdom">'+
- '<div class="home-kingdom-content"><h1 class="home-brand"><span class="home-title-wordmark">JEWELBROOK</span><span class="home-title-subtitle">HEROES OF EMBRYON</span></h1>'+
+ '<div class="home-kingdom-content"><h1 class="home-brand"><img class="home-title-banner" src="art/embryon/branding/jewelbrook/banner-wide.webp" alt="Jewel Brook: Heroes of Embryon" width="939" height="203" decoding="async"></h1>'+
  '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p>'+
  townAvatarPanel()+
  '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+button('go-manor','ENTER RESIDENCE','secondary')+'</div></div></section>'+
@@ -547,5 +547,5 @@ root.addEventListener?.('pointerup',e=>{
  if(!E.adjacent(active,start.i,to))return;
  Music.activate();performSwap(start.i,to);
 });
-render();window.RupeeRushDebug=Object.freeze({getSave:()=>JSON.parse(JSON.stringify(saved)),getPage:()=>page,getChapter:()=>chapterId,activeSnapshot:()=>active?E.snapshot(active):null});
+render();window.addEventListener?.('load',()=>document.getElementById('jewelbrook-loading-splash')?.remove?.(),{once:true});window.RupeeRushDebug=Object.freeze({getSave:()=>JSON.parse(JSON.stringify(saved)),getPage:()=>page,getChapter:()=>chapterId,activeSnapshot:()=>active?E.snapshot(active):null});
 })();
