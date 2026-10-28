@@ -170,7 +170,7 @@ navigate('home');
 
 
 assert.equal(Royal.EVENTS.length,19,'The source royal chronicle is registered');
-assert.equal(Royal.ART.length,13,'The previous approved royal gallery remains unchanged');
+assert.ok(Royal.ART.length===13||Royal.ART.length===32,'Original 13 approved gallery scenes are retained; 19 additional verified atelier scenes may be imported');
 assert.equal(Royal.GOWNS.length,10,'All ten source-verified generated Daysha elemental dresses are cataloged');
 const fireDress=Royal.GOWNS.find(x=>x.id==='EL-01');
 assert.equal(Royal.gownUnlocked({unlocked:15,elementalTrials:{}},fireDress),false,'Merely reaching an elemental stage does not reveal its dress');

@@ -1,0 +1,39 @@
+name: Import verified Daysha generated artwork
+on:
+  push:
+    branches: [main]
+    paths:
+      - asset-inbox/Jewel_Brook_Daysha_Gilded_Spindle_Runtime_19.zip
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: jewel-brook-daysha-generated-original-art
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Verify and import exact original-generated Daysha illustrations
+        run: python3 scripts/import_daysha_runtime.py
+      - name: Run functional gameplay and script diagnostics
+        run: |
+          node --check web/royal-chronicle.js
+          node tests/rupee-rush.test.js
+      - name: Commit verified artwork and remove temporary import bundle
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/art/embryon/story/gilded-spindle/runtime web/royal-chronicle.js
+          git rm -- asset-inbox/Jewel_Brook_Daysha_Gilded_Spindle_Runtime_19.zip
+          git commit -m "Import 19 verified original Daysha illustrations into Royal Chronicle"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push retry $attempt"
+          done
+          exit 1
