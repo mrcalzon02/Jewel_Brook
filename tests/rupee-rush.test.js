@@ -94,7 +94,13 @@ assert.doesNotMatch(views.screen.innerHTML,/class="profile-outfit"/,'No tiny out
 function click(action,rest={}){assert.equal(typeof handler,'function');handler({target:{closest:()=>({dataset:{action,...rest},disabled:false})}});}
 function navigate(nav){click('',{nav});}
 assert.equal(Royal.EVENTS.length,19,'The source royal chronicle is registered');
-assert.equal(Royal.ART.length,13,'Only the 13 original approved gallery illustrations are used');
+assert.equal(Royal.ART.length,13,'The previous approved royal gallery remains unchanged');
+assert.equal(Royal.GOWNS.length,10,'All ten source-verified generated Daysha elemental dresses are cataloged');
+const fireDress=Royal.GOWNS.find(x=>x.id==='EL-01');
+assert.equal(Royal.gownUnlocked({unlocked:15,elementalTrials:{}},fireDress),false,'Merely reaching an elemental stage does not reveal its dress');
+assert.equal(Royal.gownUnlocked({unlocked:15,elementalTrials:{1001:1}},fireDress),true,'Actual completed fire trial reveals Fire dress');
+assert.equal(Royal.gownUnlocked({unlocked:1,elementalTrials:{1001:1}},fireDress),false,'A completed trial alone cannot bypass main-stage gate');
+assert.equal(Royal.gownsForTrial(1141)[0].id,'EL-10','Arcane gown is assigned to Arcane Trial 1141');
 assert.equal(Royal.newAt(1).length,1,'First win can reveal the first royal atelier episode');
 assert.ok(Royal.EVENTS.filter(e=>e.track==='royal-family').every(e=>e.revealLevel>1000),
  'Estelle childhood stories must not unlock during her pre-birth opening campaign');

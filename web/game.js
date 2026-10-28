@@ -94,6 +94,16 @@ function chapter(){
  '<div class="level-grid">'+levels.map(n=>'<button class="level '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+(n>saved.unlocked?' locked':'')+'"><b>'+n+'</b><small>'+(saved.stars[n]?'★ '+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
 }
 
+function elementalGownCollection(){
+ return '<section class="panel royal-elemental-collection"><h2>Daysha’s Elemental Gown Collection</h2><p>Original generated illustrations of Daysha, revealed by completing the matching optional elemental trials. These reveals do not establish dress-purchase dates.</p><div class="royal-elemental-grid">'+
+ Royal.GOWNS.map(g=>{const ready=Royal.gownUnlocked(saved,g);
+  return '<article class="royal-elemental-card">'+
+   (ready?'<img loading="lazy" decoding="async" src="'+escape(g.image)+'" alt="'+escape(g.title)+' worn by Queen Daysha">':
+    '<div class="royal-elemental-locked" aria-label="Gown illustration not yet discovered">'+escape(g.element.toUpperCase())+'</div>')+
+   '<strong>'+escape(ready?g.title:g.element.toUpperCase()+' Gown')+'</strong>'+
+   '<small>'+(ready?'Discovered via Elemental Trial '+g.trialId:'Clear Elemental Trial '+g.trialId+' (campaign stage '+g.minimumMainLevel+'+)')+'</small></article>';
+ }).join('')+'</div></section>';
+}
 function chronicle(){
  const t=Royal.current(saved),unlocked=t.events.filter(e=>e.unlocked);
  const chosen=unlocked.find(e=>e.id===storySelected)||unlocked[unlocked.length-1]||null;
@@ -111,7 +121,7 @@ function chronicle(){
  (scenes.length?'<div class="royal-art-grid">'+scenes.map(a=>'<figure><img loading="lazy" decoding="async" src="'+escape(a.src)+'" alt="'+escape(a.title)+'"><figcaption>'+escape(a.title)+'</figcaption></figure>').join('')+'</div>':'<p class="royal-art-pending">No event-specific approved illustration is currently published for this episode. Its story is available without fabricated artwork.</p>')+
  '<small>Historical dates and Estelle’s age remain unassigned until Project Daysha establishes them.</small>':
  '<h2>The royal story begins</h2><p>Clear the first Jewel Brook level to reveal the opening chronicle entry.</p>')+'</article></div>'+
- '<section class="panel royal-portrait-panel"><h2>Approved Atelier Portrait Studies</h2><p>Illustrated dress studies from the existing original-art archive. These are not evidence of particular royal purchases or historical dates.</p><div class="royal-art-grid">'+portraits.map(a=>'<figure><img loading="lazy" decoding="async" src="'+escape(a.src)+'" alt="'+escape(a.title)+'"><figcaption>'+escape(a.title)+'</figcaption></figure>').join('')+'</div></section>';
+ '<section class="panel royal-portrait-panel"><h2>Approved Atelier Portrait Studies</h2><p>Illustrated dress studies from the existing original-art archive. These are not evidence of particular royal purchases or historical dates.</p><div class="royal-art-grid">'+portraits.map(a=>'<figure><img loading="lazy" decoding="async" src="'+escape(a.src)+'" alt="'+escape(a.title)+'"><figcaption>'+escape(a.title)+'</figcaption></figure>').join('')+'</div></section>'+elementalGownCollection();
 }
 function trials(){
  const available=[],locked=[];
@@ -226,8 +236,8 @@ function settle(){
  const g=active;
  if(g.won){
   const id=g.level,trial=id>=T.FIRST;
-  let earned=0,bonus=0,storyNew=[];
-  if(trial){const result=R.clear(saved,id,g.score);earned=result.coins||0;bonus=result.gems||0;}
+  let earned=0,bonus=0,storyNew=[],gownNew=[];
+  if(trial){const wasCleared=T.done(saved,id);const result=R.clear(saved,id,g.score);earned=result.coins||0;bonus=result.gems||0;if(!wasCleared)gownNew=Royal.gownsForTrial(id);}
   else {
    const prev=saved.stars[id]||0,starCount=g.score>=g.cfg.goal*2?3:g.score>=g.cfg.goal*1.35?2:1;
    saved.stars[id]=Math.max(prev,starCount);
@@ -235,7 +245,7 @@ function settle(){
    saved.unlocked=Math.min(1000,Math.max(saved.unlocked,id+1));
    P.firstClear(saved,id);
   }
-  outcome={won:true,id,earned,bonus,score:g.score,storyNew};
+  outcome={won:true,id,earned,bonus,score:g.score,storyNew,gownNew};
  }else if(g.lost){saved.hearts=Math.max(0,saved.hearts-1);outcome={won:false,id:g.level,score:g.score};}
  else return;
  Audio.play(g.won?'victory':'defeat');Audio.speak(g.won?'levelVictory':'levelDefeat');active=null;selected=-1;page='result';save();
@@ -245,7 +255,7 @@ function results(){
  return header(x.won?'Brilliant!':'Try again',x.won?'The vault yields its treasures.':'The crystal board held firm this time.')+
  '<div class="hero"><div class="hero-art">'+(x.won?'<img class="result-vfx" src="'+Assets.effect('victory')+'" alt="">':'')+[0,1,6].map(i=>gem(i)).join('')+'</div><h2>Score: '+number(x.score)+'</h2>'+
  (x.won?'<p>+'+number(x.earned)+' Rupees · +'+number(x.bonus)+' Star Gems</p>':'<p>One life used. Mine resources or claim a refill to keep playing.</p>')+
- (x.won&&x.storyNew?.length?'<div class="royal-reveal"><h3>New Royal Chronicle Episode</h3><p>'+escape(x.storyNew.map(e=>e.title).join(' · '))+'</p>'+button('go-chronicle','READ THE NEW EPISODE','secondary')+'</div>':'')+button('result-next',x.won?'NEXT LEVEL':'RETRY LEVEL','primary')+button('go-mine','VISIT THE MINES')+button('go-campaign','LEVEL MAP','quiet')+'</div>';
+ (x.won&&x.storyNew?.length?'<div class="royal-reveal"><h3>New Royal Chronicle Episode</h3><p>'+escape(x.storyNew.map(e=>e.title).join(' · '))+'</p>'+button('go-chronicle','READ THE NEW EPISODE','secondary')+'</div>':'')+(x.won&&x.gownNew?.length?'<section class="royal-reveal"><h3>Daysha’s Elemental Dress Revealed</h3><p>'+escape(x.gownNew.map(g=>g.title).join(' · '))+'</p>'+button('go-chronicle','VIEW THE GOWN','secondary')+'</section>':'')+button('result-next',x.won?'NEXT LEVEL':'RETRY LEVEL','primary')+button('go-mine','VISIT THE MINES')+button('go-campaign','LEVEL MAP','quiet')+'</div>';
 }
 function offerCard(id,o){
  const balance=o.currency==='gems'?saved.gems:saved.coins;

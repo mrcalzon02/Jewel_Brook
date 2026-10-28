@@ -370,3 +370,12 @@
 .royal-art-grid figcaption{padding:7px 8px;font-size:11px;color:#f3dfa8}
 .royal-reveal{border:1px solid #e7c481;border-radius:9px;padding:9px;display:grid;gap:6px}
 @media(max-width:640px){.royal-chronicle-layout{grid-template-columns:1fr}.royal-chapter-list{max-height:200px}.royal-art-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Original, generated Daysha elemental wardrobe: trial-gated, never reference art. */
+.royal-elemental-collection{margin-top:12px}
+.royal-elemental-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin-top:10px}
+.royal-elemental-card{min-width:0;display:flex;flex-direction:column;gap:5px;padding:7px;background:#241c38;border:1px solid #775e93;border-radius:9px}
+.royal-elemental-card img{width:100%;max-height:280px;object-fit:contain;border-radius:6px}
+.royal-elemental-card strong{font-size:12px;color:#ffdfaa}
+.royal-elemental-card small{font-size:10px;color:#d4c4e0}
+.royal-elemental-locked{display:grid;place-items:center;aspect-ratio:3/4;border-radius:6px;color:#b3a2cb;background:#19162b;font-size:11px;font-weight:800;letter-spacing:.03em}
