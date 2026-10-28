@@ -224,5 +224,5 @@ if ($Install) {
     Require $adb 'Android device installer adb'
     & $adb install -r $dest
     if ($LASTEXITCODE -ne 0) { throw 'Phone installation failed; do not uninstall if you need to retain saves.' }
-    Write-Host 'Android device updated without uninstalling or resetting saves.'
+    Write-Host 'Jewel Brook installed (or updated if previously installed); legacy Rupee Rush is a separate Android app.'
 }

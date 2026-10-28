@@ -1,6 +1,6 @@
 # Jewel Brook: Heroes of Embryon — signed APKs built on GitHub
 
-Just like Nut Buster, Jewelbrook now builds Android APKs on GitHub Actions. You do not need Gradle, Android SDK, or Android Studio on your Windows PC.
+Jewel Brook builds Android APKs on GitHub Actions with its own install package and update channel. You do not need Gradle, Android SDK, or Android Studio on your Windows PC.
 
 ## Normal builds
 
@@ -18,7 +18,7 @@ GitHub runners are temporary; generating a fresh signing certificate on every bu
 
 This runs ONLY keytool and GitHub CLI to enroll the permanent signing key. It never compiles an APK locally or requires Android Gradle/SDK. It reuses existing private signing material in %LOCALAPPDATA%\Embryon\rupeerush-local-apk-v1, or generates a new key once if absent, refusing to overwrite incomplete identities. It creates five RUPEE_APK_* secrets, verifies only their names (values cannot be read back), and dispatches a cloud build.
 
-Keep a PRIVATE backup of rupeerush-local-release.p12 and store-password.txt. Losing or rotating the key breaks in-place updates to sideloaded Jewelbrook builds. Do not put secrets into Git.
+Keep a PRIVATE backup of rupeerush-local-release.p12 and store-password.txt. Losing or rotating the key prevents in-place updates to the NEW Jewel Brook package. Do not put secrets into Git.
 
 ## Before enrollment
 

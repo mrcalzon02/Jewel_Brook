@@ -1,4 +1,4 @@
-# Jewelbrook Android APK — playable local builds
+# Jewel Brook: Heroes of Embryon — signed Android APK
 
 This project builds a directly installable, signed Android APK from the existing web/ game without touching Nut Buster, ReverieVR or Google Play upload keys.
 
@@ -34,7 +34,7 @@ Unlike GitHub's /releases/latest (which skips prereleases), Jewelbrook queries `
 
 The GitHub Actions workflow injects the permanent Jewelbrook signing certificate fingerprint into BuildConfig, after checking the keystore against its secret certificate hash. Local builds use the fingerprint extracted from the reused local keystore. Unsigned/debug builds cannot use the release updater. Neither Nut Buster's signing key nor its package name is reused.
 
-**Bootstrap once (also required if a pre-rename updater cannot follow the new release asset URL):** Already-installed Jewelbrook APKs built before this feature have no update checker and cannot update themselves. To start receiving in-app updates, install a new signed Jewelbrook release **over the existing app**, preserving its data. Do not uninstall. If Android blocks the update because the certificate differs, do not uninstall in an attempt to force it; instead inspect the signing identities and recover the matching original APK/key. Approve “Install unknown apps” for Jewelbrook when Android requires it. Connectivity is optional for ordinary offline play.
+**First install of the independent Jewel Brook app:** Install the current signed APK. It uses a new package ID, so an older Rupee Rush installation can remain side-by-side, but its private saved progress does not transfer automatically. Within the new Jewel Brook package, subsequent same-signer, higher-version releases can update in place. Approve Android’s “Install unknown apps” setting only when intentionally installing an update. Ordinary gameplay works offline.
 
 Android APK release versions on GitHub use `500000000 + run_number * 100 + run_attempt`. A locally built APK with a different version code is not automatically offered to phones via GitHub. Only APKs published in this GitHub prerelease channel appear in update checks.
 
