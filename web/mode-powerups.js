@@ -6,8 +6,8 @@ const Farm=root.RupeeTownGarden, Mine=root.RupeeMining, Progress=root.RupeeProgr
 if(!Farm||!Mine||!Progress)throw Error('Town, mining and match-3 progression must load before mode powerups');
 const MAX=999999, LIMIT=1000000000;
 const items=[
- ['farm','farm-sunrise','Sunrise Elixir','Matures one planted plot immediately',220,'art/embryon/town/gardening/icons/fertilizer-crystal-tonic.png',true],
- ['farm','farm-rainfall','Raincaller Bell','Halves the remaining time on all growing plots',300,'art/embryon/town/gardening/icons/fertilizer-enriched.png',false],
+ ['farm','farm-sunrise','Sunrise Elixir','Matures one planted plot immediately, regardless of season',220,'art/embryon/town/gardening/icons/fertilizer-crystal-tonic.png',true],
+ ['farm','farm-rainfall','Raincaller Bell','Halves the remaining growth needed on all planted plots',300,'art/embryon/town/gardening/icons/fertilizer-enriched.png',false],
  ['farm','farm-bounty','Bounty Charm','Adds 2 crops to a ready plot before harvesting',260,'art/embryon/town/gardening/icons/seed-store-bundle.png',true],
  ['farm','farm-seeds','Seed Satchel','Grants 3 seeds of a selected unlocked crop',170,'art/embryon/town/gardening/icons/seeds-carrot.png',false],
  ['farm','farm-compost','Compost Cache','Grants 2 units of selected unlocked fertilizer',210,'art/embryon/town/gardening/icons/fertilizer-compost.png',false],
@@ -77,12 +77,26 @@ function use(save,id,options={},at=Date.now()){
  let result={valid:false,reason:'target'};
  if(item.family==='farm'){
   const t=Farm.ensure(save),slot=o.plot,p=Number.isInteger(slot)&&slot>=0&&slot<Farm.plotCount(t.houseLevel)?t.plots[slot]:null;
-  if(id==='farm-sunrise'&&p&&p.readyAt>at){p.readyAt=Math.max(p.plantedAt+1,at);result={valid:true,plot:slot};}
+  if(id==='farm-sunrise'&&p){
+   if(p.mode==='campaign-day'&&p.work<Farm.Seasons.WORK){p.work=Farm.Seasons.WORK;result={valid:true,plot:slot};}
+   else if(p.mode!=='campaign-day'&&p.readyAt>at){p.readyAt=Math.max(p.plantedAt+1,at);result={valid:true,plot:slot};}
+  }
   if(id==='farm-rainfall'){
-   let affected=0;for(const q of t.plots)if(q&&q.readyAt>at){const next=Math.max(q.plantedAt+1,at+Math.ceil((q.readyAt-at)/2));if(next<q.readyAt){q.readyAt=next;affected++;}}
+   let affected=0;for(const q of t.plots){
+    if(!q)continue;
+    if(q.mode==='campaign-day'){
+     if(q.work<Farm.Seasons.WORK){
+      const next=q.work+Math.ceil((Farm.Seasons.WORK-q.work)/2);
+      if(next>q.work){q.work=Math.min(Farm.Seasons.WORK,next);affected++;}
+     }
+    }else if(q.readyAt>at){
+     const next=Math.max(q.plantedAt+1,at+Math.ceil((q.readyAt-at)/2));
+     if(next<q.readyAt){q.readyAt=next;affected++;}
+    }
+   }
    if(affected)result={valid:true,affected};
   }
-  if(id==='farm-bounty'&&p&&p.readyAt<=at&&p.yield<=98){p.yield+=2;result={valid:true,plot:slot,yield:p.yield};}
+  if(id==='farm-bounty'&&p&&Farm.plotStatus(save,slot,at).state==='ready'&&p.yield<=98){p.yield+=2;result={valid:true,plot:slot,yield:p.yield};}
   if(id==='farm-seeds'){
    const crop=Farm.CROPS[o.crop];if(crop&&t.houseLevel>=crop.house&&t.seeds[crop.id]<=LIMIT-3){t.seeds[crop.id]+=3;result={valid:true,crop:crop.id,quantity:3};}
   }
