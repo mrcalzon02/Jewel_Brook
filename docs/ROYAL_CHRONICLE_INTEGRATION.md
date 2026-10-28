@@ -58,3 +58,13 @@ until a verified source establishes a better one.
 The `continuityIssues()` API checks the confirmed relative-day constraints
 as part of the existing *functional* game test. No screenshot or
 cosmetic release gate has been added.
+
+## Level-map story day markers
+
+Already experienced royal events are marked using the existing approved
+`general/quest.webp` marker crest layered over their normal stage marker.
+The original locked/active/cleared state and stage numbers remain visible;
+no unplayed story titles are shown. The in-game calendar now offers direct
+buttons to previously completed royal event days, including multiple events
+sharing the same day. The chapter-stage controls still launch the original
+gameplay unchanged. No art replacement, save migration, or cosmetic CI check.

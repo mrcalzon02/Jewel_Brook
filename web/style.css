@@ -421,3 +421,11 @@
 .guide-wiki-link{display:inline-flex;width:fit-content;align-items:center;min-height:44px;padding:9px 12px;border-radius:9px;border:1px solid #bda16d;background:#33284f;color:#ffebba;font-weight:800;text-decoration:none}
 .guide-wiki-link:focus-visible{outline:3px solid #ffe08a;outline-offset:2px}
 @media(max-width:620px){.guide-entry-list{grid-template-columns:1fr}.guide-tab{flex:1;min-width:calc(33% - 5px)}.guide-controls .btn{font-size:11px}}
+
+/* Previously discovered royal-story days reuse the approved quest crest. */
+.level-marker-grid .level-story-cue{position:absolute;right:0;top:0;width:20px;height:20px;pointer-events:none;z-index:2}
+.level-marker-grid .level-story-cue .level-marker-art{display:block;width:100%;height:100%;filter:drop-shadow(0 1px 2px #0c0920)}
+.guide-day-links{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.guide-day-links strong{font-size:12px;color:#ffe4b0;margin-right:5px}
+.guide-day-link{min-height:36px;padding:6px 9px;border-radius:8px;border:1px solid #9077b4;color:#fcebc6;background:#2a2445;font-size:12px;font-weight:800}
+.guide-day-link[aria-pressed="true"]{border-color:#f4d59c;background:#49365e}
