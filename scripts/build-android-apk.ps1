@@ -207,7 +207,7 @@ try {
 } finally { $zip.Dispose() }
 $outDir=Join-Path $root 'release'
 $null=New-Item -ItemType Directory -Force -Path $outDir
-$dest=Join-Path $outDir 'RupeeRush-Android.apk'
+$dest=Join-Path $outDir 'Jewel-Brook-Heroes-of-Embryon-Android.apk'
 Copy-Item -LiteralPath $built -Destination $dest -Force
 $metadata=[ordered]@{
     packageId='io.github.mrcalzon02.rupeerush';versionCode=$code
@@ -215,7 +215,7 @@ $metadata=[ordered]@{
     apkSha256=(Get-FileHash -LiteralPath $dest -Algorithm SHA256).Hash.ToLowerInvariant()
     channel='local-signed-apk'
 }
-Store-Text (Join-Path $outDir 'RupeeRush-Android-build.json') ($metadata | ConvertTo-Json -Depth 5)
+Store-Text (Join-Path $outDir 'Jewel-Brook-Heroes-of-Embryon-Android-build.json') ($metadata | ConvertTo-Json -Depth 5)
 Store-Text $sequence ("$code"+[Environment]::NewLine)
 Write-Host "SIGNED APK VERIFIED: $dest"
 Write-Host "versionCode $code | package io.github.mrcalzon02.rupeerush | signer $fingerprint"

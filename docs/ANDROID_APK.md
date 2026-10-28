@@ -6,7 +6,7 @@ This project builds a directly installable, signed Android APK from the existing
 
     git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\build-android-apk.ps1 }
 
-Output: release\RupeeRush-Android.apk, plus an audit metadata JSON file. If a phone is connected with USB debugging enabled, use .\scripts\build-android-apk.ps1 -Install to install it through adb.
+Output: release\Jewel-Brook-Heroes-of-Embryon-Android.apk, plus an audit metadata JSON file. If a phone is connected with USB debugging enabled, use .\scripts\build-android-apk.ps1 -Install to install it through adb.
 
 First run: a JDK 17+ is required. The build script searches installed JDK/Android Studio installations, downloads a pinned Gradle 9.6.1 distribution with SHA-256 verification, and installs missing Android command-line SDK tools, API 36 and build-tools 36.0.0 from Google. An Android SDK license prompt may appear.
 
@@ -37,3 +37,7 @@ The GitHub Actions workflow injects the permanent Jewelbrook signing certificate
 **Bootstrap once (also required if a pre-rename updater cannot follow the new release asset URL):** Already-installed Jewelbrook APKs built before this feature have no update checker and cannot update themselves. To start receiving in-app updates, install a new signed Jewelbrook release **over the existing app**, preserving its data. Do not uninstall. If Android blocks the update because the certificate differs, do not uninstall in an attempt to force it; instead inspect the signing identities and recover the matching original APK/key. Approve “Install unknown apps” for Jewelbrook when Android requires it. Connectivity is optional for ordinary offline play.
 
 Android APK release versions on GitHub use `500000000 + run_number * 100 + run_attempt`. A locally built APK with a different version code is not automatically offered to phones via GitHub. Only APKs published in this GitHub prerelease channel appear in update checks.
+
+### Public APK filename migration
+
+Signed downloads and local builds now use `Jewel-Brook-Heroes-of-Embryon-Android.apk`. The Android package ID, keystore alias, trusted certificate fingerprint and historic release-tag scheme remain unchanged. An already-installed updater that recognizes only the former asset filename may require one **manual in-place** installation of the newly named APK to migrate. Do not uninstall: the established signing identity remains mandatory for existing save continuity.

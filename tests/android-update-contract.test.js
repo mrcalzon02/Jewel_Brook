@@ -21,7 +21,7 @@ assert.doesNotMatch(read('web/update.js'),/mrcalzon02\/Rupee-rush/);
 assert.match(service,/\^rupeerush-phone-test-/);
 assert.doesNotMatch(service,/LATEST_MANIFEST|optBoolean\("prerelease", false\)/,'Prereleases must be included in update checks');
 assert.match(service,/500_000_000L \+ run \* 100L \+ attempt/);
-assert.match(service,/RupeeRush-Android\.apk/);
+assert.match(service,/Jewel-Brook-Heroes-of-Embryon-Android\.apk/);
 assert.match(service,/sha256:\[0-9a-f\]\{64\}/);
 assert.match(service,/readBounded\(in, 1024 \* 1024\)/);
 assert.match(service,/getPackageArchiveInfo/);

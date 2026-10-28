@@ -65,11 +65,11 @@ jobs:
           gradle -p android --no-daemon :app:assembleDebug
           test -s android/app/build/outputs/apk/debug/app-debug.apk
           mkdir -p preview
-          cp android/app/build/outputs/apk/debug/app-debug.apk preview/RupeeRush-UNSTABLE-DEBUG.apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk preview/Jewel-Brook-Heroes-of-Embryon-UNSTABLE-DEBUG.apk
           echo 'Temporary debug certificate; do not rely on this APK for subsequent in-place upgrades.' > preview/README-DEBUG-UNSTABLE.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: RupeeRush-debug-preview-${{ github.run_number }}-${{ github.run_attempt }}
+          name: Jewel-Brook-debug-preview-${{ github.run_number }}-${{ github.run_attempt }}
           path: preview/
           retention-days: 7
           if-no-files-found: error
@@ -92,7 +92,7 @@ jobs:
           actual="$(sha256sum "$RUNNER_TEMP/rupee-signing/cert.der" | cut -d' ' -f1)"
           [[ "$actual" == "$RUPEE_APK_CERT_SHA256" ]] || { echo '::error::Wrong signing certificate'; exit 1; }
           echo 'ready=true' >> "$GITHUB_OUTPUT"
-      - name: Assemble and verify signed Jewelbrook APK
+      - name: Assemble and verify signed Jewel Brook APK
         if: steps.signer.outputs.ready == 'true'
         id: release
         shell: bash
@@ -120,15 +120,15 @@ jobs:
             unzip -Z -1 "$apk" | grep -Fx "$a"
           done
           mkdir -p release
-          cp "$apk" release/RupeeRush-Android.apk
-          sha256sum release/RupeeRush-Android.apk > release/SHA256SUMS.txt
+          cp "$apk" release/Jewel-Brook-Heroes-of-Embryon-Android.apk
+          sha256sum release/Jewel-Brook-Heroes-of-Embryon-Android.apk > release/SHA256SUMS.txt
           printf '{"commit":"%s","versionCode":%s,"package":"io.github.mrcalzon02.rupeerush","signerSha256":"%s"}\n' "$GITHUB_SHA" "$version" "$RUPEE_APK_CERT_SHA256" > release/BUILD-EVIDENCE.json
           echo "version=$version" >> "$GITHUB_OUTPUT"
       - name: Upload verified signed build
         if: steps.signer.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: RupeeRush-signed-${{ github.run_number }}-${{ github.run_attempt }}
+          name: Jewel-Brook-signed-${{ github.run_number }}-${{ github.run_attempt }}
           path: release/
           retention-days: 30
           if-no-files-found: error
@@ -138,4 +138,4 @@ jobs:
         run: |
           set -euo pipefail
           tag="rupeerush-phone-test-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT"
-          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Jewel Brook: Heroes of Embryon Android ${{ steps.release.outputs.version }}" --notes 'Native GitHub updater enabled in signed builds. Downloads and installations require player consent. To bootstrap on an older app, install this APK once over the currently installed same-signer package. Do not uninstall; retain local saves.'
+          gh release create "$tag" release/Jewel-Brook-Heroes-of-Embryon-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Jewel Brook: Heroes of Embryon Android ${{ steps.release.outputs.version }}" --notes 'Native GitHub updater enabled in signed builds. Downloads and installations require player consent. To bootstrap on an older app, install this APK once over the currently installed same-signer package. Do not uninstall; retain local saves.'

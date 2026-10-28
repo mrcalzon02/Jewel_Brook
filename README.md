@@ -10,7 +10,7 @@ Previously developed under the name **Rupee Rush**, the game now lives at **[mrc
 
 | Platform | Current distribution | Important limitations |
 | --- | --- | --- |
-| **Android phones** | [Signed GitHub Android prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — download `RupeeRush-Android.apk` | Installs outside Google Play; permit installation when Android asks. Updating an existing signed installation should preserve saves. |
+| **Android phones** | [Signed GitHub Android prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — download `Jewel-Brook-Heroes-of-Embryon-Android.apk` | Installs outside Google Play; permit installation when Android asks. Updating an existing signed installation should preserve saves. |
 | **Amazon Fire tablets** | Same Android APK | Fire OS compatibility is a deployment target, not a claim of verified operation on every Fire tablet. |
 | **Windows x64** | [Native desktop prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — `JewelBrook-Native-Windows-x64.zip` | Genuine native executable; no embedded browser. Experimental content subset; unsigned Windows executable. |
 | **Linux x64** | Same releases — `JewelBrook-Native-Linux-x64.tar.gz` | Native SDL3 executable and packaged dependencies; experimental content subset. |
@@ -64,7 +64,7 @@ Functional checks (Node.js) are in `tests/`. The signed Android release workflow
 
 - Android package ID and Java namespace: `io.github.mrcalzon02.rupeerush`.
 - Permanent sideload signing identity/certificate, update version progression and local save key `rupeerush.save.v1`.
-- Android update asset `RupeeRush-Android.apk` and prerelease tag convention `rupeerush-phone-test-<run>-<attempt>`; the signed updater validates them.
+- Android update asset `Jewel-Brook-Heroes-of-Embryon-Android.apk` and prerelease tag convention `rupeerush-phone-test-<run>-<attempt>`; the signed updater validates them.
 - Native existing save location `SDL_GetPrefPath("RupeeRush","RupeeRushDesktop")` and compatible save formats.
 - Stable internal APIs, asset paths and some historical workflow/test names where renaming them adds risk rather than user value.
 

@@ -31,7 +31,7 @@ final class RupeeUpdateService implements AutoCloseable {
         "https://api.github.com/repos/mrcalzon02/Jewel_Brook/releases?per_page=30";
     private static final String RELEASE_PREFIX =
         "https://github.com/mrcalzon02/Jewel_Brook/releases/download/";
-    private static final String APK_NAME = "RupeeRush-Android.apk";
+    private static final String APK_NAME = "Jewel-Brook-Heroes-of-Embryon-Android.apk";
     private final Activity activity;
     private final Consumer<String> status;
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
@@ -83,13 +83,13 @@ final class RupeeUpdateService implements AutoCloseable {
     private void runCheck(boolean manual) throws Exception {
         String signer = BuildConfig.DISTRIBUTION_SIGNER_SHA256;
         if (!BuildConfig.UPDATE_CHANNEL_ENABLED || !signer.matches("[0-9a-f]{64}")) {
-            if (manual) status.accept("Update checking is available in permanently signed Jewelbrook test builds.");
+            if (manual) status.accept("Update checking is available in permanently signed Jewel Brook test builds.");
             return;
         }
         PackageManager pm = activity.getPackageManager();
         PackageInfo installed = installedInfo(pm, activity.getPackageName());
         if (installed == null || !signer.equals(fingerprint(installed))) {
-            if (manual) status.accept("Installed Jewelbrook signature differs from the trusted publisher. Updates blocked.");
+            if (manual) status.accept("Installed Jewel Brook signature differs from the trusted publisher. Updates blocked.");
             return;
         }
         long current = version(installed);
@@ -132,7 +132,7 @@ final class RupeeUpdateService implements AutoCloseable {
             }
         }
         if (best == null) {
-            if (manual) status.accept("Jewelbrook is up to date; no newer verified GitHub prerelease was found.");
+            if (manual) status.accept("Jewel Brook is up to date; no newer verified GitHub prerelease was found.");
             return;
         }
         if (!manual && best.code == lastOfferedCode) return;
@@ -163,7 +163,7 @@ final class RupeeUpdateService implements AutoCloseable {
         lastOfferedCode = release.code;
         status.accept("Update " + release.code + " available. Download only with player approval.");
         new AlertDialog.Builder(activity)
-            .setTitle("Jewelbrook update available")
+            .setTitle("Jewel Brook update available")
             .setMessage("A newer signed version (" + release.code + ") is available. Download the update from GitHub? Your local game progress remains on this device.")
             .setPositiveButton("Download", (dialog, which) -> downloadApproved(release, installedCode, signer))
             .setNegativeButton("Later", (dialog, which) -> status.accept("Update deferred. Play offline as usual."))
@@ -197,7 +197,7 @@ final class RupeeUpdateService implements AutoCloseable {
         }
         status.accept("Update " + releaseCode + " verified. Installation requires separate approval.");
         new AlertDialog.Builder(activity)
-            .setTitle("Install verified Jewelbrook update?")
+            .setTitle("Install verified Jewel Brook update?")
             .setMessage("The download passed SHA-256, app identity, version and publisher certificate checks. Open Android's installer now? Android will also request your approval.")
             .setPositiveButton("Install", (dialog, which) -> openInstaller(verifiedApk))
             .setNegativeButton("Later", (dialog, which) -> {

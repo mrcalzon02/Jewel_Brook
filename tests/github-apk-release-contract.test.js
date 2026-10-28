@@ -13,7 +13,7 @@ for (const [name, source] of [['provision',script],['legacy signer',legacy],['Pl
 }
 
 for(const marker of ['push:', 'workflow_dispatch:', ':app:assembleDebug', ':app:assembleRelease',
- 'gh release create', 'RupeeRush-Android.apk', 'apksigner', 'aapt',
+ 'gh release create', 'Jewel-Brook-Heroes-of-Embryon-Android.apk', 'apksigner', 'aapt',
  'assets/game.js', 'RUPEE_APK_CERT_SHA256', 'rupeerush-local-apk-v1']) {
  assert.ok(ci.includes(marker), 'Missing cloud APK component '+marker);
 }

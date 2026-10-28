@@ -67,5 +67,5 @@ assert.match(script,/assets\/game\.js/);
 assert.match(script,/adb install -r/);
 assert.doesNotMatch(script,/gh workflow run|PHONE_TEST_KEYSTORE|PLAY_UPLOAD_KEYSTORE/);
 assert.match(ignore,/release\//);
-assert.match(docs,/RupeeRush-Android\.apk/);
+assert.match(docs,/Jewel-Brook-Heroes-of-Embryon-Android\.apk/);
 console.log('Jewelbrook Android app, bundled assets, local signing and update contract checks passed.');
