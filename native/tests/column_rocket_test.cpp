@@ -109,7 +109,10 @@ int main(int argc,char** argv){
     for(const auto& item:fields)converted<<item<<" ";
     std::vector<std::string> lines;
     for(std::string line;std::getline(v7,line);)lines.push_back(line);
-    assert(lines.size()>=4);
+    assert(lines.size()>=6);
+    // RRNATIVE13 appends two gem payload arrays after the RRNATIVE12 body.
+    // Remove them before constructing the historical pre-v12 fixture.
+    lines.erase(lines.end()-2,lines.end());
     lines.erase(lines.end()-4,lines.end()-1); // skip RRNATIVE12 jam/poison/lightning
     converted<<"\n"<<board<<"\n"<<ice<<"\n";
     for(const auto& line:lines)converted<<line<<"\n";

@@ -86,7 +86,10 @@ int main(int argc,char**argv) {
     for(const auto& word:fields)legacy<<word<<' ';
     std::vector<std::string> lines;
     for(std::string line;std::getline(saved,line);)lines.push_back(line);
-    assert(lines.size()>=4);
+    assert(lines.size()>=6);
+    // RRNATIVE13 appends two gem payload arrays after the RRNATIVE12 body.
+    // Remove them before constructing the historical pre-v12 fixture.
+    lines.erase(lines.end()-2,lines.end());
     lines.erase(lines.end()-4,lines.end()-1);
     legacy<<'\n'<<board<<'\n'<<ice<<'\n';
     for(const auto& line:lines)legacy<<line<<'\n';
