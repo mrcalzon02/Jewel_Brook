@@ -2,7 +2,9 @@
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#17122b">
 <title>Jewel Brook: Heroes of Embryon — Gemstone Match-3 & Crystal Mining</title><link rel="stylesheet" href="style.css"></head>
-<body><div id="jewelbrook-loading-splash" aria-hidden="true"></div><div id="app">
+<body><div id="jewelbrook-loading-splash" role="status" aria-live="polite" aria-label="Loading Jewel Brook">
+<picture class="splash-picture"><source media="(orientation:portrait) and (max-width:620px)" srcset="art/embryon/branding/jewelbrook/title-portrait.webp"><img class="splash-image" src="art/embryon/branding/jewelbrook/loading-wide.webp" alt="Jewel Brook: Heroes of Embryon" fetchpriority="high"></picture>
+<p class="splash-status">Preparing Embryon…</p></div><div id="app">
 <header class="top"><button class="logo" data-nav="home" aria-label="Jewel Brook home">JEWEL<span>BROOK</span></button><div class="top-money">
 <button data-nav="shop" title="Rupees" aria-label="Open Rupee shop"><img alt="" src="art/embryon/system-icons/navigation-economy/rupee.webp"><b id="wallet">250</b></button>
 <button data-nav="shop" title="Star Gems" aria-label="Open Star Gem shop"><img alt="" src="art/embryon/system-icons/navigation-economy/star-gems.webp"><b id="stargems">25</b></button>

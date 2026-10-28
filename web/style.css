@@ -452,3 +452,55 @@
 .guide-observance p{font-size:12px;margin:0;color:#e7dcf1}
 .guide-observance .guide-observance-caveat{font-size:11px;color:#f7d59c}
 .campaign-week .campaign-week-note{font-size:11px;color:#e2cda7;margin:3px 0 6px}
+
+
+/* Mobile opening contract: title image, finite kingdom vista, then working menu.
+   The large full-body Daysha avatar remains below the primary controls. */
+html,body{max-width:100%;overflow-x:hidden}
+#app{width:100%;min-width:0}
+#screen{min-width:0}
+.top{min-width:0}
+.logo{min-width:0}
+.top-money{min-width:0}
+.top-money button{min-width:0}
+.bottom{grid-template-columns:repeat(7,minmax(0,1fr))}
+.home-intro{display:grid;justify-items:center;gap:8px;min-width:0;padding:12px;border:1px solid #e4bd77;border-radius:16px;background:linear-gradient(160deg,#30234d,#171c3f);box-shadow:0 9px 22px #090820a8}
+.home-intro .home-title-banner{display:block;max-width:100%;width:min(100%,650px);height:auto;max-height:116px;object-fit:contain}
+.home-vista{width:100%;height:clamp(120px,24vh,230px);border-radius:11px;background:linear-gradient(180deg,#10153711,#0a113b33),url("art/embryon/locations/embryon-kingdom.webp") center 54%/cover no-repeat}
+.home-intro .home-tagline{font-size:clamp(12px,2.5vw,15px);line-height:1.4;text-align:center;max-width:45ch}
+.home-menu{min-width:0;margin:12px 0 8px}
+.home-menu h2{font-size:clamp(17px,3vw,22px);margin:0 0 9px;color:#ffe0ad}
+.home-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.home-menu-grid .btn{width:100%;min-width:0;min-height:48px;margin:0;padding:9px 7px;white-space:normal;overflow-wrap:break-word;line-height:1.2;text-align:center;font-size:clamp(11px,1.8vw,13px)}
+.home-menu-grid .btn:first-child{grid-column:1/-1;min-height:54px;font-size:clamp(14px,2.6vw,17px)}
+.home-menu-grid .icon{max-height:24px;max-width:24px}
+#jewelbrook-loading-splash{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:16px;background:radial-gradient(ellipse at center,#39436d,#15152e 65%,#111021);pointer-events:auto;opacity:1;transition:opacity .24s ease}
+#jewelbrook-loading-splash.is-dismissing{opacity:0;pointer-events:none}
+.splash-picture{display:flex;align-items:center;justify-content:center;max-width:100%;max-height:calc(100dvh - 80px)}
+.splash-image{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 80px);object-fit:contain;border-radius:12px}
+.splash-status{font-size:13px;font-weight:800;letter-spacing:.06em;color:#f5e9ce;text-shadow:0 1px 3px #14122c}
+@media(max-width:620px){
+ #app:not(.playing) .top{position:sticky;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:5px;padding:7px 9px}
+ #app:not(.playing) .logo{width:100%;font-size:clamp(20px,6vw,27px);line-height:1.1;text-align:center}
+ #app:not(.playing) .top-money{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:5px}
+ #app:not(.playing) .top-money button{justify-content:center;gap:3px;min-height:32px;padding:3px;font-size:clamp(11px,3.4vw,14px)}
+ #app:not(.playing) .top-money img{width:21px;height:21px;flex:none;object-fit:contain}
+ #app:not(.playing) .top-money b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ #screen:not(.game-active){padding:10px 10px calc(78px + env(safe-area-inset-bottom))}
+ .home-intro{gap:6px;padding:9px}
+ .home-intro .home-title-banner{max-height:82px}
+ .home-vista{height:clamp(112px,23vh,175px)}
+ .home-intro .home-tagline{font-size:12px}
+ .home-menu{margin:10px 0 8px}
+ .home-menu-grid{gap:6px}
+ .home-menu-grid .btn{font-size:11px;min-height:46px}
+ .bottom{grid-template-columns:repeat(7,minmax(0,1fr));padding:4px 2px calc(4px + env(safe-area-inset-bottom))}
+ .bottom button{font-size:clamp(8px,2.2vw,10px);padding:3px 1px;overflow:hidden}
+ .bottom .nav-art{width:21px;height:21px}
+}
+@media(max-width:340px){
+ #app:not(.playing) .top-money img{width:18px;height:18px}
+ #app:not(.playing) .top-money button{font-size:10px}
+ .home-menu-grid .btn{font-size:10px;padding:7px 3px}
+}
+@media(prefers-reduced-motion:reduce){#jewelbrook-loading-splash{transition:none}}

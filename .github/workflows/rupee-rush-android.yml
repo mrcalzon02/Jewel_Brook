@@ -30,6 +30,7 @@ jobs:
           set -euo pipefail
           for t in \
             tests/android-apk-contract.test.js \
+            tests/mobile-startup-contract.test.js \
             tests/fire-tablet-deployment.test.js \
             tests/android-update-contract.test.js \
             tests/cross-platform-release-identity.test.js \

@@ -49,13 +49,25 @@ function townHousePanel(t,showEntry=true){
   '<small>Illustrated house preview; final painted sprites are pending.</small>'+(showEntry?button('go-manor','ENTER RESIDENCE','secondary'):'')+'</div></section>';
 }
 function home(){
- return '<section class="home-kingdom" aria-label="Embryon Kingdom">'+
- '<div class="home-kingdom-content"><h1 class="home-brand"><img class="home-title-banner" src="art/embryon/branding/jewelbrook/banner-wide.webp" alt="Jewel Brook: Heroes of Embryon" width="939" height="203" decoding="async"></h1>'+
- '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p>'+
- townAvatarPanel()+
- '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+button('go-manor','ENTER RESIDENCE','secondary')+button('go-chronicle','ROYAL CHRONICLE','secondary')+button('go-guide','WORLD GUIDE & CALENDAR','secondary')+'</div></div></section>'+
+ return '<section class="home-intro" aria-label="Jewel Brook title and Embryon Kingdom">'+
+ '<img class="home-title-banner" src="art/embryon/branding/jewelbrook/banner-wide.webp" alt="Jewel Brook: Heroes of Embryon" width="939" height="203" loading="eager" decoding="async">'+
+ '<div class="home-vista" role="img" aria-label="Illustrated view of Embryon Kingdom"></div>'+
+ '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p></section>'+
+ '<section class="home-menu" aria-label="Main game menu"><h2>Adventure Menu</h2><div class="home-menu-grid">'+
+ button('play-next',icon('crystal',24)+' PLAY LEVEL '+saved.unlocked,'primary')+
+ button('go-campaign','LEVEL MAP')+
+ button('go-mine','ENTER THE MINES')+
+ button('go-farm','GARDEN & FARM')+
+ button('go-manor','RESIDENCE')+
+ button('go-shop','CRYSTAL MARKET')+
+ button('go-chronicle','ROYAL CHRONICLE')+
+ button('go-guide','WORLD GUIDE')+
+ button('go-rewards','DAILY REWARDS')+
+ '</div></section>'+
  '<div class="panels"><section class="panel"><h2>Current expedition</h2><p class="guide-date-inline">'+escape(Guide.mainDay(Math.min(1000,saved.unlocked)).label)+' · '+escape(Guide.mainDay(Math.min(1000,saved.unlocked)).calendarDate)+'</p><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
- '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section>'+ '<section class="panel"><h2>Garden &amp; Farm</h2><p>Plant seeds, harvest crops, expand the homestead, and use magical farming supplies.</p>'+button('go-farm','OPEN GARDEN')+'</section></div>'+townHousePanel(Garden.summary(saved));
+ '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section>'+
+ '<section class="panel"><h2>Garden &amp; Farm</h2><p>Plant seeds, harvest crops, expand the homestead, and use magical farming supplies.</p>'+button('go-farm','OPEN GARDEN')+'</section></div>'+
+ townAvatarPanel()+townHousePanel(Garden.summary(saved));
 }
 function manor(){
  const town=Garden.summary(saved),isRoyal=town.houseLevel>=36;
@@ -556,6 +568,7 @@ function finishMining(result,success){if(result?.valid){const reward=/reward|ref
 function handle(b){
  const a=b.dataset.action,info=b.dataset,now=Date.now();
  if(info.nav){nav(info.nav);return;}
+ if(a==='go-shop'){nav('shop');return;}if(a==='go-rewards'){nav('rewards');return;}
  if(a==='go-guide'){guideDay=Number.isInteger(Number(info.level))&&Number(info.level)>=1&&Number(info.level)<=1000?Number(info.level):Math.min(1000,Math.max(1,saved.unlocked));nav('guide');return;}if(a==='guide-day'){const n=Number(info.day);if(Number.isInteger(n)&&n>=1&&n<=1000&&Royal.cleared(saved)>=n){guideTab='calendar';guideDay=n;render();}return;}if(a==='guide-tab'){if(Guide.TABS.some(t=>t.id===info.tab)){guideTab=info.tab;render();}return;}if(a==='guide-prev'){guideDay=Math.max(1,guideDay-1);render();return;}if(a==='guide-next'){guideDay=Math.min(1000,guideDay+1);render();return;}if(a==='guide-today'){guideDay=Math.min(1000,Math.max(1,saved.unlocked));render();return;}
  if(a==='go-farm'){nav('farm');return;}if(a==='go-manor'){nav('manor');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}if(a==='go-chronicle'){storySelected=outcome?.storyNew?.[0]?.id||null;nav('chronicle');return;}if(a==='story-open'){const story=Royal.EVENTS.find(e=>e.id===info.story);if(story&&Royal.unlocked(saved,story)){storySelected=story.id;render();}return;}
  if(a==='check-updates'){window.RupeeUpdates?.check();return;}
@@ -668,5 +681,18 @@ root.addEventListener?.('pointerup',e=>{
  if(!E.adjacent(active,start.i,to))return;
  Music.activate();performSwap(start.i,to);
 });
-render();window.addEventListener?.('load',()=>document.getElementById('jewelbrook-loading-splash')?.remove?.(),{once:true});window.RupeeRushDebug=Object.freeze({getSave:()=>JSON.parse(JSON.stringify(saved)),getPage:()=>page,getChapter:()=>chapterId,activeSnapshot:()=>active?E.snapshot(active):null});
+render();
+const splashReadyAt=Date.now()+900;
+function finishStartupSplash(){
+ const splash=document.getElementById('jewelbrook-loading-splash');
+ if(!splash||splash.dataset.dismissing==='yes')return;
+ splash.dataset.dismissing='yes';
+ window.setTimeout(()=>{
+  splash.classList.add('is-dismissing');
+  window.setTimeout(()=>splash.remove(),270);
+ },Math.max(0,splashReadyAt-Date.now()));
+}
+if(document.readyState==='complete')finishStartupSplash();
+else window.addEventListener('load',finishStartupSplash,{once:true});
+window.RupeeRushDebug=Object.freeze({getSave:()=>JSON.parse(JSON.stringify(saved)),getPage:()=>page,getChapter:()=>chapterId,activeSnapshot:()=>active?E.snapshot(active):null});
 })();
