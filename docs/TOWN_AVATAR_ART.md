@@ -1,10 +1,10 @@
-# Rupee Rush — Town · Daysha Level Avatar Archive (01–40)
+# Jewelbrook — Town · Daysha Level Avatar Archive (01–40)
 
 **Town** is the name of the avatar progression/location presentation (not a rename of the existing save schema, match-3 campaign, or mining economy). Do not change the game’s `rupeerush.save.v1` key when implementing Town.
 
 ## Files
 
-- Original 10×4 concept snapshot used to extract variants: preserved, hash-identified, on [Rupee Rush Google Drive](https://drive.google.com/file/d/1OCAyiEwIEpE2x05jYFPcA8KbiQQiDfXz/view?usp=drivesdk) (3.5 MB; not duplicated in GitHub due to binary upload limit).
+- Original 10×4 concept snapshot used to extract variants: preserved, hash-identified, on [Jewelbrook Google Drive](https://drive.google.com/file/d/1OCAyiEwIEpE2x05jYFPcA8KbiQQiDfXz/view?usp=drivesdk) (3.5 MB; not duplicated in GitHub due to binary upload limit).
 - `web/art/embryon/town/source/slice_from_snapshot.py`: original extraction recipe, retained for provenance; its source and output paths are absolute historical development paths, not a plug-and-play generator.
 - `web/art/embryon/town/avatars/daysha_lv_01.png` through `daysha_lv_40.png`: forty independent **288×480 RGBA PNGs**, with official, legible, sapphire-and-gold level plaques. They have transparent corners and eight-pixel clear boundaries.
 - `web/art/embryon/town/sheets/daysha_levels_01-10.png`, `11-20.png`, `21-30.png`, `31-40.png`: four independent **1536×1024 RGBA** atlas views.

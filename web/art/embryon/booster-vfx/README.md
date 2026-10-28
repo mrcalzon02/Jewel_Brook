@@ -1,11 +1,11 @@
-# Rupee Rush — Heroes of Embryon: Approved Booster / VFX Art Batch
+# Jewelbrook — Heroes of Embryon: Approved Booster / VFX Art Batch
 
 **Approved by project owner:** six original AI-generated 4×4 source atlases, 96 individual components.
 **Scope:** original source sheets, each isolated as a 384px RGBA master and 192px RGBA runtime preview. These are static images, NOT animated frame sequences or wired gameplay implementations.
 
 ## Slicing and preservation
 
-Extraction uses the existing Rupee Rush 4×4 alpha-aware dynamic-seam slicer. Individual items have a 26px transparent inset; source original atlases remain unchanged. Each SHA-256 is in `manifest.json`. The extraction algorithm and QA previews are included.
+Extraction uses the existing Jewelbrook 4×4 alpha-aware dynamic-seam slicer. Individual items have a 26px transparent inset; source original atlases remain unchanged. Each SHA-256 is in `manifest.json`. The extraction algorithm and QA previews are included.
 
 ## Source sheets
 
@@ -21,7 +21,7 @@ Extraction uses the existing Rupee Rush 4×4 alpha-aware dynamic-seam slicer. In
 ## Important QA considerations
 
 Automated SHA/dimensions/transparency/ZIP integrity checks passed; contact sheets have been visually reviewed. Several generated source atlases have glow or particle art crossing neighboring quadrants. Dynamic seam isolation prevents adjoining subjects from being imported as one piece, but an overlapping glow may be clipped at the cut; check these sprites at full resolution before final gameplay integration.
-No artwork from Nut Buster was changed or overwritten. All existing Rupee Rush gameplay IDs, code and balance are untouched.
+No artwork from Nut Buster was changed or overwritten. All existing Jewelbrook gameplay IDs, code and balance are untouched.
 
 ## Packaging
 
@@ -31,7 +31,7 @@ These named conceptual art pieces require a later mechanics-to-asset mapping and
 
 ## Project archive and runtime source
 
-Approved full-resolution masters, six untouched 1254px source atlases and all 384px exports are in the [Rupee Rush Booster & VFX Google Drive library](https://drive.google.com/drive/folders/1Ox7oOMWMrcP0s-ZJ4r1yFdvRaI_axKtK).
+Approved full-resolution masters, six untouched 1254px source atlases and all 384px exports are in the [Jewelbrook Booster & VFX Google Drive library](https://drive.google.com/drive/folders/1Ox7oOMWMrcP0s-ZJ4r1yFdvRaI_axKtK).
 
 The six tracked runtime archives in `runtime192/` include **all 96 isolated 192px transparent sprites**, names and per-sprite SHA-256. The 384px masters remain in Drive's complete packages (not represented by placeholders in this repository). Use `slice_assets.py` with the six original atlases to rebuild or adjust all source-resolution exports. No current gameplay asset paths were overwritten.
 

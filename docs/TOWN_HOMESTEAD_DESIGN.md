@@ -1,4 +1,4 @@
-# Rupee Rush — Heroes of Embryon / Town Homestead & Gardening
+# Jewelbrook — Heroes of Embryon / Town Homestead & Gardening
 
 **Status:** Phase 1 implemented as a standalone, tested economy module. No player-facing Town screen, house sprite substitution, timed notification, or cooking minigame is yet enabled.  
 **Authority:** `docs/ART_STYLE_MASTER.md` (approved high-sheen visual identity), `docs/TOWN_AVATAR_ART.md` (existing Town avatar levels 1–40), `web/mining.js` and `web/mining-gear.js` (existing mining and glove state).  

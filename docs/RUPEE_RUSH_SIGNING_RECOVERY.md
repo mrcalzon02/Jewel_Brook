@@ -1,8 +1,8 @@
-# Rupee Rush original APK signing key — encrypted Google Drive backup
+# Jewelbrook original APK signing key — encrypted Google Drive backup
 
-This operation is specific to Rupee Rush. It never creates or rotates a signing key and never modifies ReverieVR, Nut Buster, Google Play credentials, the Rupee Rush APK, or GitHub secrets.
+This operation is specific to Jewelbrook. It never creates or rotates a signing key and never modifies ReverieVR, Nut Buster, Google Play credentials, the Jewelbrook APK, or GitHub secrets.
 
-Run once from the Rupee Rush checkout in GitKraken PowerShell:
+Run once from the Jewelbrook checkout in GitKraken PowerShell:
 
     git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\backup-rupeerush-signer-to-drive.ps1 }
 
@@ -16,6 +16,6 @@ It creates a temporary ZIP containing ONLY the two original signing recovery fil
 
 Only the encrypted `.age` archive and public recovery metadata are uploaded into a unique subfolder of [Android Signing Backups - Encrypted](https://drive.google.com/drive/folders/1sAvMvu9prGSUBIg9q5laisgoCmBIY-zT). The script then runs `rclone check --download --one-way` to read back and verify actual remote bytes. It will only print SUCCESS after verification. If a remote upload fails, the encrypted local copy remains in `%LOCALAPPDATA%\Embryon\rupeerush-local-apk-v1\encrypted-backups`.
 
-To recover later on a trusted machine: download the encrypted archive, decrypt using `age -d -o rupeerush-signing-recovery.zip rupeerush-signing-recovery.zip.age`, extract the two original files and restore them into the Rupee Rush private signing folder. Verify the certificate SHA-256 from the recovery metadata. Do not generate a new key to replace a working publisher key.
+To recover later on a trusted machine: download the encrypted archive, decrypt using `age -d -o rupeerush-signing-recovery.zip rupeerush-signing-recovery.zip.age`, extract the two original files and restore them into the Jewelbrook private signing folder. Verify the certificate SHA-256 from the recovery metadata. Do not generate a new key to replace a working publisher key.
 
-Rupee Rush continues building Android APKs on GitHub; this script only provides disaster recovery for the signing identity.
+Jewelbrook continues building Android APKs on GitHub; this script only provides disaster recovery for the signing identity.
