@@ -1,48 +1,71 @@
 # Jewel Brook: Heroes of Embryon
 
-**Public game name:** Jewel Brook: Heroes of Embryon (short form: Jewel Brook). The authoritative repository and updater endpoints are `mrcalzon02/Jewel_Brook`. The installed Android package, signing identity, save keys, signed Android APK filename and release tags deliberately retain their established Rupee Rush identifiers for in-place update and save compatibility. New Windows/Linux distributions use branded Jewel Brook archive and executable names while retaining their original native save path. Do not rename those internal identities as part of public branding.
+**Jewel Brook: Heroes of Embryon** is an offline-first fantasy gemstone match-three adventure set in the working kingdom of Embryon. The player clears expeditions, mines and refines gems, grows and cooks food, develops a town residence, trades resources, and witnesses the unfolding story of Queen Daysha and King Rome.
 
-**Deployment targets:** Android phones and Amazon Fire tablets use the existing signed APK. Windows/Linux use a separate **genuine native C++/SDL3 application**, with no packaged browser or JavaScript runtime. Native desktop gameplay parity is in progress. See [Deployment Targets](docs/DEPLOYMENT_TARGETS.md).
+Previously developed under the name **Rupee Rush**, the game now lives at **[mrcalzon02/Jewel_Brook](https://github.com/mrcalzon02/Jewel_Brook)** on `main`. This is the same game, **not** a fork of or an update channel for [Nut Buster](https://github.com/mrcalzon02/NUTBUSTER-R).
 
-**Android APK delivery:** [GitHub-built signed Releases](docs/GITHUB_ANDROID_RELEASES.md) are the normal workflow; no local Android build is needed. [Download APK releases](https://github.com/mrcalzon02/Jewel_Brook/releases).
+> **Development status:** Playable signed Android test APKs are released from GitHub. Native Windows/Linux C++/SDL3 builds are functional **but experimental, with partial gameplay parity**. Amazon Fire tablets share the Android APK target; physical Fire-device verification is still required. Google Play publication has **not** occurred.
 
+## Get the game
 
-**Google Play publication is deferred.** Its separate [future upload-key runbook](docs/GOOGLE_PLAY_NEW_KEYS.md) is not required for the playable GitHub APK channel. No keystores are committed to Git.
+| Platform | Current distribution | Important limitations |
+| --- | --- | --- |
+| **Android phones** | [Signed GitHub Android prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — download `RupeeRush-Android.apk` | Installs outside Google Play; permit installation when Android asks. Updating an existing signed installation should preserve saves. |
+| **Amazon Fire tablets** | Same Android APK | Fire OS compatibility is a deployment target, not a claim of verified operation on every Fire tablet. |
+| **Windows x64** | [Native desktop prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — `JewelBrook-Native-Windows-x64.zip` | Genuine native executable; no embedded browser. Experimental content subset; unsigned Windows executable. |
+| **Linux x64** | Same releases — `JewelBrook-Native-Linux-x64.tar.gz` | Native SDL3 executable and packaged dependencies; experimental content subset. |
+| **Source-browser preview** | Open `web/index.html` or serve `web/` locally | For local development; not a desktop distribution and not a substitute for the native executables. |
 
-Offline-first gemstone match-3 and independent crystal-mining economy, based on adapted, separately maintained gameplay systems from [NUTBUSTER-R](https://github.com/mrcalzon02/NUTBUSTER-R). This repository is a standalone game, not a Nut Buster update channel or shared save database.
+For the latest **applicable** release, browse [all releases, including prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases). GitHub's stable-only `/releases/latest` endpoint is **not** the test update channel.
 
-## Play
+**Update behavior:** Signed sideloaded Android builds check the **renamed** `Jewel_Brook` repository for new matching prerelease APKs. A download and installation both require permission; the updater verifies the APK's hash, version, package ID and publisher certificate. Native desktop **does not yet have an in-app updater**—download a newer native archive manually. See [Android releases and signing](docs/GITHUB_ANDROID_RELEASES.md) and [platform status](docs/DEPLOYMENT_TARGETS.md).
 
-Open `web/index.html` in a browser, or serve the `web/` folder using `python3 -m http.server 8000 --directory web`.
+## What's implemented?
 
-- **Campaign:** deterministic boards, 1,000 progression stages, 300 elemental trials, cascades, tile features and 16 earned boosters.
-- **Mining:** available from the first launch, **not** level 500. Deterministic excavation, honest barren rocks, persistent claims, 40 pickaxe tiers and 40 glove tiers, mine/cart/refinery upgrades.
-- **Economy loop:** dig ore → unload → refine → craft and sell crystal parcels → buy moves, hearts, boosters, Rupees or Star Gems in the mining exchange.
-- **Shop:** spend earned Rupees or Star Gems to buy lives, moves and boosters with different exchange rates.
-- **Saves:** `rupeerush.save.v1` in localStorage, independent of `nutbuster.v1`. Settings → Advanced Settings → Account Reset has two confirmations.
-- **Monetization:** no real-money payment handler, tracking SDK, cloud account, ad provider or social profile.
+The **Android/local web gameplay** is the broader feature set:
 
-## Heroes of Embryon — master art direction
+- **1,000 main expedition stages** in five 200-stage chapters: Goblin Caves, Troll Caverns, Sulfur Sumps, Mushroom Mire and Ghost Mines. Deterministic matching, board conditions, blockers and 16 progressively earned boosters are defined in the source.
+- **300 optional elemental trials** with distinct unlock requirements and powers. Trials are not extra campaign calendar days.
+- **Mining and processing from the start:** persistent excavations, real barren rocks, cart and refinery upgrades, ore/refining/trading, and 40 authored pickaxe plus 40 glove tiers. Mining is optional support for the puzzle game, not a prerequisite.
+- **Town economy:** seeds, real growing plots and harvests; a 40-level residence with real paid upgrades, a Manor destination, and functional Kitchen, Garden and Wardrobe navigation. Recipes consume actual harvested ingredients and award defined support items.
+- **Currencies and shop:** Rupees, Star Gems, Mining Credits and cosmetic Style Shards have distinct roles. There is **no real-money checkout, ads, tracking SDK or online account**.
+- **World Guide and Royal Chronicle:** offline reference data and level-tied royal episodes; source-approved **original generated** Daysha illustrations and ten elemental gowns have conditional story/trial reveal rules.
 
-The owner-approved **Daysha** visual identity and **Jewelbrook** high-gloss production rules are maintained in [Master Art Style Guide](docs/ART_STYLE_MASTER.md), [Daysha Art Contract](docs/DAYSHA_ART_CONTRACT.md), and [Art Production Contract](docs/EMBRYON_ART_PRODUCTION.md). Visual palette and UI component specimens live in `web/art/embryon/`. These are design references, not assertions of gameplay integration or a packaged visual update.
+**Story premise:** You are part of the working population whose mining, food and commerce sustain Embryon. The royal story takes place on the **same campaign timeline**: the first clear of Level N advances the shared history to Campaign Day N. At the opening, Daysha and Rome are newly married and their daughter Estelle has **not** been born. Later Estelle scenes are *future story material*, not opening-game events. Exact Elaranth month/year conversion remains unconfirmed. The existing Town avatar art depicts Daysha; that presentation must not be mistaken for making the narrative citizen player the queen.
 
-## Shared asset family
+**Native desktop status:** The Windows/Linux builds run original C++/SDL3 code—not Electron, Chromium, WebView or a bundled JavaScript interpreter. GitHub has compiled and smoke-tested both platforms with functional checks. The native campaign currently exports the **first 124 source-authored stages** and some matching, mining, booster, status and save systems. It **does not yet match** the complete Android farming, kitchen, store, Chronicle, audio or 1,000-stage feature set. See [deployment and port status](docs/DEPLOYMENT_TARGETS.md); a successful desktop release is not full-game parity.
 
-Portable, visually screened blocker/status/booster/reward art is tracked in [the asset-family audit](docs/SHARED_ASSET_FAMILY.md) and [source-hash manifest](web/art/shared-family.json). The audit rejects acorn/walnut-bearing art even when its filename sounds generic. All 16 status overlays are drawn above gems with transparent-center masks in browser and Android WebView CSS. Art preservation references are documentary and are not release-blocking tests.
+## World, development and art documentation
 
-## Art ownership and migration
+- [Wiki source home](wiki/Home.md) — organized repository-backed pages for game systems, canon, platform releases and the verified status. These pages are **versioned documentation**; they are not automatically the separate GitHub Wiki site.
+- [World guide / chronology reference](docs/EMBRYON_WORLD_WIKI.md) — official in-repository counterpart of the offline World Guide.
+- [Royal Chronicle integration](docs/ROYAL_CHRONICLE_INTEGRATION.md) and [Daysha generated-image inventory](docs/DAYSHA_GENERATED_IMAGE_SORTING.md) — what is in the game, future events and missing original-image bytes.
+- [Daysha identity contract](docs/DAYSHA_ART_CONTRACT.md), [master art style](docs/ART_STYLE_MASTER.md) and [art production contract](docs/EMBRYON_ART_PRODUCTION.md).
+- [Residence / Manor feature status](docs/TOWN_MANOR_IMPLEMENTATION.md).
+- [Repository and compatibility migration](docs/REPOSITORY_PLATFORM_MIGRATION.md).
 
-The original Nut Buster **rocks, pickaxes and gloves** are allowed as visual assets in Jewelbrook and intentionally retain the owner-authored image files, 40+40 equipment tier identities and asset paths. Other Jewelbrook art uses a temporary procedural vector treatment pending dedicated gemstone/background/UI art runs; it is **not** finished production artwork. Do not add new nut-themed sprites as stand-ins.
+The game uses approved original art and carefully selected reusable artwork from the owner's existing projects. **Do not remap currency artwork, substitute unapproved rock/gem icons, or upload third-party dress-reference images as if they were generated originals.** Some residence/exterior art is still preview-grade and final approved painting remains incomplete. Art inventory and runtime readiness are not interchangeable.
 
-## Project constraints
+## Developer quick start
 
-- Do not edit the NUTBUSTER-R repository while working on this game.
-- Don't add GitHub Actions without explicit request.
-- Keep separate Jewelbrook package/signing IDs, save namespaces, release channels and publishing identities.
-- Mining must remain available from the outset and cannot require campaign completion.
-- Match-3 is playable even without mining; mining is a supplemental way to earn play resources.
-- No real cash payment should be enabled without a separately approved compliant platform implementation.
+The locally runnable browser gameplay requires no backend:
 
-## Validation
+```sh
+python3 -m http.server 8000 --directory web
+```
 
-The Android GitHub Actions workflow runs only the nine functional diagnostics explicitly listed in `.github/workflows/rupee-rush-android.yml`: application/packaging and signed-update contracts, playable match-three navigation and swaps, mining, farming, kitchen preparation/serving, store packages, and power-up economy. Artwork, visual presentation, sprite hashes, portrait appearance, and palette tests are not run and cannot gate builds. Android Gradle assembly and signed APK verification are separate release-blocking build steps. Node smoke tests do not replace device interaction checks.
+Open `http://localhost:8000`. Alternatively open `web/index.html` directly where supported.
+
+Functional checks (Node.js) are in `tests/`. The signed Android release workflow runs its specified functional diagnostics, Gradle assembly and signer/APK identity checks on **GitHub Actions**, not the user's PC. Native Windows/Linux builds run their own CMake/CTest diagnostics and packaged-executable smoke tests on GitHub. Avoid adding release-blocking cosmetic or screenshot-diff tests. Build/check status is verified per [Actions run](https://github.com/mrcalzon02/Jewel_Brook/actions), not inferred from a source commit.
+
+## Compatibility identities — intentionally unchanged
+
+**Do not rename these casually** even though public branding is Jewel Brook:
+
+- Android package ID and Java namespace: `io.github.mrcalzon02.rupeerush`.
+- Permanent sideload signing identity/certificate, update version progression and local save key `rupeerush.save.v1`.
+- Android update asset `RupeeRush-Android.apk` and prerelease tag convention `rupeerush-phone-test-<run>-<attempt>`; the signed updater validates them.
+- Native existing save location `SDL_GetPrefPath("RupeeRush","RupeeRushDesktop")` and compatible save formats.
+- Stable internal APIs, asset paths and some historical workflow/test names where renaming them adds risk rather than user value.
+
+**External-facing** GitHub links, Android update endpoints, project name and Windows/Linux packaged application names now use **Jewel Brook**. Google Play signing/upload keys are separate and **publication is deferred**; no current Google Play release is implied.
