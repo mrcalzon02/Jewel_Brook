@@ -6,7 +6,7 @@
   "rightsPolicy": "Original AI-generated images of Daysha and royal household only; supplied dress references are never eligible.",
   "gameRepo": "mrcalzon02/Jewel_Brook",
   "importDestination": "web/art/embryon/story/gilded-spindle/originals",
-  "status": "awaiting_verified_binary_files",
+  "status": "all_19_verified_original_bytes_recovered_pending_repository_binary_upload",
   "entries": [
     {
       "id": "atelier-01",
@@ -14,8 +14,8 @@
       "sha256": "dac00f3d5753266f98c1ae54e6203741f2ebfec64249dcbbde3e574b826dbd80",
       "eventId": "RH-E01",
       "description": "First Friday midnight-blue gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -25,8 +25,8 @@
       "sha256": "000e1633c67feeb1510e6ad92c944568d2c28e35900337a33411f4a6486c13c0",
       "eventId": "RH-E01",
       "description": "First Friday pale icy-blue gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -36,8 +36,8 @@
       "sha256": "cf58cc6eeab1106105aba39f2ba8e815a5e5437e70d70fa8c81f6d5d33f8bad3",
       "eventId": "RH-E03",
       "description": "Burgundy gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -47,8 +47,8 @@
       "sha256": "dc378fc1e5c541f58236936107b604cfd5da746f5cb9cbbcb47076e0f00970a6",
       "eventId": "RH-E03",
       "description": "Violet-and-white starry gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -58,8 +58,8 @@
       "sha256": "7b738da5771f4243c4569fbf99a2d371441c500b4694df22337c3010df0ce459",
       "eventId": "RH-E04",
       "description": "Garrick Rome and boxed gowns at shop entrance",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -69,8 +69,8 @@
       "sha256": "d005e74542145c4c5b81fce40e26e985fab01514759b023f2598de8034f69a14",
       "eventId": "RH-E04",
       "description": "Generated-art crop identifying Garrick",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "generated_identity_crop"
     },
@@ -80,8 +80,8 @@
       "sha256": "dd6aea62672fa4566ea93ab2502ec581e6f4e8f8478fd009751f77001e348d67",
       "eventId": "RH-E05",
       "description": "Corrected star-blue Lexi first appearance at birthday fitting",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -91,8 +91,8 @@
       "sha256": "6e163a5ee93903b52d9efc1625b4fdca28c9e0721d50c039d7731c2362bff39d",
       "eventId": "RH-E06",
       "description": "Post-birthday powder-blue gown with elven Garrick",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -102,8 +102,8 @@
       "sha256": "5ad6e538d822e99ed6bd15f0a1eb02b56d18a0cbda4891ff53ba97b070ab555a",
       "eventId": "RH-E06",
       "description": "Corrected pink-and-white unfinished gown with blue-haired Daysha",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -113,8 +113,8 @@
       "sha256": "669b835fef7f0be0e67da9dc17b8ada786cb532daa3c9c4b886ca20e33f3e708",
       "eventId": "RH-E07",
       "description": "Sunday royal-purse purchase",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -124,8 +124,8 @@
       "sha256": "caab4bc4772af71186716e7255738ac0add008b316ba04c982966a9fde22cdb1",
       "eventId": "RH-E09",
       "description": "Simple midnight-periwinkle enchanted gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -135,8 +135,8 @@
       "sha256": "1cab1873cc386cf3e647c3858f16780c321d5290849fd1e903b93486b563468c",
       "eventId": "RH-E08",
       "description": "Teal-blue filigree gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -146,8 +146,8 @@
       "sha256": "8aca0390dfeee26596eb18f73ded77b58bcda4f25c3414efb27f5ea9ca43aef8",
       "eventId": "RH-E10",
       "description": "Sea-themed gown with distinct Garrick and Rome",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -157,8 +157,8 @@
       "sha256": "726cd1b57d1dbe20ef47903db12bda8d7d54622405c3e32633571c51fba2f19c",
       "eventId": "RH-E10",
       "description": "Teal-and-black gold-thread hem gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -168,8 +168,8 @@
       "sha256": "ff97eb1c8294282ae429acd046ae1343060d54d9c34df3a4fb46c67336ec7c4a",
       "eventId": "RH-E11",
       "description": "Queen Mother first canonical appearance with Daysha",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -179,8 +179,8 @@
       "sha256": "614943d5548f3315ae62c8af2368406a53720dca568d11122e685a46350f8a22",
       "eventId": "RH-E12",
       "description": "Queen Mother lavender ballgown gift",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -190,8 +190,8 @@
       "sha256": "2f3260cadf159d2dda25ac42b1656376db65f488e264c09ee3cca386375eda69",
       "eventId": "RH-E13",
       "description": "Matching blue-white and red-white gowns",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -201,8 +201,8 @@
       "sha256": "add084068aa7d27f2c2d2ba5d92c7e9233603953d4409580119d06f2aa603282",
       "eventId": "RH-E14",
       "description": "Corrected medium-long elven ears scene",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     },
@@ -212,10 +212,21 @@
       "sha256": "a86a9dbd9960e70a9f2824459b4291f4d9ed2228b6d72c3e864dff1d45475f8b",
       "eventId": "RH-E15",
       "description": "Queen Mother birthday gown",
-      "sourceStatus": "generated_original_pending_binary_recovery",
-      "publicationStatus": "not_published",
+      "sourceStatus": "exact_original_png_sha256_verified_recovered",
+      "publicationStatus": "pending_game_binary_upload",
       "displayEligible": false,
       "role": "original_illustration"
     }
-  ]
+  ],
+  "recovery": {
+    "dateUTC": "2026-10-28",
+    "verifiedCount": 19,
+    "method": "Exact SHA-256 match of user Library generated PNGs against historical source manifest; no reference images",
+    "originalsArchive": "Daysha_19_Verified_Generated_PNG_Originals.zip",
+    "originalsArchiveSHA256": "a9a92fac15b91e4feb24af1c7d09de502c353004f54372be8a9869bfb7e21556",
+    "importArchive": "Jewel_Brook_Daysha_Gilded_Spindle_Import_19.zip",
+    "importArchiveSHA256": "e2169a551fc504cca09fc2f6709ba5eed9becc309fa62d27c0b10b5c5a48baa9",
+    "repoUploadStatus": "NOT YET COMMITTED; ZIP packages built separately",
+    "runtimeStatus": "NOT PUBLISHED until verified Git files exist"
+  }
 }
