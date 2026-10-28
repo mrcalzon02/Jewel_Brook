@@ -2,8 +2,8 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownHouses,TownYards,CropGrowth,Kitchen,Cook].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownCharacter=window.RupeeTownCharacter,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
@@ -30,33 +30,49 @@ function bank(){return D.ensure(saved,Date.now(),dailyCap());}
 function header(name,description=''){return '<div class="heading"><h1>'+name+'</h1>'+(description?'<p>'+description+'</p>':'')+'</div>';}
 function stats(){return '<div class="stats"><div>'+icon('rupee',24)+' <strong>'+number(saved.coins)+'</strong><small>Rupees</small></div><div>'+icon('crystal',24)+' <strong>'+number(saved.gems)+'</strong><small>Star Gems</small></div><div><img class="icon" src="art/nutvale/mining-economy/currency/rainbow-coin.png" width="24" height="24" alt=""> <strong>'+number(saved.styleShards)+'</strong><small>Style Shards</small></div><div>'+icon('heart',24)+' <strong>'+saved.hearts+'/5</strong><small>Lives</small></div><div>'+icon('extra',24)+' <strong>'+number(bank().remaining)+'</strong><small>Moves today</small></div></div>';}
 function townAvatarPanel(){
- const portrait=TownAvatars.fromSave(saved);
- return '<section class="town-avatar-panel" aria-label="Daysha Town avatar progression">'+
-  '<img class="town-avatar-art" src="'+portrait.path+'" alt="Daysha, Town avatar '+portrait.level+' of 40" width="144" height="240" loading="lazy" decoding="async">'+
-  '<div class="town-avatar-copy"><span class="town-avatar-eyebrow">THE TOWN WAYFINDER</span><h2>Daysha · Avatar '+portrait.level+'/40</h2>'+
-  '<p>Daysha’s Town appearance follows campaign progress. Your residence and its garden plots level up independently.</p>'+
+ const avatar=TownCharacter.fromSave(saved);
+ return '<section class="town-avatar-panel" aria-label="Daysha full-body character avatar">'+
+  '<figure class="town-avatar-figure"><img class="town-avatar-art" src="'+escape(avatar.image)+'" alt="Daysha wearing '+escape(avatar.outfitName)+'" width="288" height="480" loading="eager" decoding="async"></figure>'+
+  '<div class="town-avatar-copy"><span class="town-avatar-eyebrow">YOUR TOWN HERO</span><h2>Daysha</h2>'+
+  '<p>Equipped appearance: <strong>'+escape(avatar.outfitName)+'</strong></p>'+
+  button('open-wardrobe','CHANGE DAYSHA\'S LOOK','secondary')+
   '</div></section>';
 }
-function townHousePanel(t){
+function townHousePanel(t,showEntry=true){
  const art=TownHouses.house(t.houseLevel),yard=TownYards.yard(t.houseLevel);
  return '<section class="town-house-panel" aria-label="Town residence visual progress"><div class="town-house-frame">'+
   '<img class="town-yard-layer" src="'+yard.path+'" alt="" width="260" height="260" loading="lazy" decoding="async">'+
   '<img class="town-house-illustration" src="'+art.path+'" alt="Illustrated '+escape(t.houseBand)+' residence at house level '+art.level+' of 40" width="260" height="260" loading="lazy" decoding="async"></div>'+
   '<div class="town-house-summary"><small class="town-house-kicker">YOUR EMBRYON HOMESTEAD</small><h2>'+escape(art.name)+'</h2><p>'+escape(t.houseBand)+'</p>'+
   '<p>Residence level <strong>'+art.level+'/40</strong> · '+t.plots+' functional growing '+(t.plots===1?'plot':'plots')+'.</p>'+
-  '<small>Illustrated house preview; final painted sprites are pending.</small></div></section>';
+  '<small>Illustrated house preview; final painted sprites are pending.</small>'+(showEntry?button('go-manor','ENTER RESIDENCE','secondary'):'')+'</div></section>';
 }
 function home(){
  return '<section class="home-kingdom" aria-label="Embryon Kingdom">'+
  '<div class="home-kingdom-content"><h1 class="home-brand"><span class="home-title-wordmark">JEWELBROOK</span><span class="home-title-subtitle">HEROES OF EMBRYON</span></h1>'+
  '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p>'+
- '<div class="profile-showcase"><div class="profile-portrait"><img class="profile-avatar" alt="Current character" src="'+escape(Economy.BY_ID[saved.cosmeticEquipped.character].image)+'">'+
- (saved.cosmeticEquipped.frame?'<img class="profile-frame" alt="" src="'+escape(Economy.BY_ID[saved.cosmeticEquipped.frame].image)+'">':'')+'</div>'+
- '<div class="profile-outfit"><img alt="Equipped Daysha wardrobe look" src="'+escape(Economy.BY_ID[saved.cosmeticEquipped.outfit].image)+'"></div>'+
- '<div class="profile-label"><b>'+escape(Economy.BY_ID[saved.cosmeticEquipped.character].name)+'</b><small>'+escape(Economy.BY_ID[saved.cosmeticEquipped.outfit].name)+'</small>'+button('open-wardrobe','CUSTOMIZE CHARACTER','secondary')+'</div></div>'+
- '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+'</div></div></section>'+
+ townAvatarPanel()+
+ '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+button('go-manor','ENTER RESIDENCE','secondary')+'</div></div></section>'+
  '<div class="panels"><section class="panel"><h2>Current expedition</h2><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
- '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section>'+ '<section class="panel"><h2>Garden &amp; Farm</h2><p>Plant seeds, harvest crops, expand the homestead, and use magical farming supplies.</p>'+button('go-farm','OPEN GARDEN')+'</section></div>'+townAvatarPanel()+townHousePanel(Garden.summary(saved));
+ '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section>'+ '<section class="panel"><h2>Garden &amp; Farm</h2><p>Plant seeds, harvest crops, expand the homestead, and use magical farming supplies.</p>'+button('go-farm','OPEN GARDEN')+'</section></div>'+townHousePanel(Garden.summary(saved));
+}
+function manor(){
+ const town=Garden.summary(saved),isRoyal=town.houseLevel>=36;
+ const nextCost=town.nextUpgradeCost;
+ return '<div class="location-banner location-manor">'+header('Manor House','Your Town residence, wardrobe, household kitchen and gardens. The Royal Manor is reached at residence level 36.')+'</div>'+
+  townAvatarPanel()+
+  '<section class="panel manor-management" aria-label="Manage your Town residence"><h2>'+(isRoyal?'Royal Manor':'Residence · '+escape(town.houseBand))+'</h2>'+
+  '<p>Residence level '+town.houseLevel+'/40 · '+town.plots+' unlocked garden plots. The building grows through purchased upgrades; campaign avatar progress stays separate.</p>'+
+  townHousePanel(town,false)+
+  '<div class="manor-upgrade">'+(nextCost===null?'<strong>Royal Manor fully upgraded</strong>':
+     '<p>Next residence upgrade: '+number(nextCost)+' Rupees · Balance '+number(saved.coins)+' Rupees</p>')+
+    button('manor-upgrade',nextCost===null?'MAXIMUM HOUSE LEVEL':'UPGRADE RESIDENCE',nextCost===null?'quiet':'primary',
+       nextCost===null||saved.coins<nextCost?'disabled':'')+'</div>'+
+  '<div class="manor-rooms" role="group" aria-label="Manor rooms">'+
+   '<section class="manor-room"><h3>Wardrobe</h3><p>Choose the complete illustrated Daysha appearance shown in Town.</p>'+button('open-wardrobe','OPEN WARDROBE','secondary')+'</section>'+
+   '<section class="manor-room"><h3>Gardens</h3><p>Plant, tend, harvest and expand your '+town.plots+' available plots.</p>'+button('manor-garden','VISIT GARDEN','secondary')+'</section>'+
+   '<section class="manor-room"><h3>Kitchen & Dining</h3><p>Use harvested produce in the existing cook-and-serve system.</p>'+button('manor-kitchen','ENTER KITCHEN','secondary')+'</section>'+
+  '</div><p class="hint">Residence illustration is the existing unapproved level preview. Painted manor artwork is still pending; no replacement image has been assigned.</p></section>';
 }
 function campaign(){
  const entered=Chapters.CHAPTERS.filter(c=>saved.unlocked>=c.start).length;
@@ -217,7 +233,7 @@ function offerCard(id,o){
  button('buy-currency',(o.currency==='gems'?'STAR GEMS ':'RUPEES ')+number(o.cost),'primary','data-offer="'+id+'" '+(balance<o.cost?'disabled':''))+'</div>';
 }
 function shop(){
- const tabs=[['packs','Loot Chests'],['boosters','Game Power-Ups'],['supplies','Supplies'],['character','Characters'],['outfit','Outfits'],['pickSkin','Pick Skins'],['gloveSkin','Glove Skins'],['frame','Frames']];
+ const tabs=[['packs','Loot Chests'],['boosters','Game Power-Ups'],['supplies','Supplies'],['character','Character Cards'],['outfit','Outfits'],['pickSkin','Pick Skins'],['gloveSkin','Glove Skins'],['frame','Frames']];
  const nav='<div class="mine-tabs shop-tabs">'+tabs.map(([id,label])=>button('shop-tab',label,shopTab===id?'primary':'secondary','data-shop-tab="'+id+'"')).join('')+'</div>';
  let content='';
  if(shopTab==='packs'){
@@ -329,7 +345,7 @@ function farm(){
    (p.state==='empty'?button('farm-plant','PLANT','primary','data-plot="'+i+'" '+(!t.seeds[farmCrop]||(farmFeed&&!t.fertilizers[farmFeed])?'disabled':'')):
     ready?button('farm-harvest','HARVEST +'+p.yield,'primary','data-plot="'+i+'"'):'')+'</div>';
  }).join('')+'</div>';
- return '<div class="location-banner location-garden">'+header('Embryon Garden','Grow supplies, expand your homestead, and activate farm-specific power-ups.')+'</div>'+townAvatarPanel()+stats()+townHousePanel(t)+
+ return '<div class="location-banner location-garden">'+header('Embryon Garden','Grow supplies, expand your homestead, and activate farm-specific power-ups.')+'</div>'+stats()+townHousePanel(t)+
  '<div class="panel"><h2>'+escape(t.houseBand)+' · House '+t.houseLevel+'/40</h2><p>'+t.plots+' growing plots available. House upgrades unlock more crops, fertilizers, and plots.</p>'+
  button('farm-upgrade',t.nextUpgradeCost===null?'FULLY UPGRADED':'UPGRADE HOUSE · '+number(t.nextUpgradeCost)+' RUPEES','secondary',t.nextUpgradeCost===null||saved.coins<t.nextUpgradeCost?'disabled':'')+'</div>'+
  '<h2 class="subhead">Growing Plots · '+unlocked.length+'/'+seeds.length+' crops unlocked</h2><p class="hint">Choose seeds and optional fertilizer, then plant an empty plot. Select a plot before using targeted garden magic.</p>'+
@@ -342,7 +358,7 @@ function farm(){
  '<h2 class="subhead">Harvest Store</h2><div class="shop-grid">'+seeds.filter(c=>t.harvest[c.id]>0).map(c=>'<div class="shop-item"><img class="farm-item-art" loading="lazy" src="'+FarmArt.harvest(c.id)+'" alt=""><strong>'+escape(c.name)+'</strong><small>'+t.harvest[c.id]+' harvested · '+c.sellEach+' Rupees each</small>'+
  button('farm-sell','SELL ALL','secondary','data-crop="'+c.id+'" '+(!t.harvest[c.id]?'disabled':''))+'</div>').join('')+'</div>'+
  '<h2 class="subhead">Farming Power-Ups</h2><p class="hint">Selected plot: '+(farmPlot+1)+' · Consumables do not replace fertilizers or building upgrades.</p>'+
- modePowerCards('farm')+button('farm-shop','SHOP FOR GARDEN POWER-UPS','secondary')+kitchenPreview()+farmEquipmentPreview();
+ modePowerCards('farm')+button('farm-shop','SHOP FOR GARDEN POWER-UPS','secondary')+'<div id="town-kitchen">'+kitchenPreview()+'</div>'+farmEquipmentPreview();
 }
 
 function mine(){
@@ -403,7 +419,7 @@ function render(){
  document.getElementById('app')?.classList?.toggle?.('playing',page==='game');
  root.classList?.toggle?.('game-active',page==='game');
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
-  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='rewards'?rewards():settings());
+  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='manor'?manor():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
  if(page==='settings')window.RupeeUpdates?.syncStatus();
  const navArt={
@@ -421,7 +437,7 @@ function finishMining(result,success){if(result?.valid){const reward=/reward|ref
 function handle(b){
  const a=b.dataset.action,info=b.dataset,now=Date.now();
  if(info.nav){nav(info.nav);return;}
- if(a==='go-farm'){nav('farm');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
+ if(a==='go-farm'){nav('farm');return;}if(a==='go-manor'){nav('manor');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}
  if(a==='check-updates'){window.RupeeUpdates?.check();return;}
  if(a==='view-releases'){window.RupeeUpdates?.openReleases();return;}
  if(a==='toggle-sfx'){Audio.configure({sfx:!Audio.settings().sfx});render();return;}if(a==='toggle-music'){Music.configure({music:!Music.settings().music});render();return;}if(a==='toggle-voice'){Audio.configure({voice:!Audio.settings().voice});render();return;}
@@ -455,6 +471,9 @@ function handle(b){
   if(a==='farm-crop'){if(Object.hasOwn(Garden.CROPS,info.crop)&&saved.town.houseLevel>=Garden.CROPS[info.crop].house)farmCrop=info.crop;render();return;}
  if(a==='farm-feed'){if(info.feed==='none'||Garden.FERTILIZERS[info.feed])farmFeed=info.feed==='none'?'':info.feed;render();return;}
  if(a==='farm-upgrade')return finishMining(Garden.upgradeHouse(saved),'Garden home upgraded.');
+ if(a==='manor-upgrade')return finishMining(Garden.upgradeHouse(saved),'Town residence upgraded.');
+ if(a==='manor-garden'){nav('farm');return;}
+ if(a==='manor-kitchen'){nav('farm');document.getElementById('town-kitchen')?.scrollIntoView?.({block:'start'});return;}
  if(a==='farm-buy-seed')return finishMining(Garden.purchase(saved,'seed',info.crop,Number(info.qty||1)),'Seeds purchased.');
  if(a==='farm-buy-feed')return finishMining(Garden.purchase(saved,'fertilizer',info.feed,1),'Fertilizer purchased.');
  if(a==='farm-plant'){farmPlot=Number(info.plot);return finishMining(Garden.plant(saved,farmPlot,farmCrop,farmFeed||null,now),'New crops planted.');}
@@ -471,7 +490,7 @@ function handle(b){
   else{Audio.play('blocked');message('Cannot activate '+p.name+': '+r.reason);}
   return;
  }
- if(a==='open-wardrobe'){shopTab='character';nav('shop');return;}
+ if(a==='open-wardrobe'){shopTab='outfit';nav('shop');return;}
  if(a==='shop-tab'){shopTab=info.shopTab;shopReceipt=null;render();return;}
  if(a==='dismiss-receipt'){shopReceipt=null;render();return;}
  if(a==='buy-pack'){const r=Economy.buyPack(saved,info.pack);if(r.valid){shopReceipt={title:'Opened '+Economy.PACKS[info.pack].name,lines:r.results.map(x=>x.label)};Audio.play('reward');save();render();message('Treasure received.');}else message('Unable to open chest: '+r.reason);return;}

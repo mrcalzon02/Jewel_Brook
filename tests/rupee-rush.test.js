@@ -75,7 +75,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeTownYards:require('../web/town-yards.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking,MineOreAtlas:require('../web/mine-ore-atlas.js')};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownCharacter:require('../web/town-character.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeTownYards:require('../web/town-yards.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking,MineOreAtlas:require('../web/mine-ore-atlas.js')};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -83,8 +83,39 @@ vm.runInNewContext(fs.readFileSync(path.join(root,'game.js'),'utf8'),ctx,{filena
 assert.match(views.screen.innerHTML,/data-action="play-next"/,'Play action remains available');
 assert.match(views.screen.innerHTML,/data-action="go-mine"/,'Mining action remains available from home');
 assert.match(views.screen.innerHTML,/data-action="go-farm"/,'Farming action available from home');
+const HomeAvatar=require('../web/town-character.js').fromSave(gameWindow.RupeeRushDebug.getSave());
+assert.equal(HomeAvatar.character,'Daysha');
+assert.match(HomeAvatar.image,/art\/embryon\/town\/avatars\/daysha_lv_01\.png/);
+assert.match(views.screen.innerHTML,/class="town-avatar-art"/,'Equipped outfit is the single full-body Home avatar');
+assert.doesNotMatch(views.screen.innerHTML,/class="profile-avatar"/,'Generated character-card SVG cannot replace Daysha on Home');
+assert.doesNotMatch(views.screen.innerHTML,/class="profile-outfit"/,'No tiny outfit thumbnail beside a separate character portrait');
+
 function click(action,rest={}){assert.equal(typeof handler,'function');handler({target:{closest:()=>({dataset:{action,...rest},disabled:false})}});}
 function navigate(nav){click('',{nav});}
+click('go-manor');
+assert.equal(gameWindow.RupeeRushDebug.getPage(),'manor','Manor House opens as a functional Town location');
+assert.match(views.screen.innerHTML,/data-action="manor-upgrade"/);
+assert.match(views.screen.innerHTML,/data-action="manor-garden"/);
+assert.match(views.screen.innerHTML,/data-action="manor-kitchen"/);
+assert.match(views.screen.innerHTML,/data-action="open-wardrobe"/);
+const beforeManor=gameWindow.RupeeRushDebug.getSave();
+click('manor-upgrade');
+const afterManor=gameWindow.RupeeRushDebug.getSave();
+assert.equal(afterManor.town.houseLevel,beforeManor.town.houseLevel+1,'Real Manor upgrade uses the house progression');
+assert.equal(afterManor.coins,beforeManor.coins-TownGarden.upgradeCost(beforeManor.town.houseLevel),
+ 'Residence upgrade debits exactly the existing Rupee cost');
+assert.equal(afterManor.unlocked,beforeManor.unlocked,'Residence upgrade never changes campaign level');
+click('open-wardrobe');
+assert.equal(gameWindow.RupeeRushDebug.getPage(),'shop');
+assert.match(views.screen.innerHTML,/data-shop-tab="outfit"/,'Wardrobe opens the real outfit shop');
+navigate('manor');click('manor-kitchen');
+assert.equal(gameWindow.RupeeRushDebug.getPage(),'farm');
+assert.match(views.screen.innerHTML,/id="town-kitchen"/);
+assert.match(views.screen.innerHTML,/data-action="kitchen-cook"/);
+navigate('manor');click('manor-garden');
+assert.equal(gameWindow.RupeeRushDebug.getPage(),'farm');
+navigate('home');
+
 navigate('mine');
 assert.match(views.screen.innerHTML,/data-action="mine-cell"/,'Mining tiles are actionable');
 const beforeMine=gameWindow.RupeeRushDebug.getSave();

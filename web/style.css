@@ -297,3 +297,54 @@
 }
 .rock .mine-ore-slice{filter:drop-shadow(0 3px 3px #101019)}
 .rock small{position:relative;z-index:1;padding:1px 2px;border-radius:3px;background:#151726b8;text-shadow:0 1px 2px #000}
+
+/* Town hero: the equipped full-body outfit PNG IS Daysha's avatar.
+   No second SVG character doll, no separate miniature outfit portrait. */
+.town-avatar-panel{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ width:min(100%,700px);margin:16px auto;padding:clamp(12px,2.6vw,24px);
+ gap:10px;text-align:center;border:1px solid #dfbf7e;border-radius:18px;
+ background:linear-gradient(145deg,#29224bdc,#172947ee);
+ box-shadow:0 9px 25px #08071d66;
+}
+.town-avatar-figure{margin:0;display:flex;align-items:center;justify-content:center;width:100%}
+.town-avatar-art{
+ display:block;flex:none;width:clamp(244px,37vw,388px);
+ height:auto;max-width:100%;max-height:640px;aspect-ratio:3/5;
+ object-fit:contain;object-position:center center;
+ filter:drop-shadow(0 10px 16px #080a2f99)
+}
+.town-avatar-copy{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:560px;min-width:0;text-align:center}
+.town-avatar-copy h2{font-size:clamp(23px,4vw,32px);margin:0}
+.town-avatar-copy p{font-size:clamp(13px,2.4vw,16px);line-height:1.35;margin:0}
+.town-avatar-copy .btn{margin:5px 0 0;min-height:44px}
+.home-kingdom .town-avatar-panel{
+ width:min(100%,650px);margin:4px auto 7px;padding:7px 10px 13px;
+ border:0;background:#161735b3;box-shadow:none
+}
+.home-kingdom{min-height:0}
+.home-kingdom .town-avatar-art{width:clamp(240px,36vw,370px);max-height:590px}
+.location-manor{background:linear-gradient(125deg,#3b315c,#2a3e61 65%,#324c56)}
+.manor-management{max-width:1080px;margin:0 auto}
+.manor-management .town-house-panel{width:100%;margin:12px 0 16px}
+.manor-management .town-house-frame{flex-basis:clamp(210px,40%,340px)}
+.manor-management .town-house-illustration{max-width:340px}
+.manor-upgrade{display:flex;flex-wrap:wrap;align-items:center;gap:9px 18px;margin:12px 0 18px}
+.manor-upgrade p{margin:0}
+.manor-rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:10px}
+.manor-room{padding:14px;border:1px solid #a99ac6;border-radius:12px;background:#252a49}
+.manor-room h3{margin:0 0 8px;color:#ffdda5}
+.manor-room p{font-size:14px;line-height:1.4;min-height:44px}
+.manor-room .btn{min-height:44px;width:100%}
+#town-kitchen{scroll-margin-top:18px}
+@media(max-width:620px){
+ .town-avatar-panel{padding:12px 8px;gap:7px}
+ .town-avatar-art,.home-kingdom .town-avatar-art{
+   width:clamp(220px,72vw,316px);height:auto;max-height:530px
+ }
+ .town-avatar-copy h2{font-size:23px}
+ .town-avatar-copy p{font-size:13px}
+ .manor-management .town-house-panel{flex-direction:column;text-align:center}
+ .manor-management .town-house-frame{flex-basis:auto;width:min(100%,310px)}
+ .manor-room p{min-height:0}
+}

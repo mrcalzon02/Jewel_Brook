@@ -16,10 +16,14 @@
 
 `RupeeTownAvatars.fromSave(saved).path` chooses Daysha’s level-appropriate Town avatar. `saved.unlocked` already stores the campaign’s next-unlocked level. Town portraits stop upgrading after Level 40; **no campaign levels, progression, resource consumption, unlock rules or saves are changed here**.
 
-The Tier 1–40 images are assets and proposed display mapping. The live Home and Farm screens now show the numbered Town portrait using this resolver (see `web/game.js`). Both screens preserve the separate equipped-character/wardrobe cosmetics and the independently upgraded `saved.town.houseLevel`; no portrait grants mining or campaign bonuses. The existing approved standalone Daysha key art remains the fallback. Keep mining available immediately.
+The Tier 1–40 images are complete full-body Daysha outfit/avatar illustrations, **not tiny accessories to a second character portrait**. The actual Home/Manor avatar is now selected using `web/town-character.js` from `saved.cosmeticEquipped.outfit` (validated against owned outfits and the existing economy catalog). It is rendered as one large, centrally placed figure. A generic generated `character-XX` card is **never** substituted as Daysha's actual Town avatar. The existing `RupeeTownAvatars.fromSave` remains a read-only tier-asset resolver for use in other level galleries; equipped outfit choice controls the live hero appearance. The 40 house upgrades, mining, rewards and save key remain independent. Fallback is the existing Daysha art; no portrait grants gameplay bonuses.
 
 ## Caveats and QA
 
 The source is a **composite generated concept snapshot**, so individual avatars have only the intrinsic resolution of the original 10×4 grid; scaling to 288×480 does not recreate lost detail. Some flowing fabric/long ear and staff details are imperfect. The original alpha export is transparent, not checkerboard art. Preserve all 40 source images in GitHub and the untouched source snapshot in the project Google Drive to make future re-authoring safe.
 
 Review on device for alpha fringes and legibility at UI display size; replace individual sprites only after review. Do not advertise these 40 as independently hand-drawn high-resolution sprites.
+
+## Home/Manor integration correction
+
+The currently equipped outfit is the **whole avatar** in both Town Home and the residence screen. The earlier `profile-avatar` generated SVG and separate small `profile-outfit` image have been removed from those views. Wardrobe opens the real Outfit shop and its existing equip transaction; the Town hero updates after a normal save/render cycle. Character-card collectibles may still exist as independent cosmetic inventory but are not player-character portraits. The full-size figure remains central on phone and desktop; no extra avatar render appears above the interactive farm plots.

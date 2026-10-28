@@ -43,4 +43,21 @@ assert.ok(html.includes('id="style-shards"'),'Style Shards displayed');
 assert.ok(game.includes('Economy.claimDaily'),'daily reward wired');
 assert.ok(game.includes('Economy.buyPack'),'loot purchases wired');
 assert.ok(game.includes('Economy.equip'),'cosmetic equip wired');
+
+// Character and wardrobe state are distinct collectibles, but the equipped
+// full-body outfit is Daysha's sole live avatar, never a generated card SVG.
+const TownCharacter=require('../web/town-character.js');
+const avatar0=TownCharacter.fromSave(s);
+assert.equal(avatar0.character,'Daysha');
+assert.equal(avatar0.outfitId,'outfit-01');
+assert.equal(avatar0.image,'art/embryon/town/avatars/daysha_lv_01.png');
+s.cosmeticsOwned['outfit-02']=true;
+assert.equal(E.equip(s,'outfit-02').valid,true);
+const avatar1=TownCharacter.fromSave(s);
+assert.equal(avatar1.image,'art/embryon/town/avatars/daysha_lv_02.png');
+s.cosmeticsOwned['character-05']=true;
+assert.equal(E.equip(s,'character-05').valid,true);
+assert.equal(TownCharacter.fromSave(s).image,avatar1.image,
+ 'Character-card selection must not replace the illustrated Daysha outfit');
+assert.equal(s.cosmeticEquipped.outfit,'outfit-02','Save keeps equipped wardrobe choice');
 console.log('PASS economy: store purchases, package rewards, cosmetic transactions, daily claims and upgrades');
