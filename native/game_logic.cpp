@@ -403,15 +403,11 @@ bool Game::swap(int a,int b) {
                     std::swap(elementals[a],elementals[b]);
                     std::swap(specials[a],specials[b]);
                     std::swap(holds[a],holds[b]);
-    std::swap(specials[a],specials[b]);
-    std::swap(holds[a],holds[b]);
                     if(matchedCells()==0&&hasMove())break;
                     std::swap(cells[a],cells[b]);
                     std::swap(elementals[a],elementals[b]);
                     std::swap(specials[a],specials[b]);
                     std::swap(holds[a],holds[b]);
-    std::swap(specials[a],specials[b]);
-    std::swap(holds[a],holds[b]);
                 }
             }
         }

@@ -34,7 +34,8 @@ int main(int argc,char** argv){
     Game g;stage(g,argv[1],18); // Actual Android-authored board and silhouette.
     assert(g.specials.size()==g.cells.size()&&g.holds.size()==g.cells.size());
     assert(total(g.specials)==0&&total(g.holds)==0);
-    assert(!g.startIntro(125,*new std::istringstream(""))); // stage 125 remains locked
+    std::istringstream gated("");
+    assert(!g.startIntro(125,gated)); // stage 125 remains locked
 
     // Find a real non-cascading adjacent move on the authored board, not a
     // synthetic belt-only fixture; both gem payloads must follow the swap.
