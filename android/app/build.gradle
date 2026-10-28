@@ -1,6 +1,6 @@
 plugins { id 'com.android.application' }
 
-// One permanent LOCAL Rupee Rush APK signer. Never use the Nut Buster,
+// One permanent LOCAL Jewelbrook APK signer. Never use the Nut Buster,
 // ReverieVR or future Google Play upload keys for sideloaded updates.
 def keystorePath = (project.findProperty('rupeeKeystorePath') ?: '').toString()
 def rrStorePass = (project.findProperty('rupeeStorePassword') ?: '').toString()
@@ -19,7 +19,7 @@ def havePlaySigning = playKeystorePath && playStorePassword && playKeyPassword &
     playKeyAlias == 'rupeerush-play-upload-v1' && file(playKeystorePath).isFile()
 
 if (versionNumber < 1 || versionNumber > 2100000000) {
-    throw new GradleException('Invalid Rupee Rush versionCode')
+    throw new GradleException('Invalid Jewelbrook versionCode')
 }
 
 // A Play build can compile in CI with ID=0, but production eligibility
@@ -104,7 +104,7 @@ tasks.register('requirePermanentLocalSigner') {
         if (!signerAvailable) {
             throw new GradleException(
                 'Refusing an unsigned or debug-signed update APK. ' +
-                'Run scripts/build-android-apk.ps1 to create/reuse the permanent Rupee Rush local signer.'
+                'Run scripts/build-android-apk.ps1 to create/reuse the permanent Jewelbrook local signer.'
             )
         }
     }
@@ -121,7 +121,7 @@ tasks.register('validatePlayUploadSigning') {
             throw new GradleException('Play bundle blocked: supply NEW rupeerush-play-upload-v1 upload key properties')
         }
         if (file(playKeystorePath).canonicalPath == file(keystorePath ?: '/nonexistent').canonicalPath) {
-            throw new GradleException('Play bundle blocked: local Rupee Rush sideload signer must NOT be reused')
+            throw new GradleException('Play bundle blocked: local Jewelbrook sideload signer must NOT be reused')
         }
     }
 }

@@ -1,11 +1,11 @@
-# Daysha — Rupee Rush playable character contract
+# Daysha — Jewelbrook playable character contract
 
 **Status:** Visual direction approved 2026-10-23. Source image: `crystal_princess_of_the_sky_palace.png`; SHA-256 `667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30`. Source was approved directly in the project conversation.
 
 ## Face and identifying silhouette
 Adult noble elf; pale warm complexion; long icy/silver-blue flowing hair with interwoven ornaments; violet irises; long pointed ears; confident, bright, approachable face. These persist at all expression levels, distances and outfits. Jewelry, brows, iris and ears are especially important in a 96px portrait.
 
-## Approved Rupee Rush default outfit
+## Approved Jewelbrook default outfit
 Ivory sculpted bodice, royal-blue structured skirt, lilac semi-sheer cascading sleeves, fine gold leaf filigree, sapphire/blue crystal jewels and gold sandals. Her trademark prop is an original glowing **Embryon crystal shard**. This default costume was approved *in the new game style*, and supersedes the earlier default dark-scale costume suggested in provisional template documents.
 
 ## Alternate outfits

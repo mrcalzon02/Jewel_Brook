@@ -1,9 +1,9 @@
-# RUPEE RUSH — HEROES OF EMBRYON
+# JEWELBROOK — HEROES OF EMBRYON
 ## Master Art Style Guide · RR-ART-001 · Version 1.0 · 2026-10-23
 
 **Status:** APPROVED VISUAL DIRECTION. This document governs subsequent illustration, tile, UI, world, character, animation and marketing art. “Approved” describes the style direction, not readiness of every runtime sprite.
 
-**The visual lock:** the owner-approved illustration **`crystal_princess_of_the_sky_palace.png`** is Rupee Rush's primary character-and-material reference. Its full-size original is 1122 × 1402 RGB PNG, SHA-256 `667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30`. This source has been approved in the project conversation; the original full-resolution binary is now committed at **`web/art/embryon/characters/daysha-approved-key-art.png`**. Check `web/art/embryon/approved-reference.json` for the machine-readable provenance record. **Never substitute earlier rejected blonde/green-eyed mockups.**
+**The visual lock:** the owner-approved illustration **`crystal_princess_of_the_sky_palace.png`** is Jewelbrook's primary character-and-material reference. Its full-size original is 1122 × 1402 RGB PNG, SHA-256 `667672081d8c59d0c1aaded6b46f185d6f1728b6d15628832d58c3234e43cf30`. This source has been approved in the project conversation; the original full-resolution binary is now committed at **`web/art/embryon/characters/daysha-approved-key-art.png`**. Check `web/art/embryon/approved-reference.json` for the machine-readable provenance record. **Never substitute earlier rejected blonde/green-eyed mockups.**
 
 ### 1. Creative direction: how Embryon should feel
 
@@ -23,9 +23,9 @@ Never imitate Nintendo-owned visual assets, logos, character clothing, props, ge
 
 **Who:** Daysha, the playable elven adventurer of *Heroes of Embryon*. Her reference depicts a poised, warm, confident adult elf with expressive violet eyes, long flowing **silver/icy-blue hair**, long pointed ears and delicate gold-and-blue hair ornaments. Her face is soft-featured, intelligent and approachable; she is never a generic blond fantasy mascot.
 
-**Approved Rupee Rush key-art costume:** sculpted ivory/pearl bodice, deep royal-blue structured fabric, layered lilac/lavender translucent drapes, luminous cobalt crystal adornments, fine champagne-gold botanical filigree and jewelry, elegant gold footwear. Character anatomy remains consistent across the UI, campaign, expedition and marketing. Her blue crystal is a floating **Embryon shard**, not a borrowed franchise relic.
+**Approved Jewelbrook key-art costume:** sculpted ivory/pearl bodice, deep royal-blue structured fabric, layered lilac/lavender translucent drapes, luminous cobalt crystal adornments, fine champagne-gold botanical filigree and jewelry, elegant gold footwear. Character anatomy remains consistent across the UI, campaign, expedition and marketing. Her blue crystal is a floating **Embryon shard**, not a borrowed franchise relic.
 
-**Original secondary costume:** the earlier noble adventurer character sheets establish dark navy dragon-scale armor, silver pauldrons and a blue cloak as a valid alternate **adventure/combat outfit**. This is not the default key-art costume for Rupee Rush.
+**Original secondary costume:** the earlier noble adventurer character sheets establish dark navy dragon-scale armor, silver pauldrons and a blue cloak as a valid alternate **adventure/combat outfit**. This is not the default key-art costume for Jewelbrook.
 
 **Expression set:** neutral-confidence; curious; planning/thoughtful; amused; surprised; victorious; disappointed-but-determined. Preserve hair parting, silhouette, iris color, ear proportion, nose and mouth geometry between portraits. Full-body art should not collapse into an indistinct mass of drapes when displayed small. Combat/campaign variations share the same identifiable face.
 
@@ -138,7 +138,7 @@ All **new** images must be filed in their proper `web/art/embryon/characters|gem
 
 ### 11. Reusable art-generation prompts (briefs, not source art)
 
-**Daysha key art:** “Daysha, adult noble elven heroine, long silver-blue flowing hair, violet eyes, pointed ears; blue/white/ivory layered costume with elegant gold filigree and bright sapphire jewelry; joyful confident adventurer holding a floating faceted blue Embryon crystal; premium gloss casual-game look, crisp chunky forms and luminous reflections, jewel-bright royal fantasy, attractive but readable as a game character. Match the approved Rupee Rush Daysha reference. No blond hair, no green eyes, no green tunic, no Zelda franchise symbols. High-resolution standalone character with complete edges and plain/transparent-background output as requested.”
+**Daysha key art:** “Daysha, adult noble elven heroine, long silver-blue flowing hair, violet eyes, pointed ears; blue/white/ivory layered costume with elegant gold filigree and bright sapphire jewelry; joyful confident adventurer holding a floating faceted blue Embryon crystal; premium gloss casual-game look, crisp chunky forms and luminous reflections, jewel-bright royal fantasy, attractive but readable as a game character. Match the approved Jewelbrook Daysha reference. No blond hair, no green eyes, no green tunic, no Zelda franchise symbols. High-resolution standalone character with complete edges and plain/transparent-background output as requested.”
 
 **Gem family:** “Individually isolated match-3 crystal gem, unique unmistakable silhouette, chunky bevels and crystal facets, specular upper-left white highlight, bright saturated body color, dark underside shadow, true transparent alpha, no border clipping; premium Nut Buster-grade casual-game illustration, no text, no emoji, no painted checkerboard.”
 
@@ -148,14 +148,14 @@ All **new** images must be filed in their proper `web/art/embryon/characters|gem
 
 ### 12. Change control
 
-This document is the master authority for Rupee Rush's **art direction**. Any intentional visual redesign requires updating this guide, the token files and the affected asset manifest in the same verified change. Gameplay integration requires a separate implementation and QA step. Do not change Nut Buster itself for a Rupee Rush art run.
+This document is the master authority for Jewelbrook's **art direction**. Any intentional visual redesign requires updating this guide, the token files and the affected asset manifest in the same verified change. Gameplay integration requires a separate implementation and QA step. Do not change Nut Buster itself for a Jewelbrook art run.
 
 
 ## Approved master composite board — 2026-10-23
 
-The owner explicitly approved the new **Rupee Rush — Heroes of Embryon master composite style-guide board**, distinct from the earlier individual Daysha key-art portrait. Its image identity is recorded in `web/art/embryon/master-style-board.json`; that record is the change-controlled pointer for **all future character, gem, power-up, button, environment, typography and framing art**.
+The master composite was approved before the Jewelbrook rename. Keep it as a **character, material and visual-style reference**, not an active logo or title; its embedded Rupee Rush lettering is retired. Its image identity is recorded in `web/art/embryon/master-style-board.json`; that record is the change-controlled pointer for **all future character, gem, power-up, button, environment, typography and framing art**.
 
-The composition presents Daysha at the left, luxurious beveled golden Rupee Rush lettering and Heroes of Embryon subtitle across the top, and clear labeled production-reference panels on the right: Daysha expression/wardrobe studies, six primary faceted gem colors, special pieces/boosters, jewel-box UI examples, and original crystal-world environments. **Use the accepted master composite board as the unified visual authority for a family of assets**; do not substitute the previously rejected blonde/green-eyed fantasy mockups. Her visual identity is silver-blue flowing hair, violet eyes, long pointed ears, and gold/blue/ivory crystalline regal wear; dark scale armor remains an alternate adventure outfit.
+The composition presents Daysha at the left, legacy gold title lettering and Heroes of Embryon subtitle across the top, and clear labeled production-reference panels on the right: Daysha expression/wardrobe studies, six primary faceted gem colors, special pieces/boosters, jewel-box UI examples, and original crystal-world environments. **Use the accepted master composite board as the unified visual authority for a family of assets**; do not substitute the previously rejected blonde/green-eyed fantasy mockups. Her visual identity is silver-blue flowing hair, violet eyes, long pointed ears, and gold/blue/ivory crystalline regal wear; dark scale armor remains an alternate adventure outfit.
 
 ### Master-board-specific production discipline
 

@@ -1,9 +1,9 @@
-/* Rupee Rush standalone playable shell around reused deterministic systems. */
+/* Jewelbrook standalone playable shell around reused deterministic systems. */
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
  Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Assets=window.RupeeEmbryonAssets;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Assets].every(Boolean))throw Error('Rupee Rush gameplay dependencies missing');
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Assets].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
@@ -12,7 +12,7 @@ let cloudStatus='Cloud backup has not been checked.', pendingCloudRestore=null, 
 let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems');
 if(!root)throw Error('Missing #screen');
-// Restore only validated, unfinished Rupee Rush boards. Never touch Nut Buster saves.
+// Restore only validated, unfinished Jewelbrook boards. Never touch Nut Buster saves.
 try{if(saved.activeBoard){const s=saved.activeBoard;const allowed=s.level>=T.FIRST?T.available(saved,s.level):s.level<=saved.unlocked;if(allowed)active=E.restore(s);if(!active)delete saved.activeBoard;}}catch(_){delete saved.activeBoard;}
 function save(){try{if(active&&!active.won&&!active.lost)saved.activeBoard=E.snapshot(active);else delete saved.activeBoard;localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){message('Unable to save on this device');}}
 function number(x){return Number(x||0).toLocaleString('en-US');}
@@ -32,7 +32,7 @@ function header(name,description=''){return '<div class="heading"><h1>'+name+'</
 function stats(){return '<div class="stats"><div>'+icon('rupee',24)+' <strong>'+number(saved.coins)+'</strong><small>Rupees</small></div><div>'+icon('crystal',24)+' <strong>'+number(saved.gems)+'</strong><small>Star Gems</small></div><div>'+icon('heart',24)+' <strong>'+saved.hearts+'/5</strong><small>Lives</small></div><div>'+icon('extra',24)+' <strong>'+number(bank().remaining)+'</strong><small>Moves today</small></div></div>';}
 function home(){
  return '<section class="home-kingdom" aria-label="Embryon Kingdom">'+
- '<div class="home-kingdom-content"><h1 class="home-brand"><img class="home-title-art" src="art/embryon/branding/rupee-rush-title.webp" alt="Rupee Rush — Heroes of Embryon" width="1200" height="674" decoding="async"></h1>'+
+ '<div class="home-kingdom-content"><h1 class="home-brand"><span class="home-title-wordmark">JEWELBROOK</span><span class="home-title-subtitle">HEROES OF EMBRYON</span></h1>'+
  '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p>'+
  '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+'</div></div></section>'+
  '<div class="panels"><section class="panel"><h2>Current expedition</h2><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
@@ -180,8 +180,8 @@ function settings(){
  '<div class="panel sound-controls"><h2>Embryon sound</h2>'+button('toggle-sfx',Audio.settings().sfx?'SOUND EFFECTS: ON':'SOUND EFFECTS: OFF')+button('toggle-voice',Audio.settings().voice?'EMBRYON ANNOUNCER: ON':'EMBRYON ANNOUNCER: OFF')+'<p>Original crystal sounds and a separate Heroes of Embryon voice script. Spoken lines use device speech only when enabled.</p></div>'+
  (window.RupeePlayCloud?'<div class="panel"><h2>Google Play Games cloud backup</h2><p>Your local game stays playable offline. Back up explicitly or inspect a cloud save before replacing local progress.</p>'+button('cloud-backup','BACK UP TO PLAY GAMES','primary')+button('cloud-restore','CHECK CLOUD SAVE','secondary')+'<p>'+escape(cloudStatus)+'</p>'+(pendingCloudRestore?'<div class="danger"><p>Cloud save available. Stage '+escape(pendingCloudRestore.unlocked)+'; '+number(pendingCloudRestore.coins)+' Rupees. Restoring replaces current progress. A local backup will be retained.</p>'+button('cloud-apply','RESTORE CLOUD PROGRESS','danger')+button('cloud-cancel','KEEP LOCAL PROGRESS','secondary')+'<p>This permanently replaces the inspected cloud progress with this device\'s current save.</p>'+button('cloud-replace','REPLACE CLOUD WITH THIS DEVICE','danger')+'</div>':'')+'</div>':'')+
  '<div class="panel"><h2>Game data</h2><p>Your progress, mine equipment, balances and boosters are saved locally on this device.</p>'+button('advanced',advanced?'HIDE ADVANCED SETTINGS':'ADVANCED SETTINGS','secondary')+
- (advanced?'<div class="danger"><h3>Account maintenance</h3><p>Emergency testing only. Reset deletes all Rupee Rush progress from this device.</p>'+
- button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE RUPEE RUSH DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>';
+ (advanced?'<div class="danger"><h3>Account maintenance</h3><p>Emergency testing only. Reset deletes all Jewelbrook progress from this device.</p>'+
+ button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE JEWELBROOK DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>';
 }
 function render(){
  P.migrate(saved);Mining.ensure(saved);bank();
@@ -268,7 +268,7 @@ function handle(b){
  if(a==='reset-cancel'){resetStep=0;render();return;}
  if(a==='reset-confirm'){
   if(resetStep===1){resetStep=2;render();return;}
-  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Rupee Rush local data reset.');return;}
+  if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Jewelbrook local data reset.');return;}
  }
 }
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;handle(b);});

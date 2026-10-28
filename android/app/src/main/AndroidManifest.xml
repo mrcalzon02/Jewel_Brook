@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Game content is packaged in the APK: no INTERNET permission or live updater. -->
     <application
-        android:label="Rupee Rush"
+        android:label="Jewelbrook"
         android:icon="@drawable/ic_rupee_rush"
         android:allowBackup="false"
         android:supportsRtl="true"

@@ -1,15 +1,15 @@
-# Rupee Rush — Reusable Mobile Asset Family Audit
+# Jewelbrook — Reusable Mobile Asset Family Audit
 Version RR-ASSET-001 · 2026-10-23
 
 ## Decision
 
-Reuse **mechanics-agnostic art**, not every file with a generic-sounding filename. The authoritative visual direction remains `docs/ART_STYLE_MASTER.md` (*Heroes of Embryon*: jewel-bright royal fantasy, Daysha, independent iconography). Every copied asset stays in Rupee Rush's local `web/art/` folder; no runtime dependency on Nut Buster URLs.
+Reuse **mechanics-agnostic art**, not every file with a generic-sounding filename. The authoritative visual direction remains `docs/ART_STYLE_MASTER.md` (*Heroes of Embryon*: jewel-bright royal fantasy, Daysha, independent iconography). Every copied asset stays in Jewelbrook's local `web/art/` folder; no runtime dependency on Nut Buster URLs.
 
 The approved portable selection is indexed with original per-file Git blob hashes in `web/art/shared-family.json`. It contains **29 newly copied files**: 16 status overlays, five additional neutral blockers, three general effects, four resource/reward icons, and one power-up illustration. The rock and the 86 mining equipment images were already migrated and stay. This is a narrowly curated selection after **visual inspection**, not a wholesale import.
 
 ### In use: statuses and obstacles
 
-- **16 genuine tile statuses:** arcane, bomb, chain-lock, crystal, fire, frost, lightning, magma, nature-vines, poison, radiance, shadow, sticky-butter, storm, void-rock, and water. They are illustrated frames/status effects, **not** gemstone types, and remain separate from match pieces. A status appears only if its engine field is actually present. The historic filename `sticky-butter.png` is treated in Rupee Rush's UI as **crystal resin**; the artist should eventually replace the caramel palette, not pretend it is a new mechanic.
+- **16 genuine tile statuses:** arcane, bomb, chain-lock, crystal, fire, frost, lightning, magma, nature-vines, poison, radiance, shadow, sticky-butter, storm, void-rock, and water. They are illustrated frames/status effects, **not** gemstone types, and remain separate from match pieces. A status appears only if its engine field is actually present. The historic filename `sticky-butter.png` is treated in Jewelbrook's UI as **crystal resin**; the artist should eventually replace the caramel palette, not pretend it is a new mechanic.
 - **Standalone blockers:** chest, crate, ice-1, ice-2, lock; existing rock. Chain/ice/chest tile statuses keep their real underlying gem alive and visible. Numeric status badges communicate layer strength and countdown; counters are not an extra gem.
 - **Technical rendering rule:** an overlay image sits over the gem with CSS radial transparent center (WebKit and standard masks), with a smaller physical blocker token in a separate top-left layer where appropriate. Do not make an opaque overlay or hide the gem when pinned.
 
