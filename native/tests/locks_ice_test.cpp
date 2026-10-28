@@ -78,7 +78,7 @@ int main(int argc,char**argv) {
     std::vector<std::string> fields;for(std::string word;parser>>word;)fields.push_back(word);
     assert(fields.size()>5);
     fields[0]="RRNATIVE7";
-    fields.erase(fields.end()-16,fields.end()-1); // remove lock and freeze counters
+    fields.erase(fields.end()-22,fields.end()-1); // remove lock and freeze counters
     std::string board,ice,lockLine,chestLine,freezeLine;
     std::getline(saved,board);std::getline(saved,ice);
     std::getline(saved,lockLine);std::getline(saved,chestLine);std::getline(saved,freezeLine);

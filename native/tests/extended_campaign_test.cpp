@@ -135,7 +135,7 @@ int main(int argc,char**argv){
     std::vector<std::string> words;
     for(std::string word;fields>>word;)words.push_back(word);
     assert(words.size()>12);words[0]="RRNATIVE9";
-    words.erase(words.end()-12,words.end()-1); // nine new header fields
+    words.erase(words.end()-18,words.end()-1); // nine new header fields
     std::string cells,ice,locksLine,chestLine,freeze;
     assert(static_cast<bool>(std::getline(out,cells)));
     assert(static_cast<bool>(std::getline(out,ice)));
