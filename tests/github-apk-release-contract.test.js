@@ -29,6 +29,7 @@ const publishedName='Jewel-Brook-Heroes-of-Embryon-Android.apk';
 assert.ok(ci.includes('release/'+publishedName),'Signed release publishes the canonical APK name');
 assert.equal(screenshots.split(publishedName).length-1,4,'Emulator screenshot workflow must download the published APK name at all four call sites');
 assert.doesNotMatch(screenshots,/RupeeRush-Android\.apk/,'Obsolete screenshot APK filename');
+assert.match(read('scripts/capture_android_mining.py'),/pkg = "io\.github\.mrcalzon02\.jewelbrook"/,'Actual Android emulator screenshot tests must launch the new package');
 for(const k of ['RUPEE_APK_KEYSTORE_BASE64','RUPEE_APK_STORE_PASSWORD',
  'RUPEE_APK_KEY_ALIAS','RUPEE_APK_KEY_PASSWORD','RUPEE_APK_CERT_SHA256']) {
  assert.ok(script.includes("Set-Secret '"+k+"'"), 'Missing GitHub provisioner secret '+k);

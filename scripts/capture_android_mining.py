@@ -20,7 +20,7 @@ apk = Path(sys.argv[1]).resolve()
 out = Path(sys.argv[2]).resolve()
 out.mkdir(parents=True, exist_ok=True)
 repo = Path(__file__).resolve().parent.parent
-pkg = "io.github.mrcalzon02.rupeerush"
+pkg = "io.github.mrcalzon02.jewelbrook"
 
 def run(*args, timeout=90, check=True):
     p = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
