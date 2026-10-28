@@ -1,4 +1,4 @@
-name: Jewel Brook: Heroes of Embryon — native Windows and Linux
+name: "Jewel Brook: Heroes of Embryon — native Windows and Linux"
 on:
   push:
     branches: [main]
