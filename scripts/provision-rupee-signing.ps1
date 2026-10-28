@@ -3,7 +3,7 @@
 param([string]$RestoreKeystorePath,[string]$RestorePasswordFile,[switch]$SetGitHubSecrets,[switch]$AllowExistingSecrets)
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
-$repo = 'mrcalzon02/Rupee-rush'
+$repo = 'mrcalzon02/Jewel_Brook'
 $keyAlias = 'nutbuster'
 $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $expected = [IO.File]::ReadAllText((Join-Path $root 'config/nutbuster-publisher.sha256')).Trim().ToLowerInvariant()

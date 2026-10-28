@@ -4,6 +4,14 @@ const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const ci=read('.github/workflows/rupee-rush-android.yml');
 const script=read('scripts/provision-github-apk-signing.ps1');
+const legacy=read('scripts/provision-rupee-signing.ps1');
+const play=read('scripts/generate-new-play-upload-keys.ps1');
+// Release/signing tooling must not address the renamed repository's old path.
+for (const [name, source] of [['provision',script],['legacy signer',legacy],['Play signer',play]]) {
+ assert.match(source,/mrcalzon02\/Jewel_Brook/,'Missing active Jewel Brook repo in '+name);
+ assert.doesNotMatch(source,/mrcalzon02\/Rupee-rush/,'Obsolete GitHub repo target in '+name);
+}
+
 for(const marker of ['push:', 'workflow_dispatch:', ':app:assembleDebug', ':app:assembleRelease',
  'gh release create', 'RupeeRush-Android.apk', 'apksigner', 'aapt',
  'assets/game.js', 'RUPEE_APK_CERT_SHA256', 'rupeerush-local-apk-v1']) {

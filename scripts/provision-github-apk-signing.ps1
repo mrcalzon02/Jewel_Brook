@@ -3,7 +3,7 @@
 param([switch]$ReplaceExistingSecrets)
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
-$repo='mrcalzon02/Rupee-rush'
+$repo='mrcalzon02/Jewel_Brook'
 $alias='rupeerush-local-apk-v1'
 if (-not $env:LOCALAPPDATA) { throw 'Windows LOCALAPPDATA unavailable.' }
 $homeDir=Join-Path $env:LOCALAPPDATA 'Embryon\rupeerush-local-apk-v1'
@@ -92,7 +92,7 @@ if ($overlap.Count -eq $names.Count -and -not $ReplaceExistingSecrets) {
     Write-Host 'All five Jewelbrook signing secret names already present. Not replacing.'
     & $gh workflow run rupee-rush-android.yml --repo $repo --ref main
     if ($LASTEXITCODE -ne 0) { throw 'Failed to request cloud APK build.' }
-    Write-Host 'RUNNING GITHUB BUILD: https://github.com/mrcalzon02/Rupee-rush/actions'
+    Write-Host 'RUNNING GITHUB BUILD: https://github.com/mrcalzon02/Jewel_Brook/actions'
     return
 }
 if ($overlap.Count -gt 0 -and -not $ReplaceExistingSecrets) {
@@ -147,5 +147,5 @@ Write-Host 'Five signing secret names verified. GitHub secret VALUES are write-o
 Write-Host 'IMPORTANT: securely back up the original .p12 and password file OFFLINE.'
 & $gh workflow run rupee-rush-android.yml --repo $repo --ref main
 if ($LASTEXITCODE -ne 0) { throw 'Signing secrets uploaded but workflow dispatch failed. Trigger the workflow in GitHub Actions.' }
-Write-Host 'RUNNING GITHUB BUILD: https://github.com/mrcalzon02/Rupee-rush/actions'
-Write-Host 'SIGNED RELEASES: https://github.com/mrcalzon02/Rupee-rush/releases'
+Write-Host 'RUNNING GITHUB BUILD: https://github.com/mrcalzon02/Jewel_Brook/actions'
+Write-Host 'SIGNED RELEASES: https://github.com/mrcalzon02/Jewel_Brook/releases'

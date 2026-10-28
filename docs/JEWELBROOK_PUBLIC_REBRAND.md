@@ -1,8 +1,8 @@
 # Jewelbrook — Public Display Rebrand
 
-**Selected public title:** Jewelbrook. **Previous display title:** Rupee Rush.
+**Selected public title:** Jewel Brook: Heroes of Embryon (short title: Jewel Brook). **Previous display title:** Rupee Rush.
 
-This is a display-only rename; existing user data and update channels must remain compatible.
+The public title and GitHub repository were renamed. Keep the existing Android package identity, signing certificate, persistent save namespaces and release asset/tag conventions so APK upgrades remain possible.
 
 ## Public-facing surfaces
 
@@ -13,9 +13,10 @@ This is a display-only rename; existing user data and update channels must remai
 - The Linux Freedesktop launcher displays **Jewelbrook**, keeping its existing Exec and Icon identifiers.
 - User-facing GitHub Actions display names, release titles, updater prompts, primary README and active art/deployment documentation use **Jewelbrook**.
 
+**Active GitHub repository and updater:** `mrcalzon02/Jewel_Brook`; release API, APK download URL checks, release-page controls and GitHub signing provisioners all use the renamed repository.
+
 ## Intentionally preserved internal identities
 
-- GitHub repository: `mrcalzon02/Rupee-rush` and associated updater URLs.
 - Android application ID: `io.github.mrcalzon02.rupeerush`; Java package paths and signed publisher certificates.
 - Existing release tags and APK/desktop archive filenames, required by updater and screenshot-release automation.
 - WebView persistence: `rupeerush.save.v1`; native SDL3 save path `SDL_GetPrefPath("RupeeRush","RupeeRushDesktop")`.
