@@ -9,7 +9,7 @@ assert.match(html, /id="jewelbrook-loading-splash" role="status"/);
 assert.match(html, /class="splash-picture"/);
 assert.match(html, /title-portrait\.webp/);
 assert.match(game, /splashReadyAt=Date\.now\(\)\+900/);
-assert.match(game, /window\.addEventListener\('load',finishStartupSplash/);
+assert.match(game, /window\.addEventListener\?\.\('load',finishStartupSplash/);
 assert.ok(home.indexOf('home-intro')<home.indexOf('home-menu-grid'),'Title must precede main menu');
 assert.ok(home.indexOf('home-menu-grid')<home.indexOf('townAvatarPanel()'),'The tall Daysha art must not obstruct initial menu');
 for(const action of ['play-next','go-campaign','go-mine','go-farm','go-manor','go-shop','go-chronicle','go-guide','go-rewards']){
