@@ -120,7 +120,7 @@ function chapter(){
  return '<div class="chapter-banner" style="background-image:linear-gradient(90deg,#0b1239e6,#0b12394a),url(\''+c.art+'\')">'+
  '<h1>'+escape(c.title)+'</h1><p>Chapter '+c.id+' · '+escape(c.description)+'</p>'+button('go-campaign','← FIVE-CHAPTER MAP','quiet')+'</div>'+
  '<div class="panel campaign-bar">'+button('campaign-prev','← Previous','secondary',campaignPage===0?'disabled':'')+'<strong>'+from+'–'+to+' / '+c.end+'</strong>'+button('campaign-next','Next →','secondary',to===c.end?'disabled':'')+'</div>'+
- '<p class="guide-date-inline">Timeline: Campaign Day '+from+' through Campaign Day '+to+'</p>'+button('go-guide','VIEW CALENDAR & WORLD WIKI','secondary')+'<div class="level-grid level-marker-grid">'+levels.map(n=>'<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+', Campaign Day '+n+(n>saved.unlocked?' locked':'')+'">'+markerArt('general',levelMarkerState(n))+'<b class="level-marker-number">'+n+'</b><small>Day '+n+(saved.stars[n]?' · ★'+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
+ '<p class="guide-date-inline">Shared royal &amp; citizen timeline: Days '+from+'–'+to+'</p>'+button('go-guide','VIEW CALENDAR & WORLD WIKI','secondary')+'<div class="level-grid level-marker-grid">'+levels.map(n=>'<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+', Campaign Day '+n+(n>saved.unlocked?' locked':'')+'">'+markerArt('general',levelMarkerState(n))+'<b class="level-marker-number">'+n+'</b><small>Day '+n+(saved.stars[n]?' · ★'+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
 }
 
 function elementalGownCollection(){
@@ -142,13 +142,13 @@ function chronicle(){
  return header('The Royal Chronicle','You are one of Embryon’s working people: miner, grower, cook and trader. The kingdom’s history unfolds around your everyday life.')+
  '<section class="panel royal-citizen"><h2>Your Place in Embryon</h2><p>Gemstones travel from the mines to merchants and master artisans. Farms feed the town; cooks prepare meals; traders move the wealth that supports the kingdom. Your own homestead, mine and market are part of that living world.</p>'+
  '<p><b>Campaign days cleared: '+t.campaignDay+' / 1,000</b> · about '+t.years.toFixed(2)+' years since your adventure began. The royal chronicle spans approximately sixteen years.</p>'+
- '<p>Royal story unlocks are <b>reading milestones</b>, not claims about the historical date of an event. Daysha and Rome begin as newlyweds; Estelle has only just been conceived on their wedding night, and her childhood stories belong years later.</p>'+
+ '<p>Every main stage completed for the first time advances the <b>same shared day</b> for your citizen and the royal family. The royal events below happen on those stage days. Daysha and Rome begin as newlyweds; Estelle was conceived on their wedding night and her childhood belongs to later years.</p>'+
  '<p>'+unlocked.length+' of '+Royal.EVENTS.length+' established episodes available · '+future+' future family episodes reserved beyond this opening campaign.</p></section>'+
  '<div class="royal-chronicle-layout"><div class="royal-chapter-list" role="group" aria-label="Unlocked royal stories">'+
- t.events.filter(e=>e.revealLevel<=Royal.campaignSize).map(e=>'<button class="royal-chapter-entry '+(e.unlocked?'':'royal-entry-locked ')+(chosen?.id===e.id?'royal-entry-current':'')+'" data-action="story-open" data-story="'+escape(e.id)+'" '+(e.unlocked?'':'disabled')+'><small>STAGE '+e.revealLevel+' · THE GILDED SPINDLE</small><strong>'+(e.unlocked?escape(e.title):'Locked episode')+'</strong></button>').join('')+
+ t.events.filter(e=>e.revealLevel<=Royal.campaignSize).map(e=>'<button class="royal-chapter-entry '+(e.unlocked?'':'royal-entry-locked ')+(chosen?.id===e.id?'royal-entry-current':'')+'" data-action="story-open" data-story="'+escape(e.id)+'" '+(e.unlocked?'':'disabled')+'><small>DAY '+e.historicalDay+' · STAGE '+e.revealLevel+' · THE GILDED SPINDLE</small><strong>'+(e.unlocked?escape(e.title):'Locked episode')+'</strong></button>').join('')+
  '</div><article class="panel royal-story-detail">'+(chosen?'<small>AN EPISODE FROM PROJECT DAYSHA</small><h2>'+escape(chosen.title)+'</h2><p>'+escape(chosen.summary)+'</p><h3>Meanwhile in the town...</h3><p>'+escape(chosen.tradeNote)+'</p>'+
  (scenes.length?'<div class="royal-art-grid">'+scenes.map(a=>'<figure><img loading="lazy" decoding="async" src="'+escape(a.src)+'" alt="'+escape(a.title)+'"><figcaption>'+escape(a.title)+'</figcaption></figure>').join('')+'</div>':'<p class="royal-art-pending">No event-specific approved illustration is currently published for this episode. Its story is available without fabricated artwork.</p>')+
- '<small>Historical dates and Estelle’s age remain unassigned until Project Daysha establishes them.</small>':
+ '<small>This event occurred on Campaign Day '+chosen.historicalDay+'. Full Elaranth month/year and Estelle’s exact age still require confirmed calendar details.</small>':
  '<h2>The royal story begins</h2><p>Clear the first Jewel Brook level to reveal the opening chronicle entry.</p>')+'</article></div>'+
  '<section class="panel royal-portrait-panel"><h2>Approved Atelier Portrait Studies</h2><p>Illustrated dress studies from the existing original-art archive. These are not evidence of particular royal purchases or historical dates.</p><div class="royal-art-grid">'+portraits.map(a=>'<figure><img loading="lazy" decoding="async" src="'+escape(a.src)+'" alt="'+escape(a.title)+'"><figcaption>'+escape(a.title)+'</figcaption></figure>').join('')+'</div></section>'+elementalGownCollection();
 }
@@ -167,7 +167,7 @@ function worldGuide(){
   '<section class="panel guide-day-browser"><h2>'+escape(date.label)+'</h2><p>Expedition stage '+guideDay+' · '+escape(Chapters.forLevel(guideDay)?.title||'Embryon')+'</p>'+
   '<p>Elaranth uses a thirteen-month calendar. The historical month and year for this day remain unassigned until the authoritative starting date, month lengths, and year rules are confirmed.</p>'+
   '<div class="guide-controls">'+button('guide-prev','← PREVIOUS DAY','secondary',guideDay===1?'disabled':'')+button('guide-today','CURRENT STAGE','secondary')+button('guide-next','NEXT DAY →','secondary',guideDay===1000?'disabled':'')+'</div>'+
-  '<p>Each main level corresponds to one distinct campaign-day ordinal. Replaying levels does not advance the date. Elemental trials reference unlock milestones but have no fixed story day.</p></section>':
+  '<p>Each first-time level victory advances the shared citizen and royal timeline by one day. Replays never advance that day twice. Optional elemental trials take place inside this chronology, without adding extra days.</p>'+ (Royal.cleared(saved)>=guideDay?'<div class="guide-date-events"><h3>On this day in Embryon</h3>'+(Royal.eventsOnDay(guideDay).length?Royal.eventsOnDay(guideDay).map(e=>'<p><strong>'+escape(e.title)+'</strong> — '+escape(e.tradeNote)+'</p>').join(''):'<p>Citizens mine, farm, cook and trade while the royal story continues.</p>')+'</div>':'<p>Complete this stage to advance the world to its day and reveal any royal events occurring then.</p>')+'</section>':
   '<div class="guide-entry-list">'+(catalog.length?catalog.map(entry=>
    '<article class="guide-entry"><strong>'+escape(entry.name)+'</strong><p>'+escape(entry.detail)+'</p></article>').join(''):
    '<p>Additional royal episodes unlock by completing the existing campaign, not by inventing dates.</p>')+'</div>';
@@ -175,7 +175,7 @@ function worldGuide(){
  '<div class="guide-tab-bar" role="group" aria-label="Reference categories">'+tabs+'</div>'+calendar+
  '<section class="panel guide-online"><h2>Detailed Wiki</h2><p>This reference is included offline. The public GitHub field guide links to the source catalogs and continuity decisions.</p>'+
  '<a class="guide-wiki-link" href="'+Guide.WIKI_URL+'" target="_blank" rel="noopener noreferrer">OPEN WORLD WIKI ONLINE</a>'+
- '<p><small>Story-reveal levels are not historical event dates; Estelle-related childhood stories remain future chronology.</small></p></section>';
+ '<p><small>The citizen and royal stories share exact stage-day dates. Estelle’s childhood belongs to future levels, while named Elaranth month/year dates await their calendar anchor.</small></p></section>';
 }
 function start(id){
  if(active)return message('Finish the current board first');

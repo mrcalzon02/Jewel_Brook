@@ -41,6 +41,17 @@ assert.equal(Guide.mainDay(1000).day,1000);
 assert.equal(Guide.mainDay(1001),null);
 assert.equal(Guide.trialDay(1001,Trials).earliestMainDay,Trials.profile(1001).requiredMainLevel);
 assert.equal(Guide.mainDay(20).calendarDate,null);
+assert.equal(Royal.EVENTS.length,19);
+assert.ok(Royal.EVENTS.every(e=>e.historicalDay===e.revealLevel),'Royal events share their level day');
+assert.deepEqual(Royal.eventsOnDay(1).map(e=>e.id),['RH-E01']);
+assert.equal(Royal.eventsOnDay(9)[0].historicalDay,9);
+assert.equal(Royal.eventsOnDay(1250)[0].track,'royal-family');
+const sharedDaySave={stars:{1:1,9:1},unlocked:10};
+assert.equal(Royal.current(sharedDaySave).campaignDay,9);
+assert.equal(Royal.unlocked(sharedDaySave,Royal.eventsOnDay(9)[0]),true);
+assert.equal(Royal.unlocked({unlocked:9,stars:{}},Royal.eventsOnDay(9)[0]),false,'Only first clear advances royal events');
+assert.ok(Guide.catalog('story',{Royal},sharedDaySave).some(e=>e.detail.includes('Campaign Day 9')));
+
 
 for(const n of [1,2,15,35,77,125,250,500,750,1000,1001,1150,1300]){
  const a=E.create(n,n*7919),b=E.create(n,n*7919);
@@ -107,6 +118,7 @@ assert.equal(gameWindow.RupeeRushDebug.getPage(),'guide');
 assert.match(views.screen.innerHTML,/Campaign Day 1/);
 click('guide-next');
 assert.match(views.screen.innerHTML,/Campaign Day 2/);
+assert.match(views.screen.innerHTML,/shared citizen and royal timeline/);
 click('guide-tab',{tab:'dishes'});
 assert.match(views.screen.innerHTML,/Hawseed Garden Salad/);
 click('guide-tab',{tab:'gems'});
