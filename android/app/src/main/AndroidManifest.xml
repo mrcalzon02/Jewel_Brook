@@ -4,7 +4,8 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
     <application
         android:label="Jewel Brook"
-        android:icon="@drawable/ic_rupee_rush"
+        android:icon="@drawable/ic_jewel_brook"
+        android:roundIcon="@drawable/ic_jewel_brook"
         android:allowBackup="false"
         android:supportsRtl="true"
         android:usesCleartextTraffic="false"
