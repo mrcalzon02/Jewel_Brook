@@ -10,7 +10,7 @@ Previously developed under the name **Rupee Rush**, the game now lives at **[mrc
 
 | Platform | Current distribution | Important limitations |
 | --- | --- | --- |
-| **Android phones** | [Signed GitHub Android prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — download `Jewel-Brook-Heroes-of-Embryon-Android.apk` | Installs outside Google Play; permit installation when Android asks. Updating an existing signed installation should preserve saves. |
+| **Android phones** | [Signed GitHub Android prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — download `Jewel-Brook-Heroes-of-Embryon-Android.apk` | Installs outside Google Play; permit installation when Android asks. Updates to an already-installed **Jewel Brook** app preserve its data; an older **Rupee Rush** installation is a separate Android package and does not migrate automatically. |
 | **Amazon Fire tablets** | Same Android APK | Fire OS compatibility is a deployment target, not a claim of verified operation on every Fire tablet. |
 | **Windows x64** | [Native desktop prereleases](https://github.com/mrcalzon02/Jewel_Brook/releases) — `JewelBrook-Native-Windows-x64.zip` | Genuine native executable; no embedded browser. Experimental content subset; unsigned Windows executable. |
 | **Linux x64** | Same releases — `JewelBrook-Native-Linux-x64.tar.gz` | Native SDL3 executable and packaged dependencies; experimental content subset. |
@@ -58,11 +58,11 @@ Open `http://localhost:8000`. Alternatively open `web/index.html` directly where
 
 Functional checks (Node.js) are in `tests/`. The signed Android release workflow runs its specified functional diagnostics, Gradle assembly and signer/APK identity checks on **GitHub Actions**, not the user's PC. Native Windows/Linux builds run their own CMake/CTest diagnostics and packaged-executable smoke tests on GitHub. Avoid adding release-blocking cosmetic or screenshot-diff tests. Build/check status is verified per [Actions run](https://github.com/mrcalzon02/Jewel_Brook/actions), not inferred from a source commit.
 
-## Compatibility identities — intentionally unchanged
+## Android install identity and preserved internal compatibility
 
 **Do not rename these casually** even though public branding is Jewel Brook:
 
-- Android package ID and Java namespace: `io.github.mrcalzon02.jewelbrook`.
+- Android **installed package ID**: `io.github.mrcalzon02.jewelbrook` (independent of the old `io.github.mrcalzon02.rupeerush`). The Java source/BuildConfig namespace stays `io.github.mrcalzon02.rupeerush` for internal compatibility.
 - Permanent sideload signing identity/certificate, update version progression and local save key `rupeerush.save.v1`.
 - Android update asset `Jewel-Brook-Heroes-of-Embryon-Android.apk` and prerelease tag convention `jewelbrook-phone-test-<run>-<attempt>`; the signed updater validates them.
 - Native existing save location `SDL_GetPrefPath("RupeeRush","RupeeRushDesktop")` and compatible save formats.
