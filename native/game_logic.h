@@ -26,13 +26,13 @@ public:
     uint32_t randomState = 1;
     std::vector<int> cells;
     // Android-authored introductory campaign objectives and blocker state.
-    // objectiveKind: 0=score, 1=ice, 2=collect a specific authored gem, 3=locks.
+    // objectiveKind: 0=score, 1=ice, 2=collect a specific authored gem, 3=locks, 4=chests.
     int objectiveKind = 0, objectiveTarget = 850, iceCleared = 0;
     int collectColor = -1, collected = 0;
     std::vector<int> ice;
     // Independently damageable anchored blockers and temporary frozen gems.
-    std::vector<int> locks, frozen;
-    int locksCleared=0, iceActivations=0;
+    std::vector<int> locks, frozen, chests;
+    int locksCleared=0, chestsCleared=0, iceActivations=0;
     std::vector<int> pendingIce;
     // Exact authored gem IDs: 0 ruby, 1 sapphire, 2 emerald, 11 opal.
     std::vector<int> activeRoster{0,1,2};
@@ -43,7 +43,9 @@ public:
     std::vector<int> fireAuras;
     // Starter supply and milestone unlocks from web/progression.js LADDER.
     int hammerCount = 3, extraCount = 0, rowCount = 0, shuffleCount = 0, columnCount = 0, blastCount = 0;
+    int crossCount = 0, colorCount = 0, drillCount = 0, unlockCount = 0;
     bool claimedExtra = false, claimedRow = false, claimedShuffle = false, claimedColumn = false, claimedBlast = false;
+    bool claimedCross = false, claimedColor = false, claimedDrill = false, claimedUnlock = false;
     std::array<MineTile, 16> rocks{};
 
     explicit Game(uint32_t seed = 7919);
@@ -57,6 +59,10 @@ public:
     bool useRowRocket(int cell);
     bool useColumnRocket(int cell);
     bool useBlast(int cell);
+    bool useCross(int cell);
+    bool useColor(int cell);
+    bool useDrill(int cell);
+    bool useUnlock();
     bool useShuffle();
     bool hasMove();
     bool mine(int index);

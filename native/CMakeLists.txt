@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(SDL3)
 # Native executable consumes authored data only. JavaScript is used once, at
 # build time, to export initial stages from the authoritative Android engine.
 find_program(RUPEE_NODE node REQUIRED)
-set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-48.txt")
+set(INTRO_CATALOG "${CMAKE_BINARY_DIR}/campaign-98.txt")
 execute_process(
   COMMAND "${RUPEE_NODE}" "${CMAKE_CURRENT_SOURCE_DIR}/tests/export_intro_campaign.js" "${INTRO_CATALOG}"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -103,6 +103,27 @@ endif()
 
 
 
+# Reuse all existing source WebP artwork by changing only the source path.
+# Build machine converts to PNG for SDL3; desktop archives ship no converter.
+foreach(BOOSTER_NAME IN ITEMS cross color drill unlock)
+  execute_process(
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+      "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/boosters/${BOOSTER_NAME}.webp"
+      "${CMAKE_BINARY_DIR}/${BOOSTER_NAME}.png"
+    RESULT_VARIABLE BOOSTER_CONVERT_RESULT)
+  if(NOT BOOSTER_CONVERT_RESULT EQUAL 0)
+    message(FATAL_ERROR "Cannot convert approved ${BOOSTER_NAME} art")
+  endif()
+endforeach()
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/runtime/gems/jade.webp"
+    "${CMAKE_BINARY_DIR}/jade.png"
+  RESULT_VARIABLE JADE_RESULT)
+if(NOT JADE_RESULT EQUAL 0)
+  message(FATAL_ERROR "Cannot convert source Jade gem artwork")
+endif()
+
 add_library(rupee_native_logic STATIC game_logic.cpp)
 add_library(rupee_mine_logic STATIC mine_economy.cpp)
 target_include_directories(rupee_mine_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -161,6 +182,11 @@ target_link_libraries(rupee_tile_fire_tests PRIVATE rupee_native_logic)
 add_test(NAME native_source_fire_tile_overlay_and_save
     COMMAND rupee_tile_fire_tests "${INTRO_CATALOG}")
 
+add_executable(rupee_extended_tests tests/extended_campaign_test.cpp)
+target_link_libraries(rupee_extended_tests PRIVATE rupee_native_logic)
+add_test(NAME native_extended_49_to_98_and_original_assets
+    COMMAND rupee_extended_tests "${INTRO_CATALOG}")
+
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
 add_test(NAME native_mining_source_parity_and_economy
@@ -196,7 +222,7 @@ install(FILES
 )
 install(FILES "${OPAL_GEM_PNG}"
   DESTINATION data/art/embryon/runtime/gems)
-install(FILES "${ALEXANDRITE_GEM_PNG}"
+install(FILES "${ALEXANDRITE_GEM_PNG}" "${CMAKE_BINARY_DIR}/jade.png"
   DESTINATION data/art/embryon/runtime/gems)
 
 install(FILES
@@ -218,6 +244,7 @@ install(FILES
 )
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/blockers/lock.png"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/primary/blockers/chest.png"
   DESTINATION data/art/primary/blockers
 )
 # Approved gameplay booster icons from web/progression.js; NO substitutions.
@@ -234,6 +261,10 @@ install(FILES "${COLUMN_BOOSTER_PNG}"
 install(FILES "${BLAST_BOOSTER_PNG}"
   DESTINATION data/art/embryon/runtime/boosters)
 install(FILES "${SHUFFLE_BOOSTER_PNG}"
+  "${CMAKE_BINARY_DIR}/cross.png"
+  "${CMAKE_BINARY_DIR}/color.png"
+  "${CMAKE_BINARY_DIR}/drill.png"
+  "${CMAKE_BINARY_DIR}/unlock.png"
   DESTINATION data/art/embryon/runtime/boosters)
 
 

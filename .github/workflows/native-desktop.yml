@@ -16,6 +16,12 @@ on:
       - 'web/art/embryon/runtime/boosters/shuffle.webp'
       - 'web/art/embryon/runtime/gems/opal.webp'
       - 'web/art/embryon/runtime/gems/alexandrite.webp'
+      - 'web/art/embryon/runtime/gems/jade.webp'
+      - 'web/art/embryon/runtime/boosters/cross.webp'
+      - 'web/art/embryon/runtime/boosters/color.webp'
+      - 'web/art/embryon/runtime/boosters/drill.webp'
+      - 'web/art/embryon/runtime/boosters/unlock.webp'
+      - 'web/art/primary/blockers/chest.png'
       - 'web/board-features.js'
       - 'web/elemental-challenges.js'
       - 'web/art/primary/blockers/ice-*.png'
@@ -125,6 +131,12 @@ jobs:
           test -s stage/RupeeRush/data/art/embryon/runtime/boosters/shuffle.png
           test -s stage/RupeeRush/data/art/embryon/runtime/gems/opal.png
           test -s stage/RupeeRush/data/art/embryon/runtime/gems/alexandrite.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/gems/jade.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/cross.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/color.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/drill.png
+          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/unlock.png
+          test -s stage/RupeeRush/data/art/primary/blockers/chest.png
           test -s stage/RupeeRush/data/art/primary/overlays/fire.png
           test -s stage/RupeeRush/data/art/primary/overlays/frost.png
           test -s stage/RupeeRush/data/art/primary/blockers/lock.png
@@ -166,4 +178,4 @@ jobs:
           gh release create "rupeerush-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
             release-native/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
             --prerelease --title "Rupee Rush Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
-            --notes 'Experimental native C++/SDL3 desktop build. Forty-eight Android-authored match-three stages with original lock art and Ice elemental, including Column Rocket and the delayed Fire elemental aura, collect-color goals, Shuffle unlock, opal, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'
+            --notes 'Experimental native C++/SDL3 desktop build. Ninety-eight Android-authored match-three stages with original lock art and Ice elemental, including Column Rocket and the delayed Fire elemental aura, collect-color goals, Shuffle unlock, opal, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'

@@ -108,10 +108,18 @@ int main(int argc,char**argv){
     for(std::string word;split>>word;)fields.push_back(word);
     assert(fields.size()>4);
     fields[0]="RRNATIVE8";
-    fields.erase(fields.end()-3,fields.end()-1);
+    fields.erase(fields.end()-12,fields.end()-1);
+    // Strip the chest-layer line newly added in the current save layout;
+    // historical RRNATIVE8 contains cells/ice/locks/frozen without chests.
+    std::string board,ice,locks,chests,frozen;
+    assert(static_cast<bool>(std::getline(newer,board)));
+    assert(static_cast<bool>(std::getline(newer,ice)));
+    assert(static_cast<bool>(std::getline(newer,locks)));
+    assert(static_cast<bool>(std::getline(newer,chests)));
+    assert(static_cast<bool>(std::getline(newer,frozen)));
     std::ostringstream prior;
     for(const auto& part:fields)prior<<part<<' ';
-    prior<<"\n"<<newer.rdbuf();
+    prior<<"\n"<<board<<"\n"<<ice<<"\n"<<locks<<"\n"<<frozen<<"\n"<<newer.rdbuf();
     std::stringstream oldSave(prior.str());
     Game migrated;assert(migrated.load(oldSave));
     assert(!migrated.claimedBlast&&migrated.blastCount==0);
