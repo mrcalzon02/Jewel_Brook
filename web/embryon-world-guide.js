@@ -65,7 +65,7 @@ function catalog(tab,systems,save){
  default:return [];
  }
 }
-const api=Object.freeze({CALENDAR,WIKI_URL,TABS,mainDay,trialDay,catalog});
+const api=Object.freeze({CALENDAR,WIKI_URL,TABS,mainDay,trialDay,catalog,monthsForRange:Calendar.monthsForRange,weeksForRange:Calendar.weeksForRange,civilFromElapsed:Calendar.civilFromElapsed});
 root.JewelBrookWorldGuide=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

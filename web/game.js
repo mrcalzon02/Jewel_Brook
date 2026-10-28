@@ -115,12 +115,36 @@ function campaign(){
 }
 function chapter(){
  const c=Chapters.byId(chapterId)||Chapters.CHAPTERS[0];
- const from=Math.min(c.end,c.start+campaignPage*30),to=Math.min(c.end,from+29);
- const levels=Array.from({length:to-from+1},(_,i)=>from+i);
+ const months=Guide.monthsForRange(c.start,c.end);
+ const page=Math.max(0,Math.min(months.length-1,campaignPage)),month=months[page];
+ const weeks=Guide.weeksForRange(month.firstStage,month.lastStage);
+ const controls='<div class="panel campaign-bar">'+button('campaign-prev','← PREVIOUS MONTH','secondary',page===0?'disabled':'')+
+ '<strong>'+escape(month.label)+' · Levels '+month.firstStage+'–'+month.lastStage+'</strong>'+
+ button('campaign-next','NEXT MONTH →','secondary',page===months.length-1?'disabled':'')+'</div>';
+ const tabs='<nav class="campaign-month-tabs" aria-label="Months in '+escape(c.title)+'">'+months.map((m,i)=>
+ '<button class="campaign-month-tab '+(page===i?'selected':'')+'" data-action="campaign-month" data-month="'+i+
+ '" aria-pressed="'+(page===i)+'">'+escape(m.name)+' <small>'+m.year+'</small></button>').join('')+'</nav>';
+ const contents=weeks.map(w=>{
+  const first=Guide.civilFromElapsed(w.firstStage),last=Guide.civilFromElapsed(w.lastStage);
+  const markers=w.levels.map(n=>{
+   const date=Guide.mainDay(n),civil=date.civil;
+   return '<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+
+    '" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+
+    ' title="'+escape(date.calendarDate)+'" aria-label="Level '+n+', '+escape(date.calendarDate)+(n>saved.unlocked?' locked':'')+'">'+
+    markerArt('general',levelMarkerState(n))+
+    (Royal.cleared(saved)>=n&&Royal.eventsOnDay(n).length?'<span class="level-story-cue" aria-hidden="true">'+markerArt('general','quest')+'</span>':'')+
+    '<b class="level-marker-number">'+n+'</b><small>'+escape(civil.weekday.slice(0,3))+' '+civil.day+(saved.stars[n]?' · ★'+saved.stars[n]:'')+'</small></button>';
+  }).join('');
+  return '<section class="campaign-week" aria-label="Week '+w.week+' of '+escape(month.name)+'">'+
+   '<h2>Week '+w.week+' <small>· '+first.day+'–'+last.day+' '+escape(month.name)+'</small></h2>'+
+   '<div class="campaign-week-scroll"><div class="level-grid level-marker-grid campaign-week-grid">'+markers+'</div></div></section>';
+ }).join('');
  return '<div class="chapter-banner" style="background-image:linear-gradient(90deg,#0b1239e6,#0b12394a),url(\''+c.art+'\')">'+
  '<h1>'+escape(c.title)+'</h1><p>Chapter '+c.id+' · '+escape(c.description)+'</p>'+button('go-campaign','← FIVE-CHAPTER MAP','quiet')+'</div>'+
- '<div class="panel campaign-bar">'+button('campaign-prev','← Previous','secondary',campaignPage===0?'disabled':'')+'<strong>'+from+'–'+to+' / '+c.end+'</strong>'+button('campaign-next','Next →','secondary',to===c.end?'disabled':'')+'</div>'+
- '<p class="guide-date-inline">Shared royal &amp; citizen timeline: Days '+from+'–'+to+'</p>'+button('go-guide','VIEW CALENDAR & WORLD WIKI','secondary')+'<div class="level-grid level-marker-grid">'+levels.map(n=>'<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+', Campaign Day '+n+(n>saved.unlocked?' locked':'')+'">'+markerArt('general',levelMarkerState(n))+(Royal.cleared(saved)>=n&&Royal.eventsOnDay(n).length?'<span class="level-story-cue" aria-hidden="true" title="Royal story on this day">'+markerArt('general','quest')+'</span>':'')+'<b class="level-marker-number">'+n+'</b><small>Day '+n+(saved.stars[n]?' · ★'+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
+ controls+tabs+'<p class="guide-date-inline">Shared royal and citizen history · '+escape(month.label)+
+ ' · Four weeks per full month · The wedding was Day 0.</p>'+
+ button('go-guide','VIEW MONTH IN CALENDAR','secondary','data-level="'+month.firstStage+'"')+
+ '<div class="campaign-weeks">'+contents+'</div>';
 }
 
 function elementalGownCollection(){
@@ -520,11 +544,12 @@ function handle(b){
  if(a==='check-updates'){window.RupeeUpdates?.check();return;}
  if(a==='view-releases'){window.RupeeUpdates?.openReleases();return;}
  if(a==='toggle-sfx'){Audio.configure({sfx:!Audio.settings().sfx});render();return;}if(a==='toggle-music'){Music.configure({music:!Music.settings().music});render();return;}if(a==='toggle-voice'){Audio.configure({voice:!Audio.settings().voice});render();return;}
- if(a==='open-chapter'){const c=Chapters.byId(info.chapter);if(!c)return;chapterId=c.id;campaignPage=Math.max(0,Math.floor((Math.max(c.start,Math.min(saved.unlocked,c.end))-c.start)/30));page='chapter';Audio.play('chapter-enter');Audio.speak('enter'+c.id);render();return;}
+ if(a==='open-chapter'){const c=Chapters.byId(info.chapter);if(!c)return;chapterId=c.id;const months=Guide.monthsForRange(c.start,c.end),level=Math.max(c.start,Math.min(saved.unlocked,c.end));campaignPage=Math.max(0,months.findIndex(m=>level>=m.firstStage&&level<=m.lastStage));page='chapter';Audio.play('chapter-enter');Audio.speak('enter'+c.id);render();return;}
  if(a==='play-next'){start(saved.unlocked);return;}
  if(a==='play-level'){start(Number(info.level));return;}
  if(a==='campaign-prev'){campaignPage=Math.max(0,campaignPage-1);render();return;}
- if(a==='campaign-next'){campaignPage=Math.min(6,campaignPage+1);render();return;}
+ if(a==='campaign-next'){const c=Chapters.byId(chapterId)||Chapters.CHAPTERS[0];campaignPage=Math.min(Guide.monthsForRange(c.start,c.end).length-1,campaignPage+1);render();return;}
+ if(a==='campaign-month'){const c=Chapters.byId(chapterId)||Chapters.CHAPTERS[0],m=Number(info.month),months=Guide.monthsForRange(c.start,c.end);if(Number.isInteger(m)&&m>=0&&m<months.length){campaignPage=m;render();}return;}
  if(a==='result-next'){const id=outcome?.won?(outcome.id>=T.FIRST?saved.unlocked:Math.min(1000,outcome.id+1)):outcome?.id;outcome=null;start(id||saved.unlocked);return;}
  if(a==='abandon'){active=null;visualImpact=null;save();nav('campaign');return;}
  if(a==='cell'){

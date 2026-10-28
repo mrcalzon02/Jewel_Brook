@@ -429,3 +429,19 @@
 .guide-day-links strong{font-size:12px;color:#ffe4b0;margin-right:5px}
 .guide-day-link{min-height:36px;padding:6px 9px;border-radius:8px;border:1px solid #9077b4;color:#fcebc6;background:#2a2445;font-size:12px;font-weight:800}
 .guide-day-link[aria-pressed="true"]{border-color:#f4d59c;background:#49365e}
+
+/* Elaranthi civil months and four seven-day weeks per full month. */
+.campaign-month-tabs{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 11px}
+.campaign-month-tab{min-height:38px;background:#302641;border:1px solid #8c78a4;border-radius:8px;color:#eee1ff;padding:6px 9px;font-size:12px;font-weight:850}
+.campaign-month-tab.selected{background:#665085;border-color:#e3c587;color:#fff0c1}
+.campaign-month-tab small{font-size:10px;color:#d6c8e4}
+.campaign-weeks{display:grid;gap:8px;margin-top:12px}
+.campaign-week{border:1px solid #73618b;border-radius:10px;padding:8px;background:#251c38}
+.campaign-week h2{font-size:14px;color:#ffe0a7;margin:0 0 5px}
+.campaign-week h2 small{font-weight:500;font-size:11px;color:#c9bee1}
+.campaign-week-scroll{overflow-x:auto}
+.campaign-week-grid{grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:0}
+.campaign-week-grid .level-with-marker{min-height:74px}
+.campaign-week-grid .level-marker-art{width:clamp(27px,4.2vw,44px);height:clamp(27px,4.2vw,44px)}
+.campaign-week-grid .level-with-marker small{white-space:nowrap;font-size:10px}
+@media(max-width:440px){.campaign-week-grid{min-width:398px}.campaign-month-tab{font-size:11px}.campaign-bar strong{font-size:12px;text-align:center}.campaign-bar .btn{font-size:10px;padding:7px 5px}}
