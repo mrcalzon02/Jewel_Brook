@@ -96,7 +96,7 @@ function use(save,id,options={},at=Date.now()){
    }
    if(affected)result={valid:true,affected};
   }
-  if(id==='farm-bounty'&&p&&Farm.plotStatus(save,slot,at).state==='ready'&&p.yield<=98){p.yield+=2;result={valid:true,plot:slot,yield:p.yield};}
+  if(id==='farm-bounty'&&p&&Farm.plotStatus(save,slot,at).state==='ready'&&p.yield<=98){t.plots[slot].yield+=2;result={valid:true,plot:slot,yield:t.plots[slot].yield};}
   if(id==='farm-seeds'){
    const crop=Farm.CROPS[o.crop];if(crop&&t.houseLevel>=crop.house&&t.seeds[crop.id]<=LIMIT-3){t.seeds[crop.id]+=3;result={valid:true,crop:crop.id,quantity:3};}
   }
