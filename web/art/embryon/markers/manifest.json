@@ -1,0 +1,87 @@
+{
+  "schema": "jewel-brook.level-markers/v1",
+  "game": "Jewel Brook: Heroes of Embryon",
+  "approval": "Owner-approved original generated art",
+  "sourceCells": "3x3",
+  "sourcePixels": [
+    1254,
+    1254
+  ],
+  "spritePixels": [
+    224,
+    224
+  ],
+  "sourceHashes": {
+    "general": "92192646d0d8a709bb0e6cb3cd5f9063f45522e7d4625d22af462d7fd480283d",
+    "elemental": "a765b670dc054329cd59cd89a01851423d3eccaea4939889427d0bfbd2440028"
+  },
+  "originals": [
+    {
+      "path": "art/embryon/markers/source/fantasy_elemental_crest_grid.png",
+      "gitSha": "a673ccd70ef04c3d11224b3f40e70cb1aa5edb33"
+    },
+    {
+      "path": "art/embryon/markers/source/fantasy_jewel_level_marker_icon_sheet.png",
+      "gitSha": "b0ab194cee8dfe31380720e57c0de3ea9fe44fe8"
+    }
+  ],
+  "general": [
+    "standard",
+    "active",
+    "cleared",
+    "milestone",
+    "locked",
+    "boss",
+    "treasure",
+    "special",
+    "quest"
+  ],
+  "elemental": [
+    "fire",
+    "water",
+    "earth",
+    "wind",
+    "lightning",
+    "ice",
+    "nature",
+    "shadow",
+    "radiance"
+  ],
+  "elementMappings": {
+    "fire": [
+      "fire",
+      "magma"
+    ],
+    "water": [
+      "water"
+    ],
+    "earth": [
+      "earth",
+      "crystal"
+    ],
+    "wind": [
+      "wind",
+      "storm"
+    ],
+    "lightning": [
+      "lightning"
+    ],
+    "ice": [
+      "ice",
+      "frost"
+    ],
+    "nature": [
+      "nature"
+    ],
+    "shadow": [
+      "shadow",
+      "poison",
+      "arcane"
+    ],
+    "radiance": [
+      "radiance"
+    ]
+  },
+  "archive": "https://drive.google.com/file/d/1i0370bc5wUNJdGb9c9IoCC4Q8As6bJM7/view",
+  "notes": "Source sheets retained unchanged; elemental black backgrounds alpha extracted for sprites; icons are programmatic UI presentation only; save, currency and tile art mappings untouched."
+}
