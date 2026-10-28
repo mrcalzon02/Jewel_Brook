@@ -15,6 +15,7 @@ const Bridge=require('../web/mine-bridge.js');
 const Art=require('../web/art.js');
 const Shared=require('../web/shared-art.js');
 const Chapters=require('../web/embryon-chapters.js');
+const Royal=require('../web/royal-chronicle.js');
 const Audio=require('../web/embryon-audio.js');
 const Music=require('../web/embryon-music.js');
 const Motion=require('../web/board-motion.js');
@@ -62,7 +63,7 @@ assert.equal(D.left(save),beforeMoves+5);
 assert.equal(Bridge.buy(save,'nonsense',Mining,P,D).valid,false);
 assert.equal(Rewards.summary(save).total,300);
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
-for(const name of ['engine','game','mining-gear','mining','mine-bridge','art','embryon-music','board-motion'])assert.ok(html.includes('src="'+name+'.js"'),name+' script absent');
+for(const name of ['engine','game','royal-chronicle','mining-gear','mining','mine-bridge','art','embryon-music','board-motion'])assert.ok(html.includes('src="'+name+'.js"'),name+' script absent');
 assert.ok(!html.includes('nutbuster.v1'));
 const pointerHandlers={};
 const views={screen:{innerHTML:'',addEventListener(event,fn){pointerHandlers[event]=fn;}},wallet:{textContent:''},stargems:{textContent:''},toast:{textContent:'',classList:{add(){},remove(){}}}};
@@ -75,7 +76,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownCharacter:require('../web/town-character.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeTownYards:require('../web/town-yards.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking,MineOreAtlas:require('../web/mine-ore-atlas.js')};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,JewelbrookRoyalChronicle:Royal,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownCharacter:require('../web/town-character.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeTownYards:require('../web/town-yards.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking,MineOreAtlas:require('../web/mine-ore-atlas.js')};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -92,6 +93,16 @@ assert.doesNotMatch(views.screen.innerHTML,/class="profile-outfit"/,'No tiny out
 
 function click(action,rest={}){assert.equal(typeof handler,'function');handler({target:{closest:()=>({dataset:{action,...rest},disabled:false})}});}
 function navigate(nav){click('',{nav});}
+assert.equal(Royal.EVENTS.length,19,'The source royal chronicle is registered');
+assert.equal(Royal.ART.length,13,'Only the 13 original approved gallery illustrations are used');
+assert.equal(Royal.newAt(1).length,1,'First win can reveal the first royal atelier episode');
+assert.ok(Royal.EVENTS.filter(e=>e.track==='royal-family').every(e=>e.revealLevel>1000),
+ 'Estelle childhood stories must not unlock during her pre-birth opening campaign');
+click('go-chronicle');
+assert.equal(gameWindow.RupeeRushDebug.getPage(),'chronicle','Royal Chronicle opens from Home');
+assert.match(views.screen.innerHTML,/The Royal Chronicle/);
+assert.match(views.screen.innerHTML,/STAGE 1/,'Chronicle renders story unlock milestones');
+navigate('home');
 click('go-manor');
 assert.equal(gameWindow.RupeeRushDebug.getPage(),'manor','Manor House opens as a functional Town location');
 assert.match(views.screen.innerHTML,/data-action="manor-upgrade"/);
