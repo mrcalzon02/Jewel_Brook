@@ -57,29 +57,30 @@ assert.equal(Guide.mainDay(1).day,1);
 assert.equal(Guide.mainDay(1000).day,1000);
 assert.equal(Guide.mainDay(1001),null);
 assert.equal(Guide.trialDay(1001,Trials).earliestMainDay,Trials.profile(1001).requiredMainLevel);
-assert.equal(Guide.mainDay(20).calendarDate,null);
+assert.equal(Guide.mainDay(20).calendarDate,Calendar.civilFromElapsed(20).label);
 assert.equal(TimelineExport.rows().length,1000,'One exported history row per main-stage day');
-assert.equal(TimelineExport.rows()[7][4],'RH-E03|RH-E04','Multiple royal episodes share Day 8');
-assert.equal(TimelineExport.rows()[2][4],'RH-E02','Sunday visit is on Day 3');
+assert.equal(TimelineExport.rows()[10][4],'RH-E03|RH-E04','Two episodes share Day 11');
+assert.equal(TimelineExport.rows()[5][4],'RH-E02','Sunday is Day 6');
 assert.equal(TimelineExport.rows()[999][1],1000,'Final exported story day');
-assert.equal(TimelineExport.rows()[999][8],'','Unknown Elaranth full date remains blank');
+assert.equal(TimelineExport.rows()[999][8],Calendar.civilFromElapsed(1000).label);
 assert.equal(fs.readFileSync(path.join(__dirname,'../docs/EMBRYON_LEVEL_TIMELINE.csv'),'utf8'),
  TimelineExport.csv(),'CSV follows actual gameplay and royal event registries');
 assert.equal(Royal.EVENTS.length,19);
 assert.ok(Royal.EVENTS.every(e=>e.historicalDay===e.revealLevel),'Royal events share their level day');
-assert.deepEqual(Royal.eventsOnDay(1).map(e=>e.id),['RH-E01']);
-assert.equal(Royal.continuityIssues().length,0,'Established Friday/Sunday chronology stays consistent');
-assert.deepEqual(Royal.eventsOnDay(3).map(e=>e.id),['RH-E02'],'Sunday pickup occurs on shared Day 3');
-assert.deepEqual(Royal.eventsOnDay(8).map(e=>e.id),['RH-E03','RH-E04'],'Friday purchase and departure occur on Day 8 together');
-assert.equal(Royal.eventsOnDay(36)[0].id,'RH-E06');
-assert.equal(Royal.eventsOnDay(38)[0].id,'RH-E07');
-assert.equal(Royal.eventsOnDay(9).length,0,'Old erroneous Day 9 staging is retired');
+assert.equal(Royal.continuityIssues().length,0,'Royal day and weekday continuity');
+assert.equal(Royal.eventsOnDay(1).length,0);
+assert.deepEqual(Royal.eventsOnDay(4).map(e=>e.id),['RH-E01']);
+assert.deepEqual(Royal.eventsOnDay(6).map(e=>e.id),['RH-E02']);
+assert.deepEqual(Royal.eventsOnDay(11).map(e=>e.id),['RH-E03','RH-E04']);
+assert.equal(Royal.eventsOnDay(39)[0].id,'RH-E06');
+assert.equal(Royal.eventsOnDay(41)[0].id,'RH-E07');
+assert.equal(Royal.eventsOnDay(46)[0].id,'RH-E08');
 assert.equal(Royal.eventsOnDay(1250)[0].track,'royal-family');
-const sharedDaySave={stars:{1:1,3:1,8:1},unlocked:9};
-assert.equal(Royal.current(sharedDaySave).campaignDay,8);
-assert.equal(Royal.unlocked(sharedDaySave,Royal.eventsOnDay(8)[0]),true);
-assert.equal(Royal.unlocked({unlocked:8,stars:{}},Royal.eventsOnDay(8)[0]),false,'Only first clear advances royal events');
-assert.ok(Guide.catalog('story',{Royal},sharedDaySave).some(e=>e.detail.includes('Campaign Day 3')));
+const sharedDaySave={stars:{1:1,4:1,6:1,11:1},unlocked:12};
+assert.equal(Royal.current(sharedDaySave).campaignDay,11);
+assert.equal(Royal.unlocked(sharedDaySave,Royal.eventsOnDay(11)[0]),true);
+assert.equal(Royal.unlocked({unlocked:11,stars:{}},Royal.eventsOnDay(11)[0]),false);
+assert.ok(Guide.catalog('story',{Royal},sharedDaySave).some(e=>e.detail.includes('Campaign Day 6')));
 
 
 for(const n of [1,2,15,35,77,125,250,500,750,1000,1001,1150,1300]){
@@ -161,7 +162,8 @@ assert.equal(Royal.gownUnlocked({unlocked:15,elementalTrials:{}},fireDress),fals
 assert.equal(Royal.gownUnlocked({unlocked:15,elementalTrials:{1001:1}},fireDress),true,'Actual completed fire trial reveals Fire dress');
 assert.equal(Royal.gownUnlocked({unlocked:1,elementalTrials:{1001:1}},fireDress),false,'A completed trial alone cannot bypass main-stage gate');
 assert.equal(Royal.gownsForTrial(1141)[0].id,'EL-10','Arcane gown is assigned to Arcane Trial 1141');
-assert.equal(Royal.newAt(1).length,1,'First win can reveal the first royal atelier episode');
+assert.equal(Royal.newAt(1).length,0,'First completed level is not Friday');
+assert.equal(Royal.newAt(4).length,1,'First Friday begins the atelier chronicle');
 assert.ok(Royal.EVENTS.filter(e=>e.track==='royal-family').every(e=>e.revealLevel>1000),
  'Estelle childhood stories must not unlock during her pre-birth opening campaign');
 click('go-chronicle');

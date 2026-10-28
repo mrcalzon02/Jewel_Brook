@@ -1,21 +1,25 @@
 /* Jewel Brook: offline world reference and chronology; no new save state. */
 (function(root){'use strict';
-const CALENDAR=Object.freeze({
- name:'Elaranth calendar',months:13,
- monthNames:null,monthLengths:null,epochYear:null,epochMonth:null,epochDay:null,
- status:'awaiting-canon-anchor'
-});
+const Calendar=typeof module!=='undefined'&&module.exports?require('./elaranth-calendar.js'):root.JewelBrookElaranthCalendar;
+if(!Calendar)throw Error('Missing Elaranth calendar');
+const CALENDAR=Object.freeze({name:'Elaranth calendar',months:13,daysPerMonth:28,daysPerYear:364,
+ monthNames:Calendar.MONTH_NAMES,weekdays:Calendar.WEEKDAYS,
+ epochYear:Calendar.WORKING_ANCHOR.year,epochMonth:1,epochDay:1,
+ status:'canonical-rules-working-wedding-anchor',
+ source:'mrcalzon02/HB-TTRPG-tools/elaranth-almanac.html'});
 const WIKI_URL='https://github.com/mrcalzon02/Jewel_Brook/blob/main/docs/EMBRYON_WORLD_WIKI.md';
 function mainDay(level){
  if(!Number.isInteger(level)||level<1||level>1000)return null;
- return Object.freeze({level,day:level,label:'Campaign Day '+level,
-  calendarDate:null,calendarStatus:CALENDAR.status,
+ const civil=Calendar.civilFromElapsed(level);
+ return Object.freeze({level,day:level,label:'Campaign Day '+level,calendarDate:civil.label,civil,
+  calendarStatus:CALENDAR.status,
   storyRule:'Finishing this level advances the player and royal family to the same day.'});
 }
 function trialDay(id,Trials){
  const spec=Trials?.profile(id);
  if(!spec)return null;
  return Object.freeze({trial:id,day:null,earliestMainDay:spec.requiredMainLevel,
+  earliestCivilDate:Calendar.civilFromElapsed(spec.requiredMainLevel)?.label||null,
   label:'Optional trial '+id,calendarDate:null,
   note:'Available no earlier than Campaign Day '+spec.requiredMainLevel+
   '; the day it is attempted is not fixed by its unlock milestone.'});
@@ -55,8 +59,8 @@ function catalog(tab,systems,save){
   ...E.BOOSTERS.map(id=>({name:E.BOOSTER_META[id]?.label||id,detail:E.BOOSTER_META[id]?.tip||'Campaign booster.'}))
  ];
  case 'story':return Royal.EVENTS.filter(e=>e.revealLevel<=1000&&Royal.unlocked(save,e)).map(e=>({
-  name:e.title,detail:'Campaign Day '+e.historicalDay+' (Level '+e.revealLevel+'). '+e.summary+' '+e.tradeNote+
-  ' The full Elaranth calendar date is not yet resolved.'
+  name:e.title,detail:'Campaign Day '+e.historicalDay+' · '+Calendar.civilFromElapsed(e.historicalDay).label+
+  ' (Level '+e.revealLevel+'). '+e.summary+' '+e.tradeNote+' Date uses the working wedding anchor.'
  }));
  default:return [];
  }
