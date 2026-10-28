@@ -3,6 +3,8 @@
  * No browser timers, network access, localStorage access, or UI side effects.
  */
 (function(root){'use strict';
+ const Seasons=typeof module!=='undefined'&&module.exports?require('./embryon-crop-seasons.js'):root.JewelBrookCropSeasons;
+ if(!Seasons)throw Error('Seasonal crop growth catalog must be loaded');
  const FIRST=1,LAST=40,MAX=1_000_000_000,MAX_QTY=1000;
  const CATEGORIES=Object.freeze(["roots","greens","grains","fruits","herbs","flowers","exotics","orchard"]);
  const DATA=[["carrot","Hawseed Carrot",1,12,5,2,12,"roots","carrot"],["wheat","Sunwheat",4,25,12,3,12,"grains","wheat"],["berry","Bluebell Berry",8,40,30,3,18,"fruits","blueberry"],["radish","Ruby Radish",1,10,3,2,9,"roots",null],["lettuce","Moonleaf Lettuce",1,15,6,3,10,"greens","lettuce"],["pea","Sweetpod Peas",1,16,7,3,10,"greens",null],["mint","Frostmint",1,18,8,3,12,"herbs",null],["potato","Copper Potato",2,20,10,4,9,"roots","potato"],["onion","Amber Onion",2,22,11,3,12,"roots","onion"],["spinach","Nightshade Spinach",3,22,10,4,10,"greens",null],["beet","Crimson Beet",3,24,13,3,14,"roots",null],["strawberry","Sunblush Strawberry",5,28,15,3,16,"fruits","strawberry"],["tomato","Blazevine Tomato",6,32,18,4,14,"fruits","tomato"],["cabbage","Pearl Cabbage",7,34,20,3,17,"greens","cabbage"],["bean","Goldrunner Beans",9,42,25,4,15,"greens",null],["garlic","Silver Garlic",10,44,29,3,21,"roots","garlic"],["corn","Golden Corn",11,47,35,4,17,"grains","corn"],["pepper","Firecrest Pepper",12,50,38,3,23,"fruits","pepper"],["broccoli","Evergreen Broccoli",13,55,40,3,24,"greens","broccoli"],["cucumber","Dewdrop Cucumber",14,58,45,4,22,"fruits",null],["cauliflower","Cloudbloom Cauliflower",15,62,50,3,30,"greens","cauliflower"],["kale","Ironleaf Kale",16,65,55,4,25,"greens",null],["raspberry","Velvet Raspberry",17,70,60,3,33,"fruits","raspberry"],["sunflower","Sungold Sunflower",18,75,70,3,36,"flowers","sunflower"],["zucchini","Duskstripe Zucchini",19,78,75,4,29,"fruits",null],["eggplant","Violet Eggplant",20,85,85,3,42,"fruits","eggplant"],["pumpkin","Harvest Pumpkin",21,95,95,2,65,"fruits","pumpkin"],["barley","Highland Barley",22,94,100,4,36,"grains",null],["rice","Moonwater Rice",23,98,110,5,34,"grains",null],["cotton","Cloud Cotton",24,110,120,4,43,"exotics","cotton"],["sugarcane","Crystal Sugarcane",25,115,135,4,45,"grains","sugarcane"],["herb-bundle","Emberleaf Herbs",26,120,140,5,42,"herbs","herb-bundle"],["lavender","Royal Lavender",27,130,150,4,55,"herbs","lavender"],["tea-leaves","Mistvale Tea",28,140,160,5,50,"herbs","tea-leaves"],["daisy","Sunburst Daisy",29,145,180,4,62,"flowers","daisy"],["tulip","Silverglow Tulip",30,160,200,4,67,"flowers","tulip"],["rose","Moonshadow Rose",31,170,220,4,72,"flowers","rose"],["coffee-beans","Nightfall Coffee",32,180,240,4,78,"exotics","coffee-beans"],["orchid","Arcane Orchid",33,200,265,3,110,"flowers","orchid"],["grape","Starlight Grapes",34,215,280,4,90,"fruits",null],["melon","Crystal Melon",35,235,300,3,125,"fruits",null],["watermelon","Royal Watermelon",36,250,330,3,137,"fruits",null],["apple","Gilded Apple",37,280,360,3,156,"orchard",null],["pear","Moonstone Pear",37,290,390,3,160,"orchard",null],["peach","Blushfire Peach",38,320,420,3,184,"orchard",null],["pineapple","Sunspire Pineapple",38,335,450,3,193,"exotics",null],["dragonfruit","Dragonheart Fruit",39,370,490,3,217,"exotics",null],["starfruit","Astral Starfruit",40,425,540,3,250,"exotics",null]];
@@ -19,6 +21,7 @@
  const plotCount=level=>PLOT_UNLOCKS.filter(n=>n<=boundedHouse(level)).length;
  const upgradeCost=level=>validInt(level,FIRST,LAST-1)?40+20*level+8*level*level:null;
  function nowValue(at){return Number.isSafeInteger(at)&&at>=0?at:null;}
+ function campaignDay(save){return Object.keys(save?.stars||{}).reduce((high,key)=>{const n=Number(key);return Number.isInteger(n)&&n>=1&&n<=1000&&Number(save.stars[key])>0?Math.max(high,n):high;},0);}
  function houseBand(level){return clamped(level,1,40)<=10?'Hawseed Homestead':level<=20?'Garden Cottage':level<=30?'Prosperous Townhouse':'Royal Manor';}
  function inventoryObject(obj,keys){
   const value=obj&&typeof obj==='object'&&!Array.isArray(obj)?obj:{};
@@ -30,7 +33,9 @@
   if(!save||typeof save!=='object'||Array.isArray(save))throw TypeError('save object required');
   if(!save.town||typeof save.town!=='object'||Array.isArray(save.town))save.town={};
   const town=save.town;
-  town.schemaVersion=1;
+  town.schemaVersion=2;
+  const currentDay=campaignDay(save);
+  town.gardenDay=validInt(town.gardenDay,0,1000)?Math.min(town.gardenDay,currentDay):currentDay;
   town.houseLevel=boundedHouse(town.houseLevel);
   town.seeds=inventoryObject(town.seeds,Object.keys(CROPS));
   town.fertilizers=inventoryObject(town.fertilizers,Object.keys(FERTILIZERS));
@@ -38,7 +43,15 @@
   const slots=Array.isArray(town.plots)?town.plots:[];
   town.plots=Array.from({length:8},(_,index)=>{
    const p=slots[index];if(p===null||p===undefined)return null;
-   if(!p||typeof p!=='object'||Array.isArray(p)||!Object.hasOwn(CROPS,p.crop)||!validInt(p.plantedAt,0,Number.MAX_SAFE_INTEGER)||!validInt(p.readyAt,p.plantedAt+1,Number.MAX_SAFE_INTEGER)||!validInt(p.yield,1,100))return null;
+   if(!p||typeof p!=='object'||Array.isArray(p)||!Object.hasOwn(CROPS,p.crop)||!validInt(p.yield,1,100))return null;
+   if(p.mode!=='campaign-day'&&(!validInt(p.plantedAt,0,Number.MAX_SAFE_INTEGER)||!validInt(p.readyAt,p.plantedAt+1,Number.MAX_SAFE_INTEGER)))return null;
+   if(p.mode==='campaign-day'){
+    if(!validInt(p.plantedDay,0,1000)||!validInt(p.lastProgressDay,p.plantedDay,1000)||
+       !validInt(p.work,0,Seasons.WORK)||!validInt(p.yield,1,100))return null;
+    return {mode:'campaign-day',crop:p.crop,plantedDay:p.plantedDay,
+     lastProgressDay:p.lastProgressDay,work:p.work,yield:p.yield,
+     fertilizer:Object.hasOwn(FERTILIZERS,p.fertilizer)?p.fertilizer:null};
+   }
    return {crop:p.crop,plantedAt:p.plantedAt,readyAt:p.readyAt,yield:p.yield,fertilizer:Object.hasOwn(FERTILIZERS,p.fertilizer)?p.fertilizer:null};
   });
   return town;
@@ -88,21 +101,76 @@
   town.plots[plot]=planted;
   return {valid:true,plot,...planted};
  }
+ /* New plantings use one completed main stage = one calendar day.
+  * The legacy real-time plant() remains for old plots and existing caller tests;
+  * active gameplay routes all NEW planting through plantCampaign().
+  */
+ function plantCampaign(save,plot,seedId,fertilizerId=null){
+  const crop=Object.hasOwn(CROPS,seedId)?CROPS[seedId]:null;
+  const feed=fertilizerId===null?null:(Object.hasOwn(FERTILIZERS,fertilizerId)?FERTILIZERS[fertilizerId]:null);
+  if(!crop)return {valid:false,reason:'seed'};
+  if(fertilizerId!==null&&!feed)return {valid:false,reason:'fertilizer'};
+  const town=ensure(save);
+  if(!validInt(plot,0,plotCount(town.houseLevel)-1))return {valid:false,reason:'plot'};
+  if(town.plots[plot])return {valid:false,reason:'occupied'};
+  if(town.houseLevel<crop.house||(feed&&town.houseLevel<feed.house))return {valid:false,reason:'house'};
+  if(!town.seeds[seedId])return {valid:false,reason:'inventory'};
+  if(feed&&!town.fertilizers[feed.id])return {valid:false,reason:'fertilizer-inventory'};
+  const plantedDay=campaignDay(save);
+  const qty=crop.yield+Math.floor(gloveTier(save)/10)+(feed?feed.yieldBonus:0);
+  town.seeds[seedId]--;
+  if(feed)town.fertilizers[feed.id]--;
+  const planted={mode:'campaign-day',crop:crop.id,plantedDay,lastProgressDay:plantedDay,
+   work:0,yield:qty,fertilizer:feed?feed.id:null};
+  town.plots[plot]=planted;
+  return {valid:true,plot,...planted,forecast:Seasons.forecast(seedId,plantedDay,feed,town.houseLevel)};
+ }
+ function advanceCampaign(save,day){
+  if(!validInt(day,1,1000))return {valid:false,reason:'day'};
+  const town=ensure(save),current=campaignDay(save);
+  if(day>current)return {valid:false,reason:'uncleared'};
+  if(day<=town.gardenDay)return {valid:true,advanced:0,ready:0,reason:'already-processed'};
+  const start=town.gardenDay;
+  let ready=0;
+  for(let d=start+1;d<=day;d++){
+   for(const p of town.plots){
+    if(!p||p.mode!=='campaign-day'||p.plantedDay>=d||p.lastProgressDay>=d)continue;
+    if(p.work<Seasons.WORK){
+     p.work=Math.min(Seasons.WORK,p.work+Seasons.workForDay(p.crop,d,
+      p.fertilizer?FERTILIZERS[p.fertilizer]:null,town.houseLevel));
+     if(p.work===Seasons.WORK)ready++;
+    }
+    p.lastProgressDay=d;
+   }
+  }
+  town.gardenDay=day;
+  return {valid:true,advanced:day-start,ready,day};
+ }
  function plotStatus(save,plot,at=Date.now()){
   const town=ensure(save),time=nowValue(at);
   if(!validInt(plot,0,7)||time===null)return {valid:false,reason:'plot-or-time'};
   if(plot>=plotCount(town.houseLevel))return {valid:true,state:'locked',plot};
   const p=town.plots[plot];if(!p)return {valid:true,state:'empty',plot};
+  if(p.mode==='campaign-day'){
+   const progress=p.work/Seasons.WORK,ready=p.work>=Seasons.WORK;
+   const feed=p.fertilizer?FERTILIZERS[p.fertilizer]:null;
+   const dailyWork=Seasons.workForDay(p.crop,Math.min(1000,campaignDay(save)+1),feed,town.houseLevel);
+   const remainingDays=ready?0:Math.ceil((Seasons.WORK-p.work)/Math.max(1,dailyWork));
+   return {valid:true,state:ready?'ready':progress<.25?'seed':progress<.5?'sprout':progress<.75?'growing':'maturing',
+    plot,...p,progress,remainingDays,clock:'campaign-day',forecast:Seasons.forecast(p.crop,campaignDay(save),feed,town.houseLevel)};
+  }
   const duration=Math.max(1,p.readyAt-p.plantedAt);
   const progress=Math.max(0,Math.min(1,(time-p.plantedAt)/duration));
-  return {valid:true,state:time>=p.readyAt?'ready':progress<.25?'seed':progress<.5?'sprout':progress<.75?'growing':'maturing',plot,...p,progress};
+  return {valid:true,state:time>=p.readyAt?'ready':progress<.25?'seed':progress<.5?'sprout':progress<.75?'growing':'maturing',plot,...p,progress,clock:'legacy-real-time'};
  }
  function harvest(save,plot,at=Date.now()){
   const time=nowValue(at);if(time===null)return {valid:false,reason:'time'};
   const town=ensure(save);
   if(!validInt(plot,0,plotCount(town.houseLevel)-1))return {valid:false,reason:'plot'};
   const p=town.plots[plot];if(!p)return {valid:false,reason:'empty'};
-  if(time<p.readyAt)return {valid:false,reason:'growing',readyAt:p.readyAt};
+  if(p.mode==='campaign-day'){
+   if(p.work<Seasons.WORK)return {valid:false,reason:'growing',remainingDays:plotStatus(save,plot,at).remainingDays};
+  }else if(time<p.readyAt)return {valid:false,reason:'growing',readyAt:p.readyAt};
   if(town.harvest[p.crop]+p.yield>MAX)return {valid:false,reason:'capacity'};
   town.harvest[p.crop]+=p.yield;town.plots[plot]=null;
   return {valid:true,crop:p.crop,quantity:p.yield,plot};
@@ -120,7 +188,8 @@
   const town=ensure(save),plots=plotCount(town.houseLevel);
   return {houseLevel:town.houseLevel,houseBand:houseBand(town.houseLevel),plots,gloveTier:gloveTier(save),nextUpgradeCost:upgradeCost(town.houseLevel),coins:balance(save),slots:town.plots.slice(0,plots).map((_,i)=>plotStatus(save,i,at)),seeds:{...town.seeds},fertilizers:{...town.fertilizers},harvest:{...town.harvest}};
  }
- const API=Object.freeze({name:'Town',FIRST,LAST,CROPS,FERTILIZERS,CATEGORIES,PLOT_UNLOCKS,ensure,plotCount,upgradeCost,upgradeHouse,gloveTier,purchase,plant,harvest,plotStatus,sell,summary,houseBand});
+ const API=Object.freeze({name:'Town',FIRST,LAST,CROPS,FERTILIZERS,CATEGORIES,PLOT_UNLOCKS,Seasons,
+  campaignDay,advanceCampaign,plantCampaign,ensure,plotCount,upgradeCost,upgradeHouse,gloveTier,purchase,plant,harvest,plotStatus,sell,summary,houseBand});
  root.RupeeTownGarden=API;
  if(typeof module!=='undefined'&&module.exports)module.exports=API;
 })(typeof window!=='undefined'?window:globalThis);
