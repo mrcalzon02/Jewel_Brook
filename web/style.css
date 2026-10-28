@@ -20,12 +20,13 @@
    Keep the interactive buttons in the DOM; the logo itself is an accessible image. */
 .home-kingdom{position:relative;isolation:isolate;display:grid;place-items:center;overflow:hidden;min-height:clamp(330px,55vw,520px);margin-bottom:14px;border:1px solid #f6d68a;border-radius:20px;box-shadow:0 14px 32px #090820bb;background:linear-gradient(180deg,#090f290f 0%,#0c164645 30%,#060d28e8 100%),url("art/embryon/locations/embryon-kingdom.webp") center 46%/cover no-repeat,#1b234f}
 .home-kingdom-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;padding:clamp(15px,3vw,32px);text-align:center}
-.home-brand{width:min(100%,490px);line-height:0;margin:0}
-.home-title-art{display:block;width:100%;height:auto;max-height:260px;object-fit:contain;filter:drop-shadow(0 9px 13px #05071cd9)}
+.home-brand{width:min(100%,490px);line-height:1.05;margin:0;display:grid;justify-items:center;gap:5px}
+.home-title-wordmark{display:block;max-width:100%;font-family:Georgia,"Times New Roman",serif;font-size:clamp(27px,5.8vw,58px);font-weight:900;letter-spacing:.015em;color:#ffe2a2;text-shadow:0 3px 0 #694031,0 7px 11px #06081ad9,0 0 22px #e8bb68b3}
+.home-title-subtitle{display:block;font-size:clamp(10px,1.8vw,15px);font-weight:900;letter-spacing:.2em;color:#e7eaff;text-shadow:0 2px 8px #040719)
 .home-tagline{max-width:35ch;color:#fff6df;font-size:clamp(13px,2.4vw,16px);font-weight:700;line-height:1.4;text-shadow:0 2px 7px #080d27,0 1px 2px #080d27}
 .home-actions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;width:100%}
 .home-actions .btn{font-size:clamp(11px,2vw,13px);min-height:44px;box-shadow:0 5px 10px #070e2db5}
-@media(max-width:620px){.home-kingdom{min-height:330px;background-position:center 45%}.home-kingdom-content{gap:9px;padding:12px 8px 16px}.home-brand{width:min(100%,350px)}.home-title-art{max-height:198px}.home-tagline{font-size:12px}.home-actions{gap:5px}.home-actions .btn{margin:1px;font-size:11px;padding:8px 10px}}
+@media(max-width:620px){.home-kingdom{min-height:330px;background-position:center 45%}.home-kingdom-content{gap:9px;padding:12px 8px 16px}.home-brand{width:min(100%,350px)}.home-title-wordmark{font-size:clamp(27px,7.1vw,40px)}.home-tagline{font-size:12px}.home-actions{gap:5px}.home-actions .btn{margin:1px;font-size:11px;padding:8px 10px}}
 
 /* Original Embryon chapter map; HTML hotspots, no painted interaction text. */
 .embryon-map{position:relative;aspect-ratio:1672/940;overflow:hidden;isolation:isolate;border:2px solid #d8ae62;border-radius:16px;background:#0d1233;box-shadow:0 10px 24px #04051d99;margin:0 0 12px}
@@ -174,7 +175,7 @@
 @media(max-width:620px){.farm-art-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}.farm-art-entry img{height:76px}.farm-recipe-grid{grid-template-columns:1fr}}
 
 
-/* Approved Rupee Rush kitchen and dining environments.
+/* Approved Jewelbrook kitchen and dining environments.
    Scenes remain scenic artwork; all mechanics and controls are accessible HTML. */
 .kitchen-room-section{margin:22px 0 20px;padding:0 0 13px;border:1px solid #6e5a8a;border-radius:15px;overflow:hidden;background:linear-gradient(165deg,#282238,#201d31)}
 .kitchen-room-banner{position:relative;width:100%;min-height:230px;height:clamp(230px,34vw,415px);overflow:hidden;isolation:isolate;background:#443b3b}

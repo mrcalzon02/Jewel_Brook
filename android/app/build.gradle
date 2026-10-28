@@ -1,6 +1,6 @@
 plugins { id 'com.android.application' }
 
-// One permanent LOCAL Rupee Rush APK signer. Never use the Nut Buster,
+// One permanent LOCAL Jewelbrook APK signer. Never use the Nut Buster,
 // ReverieVR or future Google Play upload keys for sideloaded updates.
 def keystorePath = (project.findProperty('rupeeKeystorePath') ?: '').toString()
 def rrStorePass = (project.findProperty('rupeeStorePassword') ?: '').toString()
@@ -13,7 +13,7 @@ def expectedAlias = 'rupeerush-local-apk-v1'
 def signerAvailable = keystorePath && rrStorePass && rrKeyPass &&
     rrKeyAlias == expectedAlias && file(keystorePath).isFile()
 if (versionNumber < 1 || versionNumber > 2100000000) {
-    throw new GradleException('Invalid Rupee Rush versionCode')
+    throw new GradleException('Invalid Jewelbrook versionCode')
 }
 
 android {
@@ -76,7 +76,7 @@ tasks.register('requirePermanentLocalSigner') {
         if (!signerAvailable || !trustedPublisher) {
             throw new GradleException(
                 'Refusing an unsigned or debug-signed update APK. ' +
-                'Run scripts/build-android-apk.ps1 to create/reuse the permanent Rupee Rush local signer.'
+                'Run scripts/build-android-apk.ps1 to create/reuse the permanent Jewelbrook local signer.'
             )
         }
     }

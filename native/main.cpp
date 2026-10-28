@@ -243,7 +243,7 @@ const char* gemLabel(int sourceId){
     }
 }
 void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArmed,bool rowArmed,bool columnArmed,bool blastArmed,bool crossArmed,bool colorArmed,bool drillArmed){
-    label(r,28,26,"RUPEE RUSH - NATIVE MATCH 3",2);
+    label(r,28,26,"JEWELBROOK - NATIVE MATCH 3",2);
     label(r,28,59,"STAGE "+std::to_string(game.level)+"   MOVES "+std::to_string(game.moves)+
           (game.objectiveKind==1?
              "   BREAK ICE "+std::to_string(game.iceCleared)+" / "+std::to_string(game.objectiveTarget):
@@ -364,7 +364,7 @@ void drawBoard(SDL_Renderer* r,Art& art,Game& game,int ww,int hh,bool hammerArme
     else label(r,ww*.5f-200,hh-165,"DRAG TO SWAP OR PICK A BOOSTER",2);
 }
 void drawMine(SDL_Renderer* r,Art& art,const MineEconomy& n,int ww,int hh,bool surveyMode){
-    label(r,24,20,"RUPEE RUSH - NATIVE MINING",2);
+    label(r,24,20,"JEWELBROOK - NATIVE MINING",2);
     label(r,24,55,"STRIKES "+std::to_string(n.strikes)+"/"+std::to_string(MineEconomy::strikeLimit(n.pickTier))+
           "   SCANS "+std::to_string(n.scans)+"   MINE "+std::to_string(n.mineTier+1),2);
     const int count=n.size();
@@ -430,7 +430,7 @@ void drawHome(SDL_Renderer* r,const Art& art,const Game& g,const MineEconomy& mi
     SDL_FRect crest{ww*.5f-iconSize*.5f,iconY,iconSize,iconSize};
     SDL_RenderTexture(r,art.gem[2],nullptr,&crest);
     const float headingY=iconY+iconSize+12;
-    label(r,ww*.5f-125,headingY,"RUPEE RUSH",3);
+    label(r,ww*.5f-125,headingY,"JEWELBROOK",3);
     label(r,ww*.5f-141,headingY+40,"NATIVE DESKTOP",2);
     fill(r,{ww*.5f-170,headingY+67,340,2},{78,193,127,255});
     const auto actions=homeActions(ww,hh);
@@ -443,10 +443,10 @@ void drawHome(SDL_Renderer* r,const Art& art,const Game& g,const MineEconomy& mi
 }
 int main(int argc,char** argv){
     const bool smoke=argc>1 && std::string(argv[1])=="--smoke";
-    SDL_SetAppMetadata("Rupee Rush","0.1","io.github.mrcalzon02.rupeerush");
+    SDL_SetAppMetadata("Jewelbrook","0.1","io.github.mrcalzon02.rupeerush");
     if(!SDL_Init(SDL_INIT_VIDEO|SDL_INIT_EVENTS)){SDL_Log("SDL init failed: %s",SDL_GetError());return 1;}
     SDL_Window* window=nullptr;SDL_Renderer* render=nullptr;
-    if(!SDL_CreateWindowAndRenderer("Rupee Rush",1080,740,SDL_WINDOW_RESIZABLE,&window,&render)){
+    if(!SDL_CreateWindowAndRenderer("Jewelbrook",1080,740,SDL_WINDOW_RESIZABLE,&window,&render)){
         SDL_Log("Failed to create desktop window: %s",SDL_GetError());SDL_Quit();return 1;
     }
     SDL_SetWindowMinimumSize(window,640,520);

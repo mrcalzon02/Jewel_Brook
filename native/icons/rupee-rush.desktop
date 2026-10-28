@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Rupee Rush
+Name=Jewelbrook
 GenericName=Gem matching and mining game
-Comment=Native Rupee Rush desktop application
+Comment=Native Jewelbrook desktop application
 Exec=RupeeRushNative
 Icon=rupee-rush
 Terminal=false

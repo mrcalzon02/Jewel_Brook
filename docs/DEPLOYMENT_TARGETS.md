@@ -1,4 +1,4 @@
-# Rupee Rush — platform deployment policy and status
+# Jewelbrook — platform deployment policy and status
 
 **One game identity, with two distinct implementations.** Android phones and Amazon Fire tablets run the existing Android WebView game. Windows and Linux use a genuine native C++/SDL3 application. The Android implementation, signing keys, saver namespace and GitHub APK prerelease updater are not to be rewritten or altered for desktop support.
 
@@ -15,7 +15,7 @@ No Chromium, Electron, WebView, NW.js, CEF, packaged website or JS engine. The d
 
 The latest native build removes the earlier Electron proof-of-concept completely. `.github/workflows/native-desktop.yml` compiles and archives real Windows/Linux executables and ships only their dynamic SDL3 runtime plus the approved raster assets required by this first step. The existing Android signing/release workflow continues independently. The Android release tests may still validate Fire manifest/API eligibility, but this does not certify physical hardware.
 
-## Native desktop application identity
+## Jewelbrook native desktop application identity
 
 Windows uses an EXE icon resource built from the existing approved emerald
 gem `web/art/embryon/generated/gems/emerald.png`, with the original PNG
@@ -64,13 +64,13 @@ GitHub Actions workflow artifacts and prerelease source verification attest to s
 
 The Android `web/engine.js` stage exporter rejects unexpected new overlays, statuses, abilities or roster changes. It exports the exact level-15 Opal identity (ID 11), the original source-defined stage roster, and the single level-15 Water elemental gem. The C++ game moves the Water flag with the gem, triggers the Water ability only when that gem is destroyed, clears the flag on activation, and persists its state in backwards-compatible `RRNATIVE5` saves. The original `web/art/embryon/runtime/gems/opal.webp` is converted to PNG during compilation without redrawing or changing the approved artwork. No Python or browser runtime is shipped.
 
-The native campaign currently enables levels 1–31. Levels 18–19 introduce source-authored gem-color collection objectives and level 18 grants three Shuffle boosters after its first clear. The native UI uses the existing Rupee Rush runtime `shuffle.webp` sprite, converted losslessly to PNG at build time. The original web/progression.js BOOSTER_ART entry remains intentionally unchanged; no currency artwork is remapped. All visual work is secondary to build/runtime and functional mechanics tests; cosmetic tests must not block releases.
+The native campaign currently enables levels 1–31. Levels 18–19 introduce source-authored gem-color collection objectives and level 18 grants three Shuffle boosters after its first clear. The native UI uses the existing Jewelbrook runtime `shuffle.webp` sprite, converted losslessly to PNG at build time. The original web/progression.js BOOSTER_ART entry remains intentionally unchanged; no currency artwork is remapped. All visual work is secondary to build/runtime and functional mechanics tests; cosmetic tests must not block releases.
 
 ## Native collection goals and Shuffle (levels 18–20)
 
 The stage exporter records the source's exact per-color collection objective (kind 2), target, and original gem type ID. Only **destroyed** gems of the objective color count; cracked ice without gem destruction does not award color progress. Source-authored board masks, blocker states, and starting gem roster remain unchanged. The first clear of level 18 awards three Shuffle boosters, once. Shuffle exchanges movable gem payloads while retaining ice layers, void cells, source objective, moves, and Water elemental attachment to its gem; unsuccessful attempts never consume inventory. Native saves now use RRNATIVE5 and continue reading RRNATIVE1–4.
 
-Rupee Rush already contains `web/art/embryon/runtime/boosters/shuffle.webp`; the desktop app converts **those exact existing pixels** at build time and displays that image instead of an emoji, SVG, or arbitrary substitute. The separate `web/progression.js` gameplay icon catalog still lists Shuffle as null and has **not** been modified. This is desktop-only artwork reuse, not a retroactive currency assignment or an Android change. There are no appearance-based release-blocking tests; only functional diagnostics and needed runtime packaging checks gate native releases.
+Jewelbrook already contains `web/art/embryon/runtime/boosters/shuffle.webp`; the desktop app converts **those exact existing pixels** at build time and displays that image instead of an emoji, SVG, or arbitrary substitute. The separate `web/progression.js` gameplay icon catalog still lists Shuffle as null and has **not** been modified. This is desktop-only artwork reuse, not a retroactive currency assignment or an Android change. There are no appearance-based release-blocking tests; only functional diagnostics and needed runtime packaging checks gate native releases.
 
 Level 21 now seeds a Fire elemental. Later levels through 25 use the Android-authored stage data, while level 26's Column Rocket unlock remains the next unported booster milestone. Full parity with Android is still incomplete.
 

@@ -1,4 +1,6 @@
-# Rupee Rush
+# Jewelbrook
+
+**Public game name:** Jewelbrook. The repository, installed Android package, signing identity, save keys, updater endpoints, native executable and release asset filenames deliberately retain their existing Rupee Rush identifiers for update and save compatibility. Do not rename those identifiers as part of public branding.
 
 **Deployment targets:** Android phones and Amazon Fire tablets use the existing signed APK. Windows/Linux use a separate **genuine native C++/SDL3 application**, with no packaged browser or JavaScript runtime. Native desktop gameplay parity is in progress. See [Deployment Targets](docs/DEPLOYMENT_TARGETS.md).
 
@@ -22,7 +24,7 @@ Open `web/index.html` in a browser, or serve the `web/` folder using `python3 -m
 
 ## Heroes of Embryon — master art direction
 
-The owner-approved **Daysha** visual identity and **Rupee Rush** high-gloss production rules are maintained in [Master Art Style Guide](docs/ART_STYLE_MASTER.md), [Daysha Art Contract](docs/DAYSHA_ART_CONTRACT.md), and [Art Production Contract](docs/EMBRYON_ART_PRODUCTION.md). Visual palette and UI component specimens live in `web/art/embryon/`. These are design references, not assertions of gameplay integration or a packaged visual update.
+The owner-approved **Daysha** visual identity and **Jewelbrook** high-gloss production rules are maintained in [Master Art Style Guide](docs/ART_STYLE_MASTER.md), [Daysha Art Contract](docs/DAYSHA_ART_CONTRACT.md), and [Art Production Contract](docs/EMBRYON_ART_PRODUCTION.md). Visual palette and UI component specimens live in `web/art/embryon/`. These are design references, not assertions of gameplay integration or a packaged visual update.
 
 ## Shared asset family
 
@@ -30,13 +32,13 @@ Portable, visually screened blocker/status/booster/reward art is tracked in [the
 
 ## Art ownership and migration
 
-The original Nut Buster **rocks, pickaxes and gloves** are allowed as visual assets in Rupee Rush and intentionally retain the owner-authored image files, 40+40 equipment tier identities and asset paths. Other Rupee Rush art uses a temporary procedural vector treatment pending dedicated gemstone/background/UI art runs; it is **not** finished production artwork. Do not add new nut-themed sprites as stand-ins.
+The original Nut Buster **rocks, pickaxes and gloves** are allowed as visual assets in Jewelbrook and intentionally retain the owner-authored image files, 40+40 equipment tier identities and asset paths. Other Jewelbrook art uses a temporary procedural vector treatment pending dedicated gemstone/background/UI art runs; it is **not** finished production artwork. Do not add new nut-themed sprites as stand-ins.
 
 ## Project constraints
 
 - Do not edit the NUTBUSTER-R repository while working on this game.
 - Don't add GitHub Actions without explicit request.
-- Keep separate Rupee Rush package/signing IDs, save namespaces, release channels and publishing identities.
+- Keep separate Jewelbrook package/signing IDs, save namespaces, release channels and publishing identities.
 - Mining must remain available from the outset and cannot require campaign completion.
 - Match-3 is playable even without mining; mining is a supplemental way to earn play resources.
 - No real cash payment should be enabled without a separately approved compliant platform implementation.

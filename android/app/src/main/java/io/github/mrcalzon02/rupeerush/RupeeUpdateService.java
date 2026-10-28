@@ -83,13 +83,13 @@ final class RupeeUpdateService implements AutoCloseable {
     private void runCheck(boolean manual) throws Exception {
         String signer = BuildConfig.DISTRIBUTION_SIGNER_SHA256;
         if (!BuildConfig.UPDATE_CHANNEL_ENABLED || !signer.matches("[0-9a-f]{64}")) {
-            if (manual) status.accept("Update checking is available in permanently signed Rupee Rush test builds.");
+            if (manual) status.accept("Update checking is available in permanently signed Jewelbrook test builds.");
             return;
         }
         PackageManager pm = activity.getPackageManager();
         PackageInfo installed = installedInfo(pm, activity.getPackageName());
         if (installed == null || !signer.equals(fingerprint(installed))) {
-            if (manual) status.accept("Installed Rupee Rush signature differs from the trusted publisher. Updates blocked.");
+            if (manual) status.accept("Installed Jewelbrook signature differs from the trusted publisher. Updates blocked.");
             return;
         }
         long current = version(installed);
@@ -132,7 +132,7 @@ final class RupeeUpdateService implements AutoCloseable {
             }
         }
         if (best == null) {
-            if (manual) status.accept("Rupee Rush is up to date; no newer verified GitHub prerelease was found.");
+            if (manual) status.accept("Jewelbrook is up to date; no newer verified GitHub prerelease was found.");
             return;
         }
         if (!manual && best.code == lastOfferedCode) return;
@@ -163,7 +163,7 @@ final class RupeeUpdateService implements AutoCloseable {
         lastOfferedCode = release.code;
         status.accept("Update " + release.code + " available. Download only with player approval.");
         new AlertDialog.Builder(activity)
-            .setTitle("Rupee Rush update available")
+            .setTitle("Jewelbrook update available")
             .setMessage("A newer signed version (" + release.code + ") is available. Download the update from GitHub? Your local game progress remains on this device.")
             .setPositiveButton("Download", (dialog, which) -> downloadApproved(release, installedCode, signer))
             .setNegativeButton("Later", (dialog, which) -> status.accept("Update deferred. Play offline as usual."))
@@ -197,7 +197,7 @@ final class RupeeUpdateService implements AutoCloseable {
         }
         status.accept("Update " + releaseCode + " verified. Installation requires separate approval.");
         new AlertDialog.Builder(activity)
-            .setTitle("Install verified Rupee Rush update?")
+            .setTitle("Install verified Jewelbrook update?")
             .setMessage("The download passed SHA-256, app identity, version and publisher certificate checks. Open Android's installer now? Android will also request your approval.")
             .setPositiveButton("Install", (dialog, which) -> openInstaller(verifiedApk))
             .setNegativeButton("Later", (dialog, which) -> {
@@ -249,7 +249,7 @@ final class RupeeUpdateService implements AutoCloseable {
 
     private void openInstaller(File apk) {
         if (Build.VERSION.SDK_INT>=26 && !activity.getPackageManager().canRequestPackageInstalls()) {
-            status.accept("Allow Rupee Rush to install updates in Android settings, then tap CHECK FOR UPDATES again.");
+            status.accept("Allow Jewelbrook to install updates in Android settings, then tap CHECK FOR UPDATES again.");
             activity.startActivity(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
                 Uri.parse("package:"+activity.getPackageName())));
             return;

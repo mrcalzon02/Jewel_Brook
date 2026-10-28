@@ -6,7 +6,7 @@ const api={
  receive(message){api.lastStatus=String(message||'');api.syncStatus();},
  syncStatus(){const node=root.document?.querySelector('[data-update-status]');if(node)node.textContent=api.lastStatus;},
  autoCheck(){const bridge=root.RUPEE_UPDATE_BRIDGE;if(bridge&&typeof bridge.checkForUpdatesAutomatically==='function')bridge.checkForUpdatesAutomatically();},
- check(){const bridge=root.RUPEE_UPDATE_BRIDGE;if(bridge&&typeof bridge.checkForUpdates==='function'){api.receive('Checking GitHub for newer signed Rupee Rush builds…');bridge.checkForUpdates();}else api.receive('Automatic updates require the signed Android app. Open GitHub Releases to update manually.');},
+ check(){const bridge=root.RUPEE_UPDATE_BRIDGE;if(bridge&&typeof bridge.checkForUpdates==='function'){api.receive('Checking GitHub for newer signed Jewelbrook builds…');bridge.checkForUpdates();}else api.receive('Automatic updates require the signed Android app. Open GitHub Releases to update manually.');},
  openReleases(){const bridge=root.RUPEE_UPDATE_BRIDGE;if(bridge&&typeof bridge.openReleases==='function')bridge.openReleases();else if(typeof root.open==='function')root.open(RELEASES,'_blank','noopener,noreferrer');}
 };
 root.RupeeUpdates=api;

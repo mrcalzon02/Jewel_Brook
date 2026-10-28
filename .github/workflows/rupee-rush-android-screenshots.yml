@@ -1,12 +1,12 @@
-name: Rupee Rush Android gameplay screenshots
+name: Jewelbrook Android gameplay screenshots
 on:
   workflow_run:
-    workflows: ["Rupee Rush signed Android APK"]
+    workflows: ["Jewelbrook signed Android APK"]
     types: [completed]
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Existing signed Rupee Rush release tag to capture
+        description: Existing signed Jewelbrook release tag to capture
         type: string
         required: true
 permissions:
