@@ -200,7 +200,7 @@ function worldGuide(){
  '<div class="guide-tab-bar" role="group" aria-label="Reference categories">'+tabs+'</div>'+calendar+
  '<section class="panel guide-online"><h2>Detailed Wiki</h2><p>This reference is included offline. The public GitHub field guide links to the source catalogs and continuity decisions.</p>'+
  '<a class="guide-wiki-link" href="'+Guide.WIKI_URL+'" target="_blank" rel="noopener noreferrer">OPEN WORLD WIKI ONLINE</a>'+
- '<p><small>The citizen and royal stories share these same dated levels. The wedding's absolute year and date remain a working anchor; Estelle's childhood is in later years.</small></p></section>';
+ '<p><small>The citizen and royal stories share these same dated levels. The absolute wedding date remains a working anchor; Estelle’s childhood is in later years.</small></p></section>';
 }
 function start(id){
  if(active)return message('Finish the current board first');
