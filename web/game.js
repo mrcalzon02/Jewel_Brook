@@ -320,7 +320,7 @@ function settle(){
  if(g.won){
   const id=g.level,trial=id>=T.FIRST;
   let earned=0,bonus=0,storyNew=[],gownNew=[];
-  if(trial){const wasCleared=T.done(saved,id);const result=R.clear(saved,id,g.score);earned=result.coins||0;bonus=result.gems||0;if(!wasCleared)gownNew=Royal.gownsForTrial(id);}
+  if(trial){const wasCleared=T.done(saved,id);const result=R.clear(saved,id,g.score);earned=result.coins||0;bonus=result.gems||0;if(!wasCleared&&result.valid&&result.first)gownNew=Royal.gownsForTrial(id).filter(gown=>Royal.gownUnlocked(saved,gown));}
   else {
    const prev=saved.stars[id]||0,starCount=g.score>=g.cfg.goal*2?3:g.score>=g.cfg.goal*1.35?2:1;
    saved.stars[id]=Math.max(prev,starCount);

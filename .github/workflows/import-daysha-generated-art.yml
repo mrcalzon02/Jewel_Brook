@@ -23,6 +23,7 @@ jobs:
         run: |
           node --check web/royal-chronicle.js
           node tests/rupee-rush.test.js
+          node tests/royal-artwork-contract.test.js
       - name: Commit verified artwork and remove temporary import bundle
         run: |
           set -euo pipefail
