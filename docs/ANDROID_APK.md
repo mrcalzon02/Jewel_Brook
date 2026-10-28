@@ -2,7 +2,7 @@
 
 This project builds a directly installable, signed Android APK from the existing web/ game without touching Nut Buster, ReverieVR or Google Play upload keys.
 
-## One command in GitKraken PowerShell (C:\GITS\Rupee-rush)
+## One command from your Jewel_Brook checkout in GitKraken PowerShell
 
     git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\build-android-apk.ps1 }
 

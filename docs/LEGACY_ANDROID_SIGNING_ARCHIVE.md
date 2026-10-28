@@ -1,3 +1,5 @@
+> **Historical recovery archive only.** The active repository is `mrcalzon02/Jewel_Brook`; use `docs/GITHUB_ANDROID_RELEASES.md` and `scripts/provision-github-apk-signing.ps1` for current releases. Do not run the legacy signer workflow for new APKs.
+
 # Jewelbrook Android signing and encrypted backup
 
 Jewelbrook must use the already-established Nut Buster publisher certificate, pinned in config/nutbuster-publisher.sha256. It must have a different Android package ID, saves, and release channel. Sharing a signer does NOT make the games share data. Do not generate a replacement key.
@@ -10,7 +12,7 @@ Alias: nutbuster.
 
 ## Single-command Windows workflow (recommended)
 
-In GitKraken's embedded PowerShell, from C:\GITS\Rupee-rush, paste this one line:
+In GitKraken's embedded PowerShell, from a historical Rupee Rush checkout, paste this one line:
 
     git pull --ff-only; if ($LASTEXITCODE -eq 0) { .\scripts\setup-android-signing.ps1 }
 
@@ -46,7 +48,7 @@ An existing key is never overwritten. For Jewelbrook's own GitHub Actions secret
 
     .\scripts\provision-rupee-signing.ps1 -SetGitHubSecrets
 
-If any of the four signing secrets already exist, the script refuses to overwrite them. After verifying that Jewelbrook has not published a different signing identity, explicitly opt into re-provisioning with -SetGitHubSecrets -AllowExistingSecrets. Four PHONE_TEST_* secrets are sent over stdin to mrcalzon02/Rupee-rush only. No secrets are printed/committed. Names are read back, but GitHub does not disclose secret values. No workflow, APK or release is triggered.
+If any of the four signing secrets already exist, the script refuses to overwrite them. After verifying that Jewelbrook has not published a different signing identity, explicitly opt into re-provisioning with -SetGitHubSecrets -AllowExistingSecrets. Four PHONE_TEST_* secrets are sent over stdin to the historical repository address (now `mrcalzon02/Jewel_Brook`) only. No secrets are printed/committed. Names are read back, but GitHub does not disclose secret values. No workflow, APK or release is triggered.
 
 ## Encrypted backup of both original signing profiles
 

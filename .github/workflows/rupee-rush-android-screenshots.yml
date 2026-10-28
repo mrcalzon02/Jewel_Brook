@@ -1,7 +1,7 @@
-name: Jewelbrook Android gameplay screenshots
+name: Jewel Brook Android gameplay screenshots
 on:
   workflow_run:
-    workflows: ["Jewelbrook signed Android APK"]
+    workflows: ["Jewel Brook signed Android APK"]
     types: [completed]
   workflow_dispatch:
     inputs:
@@ -82,7 +82,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: RupeeRush-Android-Actual-Screenshots-${{ github.run_number }}-${{ github.run_attempt }}
+          name: JewelBrook-Android-Actual-Screenshots-${{ github.run_number }}-${{ github.run_attempt }}
           path: captures/
           retention-days: 30
           if-no-files-found: warn
@@ -92,7 +92,7 @@ jobs:
           TAG: ${{ steps.apk.outputs.tag }}
         run: |
           set -euo pipefail
-          for f in 01-RupeeRush-Home.png 02-RupeeRush-Mine-Tools.png 03-RupeeRush-Mine-Equipment.png 04-RupeeRush-Mine-Board.png 05-RupeeRush-Mine-After-Strike.png CAPTURE-EVIDENCE.json; do
+          for f in 01-JewelBrook-Home.png 02-JewelBrook-Mine-Tools.png 03-JewelBrook-Mine-Equipment.png 04-JewelBrook-Mine-Board.png 05-JewelBrook-Mine-After-Strike.png CAPTURE-EVIDENCE.json; do
             test -s "captures/$f"
           done
           gh release upload "$TAG" captures/*.png captures/CAPTURE-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --clobber

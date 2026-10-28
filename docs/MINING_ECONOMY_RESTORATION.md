@@ -1,7 +1,7 @@
 # Mining and collectible economy restoration
 
 Source: https://github.com/mrcalzon02/NUTBUSTER-R
-Destination: https://github.com/mrcalzon02/Rupee-rush
+Destination: https://github.com/mrcalzon02/Jewel_Brook
 
 ## Mining asset provenance
 The destination already held 40 pickaxe tier illustrations, 40 glove tier illustrations, and six extra collector variants; they had been committed, but were incompletely applied in the playable mine.

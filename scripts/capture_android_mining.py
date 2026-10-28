@@ -117,8 +117,8 @@ for scale in ["window_animation_scale", "transition_animation_scale", "animator_
     adb("shell", "settings", "put", "global", scale, "0")
 adb("install", "-r", str(apk), timeout=180)
 adb("shell", "am", "start", "-W", "-n", pkg + "/.MainActivity", timeout=90)
-wait_for("Jewelbrook", attempts=12)
-screenshot("01-RupeeRush-Home.png")
+wait_for("Jewel Brook", attempts=12)
+screenshot("01-JewelBrook-Home.png")
 
 # Tap the real application's Mine navigation control.
 try:
@@ -127,19 +127,19 @@ except AssertionError:
     # Bottom navigation: Mine is item 3 of seven, above system navigation.
     tap(171, 880)
 wait_for("Prism Vale Mines", attempts=10)
-screenshot("02-RupeeRush-Mine-Tools.png")
+screenshot("02-JewelBrook-Mine-Tools.png")
 
 # Capture the actual equipment screen, including imported pickaxe and glove art.
 tap_text("EQUIPMENT")
 wait_for("Pickaxe", attempts=7)
-screenshot("03-RupeeRush-Mine-Equipment.png")
+screenshot("03-JewelBrook-Mine-Equipment.png")
 
 # Return to live excavation and capture the actual rock tiles.
 tap_text("DIG", exact=True)
 wait_for("Prism Vale Mines", attempts=5)
 adb("shell", "input", "swipe", "230", "760", "230", "300", "540")
 time.sleep(2)
-screenshot("04-RupeeRush-Mine-Board.png")
+screenshot("04-JewelBrook-Mine-Board.png")
 
 # A clean deterministic initial site has a three-hit rock at column 4, row 1.
 # This is a real touch input, not an HTML screenshot or a painted concept.
@@ -154,7 +154,7 @@ for _ in range(4):
 if target is None:
     raise AssertionError("Three-hit mining tile was not exposed in Android UI")
 tap(target[0], target[1])
-screenshot("05-RupeeRush-Mine-After-Strike.png")
+screenshot("05-JewelBrook-Mine-After-Strike.png")
 
 # Preserve UI evidence for audit in addition to PNGs.
 evidence["android_sdk"] = adb("shell", "getprop", "ro.build.version.sdk").decode().strip()

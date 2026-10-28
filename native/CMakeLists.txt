@@ -156,6 +156,8 @@ add_library(rupee_mine_logic STATIC mine_economy.cpp)
 target_include_directories(rupee_mine_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(rupee_native_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 add_executable(RupeeRushNative main.cpp)
+# Preserve internal CMake target and native save identity; ship branded executable.
+set_target_properties(RupeeRushNative PROPERTIES OUTPUT_NAME "JewelBrookNative")
 target_link_libraries(RupeeRushNative PRIVATE rupee_native_logic rupee_mine_logic SDL3::SDL3)
 if(WIN32)
   enable_language(RC)
@@ -235,11 +237,11 @@ if(UNIX AND NOT APPLE)
   install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/generated/gems/emerald.png"
     DESTINATION "share/icons/hicolor/192x192/apps"
-    RENAME "rupee-rush.png")
+    RENAME "jewel-brook.png")
   install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/icons/rupee-rush.desktop"
-    DESTINATION "share/applications")
+    DESTINATION "share/applications" RENAME "jewel-brook.desktop")
   install(PROGRAMS "${CMAKE_CURRENT_SOURCE_DIR}/icons/rupee-rush-launch.sh"
-    DESTINATION ".")
+    DESTINATION "." RENAME "jewel-brook-launch.sh")
 endif()
 
 if(WIN32)

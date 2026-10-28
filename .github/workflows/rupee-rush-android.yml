@@ -1,4 +1,4 @@
-name: Jewelbrook signed Android APK
+name: Jewel Brook signed Android APK
 on:
   push:
     branches: [main]
@@ -32,6 +32,7 @@ jobs:
             tests/android-apk-contract.test.js \
             tests/fire-tablet-deployment.test.js \
             tests/android-update-contract.test.js \
+            tests/cross-platform-release-identity.test.js \
             tests/github-apk-release-contract.test.js \
             tests/rupee-rush.test.js \
             tests/mining-import-assets.test.js \
@@ -135,4 +136,4 @@ jobs:
         run: |
           set -euo pipefail
           tag="rupeerush-phone-test-$GITHUB_RUN_NUMBER-$GITHUB_RUN_ATTEMPT"
-          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Jewelbrook Android ${{ steps.release.outputs.version }}" --notes 'Native GitHub updater enabled in signed builds. Downloads and installations require player consent. To bootstrap on an older app, install this APK once over the currently installed same-signer package. Do not uninstall; retain local saves.'
+          gh release create "$tag" release/RupeeRush-Android.apk release/SHA256SUMS.txt release/BUILD-EVIDENCE.json --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --title "Jewel Brook: Heroes of Embryon Android ${{ steps.release.outputs.version }}" --notes 'Native GitHub updater enabled in signed builds. Downloads and installations require player consent. To bootstrap on an older app, install this APK once over the currently installed same-signer package. Do not uninstall; retain local saves.'

@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Name=Jewelbrook
+Name=Jewel Brook: Heroes of Embryon
 GenericName=Gem matching and mining game
-Comment=Native Jewelbrook desktop application
-Exec=RupeeRushNative
-Icon=rupee-rush
+Comment=Native Jewel Brook gemstone matching and mining game
+Exec=JewelBrookNative
+Icon=jewel-brook
 Terminal=false
 Categories=Game;LogicGame;

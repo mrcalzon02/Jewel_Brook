@@ -1,4 +1,4 @@
-name: Jewelbrook native Windows and Linux
+name: Jewel Brook: Heroes of Embryon — native Windows and Linux
 on:
   push:
     branches: [main]
@@ -40,7 +40,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: rupeerush-native-${{ github.run_id }}-${{ github.run_attempt }}
+  group: jewelbrook-native-${{ github.run_id }}-${{ github.run_attempt }}
   cancel-in-progress: false
 jobs:
   native:
@@ -50,10 +50,10 @@ jobs:
         include:
           - os: windows-latest
             target: Windows
-            archive: RupeeRush-Native-Windows-x64.zip
+            archive: JewelBrook-Native-Windows-x64.zip
           - os: ubuntu-latest
             target: Linux
-            archive: RupeeRush-Native-Linux-x64.tar.gz
+            archive: JewelBrook-Native-Linux-x64.tar.gz
     name: Build genuine native ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -90,7 +90,7 @@ jobs:
         run: ctest --test-dir build/native -C Release --output-on-failure
       - name: Stage executable, SDL3 and original approved PNG assets
         shell: bash
-        run: cmake --install build/native --config Release --prefix "$GITHUB_WORKSPACE/stage/RupeeRush"
+        run: cmake --install build/native --config Release --prefix "$GITHUB_WORKSPACE/stage/JewelBrook"
       - name: Headless functional launch of packaged Windows executable
         if: matrix.target == 'Windows'
         shell: pwsh
@@ -98,7 +98,7 @@ jobs:
           SDL_VIDEODRIVER: dummy
           SDL_RENDER_DRIVER: software
         run: |
-          $exe = Join-Path $env:GITHUB_WORKSPACE 'stage/RupeeRush/RupeeRushNative.exe'
+          $exe = Join-Path $env:GITHUB_WORKSPACE 'stage/JewelBrook/JewelBrookNative.exe'
           if (-not (Test-Path $exe)) { throw "Missing packaged native Windows executable" }
           # The target has WIN32_EXECUTABLE, so direct PowerShell invocation
           # leaves LASTEXITCODE unset. An explicit waited process gives a real code.
@@ -114,51 +114,51 @@ jobs:
           SDL_RENDER_DRIVER: software
         run: |
           set -euo pipefail
-          ls -lah stage/RupeeRush
-          test -x stage/RupeeRush/RupeeRushNative
-          test -s stage/RupeeRush/libSDL3.so.0
-          ldd stage/RupeeRush/RupeeRushNative | tee native-dependencies.txt
+          ls -lah stage/JewelBrook
+          test -x stage/JewelBrook/JewelBrookNative
+          test -s stage/JewelBrook/libSDL3.so.0
+          ldd stage/JewelBrook/JewelBrookNative | tee native-dependencies.txt
           ! grep -q 'not found' native-dependencies.txt
-          stage/RupeeRush/RupeeRushNative --smoke
+          stage/JewelBrook/JewelBrookNative --smoke
       - name: Ensure no browser or web package has been included
         shell: bash
         run: |
           set -euo pipefail
-          test -s stage/RupeeRush/data/art/embryon/generated/gems/ruby.png
-          test -s stage/RupeeRush/data/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png
-          test -s stage/RupeeRush/data/art/primary/powerups/hammer.png
-          test -s stage/RupeeRush/data/art/additions/economy/hourglass.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/row.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/column.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/blast.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/shuffle.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/gems/opal.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/gems/alexandrite.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/gems/jade.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/cross.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/color.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/drill.png
-          test -s stage/RupeeRush/data/art/embryon/runtime/boosters/unlock.png
-          test -s stage/RupeeRush/data/art/primary/blockers/chest.png
-          test -s stage/RupeeRush/data/art/primary/overlays/fire.png
-          test -s stage/RupeeRush/data/art/primary/overlays/sticky-butter.png
-          test -s stage/RupeeRush/data/art/primary/overlays/poison.png
-          test -s stage/RupeeRush/data/art/primary/overlays/lightning.png
-          test -s stage/RupeeRush/data/art/primary/overlays/frost.png
-          test -s stage/RupeeRush/data/art/primary/blockers/lock.png
-          test -z "$(find stage/RupeeRush -type f \( -name '*.html' -o -name '*.js' -o -name 'chrome.exe' -o -name 'libcef*' -o -name 'electron*' \) -print -quit)"
+          test -s stage/JewelBrook/data/art/embryon/generated/gems/ruby.png
+          test -s stage/JewelBrook/data/art/nutvale/mines/nutvale-mines-ore-atlas-approved.png
+          test -s stage/JewelBrook/data/art/primary/powerups/hammer.png
+          test -s stage/JewelBrook/data/art/additions/economy/hourglass.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/row.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/column.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/blast.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/shuffle.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/gems/opal.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/gems/alexandrite.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/gems/jade.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/cross.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/color.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/drill.png
+          test -s stage/JewelBrook/data/art/embryon/runtime/boosters/unlock.png
+          test -s stage/JewelBrook/data/art/primary/blockers/chest.png
+          test -s stage/JewelBrook/data/art/primary/overlays/fire.png
+          test -s stage/JewelBrook/data/art/primary/overlays/sticky-butter.png
+          test -s stage/JewelBrook/data/art/primary/overlays/poison.png
+          test -s stage/JewelBrook/data/art/primary/overlays/lightning.png
+          test -s stage/JewelBrook/data/art/primary/overlays/frost.png
+          test -s stage/JewelBrook/data/art/primary/blockers/lock.png
+          test -z "$(find stage/JewelBrook -type f \( -name '*.html' -o -name '*.js' -o -name 'chrome.exe' -o -name 'libcef*' -o -name 'electron*' \) -print -quit)"
       - name: Archive Windows application
         if: matrix.target == 'Windows'
         shell: pwsh
-        run: Compress-Archive -Path 'stage/RupeeRush' -DestinationPath '${{ matrix.archive }}'
+        run: Compress-Archive -Path 'stage/JewelBrook' -DestinationPath '${{ matrix.archive }}'
       - name: Archive Linux application
         if: matrix.target == 'Linux'
         shell: bash
-        run: tar -czf "${{ matrix.archive }}" -C stage RupeeRush
+        run: tar -czf "${{ matrix.archive }}" -C stage JewelBrook
       - name: Upload executable distribution
         uses: actions/upload-artifact@v4
         with:
-          name: rupeerush-native-${{ matrix.target }}
+          name: jewelbrook-native-${{ matrix.target }}
           path: ${{ matrix.archive }}
           retention-days: 30
           if-no-files-found: error
@@ -169,7 +169,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: rupeerush-native-*
+          pattern: jewelbrook-native-*
           path: release-native
           merge-multiple: true
       - name: Verify and publish prerelease
@@ -178,10 +178,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test -s release-native/RupeeRush-Native-Windows-x64.zip
-          test -s release-native/RupeeRush-Native-Linux-x64.tar.gz
+          test -s release-native/JewelBrook-Native-Windows-x64.zip
+          test -s release-native/JewelBrook-Native-Linux-x64.tar.gz
           (cd release-native && sha256sum *.zip *.tar.gz > SHA256SUMS.txt)
-          gh release create "rupeerush-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
+          gh release create "jewelbrook-native-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}" \
             release-native/* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
-            --prerelease --title "Jewelbrook Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
+            --prerelease --title "Jewel Brook Native Desktop Foundation ${GITHUB_RUN_NUMBER}" \
             --notes 'Experimental native C++/SDL3 desktop build. One hundred twenty-four Android-authored match-three stages with original lock art and Ice elemental, including Column Rocket and the delayed Fire elemental aura, collect-color goals, Shuffle unlock, opal, Water elemental and irregular masks, native drag swapping, ice objectives, Hammer/Extra Moves/Row Rocket starter inventory and source-approved icons, mine cart/refinery economy, and local native saves. Some native early booster actions are ported, but full campaign, all match-created specials, farming, cooking, music, shop and all other gameplay are NOT fully ported. No browser engine, HTML, JavaScript runtime, Electron or CEF is bundled. Windows binaries are not code-signed.'

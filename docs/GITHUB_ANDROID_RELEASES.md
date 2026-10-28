@@ -1,4 +1,4 @@
-# Jewelbrook — signed APKs built on GitHub
+# Jewel Brook: Heroes of Embryon — signed APKs built on GitHub
 
 Just like Nut Buster, Jewelbrook now builds Android APKs on GitHub Actions. You do not need Gradle, Android SDK, or Android Studio on your Windows PC.
 

@@ -1,6 +1,6 @@
 # Jewel Brook: Heroes of Embryon
 
-**Public game name:** Jewel Brook: Heroes of Embryon (short form: Jewel Brook). The authoritative repository and updater endpoints are `mrcalzon02/Jewel_Brook`. The installed Android package, signing identity, save keys, native executable and release asset filenames deliberately retain their established Rupee Rush identifiers for in-place update and save compatibility. Do not rename those internal identities as part of public branding.
+**Public game name:** Jewel Brook: Heroes of Embryon (short form: Jewel Brook). The authoritative repository and updater endpoints are `mrcalzon02/Jewel_Brook`. The installed Android package, signing identity, save keys, signed Android APK filename and release tags deliberately retain their established Rupee Rush identifiers for in-place update and save compatibility. New Windows/Linux distributions use branded Jewel Brook archive and executable names while retaining their original native save path. Do not rename those internal identities as part of public branding.
 
 **Deployment targets:** Android phones and Amazon Fire tablets use the existing signed APK. Windows/Linux use a separate **genuine native C++/SDL3 application**, with no packaged browser or JavaScript runtime. Native desktop gameplay parity is in progress. See [Deployment Targets](docs/DEPLOYMENT_TARGETS.md).
 

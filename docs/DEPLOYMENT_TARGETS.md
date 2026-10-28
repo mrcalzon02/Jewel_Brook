@@ -6,8 +6,8 @@
 | --- | --- | --- | --- |
 | Android phones | Existing WebView on Android | signed RupeeRush-Android.apk | existing release system |
 | Amazon Fire OS 7/8+ tablets | Existing Android WebView using the same APK | signed RupeeRush-Android.apk | API eligibility; physical Fire testing required |
-| Windows x64 | **Native C++/SDL3** | RupeeRush-Native-Windows-x64.zip containing .exe and SDL3 DLL | first native vertical slice only |
-| Linux x64 | **Native C++/SDL3** | RupeeRush-Native-Linux-x64.tar.gz containing ELF and SDL3 shared library | first native vertical slice only |
+| Windows x64 | **Native C++/SDL3** | JewelBrook-Native-Windows-x64.zip containing .exe and SDL3 DLL | first native vertical slice only |
+| Linux x64 | **Native C++/SDL3** | JewelBrook-Native-Linux-x64.tar.gz containing ELF and SDL3 shared library | first native vertical slice only |
 
 ## Desktop runtime rules
 
