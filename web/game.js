@@ -74,12 +74,40 @@ function manor(){
    '<section class="manor-room"><h3>Kitchen & Dining</h3><p>Use harvested produce in the existing cook-and-serve system.</p>'+button('manor-kitchen','ENTER KITCHEN','secondary')+'</section>'+
   '</div><p class="hint">Residence illustration is the existing unapproved level preview. Painted manor artwork is still pending; no replacement image has been assigned.</p></section>';
 }
+// Approved level marker sprites; presentation only, never changes progression IDs or save data.
+const MARKER_ROOT='art/embryon/markers/';
+const ELEMENT_MARKERS=Object.freeze({fire:'fire',magma:'fire',water:'water',earth:'earth',crystal:'earth',
+ wind:'wind',storm:'wind',lightning:'lightning',ice:'ice',frost:'ice',nature:'nature',
+ shadow:'shadow',poison:'shadow',arcane:'shadow',radiance:'radiance'});
+function markerArt(group,name){
+ return '<img class="level-marker-art" alt="" aria-hidden="true" draggable="false" loading="lazy" decoding="async" src="'+MARKER_ROOT+group+'/'+name+'.webp">';
+}
+function levelMarkerState(id){
+ if(id>saved.unlocked)return 'locked';
+ if(Number(saved.stars[id])>0)return 'cleared';
+ if(id===saved.unlocked)return 'active';
+ if(id%200===0)return 'boss';
+ if(id%20===0)return 'milestone';
+ if(id%15===0)return 'treasure';
+ if(id%12===0)return 'special';
+ return 'standard';
+}
+function chapterMarkerState(chapter){
+ if(saved.unlocked>chapter.end)return 'cleared';
+ return saved.unlocked>=chapter.start?'active':'locked';
+}
+function trialMarkerName(element){
+ const name=ELEMENT_MARKERS[element];
+ if(!name)throw new Error('Elemental marker not assigned for '+element);
+ return name;
+}
+
 function campaign(){
  const entered=Chapters.CHAPTERS.filter(c=>saved.unlocked>=c.start).length;
  return header('Embryon Adventure','Choose one of five underground chapters. Explore all 1,000 stages in order.')+
  '<div class="embryon-map" aria-label="Map of five Embryon chapter entrances">'+
  '<img class="embryon-overview-art" src="'+Chapters.MAP+'" alt="Cave network linking Goblin Caves, Troll Caverns, Sulfur Sumps, Mushroom Mire and Ghost Mines">'+
- Chapters.CHAPTERS.map(c=>'<button class="chapter-hotspot '+(saved.unlocked>=c.start?'open':'pending')+'" style="--x:'+c.x+'%;--y:'+c.y+'%" data-action="open-chapter" data-chapter="'+c.id+'" aria-label="Chapter '+c.id+': '+c.title+(saved.unlocked<c.start?' (stages locked)':'')+'"><span>'+c.id+'</span></button>').join('')+'</div>'+
+ Chapters.CHAPTERS.map(c=>'<button class="chapter-hotspot '+(saved.unlocked>=c.start?'open':'pending')+'" style="--x:'+c.x+'%;--y:'+c.y+'%" data-action="open-chapter" data-chapter="'+c.id+'" aria-label="Chapter '+c.id+': '+c.title+(saved.unlocked<c.start?' (stages locked)':'')+'">'+markerArt('general',chapterMarkerState(c))+'<span class="chapter-marker-number">'+c.id+'</span></button>').join('')+'</div>'+
  '<div class="chapter-cards">'+Chapters.CHAPTERS.map(c=>'<button class="chapter-card" data-action="open-chapter" data-chapter="'+c.id+'"><img alt="" src="'+c.art+'" loading="lazy"><span><b>'+c.id+'. '+c.title+'</b><small>Stages '+c.start+'–'+c.end+' · '+(saved.unlocked>=c.start?'Enter':'Preview — locked')+'</small></span></button>').join('')+'</div>'+
  '<p class="hint">'+entered+' of 5 chapters reached. You may preview later chapters; stages unlock sequentially.</p>'+
  '<section class="panel"><h2>The Royal Chronicle</h2><p>Live and work in Embryon as the story of Daysha and Rome unfolds. Original illustrations unlock as you progress.</p>'+button('go-chronicle','READ THE ROYAL CHRONICLE','secondary')+'</section>'+ '<section class="panel"><h2>Elemental Trials</h2><p>Bonus challenges unlock alongside your expedition.</p>'+button('go-trials','VIEW TRIALS')+'</section>';
@@ -91,7 +119,7 @@ function chapter(){
  return '<div class="chapter-banner" style="background-image:linear-gradient(90deg,#0b1239e6,#0b12394a),url(\''+c.art+'\')">'+
  '<h1>'+escape(c.title)+'</h1><p>Chapter '+c.id+' · '+escape(c.description)+'</p>'+button('go-campaign','← FIVE-CHAPTER MAP','quiet')+'</div>'+
  '<div class="panel campaign-bar">'+button('campaign-prev','← Previous','secondary',campaignPage===0?'disabled':'')+'<strong>'+from+'–'+to+' / '+c.end+'</strong>'+button('campaign-next','Next →','secondary',to===c.end?'disabled':'')+'</div>'+
- '<div class="level-grid">'+levels.map(n=>'<button class="level '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+(n>saved.unlocked?' locked':'')+'"><b>'+n+'</b><small>'+(saved.stars[n]?'★ '+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
+ '<div class="level-grid level-marker-grid">'+levels.map(n=>'<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+(n>saved.unlocked?' locked':'')+'">'+markerArt('general',levelMarkerState(n))+'<b class="level-marker-number">'+n+'</b><small>'+(saved.stars[n]?'★ '+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
 }
 
 function elementalGownCollection(){
@@ -128,7 +156,7 @@ function trials(){
  for(let n=T.FIRST;n<=T.LAST;n++){const spec=T.profile(n);if(T.available(saved,n))available.push(spec);else if(!T.done(saved,n))locked.push(spec);}
  const display=available.slice(0,24);
  return header('Elemental Trials','300 optional levels. Crystal powers fire only after the affected gem is actually destroyed.')+
- '<section class="panel"><p>Cleared '+R.summary(saved).completed+' / 300 trials</p><div class="level-grid">'+display.map(x=>'<button class="level unlocked" data-action="play-level" data-level="'+x.id+'"><b>'+x.name.split(' · ')[0]+'</b><small>Trial '+x.local+'</small></button>').join('')+'</div>'+(available.length>24?'<p>Complete available trials to reveal later encounters.</p>':'')+(!display.length?'<p>Progress through the main campaign to unlock your first trial.</p>':'')+'</section>';
+ '<section class="panel"><p>Cleared '+R.summary(saved).completed+' / 300 trials</p><div class="level-grid level-marker-grid elemental-marker-grid">'+display.map(x=>'<button class="level level-with-marker elemental-level '+(T.done(saved,x.id)?'cleared':'unlocked')+'" data-action="play-level" data-level="'+x.id+'" aria-label="'+escape(x.element)+' trial '+x.local+(T.done(saved,x.id)?' completed':'')+'">'+markerArt('elemental',trialMarkerName(x.element))+'<b class="level-marker-number">'+x.local+'</b><small>'+escape(x.element)+'</small></button>').join('')+'</div>'+(available.length>24?'<p>Complete available trials to reveal later encounters.</p>':'')+(!display.length?'<p>Progress through the main campaign to unlock your first trial.</p>':'')+'</section>';
 }
 function start(id){
  if(active)return message('Finish the current board first');

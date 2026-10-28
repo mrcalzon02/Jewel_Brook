@@ -379,3 +379,27 @@
 .royal-elemental-card strong{font-size:12px;color:#ffdfaa}
 .royal-elemental-card small{font-size:10px;color:#d4c4e0}
 .royal-elemental-locked{display:grid;place-items:center;aspect-ratio:3/4;border-radius:6px;color:#b3a2cb;background:#19162b;font-size:11px;font-weight:800;letter-spacing:.03em}
+
+/* Owner-approved Jewel Brook chapter, stage and elemental trial crests. */
+.chapter-hotspot{display:grid;place-items:center;border:0;background:transparent;box-shadow:none;isolation:isolate;border-radius:50%;padding:0;width:clamp(44px,6.4%,62px);height:auto;min-width:44px;min-height:44px;aspect-ratio:1;overflow:visible}
+.chapter-hotspot.pending{border:0;background:transparent;opacity:.82}
+.chapter-hotspot .level-marker-art{width:100%;height:100%;display:block;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 5px #070822cc)}
+.chapter-marker-number{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:11px;font-weight:900;color:#ffefc8;background:#14142bdc;border:1px solid #daba7b9c;border-radius:7px;min-width:17px;text-align:center;padding:0 3px;pointer-events:none}
+.level-marker-grid .level-with-marker{position:relative;min-width:0;min-height:76px;padding:5px 1px 3px;gap:0;background:#231c36;border:1px solid #75649c;border-radius:9px}
+.level-marker-grid .level-with-marker.unlocked{background:#302549}
+.level-marker-grid .level-with-marker.cleared{background:#263947;border-color:#ddbd7a}
+.level-marker-grid .level-marker-art{width:clamp(35px,5vw,53px);height:clamp(35px,5vw,53px);max-width:100%;object-fit:contain;pointer-events:none}
+.level-marker-grid .level-marker-number{display:block;margin-top:-7px;z-index:1;border:1px solid #a98f6380;border-radius:6px;padding:0 4px;line-height:17px;font-size:12px;font-variant-numeric:tabular-nums;color:#ffecbb;background:#110d24e8;text-shadow:0 1px 2px #000}
+.level-marker-grid .level-with-marker small{display:block;font-size:10px;min-height:12px;color:#ead7ff;text-align:center;text-transform:capitalize}
+.level-marker-grid .level-with-marker:disabled{opacity:.54}
+.level-marker-grid .level-with-marker:hover:not(:disabled){filter:brightness(1.15)}
+.elemental-marker-grid .elemental-level{min-height:87px}
+.elemental-marker-grid .elemental-level .level-marker-art{width:clamp(41px,6.1vw,60px);height:clamp(41px,6.1vw,60px)}
+@media(max-width:620px){
+ .chapter-hotspot{width:44px;height:44px}
+ .level-marker-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+ .level-marker-grid .level-with-marker{min-height:73px}
+ .level-marker-grid .level-marker-art{width:42px;height:42px}
+ .elemental-marker-grid .elemental-level{min-height:80px}
+ .elemental-marker-grid .elemental-level .level-marker-art{width:44px;height:44px}
+}
