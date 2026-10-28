@@ -1,6 +1,6 @@
 {
   "approved": true,
-  "approvedFor": "Jewelbrook: Heroes of Embryon master visual style and default Daysha key-art costume",
+  "approvedFor": "Jewel Brook: Heroes of Embryon — Daysha canonical identity, default costume and key-art reference",
   "file": "crystal_princess_of_the_sky_palace.png",
   "width": 1122,
   "height": 1402,
@@ -14,5 +14,12 @@
   "supersedes": "Any blonde/green-eyed generic-elf mockups and green tunic interpretations",
   "productionAssetInRepo": true,
   "readme": "docs/ART_STYLE_MASTER.md",
-  "repoPath": "web/art/embryon/characters/daysha-approved-key-art.png"
+  "repoPath": "web/art/embryon/characters/daysha-approved-key-art.png",
+  "canonicalCharacter": "Daysha",
+  "canonStatus": "OWNER-APPROVED DEFINITIVE CHARACTER INTERPRETATION",
+  "canonReaffirmedOn": "2026-10-27",
+  "reaffirmation": "Owner explicitly designated this exact image as the canonical Daysha interpretation for Jewel Brook (formerly Rupee Rush). Uploaded duplicate filename crystal_princess_of_the_sky_palace(1).png matches existing source SHA-256 and Git blob.",
+  "gitBlobSha": "047531052aff1dde21126280f52f46dd29e60e61",
+  "earProportions": "moderately elongated elegant high-elf pointed ears: clearly distinguishable, not cropped, not oversized",
+  "productionPolicy": "Preserve the original image and Daysha facial identity across key art, splash screens, portraits and menus; alternate outfits require separate approval."
 }
