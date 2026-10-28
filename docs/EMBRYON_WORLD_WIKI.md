@@ -75,3 +75,27 @@ this export to prevent stale or silently incorrect dates.
 ### Month-based level map
 
 Chapters retain their original 200-level boundaries, progression, save identities and approved level crests. Each chapter is browsed by the **actual Elaranthi month**, subdivided into four labeled seven-day weeks. The opening Thawcall includes Levels **1–27** because the wedding is Day 0; Seedwake begins with Level **28**. A chapter boundary may fall within a month; the same month then continues inside the next chapter, without repeating or changing any level.
+
+### Source-backed seasonal calendar and festival index
+
+The game includes an offline copy of the authoritative [Home Brew Elaranth event index](https://github.com/mrcalzon02/HB-TTRPG-tools/blob/main/data/elaranth-calendar-events.csv), pinned to source blob `18b576aa0ca3b0b7176c603b5fdf398c435a6dbc`. The local source snapshot is [`ELARANTH_CANONICAL_EVENT_SOURCE.csv`](ELARANTH_CANONICAL_EVENT_SOURCE.csv) and the browser loads `web/elaranth-observances.js`. **All 83 entries** are represented: 52 named civic/seasonal weeks, 13 annual festival windows, 13 exact full-moon dates, and 5 separately identified *working* royal-history anchors.
+
+Each month’s four named weeks now appear in the chapter-level map and in the offline world guide. A festival is displayed as a **week-long possible window** rather than on a fabricated exact day. By contrast, the **Bright Sunder full moon is exactly Hearthday, day 14 of each 28-day month**. Nine festival descriptions have week-three or moon-related language conflicting with that precise lunar day; they are marked as unresolved, not shifted.
+
+| Elaranthi month | Annual festival | Recorded window (days of month) | Precision |
+|---|---|---|---|
+| Thawcall | Ditchfire Supper | 1–7 | Day within week unknown |
+| Seedwake | Seed Vault Opening | 1–7 | Day within week unknown |
+| Leafrise | First Cart | 8–14 | Day within week unknown |
+| Bloomtide | Flowered Sunder | 15–21 | Full-moon wording awaiting reconciliation |
+| Sunsreach | Spear-Moon Muster | 15–21 | Full-moon wording awaiting reconciliation |
+| Haycrest | Miners' Fresh Table | 8–14 | Day within week unknown |
+| Deepdelve | Hammer Sunder | 15–21 | Full-moon wording awaiting reconciliation |
+| Goldgrain | Golden Sunder | 15–21 | Full-moon wording awaiting reconciliation |
+| Amberfall | Amber Sunder | 15–21 | Full-moon wording awaiting reconciliation |
+| Casktide | Casked Moon Feast | 15–21 | Full-moon wording awaiting reconciliation |
+| Frostgate | White Sunder | 15–21 | Full-moon wording awaiting reconciliation |
+| Longnight | Black-Silver Sunder | 15–21 | Full-moon wording awaiting reconciliation |
+| Hearthwane | Thirteenth Sunder | 15–21 | Full-moon wording awaiting reconciliation |
+
+These entries are informational world lore, **not automatic gameplay rewards, unapproved new characters, or changes to farming/mining economies**. The working royal dates in the imported source are not independent proof of Daysha’s wedding or Estelle’s exact birth date. Chronicle episodes continue to unlock only when their assigned shared campaign day is cleared. Festival and lunar records do not add extra days to the thousand-stage timeline.
