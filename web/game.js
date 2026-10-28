@@ -2,12 +2,13 @@
 (function(){'use strict';
 const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
- Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownCharacter=window.RupeeTownCharacter,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen,Royal=window.JewelbrookRoyalChronicle;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook,Royal].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
+ Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownCharacter=window.RupeeTownCharacter,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen,Royal=window.JewelbrookRoyalChronicle,Guide=window.JewelBrookWorldGuide;
+if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook,Royal,Guide].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
 let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null,storySelected=null;
+let guideTab='calendar',guideDay=Math.min(1000,Math.max(1,saved.unlocked));
 let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmCategory='all',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems'),styles=document.getElementById('style-shards');
 if(!root)throw Error('Missing #screen');
@@ -52,8 +53,8 @@ function home(){
  '<div class="home-kingdom-content"><h1 class="home-brand"><img class="home-title-banner" src="art/embryon/branding/jewelbrook/banner-wide.webp" alt="Jewel Brook: Heroes of Embryon" width="939" height="203" decoding="async"></h1>'+
  '<p class="home-tagline">Gather gemstones, uncover lost treasures, and match your way through a thousand stages.</p>'+
  townAvatarPanel()+
- '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+button('go-manor','ENTER RESIDENCE','secondary')+button('go-chronicle','ROYAL CHRONICLE','secondary')+'</div></div></section>'+
- '<div class="panels"><section class="panel"><h2>Current expedition</h2><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
+ '<div class="home-actions">'+button('play-next',icon('crystal')+' PLAY LEVEL '+saved.unlocked,'primary')+button('go-mine',icon('pickaxe')+' ENTER THE MINES','secondary')+button('go-farm','VISIT THE GARDEN','secondary')+button('go-manor','ENTER RESIDENCE','secondary')+button('go-chronicle','ROYAL CHRONICLE','secondary')+button('go-guide','WORLD GUIDE & CALENDAR','secondary')+'</div></div></section>'+
+ '<div class="panels"><section class="panel"><h2>Current expedition</h2><p class="guide-date-inline">'+escape(Guide.mainDay(Math.min(1000,saved.unlocked)).label)+'</p><p><b>Stage '+saved.unlocked+'</b> · '+escape(E.makeLevel(saved.unlocked).stageTitle)+'</p><p>'+Object.keys(saved.stars).filter(n=>Number(n)<=1000&&saved.stars[n]>0).length+' stages cleared</p>'+button('go-campaign','CHOOSE A LEVEL')+'</section>'+
  '<section class="panel"><h2>Prism Vale Mines</h2><p>12 daily starter strikes, expandable equipment, refinery, and resource exchanges.</p>'+button('go-mine','MINE FOR SUPPLIES')+'</section>'+ '<section class="panel"><h2>Garden &amp; Farm</h2><p>Plant seeds, harvest crops, expand the homestead, and use magical farming supplies.</p>'+button('go-farm','OPEN GARDEN')+'</section></div>'+townHousePanel(Garden.summary(saved));
 }
 function manor(){
@@ -104,13 +105,13 @@ function trialMarkerName(element){
 
 function campaign(){
  const entered=Chapters.CHAPTERS.filter(c=>saved.unlocked>=c.start).length;
- return header('Embryon Adventure','Choose one of five underground chapters. Explore all 1,000 stages in order.')+
+ return header('Embryon Adventure','Five underground chapters · 1,000 stages, each on one fixed campaign day.')+
  '<div class="embryon-map" aria-label="Map of five Embryon chapter entrances">'+
  '<img class="embryon-overview-art" src="'+Chapters.MAP+'" alt="Cave network linking Goblin Caves, Troll Caverns, Sulfur Sumps, Mushroom Mire and Ghost Mines">'+
  Chapters.CHAPTERS.map(c=>'<button class="chapter-hotspot '+(saved.unlocked>=c.start?'open':'pending')+'" style="--x:'+c.x+'%;--y:'+c.y+'%" data-action="open-chapter" data-chapter="'+c.id+'" aria-label="Chapter '+c.id+': '+c.title+(saved.unlocked<c.start?' (stages locked)':'')+'">'+markerArt('general',chapterMarkerState(c))+'<span class="chapter-marker-number">'+c.id+'</span></button>').join('')+'</div>'+
  '<div class="chapter-cards">'+Chapters.CHAPTERS.map(c=>'<button class="chapter-card" data-action="open-chapter" data-chapter="'+c.id+'"><img alt="" src="'+c.art+'" loading="lazy"><span><b>'+c.id+'. '+c.title+'</b><small>Stages '+c.start+'–'+c.end+' · '+(saved.unlocked>=c.start?'Enter':'Preview — locked')+'</small></span></button>').join('')+'</div>'+
  '<p class="hint">'+entered+' of 5 chapters reached. You may preview later chapters; stages unlock sequentially.</p>'+
- '<section class="panel"><h2>The Royal Chronicle</h2><p>Live and work in Embryon as the story of Daysha and Rome unfolds. Original illustrations unlock as you progress.</p>'+button('go-chronicle','READ THE ROYAL CHRONICLE','secondary')+'</section>'+ '<section class="panel"><h2>Elemental Trials</h2><p>Bonus challenges unlock alongside your expedition.</p>'+button('go-trials','VIEW TRIALS')+'</section>';
+ '<section class="panel"><h2>The Royal Chronicle</h2><p>Live and work in Embryon as the story of Daysha and Rome unfolds. Original illustrations unlock as you progress.</p>'+button('go-chronicle','READ THE ROYAL CHRONICLE','secondary')+'</section>'+ '<section class="panel"><h2>Elemental Trials</h2><p>Bonus challenges unlock alongside your expedition.</p>'+button('go-trials','VIEW TRIALS')+'</section>'+ '<section class="panel"><h2>Calendar & World Wiki</h2><p>Explore the story day, gemstones, harvests, recipes, tools and royal history.</p>'+button('go-guide','OPEN THE FIELD GUIDE','secondary')+'</section>';
 }
 function chapter(){
  const c=Chapters.byId(chapterId)||Chapters.CHAPTERS[0];
@@ -119,7 +120,7 @@ function chapter(){
  return '<div class="chapter-banner" style="background-image:linear-gradient(90deg,#0b1239e6,#0b12394a),url(\''+c.art+'\')">'+
  '<h1>'+escape(c.title)+'</h1><p>Chapter '+c.id+' · '+escape(c.description)+'</p>'+button('go-campaign','← FIVE-CHAPTER MAP','quiet')+'</div>'+
  '<div class="panel campaign-bar">'+button('campaign-prev','← Previous','secondary',campaignPage===0?'disabled':'')+'<strong>'+from+'–'+to+' / '+c.end+'</strong>'+button('campaign-next','Next →','secondary',to===c.end?'disabled':'')+'</div>'+
- '<div class="level-grid level-marker-grid">'+levels.map(n=>'<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+(n>saved.unlocked?' locked':'')+'">'+markerArt('general',levelMarkerState(n))+'<b class="level-marker-number">'+n+'</b><small>'+(saved.stars[n]?'★ '+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
+ '<p class="guide-date-inline">Timeline: Campaign Day '+from+' through Campaign Day '+to+'</p>'+button('go-guide','VIEW CALENDAR & WORLD WIKI','secondary')+'<div class="level-grid level-marker-grid">'+levels.map(n=>'<button class="level level-with-marker '+(saved.stars[n]?'cleared':n<=saved.unlocked?'unlocked':'locked')+'" data-action="play-level" data-level="'+n+'" '+(n>saved.unlocked?'disabled':'')+' aria-label="Level '+n+', Campaign Day '+n+(n>saved.unlocked?' locked':'')+'">'+markerArt('general',levelMarkerState(n))+'<b class="level-marker-number">'+n+'</b><small>Day '+n+(saved.stars[n]?' · ★'+saved.stars[n]:'')+'</small></button>').join('')+'</div>';
 }
 
 function elementalGownCollection(){
@@ -156,7 +157,25 @@ function trials(){
  for(let n=T.FIRST;n<=T.LAST;n++){const spec=T.profile(n);if(T.available(saved,n))available.push(spec);else if(!T.done(saved,n))locked.push(spec);}
  const display=available.slice(0,24);
  return header('Elemental Trials','300 optional levels. Crystal powers fire only after the affected gem is actually destroyed.')+
- '<section class="panel"><p>Cleared '+R.summary(saved).completed+' / 300 trials</p><div class="level-grid level-marker-grid elemental-marker-grid">'+display.map(x=>'<button class="level level-with-marker elemental-level '+(T.done(saved,x.id)?'cleared':'unlocked')+'" data-action="play-level" data-level="'+x.id+'" aria-label="'+escape(x.element)+' trial '+x.local+(T.done(saved,x.id)?' completed':'')+'">'+markerArt('elemental',trialMarkerName(x.element))+'<b class="level-marker-number">'+x.local+'</b><small>'+escape(x.element)+'</small></button>').join('')+'</div>'+(available.length>24?'<p>Complete available trials to reveal later encounters.</p>':'')+(!display.length?'<p>Progress through the main campaign to unlock your first trial.</p>':'')+'</section>';
+ '<section class="panel"><p>Trials are optional: their unlock stage is not a separate historical day.</p>'+button('go-guide','CALENDAR EXPLANATION','secondary')+'<p>Cleared '+R.summary(saved).completed+' / 300 trials</p><div class="level-grid level-marker-grid elemental-marker-grid">'+display.map(x=>'<button class="level level-with-marker elemental-level '+(T.done(saved,x.id)?'cleared':'unlocked')+'" data-action="play-level" data-level="'+x.id+'" aria-label="'+escape(x.element)+' trial '+x.local+(T.done(saved,x.id)?' completed':'')+'">'+markerArt('elemental',trialMarkerName(x.element))+'<b class="level-marker-number">'+x.local+'</b><small>'+escape(x.element)+'</small></button>').join('')+'</div>'+(available.length>24?'<p>Complete available trials to reveal later encounters.</p>':'')+(!display.length?'<p>Progress through the main campaign to unlock your first trial.</p>':'')+'</section>';
+}
+function worldGuide(){
+ const tabs=Guide.TABS.map(x=>'<button class="guide-tab '+(x.id===guideTab?'selected':'')+'" data-action="guide-tab" data-tab="'+escape(x.id)+'" aria-pressed="'+(x.id===guideTab)+'">'+escape(x.title)+'</button>').join('');
+ const catalog=Guide.catalog(guideTab,{E,Garden,Cook,G,Royal,Chapters},saved);
+ const date=Guide.mainDay(guideDay);
+ const calendar=guideTab==='calendar'?
+  '<section class="panel guide-day-browser"><h2>'+escape(date.label)+'</h2><p>Expedition stage '+guideDay+' · '+escape(Chapters.forLevel(guideDay)?.title||'Embryon')+'</p>'+
+  '<p>Elaranth uses a thirteen-month calendar. The historical month and year for this day remain unassigned until the authoritative starting date, month lengths, and year rules are confirmed.</p>'+
+  '<div class="guide-controls">'+button('guide-prev','← PREVIOUS DAY','secondary',guideDay===1?'disabled':'')+button('guide-today','CURRENT STAGE','secondary')+button('guide-next','NEXT DAY →','secondary',guideDay===1000?'disabled':'')+'</div>'+
+  '<p>Each main level corresponds to one distinct campaign-day ordinal. Replaying levels does not advance the date. Elemental trials reference unlock milestones but have no fixed story day.</p></section>':
+  '<div class="guide-entry-list">'+(catalog.length?catalog.map(entry=>
+   '<article class="guide-entry"><strong>'+escape(entry.name)+'</strong><p>'+escape(entry.detail)+'</p></article>').join(''):
+   '<p>Additional royal episodes unlock by completing the existing campaign, not by inventing dates.</p>')+'</div>';
+ return header('Embryon Field Guide','An offline reference to our shared world, campaign calendar, gemstones, crops, meals, tools and royal stories.')+
+ '<div class="guide-tab-bar" role="group" aria-label="Reference categories">'+tabs+'</div>'+calendar+
+ '<section class="panel guide-online"><h2>Detailed Wiki</h2><p>This reference is included offline. The public GitHub field guide links to the source catalogs and continuity decisions.</p>'+
+ '<a class="guide-wiki-link" href="'+Guide.WIKI_URL+'" target="_blank" rel="noopener noreferrer">OPEN WORLD WIKI ONLINE</a>'+
+ '<p><small>Story-reveal levels are not historical event dates; Estelle-related childhood stories remain future chronology.</small></p></section>';
 }
 function start(id){
  if(active)return message('Finish the current board first');
@@ -477,7 +496,7 @@ function render(){
  document.getElementById('app')?.classList?.toggle?.('playing',page==='game');
  root.classList?.toggle?.('game-active',page==='game');
  root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
-  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='manor'?manor():page==='chronicle'?chronicle():page==='rewards'?rewards():settings());
+  page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='manor'?manor():page==='chronicle'?chronicle():page==='guide'?worldGuide():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
  if(page==='settings')window.RupeeUpdates?.syncStatus();
  const navArt={
@@ -495,6 +514,7 @@ function finishMining(result,success){if(result?.valid){const reward=/reward|ref
 function handle(b){
  const a=b.dataset.action,info=b.dataset,now=Date.now();
  if(info.nav){nav(info.nav);return;}
+ if(a==='go-guide'){guideDay=Number.isInteger(Number(info.level))&&Number(info.level)>=1&&Number(info.level)<=1000?Number(info.level):Math.min(1000,Math.max(1,saved.unlocked));nav('guide');return;}if(a==='guide-tab'){if(Guide.TABS.some(t=>t.id===info.tab)){guideTab=info.tab;render();}return;}if(a==='guide-prev'){guideDay=Math.max(1,guideDay-1);render();return;}if(a==='guide-next'){guideDay=Math.min(1000,guideDay+1);render();return;}if(a==='guide-today'){guideDay=Math.min(1000,Math.max(1,saved.unlocked));render();return;}
  if(a==='go-farm'){nav('farm');return;}if(a==='go-manor'){nav('manor');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}if(a==='go-chronicle'){storySelected=outcome?.storyNew?.[0]?.id||null;nav('chronicle');return;}if(a==='story-open'){const story=Royal.EVENTS.find(e=>e.id===info.story);if(story&&Royal.unlocked(saved,story)){storySelected=story.id;render();}return;}
  if(a==='check-updates'){window.RupeeUpdates?.check();return;}
  if(a==='view-releases'){window.RupeeUpdates?.openReleases();return;}

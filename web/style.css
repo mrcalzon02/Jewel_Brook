@@ -403,3 +403,21 @@
  .elemental-marker-grid .elemental-level{min-height:80px}
  .elemental-marker-grid .elemental-level .level-marker-art{width:44px;height:44px}
 }
+
+/* Compact source-backed offline Embryon reference. */
+.guide-date-inline{font-size:12px;font-weight:800;color:#ffe5a9;margin:5px 0}
+.guide-tab-bar{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.guide-tab{border:1px solid #9277af;border-radius:9px;background:#252040;color:#ebdeff;padding:9px 10px;font-weight:750;font-size:12px;min-height:44px}
+.guide-tab.selected{background:#413265;color:#ffebbd;border-color:#f3cf80}
+.guide-entry-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin:0 0 12px}
+.guide-entry{padding:10px;border-radius:10px;background:#29213e;border:1px solid #73608d;min-width:0}
+.guide-entry strong{color:#ffe4ad;font-size:14px}
+.guide-entry p{margin-top:5px;font-size:12px;color:#e3d7f2;line-height:1.4}
+.guide-day-browser{display:grid;gap:10px;margin-bottom:12px}
+.guide-day-browser p{margin:0}
+.guide-controls{display:flex;flex-wrap:wrap;gap:5px}
+.guide-controls .btn{flex:1;min-width:120px}
+.guide-online{display:grid;gap:7px}
+.guide-wiki-link{display:inline-flex;width:fit-content;align-items:center;min-height:44px;padding:9px 12px;border-radius:9px;border:1px solid #bda16d;background:#33284f;color:#ffebba;font-weight:800;text-decoration:none}
+.guide-wiki-link:focus-visible{outline:3px solid #ffe08a;outline-offset:2px}
+@media(max-width:620px){.guide-entry-list{grid-template-columns:1fr}.guide-tab{flex:1;min-width:calc(33% - 5px)}.guide-controls .btn{font-size:11px}}

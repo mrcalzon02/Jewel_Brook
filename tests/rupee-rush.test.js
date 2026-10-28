@@ -16,6 +16,7 @@ const Art=require('../web/art.js');
 const Shared=require('../web/shared-art.js');
 const Chapters=require('../web/embryon-chapters.js');
 const Royal=require('../web/royal-chronicle.js');
+const Guide=require('../web/embryon-world-guide.js');
 const Audio=require('../web/embryon-audio.js');
 const Music=require('../web/embryon-music.js');
 const Motion=require('../web/board-motion.js');
@@ -34,6 +35,13 @@ assert.equal(E.TYPES.length,19);
 assert.deepEqual(E.TYPES.slice(0,7),['ruby','sapphire','emerald','topaz','amethyst','citrine','diamond']);
 assert.equal(E.BOOSTERS.length,16);
 assert.equal(Trials.LAST-Trials.FIRST+1,300);
+assert.equal(Guide.CALENDAR.months,13);
+assert.equal(Guide.mainDay(1).day,1);
+assert.equal(Guide.mainDay(1000).day,1000);
+assert.equal(Guide.mainDay(1001),null);
+assert.equal(Guide.trialDay(1001,Trials).earliestMainDay,Trials.profile(1001).requiredMainLevel);
+assert.equal(Guide.mainDay(20).calendarDate,null);
+
 for(const n of [1,2,15,35,77,125,250,500,750,1000,1001,1150,1300]){
  const a=E.create(n,n*7919),b=E.create(n,n*7919);
  assert.deepEqual(E.snapshot(a),E.snapshot(b),'determinism level '+n);
@@ -76,7 +84,7 @@ const doc={
 };
 const gameWindow={RupeeEngine:E,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
- RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,JewelbrookRoyalChronicle:Royal,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownCharacter:require('../web/town-character.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeTownYards:require('../web/town-yards.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking,MineOreAtlas:require('../web/mine-ore-atlas.js')};
+ RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,JewelbrookRoyalChronicle:Royal,JewelBrookWorldGuide:Guide,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownCharacter:require('../web/town-character.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeTownYards:require('../web/town-yards.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking,MineOreAtlas:require('../web/mine-ore-atlas.js')};
 const ctx={window:gameWindow,document:doc,localStorage:{
  getItem:k=>store[k]||null,setItem:(k,v)=>{store[k]=v},removeItem:k=>{delete store[k]}
  },setTimeout:()=>1,clearTimeout:()=>{},console};
@@ -84,6 +92,7 @@ vm.runInNewContext(fs.readFileSync(path.join(root,'game.js'),'utf8'),ctx,{filena
 assert.match(views.screen.innerHTML,/data-action="play-next"/,'Play action remains available');
 assert.match(views.screen.innerHTML,/data-action="go-mine"/,'Mining action remains available from home');
 assert.match(views.screen.innerHTML,/data-action="go-farm"/,'Farming action available from home');
+assert.match(views.screen.innerHTML,/data-action="go-guide"/,'Offline world and calendar guide available from home');
 const HomeAvatar=require('../web/town-character.js').fromSave(gameWindow.RupeeRushDebug.getSave());
 assert.equal(HomeAvatar.character,'Daysha');
 assert.match(HomeAvatar.image,/art\/embryon\/town\/avatars\/daysha_lv_01\.png/);
@@ -93,6 +102,16 @@ assert.doesNotMatch(views.screen.innerHTML,/class="profile-outfit"/,'No tiny out
 
 function click(action,rest={}){assert.equal(typeof handler,'function');handler({target:{closest:()=>({dataset:{action,...rest},disabled:false})}});}
 function navigate(nav){click('',{nav});}
+click('go-guide');
+assert.equal(gameWindow.RupeeRushDebug.getPage(),'guide');
+assert.match(views.screen.innerHTML,/Campaign Day 1/);
+click('guide-next');
+assert.match(views.screen.innerHTML,/Campaign Day 2/);
+click('guide-tab',{tab:'dishes'});
+assert.match(views.screen.innerHTML,/Hawseed Garden Salad/);
+click('guide-tab',{tab:'gems'});
+assert.match(views.screen.innerHTML,/Sapphire/);
+
 assert.equal(Royal.EVENTS.length,19,'The source royal chronicle is registered');
 assert.equal(Royal.ART.length,13,'The previous approved royal gallery remains unchanged');
 assert.equal(Royal.GOWNS.length,10,'All ten source-verified generated Daysha elemental dresses are cataloged');
