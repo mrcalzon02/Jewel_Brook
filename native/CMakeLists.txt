@@ -137,6 +137,20 @@ if(NOT JADE_RESULT EQUAL 0)
   message(FATAL_ERROR "Cannot convert source Jade gem artwork")
 endif()
 
+# Convert only the approved Jewel Brook title and loading art for SDL3's PNG loader.
+# The source WebP remains immutable; no browser engine ships with desktop.
+foreach(JEWELBROOK_ART IN ITEMS banner-wide loading-wide)
+  execute_process(
+    COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/tools/convert_row_booster.py"
+      "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/branding/jewelbrook/${JEWELBROOK_ART}.webp"
+      "${CMAKE_BINARY_DIR}/jewelbrook-${JEWELBROOK_ART}.png"
+    RESULT_VARIABLE JEWELBROOK_CONVERT_STATUS
+  )
+  if(NOT JEWELBROOK_CONVERT_STATUS EQUAL 0)
+    message(FATAL_ERROR "Cannot prepare approved Jewel Brook splash: ${JEWELBROOK_ART}")
+  endif()
+endforeach()
+
 add_library(rupee_native_logic STATIC game_logic.cpp)
 add_library(rupee_mine_logic STATIC mine_economy.cpp)
 target_include_directories(rupee_mine_logic PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -234,6 +248,11 @@ else()
   # Keep the ELF SONAME filename in the archive; the loader searches for libSDL3.so.0.
   install(FILES "$<TARGET_FILE:SDL3-shared>" DESTINATION "." RENAME "libSDL3.so.0")
 endif()
+install(FILES
+  "${CMAKE_BINARY_DIR}/jewelbrook-banner-wide.png"
+  "${CMAKE_BINARY_DIR}/jewelbrook-loading-wide.png"
+  DESTINATION data/art/embryon/branding/jewelbrook
+)
 set(SOURCE_GEMS "${CMAKE_CURRENT_SOURCE_DIR}/../web/art/embryon/generated/gems")
 install(FILES
   "${SOURCE_GEMS}/ruby.png"

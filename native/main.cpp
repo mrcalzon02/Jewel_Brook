@@ -159,6 +159,8 @@ struct Art {
     SDL_Texture* drill=nullptr;
     SDL_Texture* unlock=nullptr;
     SDL_Texture* shuffle=nullptr;
+    SDL_Texture* titleBanner=nullptr;
+    SDL_Texture* loadingSplash=nullptr;
     bool load(SDL_Renderer* r,const fs::path& root){
         static constexpr std::array<const char*,5> names={"ruby","sapphire","emerald","topaz","amethyst"};
         for(int i=0;i<5;++i)gem[i]=png(r,root/"art/embryon/generated/gems"/(std::string(names[i])+".png"));
@@ -186,6 +188,8 @@ struct Art {
         drill=png(r,root/"art/embryon/runtime/boosters/drill.png");
         unlock=png(r,root/"art/embryon/runtime/boosters/unlock.png");
         shuffle=png(r,root/"art/embryon/runtime/boosters/shuffle.png");
+        titleBanner=png(r,root/"art/embryon/branding/jewelbrook/jewelbrook-banner-wide.png");
+        loadingSplash=png(r,root/"art/embryon/branding/jewelbrook/jewelbrook-loading-wide.png");
         for(int i=0;i<40;++i) {
             pick[i]=png(r,root/rupee::PickaxeArt[i]);
             glove[i]=png(r,root/rupee::GloveArt[i]);
@@ -194,7 +198,7 @@ struct Art {
             return std::all_of(list.begin(),list.end(),[](SDL_Texture* t){return t!=nullptr;});
         };
         return std::all_of(gem.begin(),gem.begin()+5,[](SDL_Texture* t){return t!=nullptr;})
-               &&gem[11]&&gem[18]&&gem[15]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&chestSprite&&frostSprite&&fireOverlay&&stickyOverlay&&poisonOverlay&&lightningOverlay&&hammer&&extra&&rowRocket&&columnRocket&&blast&&cross&&color&&drill&&unlock&&shuffle;
+               &&gem[11]&&gem[18]&&gem[15]&&ready(pick)&&ready(glove)&&ore&&ice1&&ice2&&lockSprite&&chestSprite&&frostSprite&&fireOverlay&&stickyOverlay&&poisonOverlay&&lightningOverlay&&hammer&&extra&&rowRocket&&columnRocket&&blast&&cross&&color&&drill&&unlock&&shuffle&&titleBanner&&loadingSplash;
     }
     void release(){
         for(auto* t:gem)if(t)SDL_DestroyTexture(t);
@@ -220,6 +224,8 @@ struct Art {
         if(drill)SDL_DestroyTexture(drill);
         if(unlock)SDL_DestroyTexture(unlock);
         if(shuffle)SDL_DestroyTexture(shuffle);
+        if(titleBanner)SDL_DestroyTexture(titleBanner);
+        if(loadingSplash)SDL_DestroyTexture(loadingSplash);
     }
 };
 std::array<Rect,10> boosterIcons(int ww,int hh){
@@ -423,16 +429,13 @@ std::array<Rect,3> homeActions(int ww,int hh){
             Rect{middle-170,top+164,340,62}};
 }
 void drawHome(SDL_Renderer* r,const Art& art,const Game& g,const MineEconomy& mine,int ww,int hh){
-    // The official, approved emerald tile doubles as the native game's crest.
-    // No new currency art, no placeholders, no arbitrary replacements.
-    const float iconSize=std::min(132.0f,hh*.19f);
-    const float iconY=hh*.08f;
-    SDL_FRect crest{ww*.5f-iconSize*.5f,iconY,iconSize,iconSize};
-    SDL_RenderTexture(r,art.gem[2],nullptr,&crest);
-    const float headingY=iconY+iconSize+12;
-    label(r,ww*.5f-125,headingY,"JEWELBROOK",3);
-    label(r,ww*.5f-141,headingY+40,"NATIVE DESKTOP",2);
-    fill(r,{ww*.5f-170,headingY+67,340,2},{78,193,127,255});
+    // Exact owner-approved Jewel Brook image; native SDL3, no browser runtime.
+    const float bannerWidth=std::min(520.0f,ww*.88f);
+    const float bannerHeight=bannerWidth*203.0f/939.0f;
+    const float bannerY=hh*.08f;
+    SDL_FRect splash{(ww-bannerWidth)*.5f,bannerY,bannerWidth,bannerHeight};
+    SDL_RenderTexture(r,art.titleBanner,nullptr,&splash);
+    label(r,ww*.5f-118,bannerY+bannerHeight+14,"NATIVE DESKTOP",2);
     const auto actions=homeActions(ww,hh);
     button(r,actions[0],"PLAY MATCH 3");
     button(r,actions[1],"GO MINING");
@@ -450,6 +453,17 @@ int main(int argc,char** argv){
         SDL_Log("Failed to create desktop window: %s",SDL_GetError());SDL_Quit();return 1;
     }
     SDL_SetWindowMinimumSize(window,640,520);
+    // Display the approved wide, text-free loading art during native initialization.
+    if(SDL_Texture* splashTexture=png(render,dataRoot()/"art/embryon/branding/jewelbrook/jewelbrook-loading-wide.png")){
+        SDL_SetRenderDrawColor(render,20,21,45,255);
+        SDL_RenderClear(render);
+        const float splashW=1080.0f,splashH=splashW*348.0f/937.0f;
+        SDL_FRect loadingRect{0.0f,(740.0f-splashH)*.5f,splashW,splashH};
+        SDL_RenderTexture(render,splashTexture,nullptr,&loadingRect);
+        SDL_RenderPresent(render);
+        SDL_DestroyTexture(splashTexture);
+    }
+
     // SDL native window icon: use exactly the approved emerald artwork.
     const auto iconFile=dataRoot()/"art/embryon/generated/gems/emerald.png";
     if(SDL_Surface* iconSurface=SDL_LoadPNG(iconFile.string().c_str())){

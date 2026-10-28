@@ -23,6 +23,8 @@ allowed = {
     "web/art/embryon/runtime/boosters/color.webp": "color.png",
     "web/art/embryon/runtime/boosters/drill.webp": "drill.png",
     "web/art/embryon/runtime/boosters/unlock.webp": "unlock.png",
+    "web/art/embryon/branding/jewelbrook/banner-wide.webp": "jewelbrook-banner-wide.png",
+    "web/art/embryon/branding/jewelbrook/loading-wide.webp": "jewelbrook-loading-wide.png",
 }
 normalized = original.as_posix()
 kind = next((dest for path, dest in allowed.items() if normalized.endswith("/"+path)), None)
