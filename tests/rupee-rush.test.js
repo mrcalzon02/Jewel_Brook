@@ -81,6 +81,14 @@ assert.equal(Guide.mainDay(1001),null);
 assert.equal(Guide.trialDay(1001,Trials).earliestMainDay,Trials.profile(1001).requiredMainLevel);
 assert.equal(Guide.mainDay(20).calendarDate,Calendar.civilFromElapsed(20).label);
 assert.equal(TimelineExport.rows().length,1000,'One exported history row per main-stage day');
+assert.equal(TimelineExport.HEADERS.length,15,'Source-backed civic and lunar columns are present');
+assert.equal(TimelineExport.rows()[0][11],'The Opening of Ditches');
+assert.equal(TimelineExport.rows()[3][12],'Ditchfire Supper');
+assert.equal(TimelineExport.rows()[12][14],'Bright Sunder of Thawcall','Day 14 lunar event is exact');
+assert.equal(TimelineExport.rows()[97][12],'Flowered Sunder','Third-week festival stays in its actual week');
+assert.equal(TimelineExport.rows()[96][14],'Bright Sunder of Bloomtide','Bloomtide full moon stays on day 14');
+assert.equal(TimelineExport.rows()[96][12],'','Festival must not be assigned to full moon by name');
+
 assert.equal(TimelineExport.rows()[10][4],'RH-E03|RH-E04','Two episodes share Day 11');
 assert.equal(TimelineExport.rows()[5][4],'RH-E02','Sunday is Day 6');
 assert.equal(TimelineExport.rows()[999][1],1000,'Final exported story day');

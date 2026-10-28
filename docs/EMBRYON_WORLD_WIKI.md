@@ -99,3 +99,7 @@ Each month’s four named weeks now appear in the chapter-level map and in the o
 | Hearthwane | Thirteenth Sunder | 15–21 | Full-moon wording awaiting reconciliation |
 
 These entries are informational world lore, **not automatic gameplay rewards, unapproved new characters, or changes to farming/mining economies**. The working royal dates in the imported source are not independent proof of Daysha’s wedding or Estelle’s exact birth date. Chronicle episodes continue to unlock only when their assigned shared campaign day is cleared. Festival and lunar records do not add extra days to the thousand-stage timeline.
+
+### Civic and lunar columns in the 1,000-stage chronology
+
+The CSV ledger also contains `seasonal_week_id`, `seasonal_week`, `annual_festival_window`, `festival_date_precision`, and `full_moon`. Named civic weeks cover all 1,000 days; a festival name appears **throughout its canonical week window** and does not claim an exact day; an astronomical full moon appears **only on the actual day 14** of a month. The existing script regenerates all fields directly from the approved source-backed runtime records. These are informational annotations, not paid rewards, changed level IDs, or extra story days.
