@@ -15,9 +15,9 @@ uint32_t mix(uint32_t x) {
     x ^= x >> 16; x *= 0x7feb352du; x ^= x >> 15; x *= 0x846ca68bu;
     return x ^ (x >> 16);
 }
-std::vector<int> matches(const std::vector<int>& board, int w, int h, const std::vector<int>& ice, const std::vector<int>& locks, const std::vector<int>& frozen, const std::vector<int>& chests) {
+std::vector<int> matches(const std::vector<int>& board, int w, int h, const std::vector<int>& ice, const std::vector<int>& locks, const std::vector<int>& frozen, const std::vector<int>& chests, const std::vector<int>& rock, const std::vector<int>& vines) {
     std::set<int> result;
-    auto type=[&](int i){return board[i]>=0 && (ice.empty()||ice[i]==0) && (locks.empty()||locks[i]==0) && (frozen.empty()||frozen[i]==0) && (chests.empty()||chests[i]==0)?board[i]:-1;};
+    auto type=[&](int i){return board[i]>=0 && (ice.empty()||ice[i]==0) && (locks.empty()||locks[i]==0) && (frozen.empty()||frozen[i]==0) && (chests.empty()||chests[i]==0) && (rock.empty()||rock[i]==0) && (vines.empty()||vines[i]==0)?board[i]:-1;};
     for(int y=0;y<h;++y)for(int x=0;x<w;){
         const int t=type(y*w+x);int end=x+1;
         while(end<w&&t>=0&&type(y*w+end)==t)++end;
@@ -58,6 +58,8 @@ void Game::populateBoard() {
     ice.assign(width*height,0);
     locks.assign(width*height,0);
     chests.assign(width*height,0);
+    rockLayers.assign(width*height,0);
+    vineAuras.assign(width*height,0);
     jam.assign(width*height,0);
     poison.assign(width*height,0);
     lightningAuras.assign(width*height,0);
@@ -97,18 +99,18 @@ void Game::startLevel(int stage) {
 bool Game::adjacent(int a,int b) const {
     if(a<0||b<0||a>=static_cast<int>(cells.size())||b>=static_cast<int>(cells.size()))return false;
     if(cells[a]<0||cells[b]<0)return false; // -2 is an authored board void
-    if(ice.size()==cells.size() && (ice[a]>0||ice[b]>0||locks[a]>0||locks[b]>0||chests[a]>0||chests[b]>0||frozen[a]>0||frozen[b]>0))return false;
+    if(ice.size()==cells.size() && (ice[a]>0||ice[b]>0||locks[a]>0||locks[b]>0||chests[a]>0||chests[b]>0||frozen[a]>0||frozen[b]>0||rockLayers[a]>0||rockLayers[b]>0||vineAuras[a]>0||vineAuras[b]>0))return false;
     return std::abs(a-b)==width || (a/width==b/width && std::abs(a-b)==1);
 }
 int Game::matchedCells() const {
-    return static_cast<int>(matches(cells,width,height,ice,locks,frozen,chests).size());
+    return static_cast<int>(matches(cells,width,height,ice,locks,frozen,chests,rockLayers,vineAuras).size());
 }
 bool Game::hasMove() {
     for(int a=0;a<static_cast<int>(cells.size());++a) {
         for(int b:{a+1,a+width}) {
             if(!adjacent(a,b))continue;
             std::swap(cells[a],cells[b]);
-            const bool good=!matches(cells,width,height,ice,locks,frozen,chests).empty();
+            const bool good=!matches(cells,width,height,ice,locks,frozen,chests,rockLayers,vineAuras).empty();
             std::swap(cells[a],cells[b]);
             if(good)return true;
         }
@@ -119,10 +121,10 @@ void Game::refill(){
     // Source gravity is segmented around each immovable ice blocker.
     for(int x=0;x<width;++x){
         for(int y=height-1;y>=0;){
-            while(y>=0&&(ice[y*width+x]>0||locks[y*width+x]>0||chests[y*width+x]>0||frozen[y*width+x]>0||cells[y*width+x]==-2))--y;
+            while(y>=0&&(ice[y*width+x]>0||locks[y*width+x]>0||chests[y*width+x]>0||frozen[y*width+x]>0||rockLayers[y*width+x]>0||vineAuras[y*width+x]>0||cells[y*width+x]==-2))--y;
             if(y<0)break;
             const int bottom=y;
-            while(y>=0&&ice[y*width+x]==0&&locks[y*width+x]==0&&chests[y*width+x]==0&&frozen[y*width+x]==0&&cells[y*width+x]!=-2)--y;
+            while(y>=0&&ice[y*width+x]==0&&locks[y*width+x]==0&&chests[y*width+x]==0&&frozen[y*width+x]==0&&rockLayers[y*width+x]==0&&vineAuras[y*width+x]==0&&cells[y*width+x]!=-2)--y;
             const int top=y+1;
             int write=bottom;
             for(int from=bottom;from>=top;--from){
@@ -162,6 +164,7 @@ void Game::updateOutcome(){
 void Game::clearGem(int index){
     if(index<0||index>=static_cast<int>(cells.size())||cells[index]<0)return;
     if(jam[index]>0){--jam[index];++jamCleared;return;}
+    if(rockLayers[index]>0){--rockLayers[index];return;}
     if(ice[index]>0){--ice[index];++iceCleared;return;}
     if(locks[index]>0){--locks[index];++locksCleared;return;}
     if(chests[index]>0){--chests[index];++chestsCleared;return;}
@@ -196,7 +199,7 @@ void Game::resolveIce(){
         for(int at:{origin-width,origin-1,origin+1,origin+width}){
             if(at<0||at>=static_cast<int>(cells.size()))continue;
             if(std::abs(at/width-row)+std::abs(at%width-col)!=1)continue;
-            if(cells[at]<0||ice[at]>0||locks[at]>0||frozen[at]>0)continue;
+            if(cells[at]<0||ice[at]>0||locks[at]>0||frozen[at]>0||rockLayers[at]>0||vineAuras[at]>0)continue;
             frozen[at]=2;
             if(++count==2)break;
         }
@@ -223,7 +226,7 @@ void Game::resolveFire(){
         // Nearest surviving movable square: Manhattan distance, then index.
         int nearest=-1,best=999999;
         for(int i=0;i<static_cast<int>(cells.size());++i){
-            if(i==origin||cells[i]<0||ice[i]>0||locks[i]>0||chests[i]>0||frozen[i]>0||fireAuras[i]>0)continue;
+            if(i==origin||cells[i]<0||ice[i]>0||locks[i]>0||chests[i]>0||frozen[i]>0||rockLayers[i]>0||vineAuras[i]>0||fireAuras[i]>0)continue;
             const int distance=std::abs(i/width-row)+std::abs(i%width-col);
             if(distance<best){nearest=i;best=distance;}
         }
@@ -291,9 +294,10 @@ void Game::resolveFire(){
 void Game::advanceFireTurn(){
     if(won||lost||fireAuras.empty())return;
     ++turns;
-    std::vector<int> expired, lightningExpired;
+    std::vector<int> expired, lightningExpired, vineExpired;
     for(int i=0;i<static_cast<int>(fireAuras.size());++i){
         if(frozen[i]>0)--frozen[i];
+        if(vineAuras[i]>0 && --vineAuras[i]==0)vineExpired.push_back(i);
         if(fireAuras[i]>0 && --fireAuras[i]==0)expired.push_back(i);
         if(lightningAuras[i]>0&&--lightningAuras[i]==0)lightningExpired.push_back(i);
         if(poison[i]>0&&--poison[i]==0)jam[i]=std::max(jam[i],1);
@@ -312,7 +316,22 @@ void Game::advanceFireTurn(){
             if(!choices.empty()){jam[choices[range(static_cast<int>(choices.size()))]]=1;break;}
         }
     }
-    if(expired.empty()&&lightningExpired.empty())return;
+    if(expired.empty()&&lightningExpired.empty()&&vineExpired.empty())return;
+    // Source nature-vines expiry duplicates only the originating gem TYPE
+    // into the first unpinned cardinal neighbor (up, left, right, down).
+    // Auras remain fixed to board squares; gem payloads are not duplicated.
+    for(int origin:vineExpired){
+        if(cells[origin]<0)continue;
+        const int row=origin/width,col=origin%width;
+        for(int at:{origin-width,origin-1,origin+1,origin+width}){
+            if(at<0||at>=static_cast<int>(cells.size()))continue;
+            if(std::abs(at/width-row)+std::abs(at%width-col)!=1)continue;
+            if(cells[at]<0||ice[at]>0||locks[at]>0||chests[at]>0||
+               frozen[at]>0||rockLayers[at]>0||vineAuras[at]>0)continue;
+            cells[at]=cells[origin];
+            break;
+        }
+    }
     for(int origin:expired){
         ++fireDetonations;
         const int row=origin/width,col=origin%width;
@@ -346,7 +365,7 @@ void Game::advanceFireTurn(){
 bool Game::clearAndFill() {
     bool changed=false;
     for(int cascade=1;cascade<=60;++cascade){
-        auto hit=matches(cells,width,height,ice,locks,frozen,chests);
+        auto hit=matches(cells,width,height,ice,locks,frozen,chests,rockLayers,vineAuras);
         if(hit.empty())break;
         changed=true;
         std::set<int> affected(hit.begin(),hit.end());
@@ -355,7 +374,7 @@ bool Game::clearAndFill() {
             for(int j:{i-width,i+width,i-1,i+1}){
                 if(j<0||j>=static_cast<int>(cells.size()))continue;
                 if(std::abs(j-i)==1&&j/width!=y)continue;
-                if(ice[j]>0||locks[j]>0||chests[j]>0)affected.insert(j);
+                if(ice[j]>0||locks[j]>0||chests[j]>0||rockLayers[j]>0||vineAuras[j]>0)affected.insert(j);
             }
         }
         for(int i:affected){
@@ -390,7 +409,7 @@ bool Game::swap(int a,int b) {
         // Preserve authored blocker positions and layers during deadlock repair.
         std::vector<int> free;
         for(int i=0;i<static_cast<int>(cells.size());++i)
-            if(cells[i]>=0&&(ice.empty()||ice[i]==0)&&locks[i]==0&&chests[i]==0&&frozen[i]==0)free.push_back(i);
+            if(cells[i]>=0&&(ice.empty()||ice[i]==0)&&locks[i]==0&&chests[i]==0&&frozen[i]==0&&rockLayers[i]==0&&vineAuras[i]==0)free.push_back(i);
         for(int tries=0;tries<120;++tries) {
             for(int i=static_cast<int>(free.size())-1;i>0;--i)
                 {const int other=free[range(i+1)];
@@ -427,7 +446,7 @@ bool Game::shuffleBoard(){
     // authored ice, empty silhouette squares and goal state are untouched.
     std::vector<int> free;
     for(int i=0;i<static_cast<int>(cells.size());++i)
-        if(cells[i]>=0 && ice[i]==0 && locks[i]==0 && chests[i]==0 && frozen[i]==0)free.push_back(i);
+        if(cells[i]>=0 && ice[i]==0 && locks[i]==0 && chests[i]==0 && frozen[i]==0 && rockLayers[i]==0 && vineAuras[i]==0)free.push_back(i);
     if(free.size()<2)return false;
     const auto originalCells=cells,originalElements=elementals;
     const auto originalSpecials=specials,originalHolds=holds;
@@ -471,7 +490,7 @@ bool Game::useHammer(int cell){
     // web/engine.js hammer: twenty successive blows; the final blow can
     // remove the gem beneath the last ice layer. Do not invent extra strikes.
     for(int hit=0;hit<20;++hit){
-        if(ice[cell]>0||locks[cell]>0||chests[cell]>0){clearGem(cell);}
+        if(ice[cell]>0||locks[cell]>0||chests[cell]>0||rockLayers[cell]>0){clearGem(cell);}
         else if(cells[cell]>=0){clearGem(cell);break;}
         else break;
     }
@@ -663,6 +682,7 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
         candidate.locks=std::move(locked);candidate.chests=std::move(chestLayers);
         candidate.jam=std::move(resin);candidate.poison=std::move(seedPoison);
         candidate.lightningAuras.assign(n,0);candidate.frozen.assign(n,0);
+        candidate.rockLayers.assign(n,0);candidate.vineAuras.assign(n,0);
         candidate.locksCleared=0;candidate.chestsCleared=0;candidate.jamCleared=0;
         candidate.turns=candidate.earthActivations=candidate.windActivations=0;
         candidate.lightningActivations=candidate.lightningDetonations=0;
@@ -683,7 +703,9 @@ bool Game::startIntro(int stage,std::istream& authoredCatalog){
     return false;
 }
 bool Game::save(std::ostream& out) const {
-    out<<"RRNATIVE13 "<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
+    const bool hasAnchored=std::any_of(rockLayers.begin(),rockLayers.end(),[](int x){return x>0;}) ||
+        std::any_of(vineAuras.begin(),vineAuras.end(),[](int x){return x>0;});
+    out<<(hasAnchored?"RRNATIVE14 ":"RRNATIVE13 ")<<level<<' '<<width<<' '<<height<<' '<<moves<<' '
        <<score<<' '<<goal<<' '<<ore<<' '<<strikes<<' '<<won<<' '<<lost<<' '
        <<randomState<<' '<<objectiveKind<<' '<<objectiveTarget<<' '
        <<iceCleared<<' '<<hammerCount<<' '<<extraCount<<' '<<rowCount<<' '
@@ -714,6 +736,10 @@ bool Game::save(std::ostream& out) const {
     // Append after the legacy RRNATIVE12 body; older versions load with zero payloads.
     for(int v:specials)out<<v<<' ';out<<'\n';
     for(int v:holds)out<<v<<' ';out<<'\n';
+    if(hasAnchored){
+        for(int v:rockLayers)out<<v<<' ';out<<'\n';
+        for(int v:vineAuras)out<<v<<' ';out<<'\n';
+    }
     return out.good();
 }
 bool Game::load(std::istream& in) {
@@ -728,7 +754,7 @@ bool Game::load(std::istream& in) {
     } else {
         tmp.objectiveKind=0;tmp.objectiveTarget=tmp.goal;tmp.iceCleared=0;
     }
-    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")){
+    if(magic=="RRNATIVE3"||magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))){
         if(!(in>>tmp.hammerCount>>tmp.extraCount>>tmp.rowCount>>
              tmp.claimedExtra>>tmp.claimedRow))return false;
     } else {
@@ -737,28 +763,28 @@ bool Game::load(std::istream& in) {
         tmp.claimedExtra=tmp.level>=6;
         tmp.claimedRow=tmp.level>=10&&tmp.won;
     }
-    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")) && !(in>>tmp.waterActivations))return false;
-    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")){
+    if((magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))) && !(in>>tmp.waterActivations))return false;
+    if(magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))){
         if(!(in>>tmp.shuffleCount>>tmp.claimedShuffle>>tmp.collectColor>>tmp.collected))return false;
     }else{
         tmp.shuffleCount=0;tmp.claimedShuffle=false;
         tmp.collectColor=-1;tmp.collected=0;
     }
-    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")) &&
+    if((magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))) &&
         !(in>>tmp.fireActivations>>tmp.fireDetonations))return false;
-    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")){
+    if(magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))){
         if(!(in>>tmp.columnCount>>tmp.claimedColumn))return false;
     }else{
         tmp.columnCount=0;tmp.claimedColumn=false;
     }
-    if((magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")) &&
+    if((magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))) &&
         !(in>>tmp.locksCleared>>tmp.iceActivations))return false;
-    if((magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13"))){
+    if((magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14")))){
         if(!(in>>tmp.blastCount>>tmp.claimedBlast))return false;
     }else{
         tmp.blastCount=0;tmp.claimedBlast=false;
     }
-    if((magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13"))){
+    if((magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14")))){
         if(!(in>>tmp.crossCount>>tmp.claimedCross>>tmp.colorCount>>tmp.claimedColor>>
              tmp.drillCount>>tmp.claimedDrill>>tmp.unlockCount>>tmp.claimedUnlock>>
              tmp.chestsCleared))return false;
@@ -767,12 +793,12 @@ bool Game::load(std::istream& in) {
         tmp.claimedCross=tmp.claimedColor=tmp.claimedDrill=tmp.claimedUnlock=false;
         tmp.chestsCleared=0;
     }
-    if((magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13"))){
+    if((magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14")))){
         if(!(in>>tmp.secondaryKind>>tmp.secondaryTarget))return false;
     }else{
         tmp.secondaryKind=-1;tmp.secondaryTarget=0;
     }
-    if((magic=="RRNATIVE12"||magic=="RRNATIVE13") &&
+    if((magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14")) &&
        !(in>>tmp.turns>>tmp.jamCleared>>tmp.earthActivations>>
           tmp.windActivations>>tmp.lightningActivations>>tmp.lightningDetonations))
         return false;
@@ -825,13 +851,13 @@ bool Game::load(std::istream& in) {
     if(magic!="RRNATIVE1")
         for(auto& layer:tmp.ice)if(!(in>>layer)||layer<0||layer>5)return false;
     tmp.locks.assign(n,0);tmp.frozen.assign(n,0);tmp.chests.assign(n,0);
-    if(magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")){
+    if(magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))){
         for(auto& x:tmp.locks)if(!(in>>x)||x<0||x>5)return false;
-        if((magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")))
+        if((magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))))
             for(auto& layer:tmp.chests)if(!(in>>layer)||layer<0||layer>5)return false;
         for(auto& x:tmp.frozen)if(!(in>>x)||x<0||x>2)return false;
     }
-    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13")){
+    if(magic=="RRNATIVE4"||magic=="RRNATIVE5"||magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))){
         size_t rosterCount=0;
         if(!(in>>rosterCount)||rosterCount<3||rosterCount>7)return false;
         tmp.activeRoster.resize(rosterCount);
@@ -843,7 +869,7 @@ bool Game::load(std::istream& in) {
         tmp.elementals.assign(n,0);
     }
     tmp.fireAuras.assign(n,0);
-    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||magic=="RRNATIVE13"))
+    if(magic=="RRNATIVE6"||magic=="RRNATIVE7"||magic=="RRNATIVE8"||magic=="RRNATIVE9"||magic=="RRNATIVE10"||magic=="RRNATIVE11"||(magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14")))
         for(auto& duration:tmp.fireAuras)if(!(in>>duration)||duration<0||duration>2)return false;
     for(size_t i=0;i<n;++i){
         if(tmp.cells[i]==-2&&(tmp.ice[i]!=0||tmp.locks[i]!=0||tmp.chests[i]!=0||tmp.frozen[i]!=0||tmp.elementals[i]!=0||tmp.fireAuras[i]!=0))return false;
@@ -851,7 +877,7 @@ bool Game::load(std::istream& in) {
     }
     tmp.jam.assign(n,0);tmp.poison.assign(n,0);
     tmp.lightningAuras.assign(n,0);
-    if((magic=="RRNATIVE12"||magic=="RRNATIVE13")){
+    if((magic=="RRNATIVE12"||(magic=="RRNATIVE13"||magic=="RRNATIVE14"))){
         for(int& v:tmp.jam)if(!(in>>v)||v<0||v>1)return false;
         for(int& v:tmp.poison)if(!(in>>v)||v<0||v>2)return false;
         for(int& v:tmp.lightningAuras)if(!(in>>v)||v<0||v>2)return false;
@@ -864,10 +890,17 @@ bool Game::load(std::istream& in) {
           ||r.hits<0||r.hits>r.hardness||r.done!=(r.hits==r.hardness))return false;
     }
     tmp.specials.assign(n,0);tmp.holds.assign(n,0);
-    if(magic=="RRNATIVE13"){
+    if((magic=="RRNATIVE13"||magic=="RRNATIVE14")){
         for(int& v:tmp.specials)if(!(in>>v)||v<0||v>2)return false;
         for(int& v:tmp.holds)if(!(in>>v)||v<0||v>1000000)return false;
         for(size_t i=0;i<n;++i)if(tmp.cells[i]==-2&&(tmp.specials[i]||tmp.holds[i]))return false;
+    }
+    tmp.rockLayers.assign(n,0);tmp.vineAuras.assign(n,0);
+    if(magic=="RRNATIVE14"){
+        for(int& v:tmp.rockLayers)if(!(in>>v)||v<0||v>5)return false;
+        for(int& v:tmp.vineAuras)if(!(in>>v)||v<0||v>2)return false;
+        for(size_t i=0;i<n;++i)if(tmp.cells[i]==-2 &&
+            (tmp.rockLayers[i]!=0||tmp.vineAuras[i]!=0))return false;
     }
     *this=std::move(tmp);
     return true;
