@@ -1,4 +1,5 @@
 #include "game_logic.h"
+#include "game_conveyor_bridge.hpp"
 #include <algorithm>
 #include <cmath>
 #include <istream>
@@ -377,6 +378,12 @@ bool Game::swap(int a,int b) {
     --moves;
     clearAndFill(); // non-match swaps stay swapped and consume the move
     updateOutcome();
+    // Android applies fixed board transport after swap/cascade resolution and
+    // before timed hazards. The authored stage-125 catalog is still gated.
+    if(level>=125 && !won && advanceConveyor(*this,turns+1)){
+        clearAndFill();
+        updateOutcome();
+    }
     advanceFireTurn();
     if(!won&&!lost&&!hasMove()) {
         // Repair a trapped board while preserving current progression.
