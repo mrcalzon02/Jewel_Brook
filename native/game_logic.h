@@ -33,6 +33,9 @@ public:
     std::vector<int> ice;
     // Independently damageable anchored blockers and temporary frozen gems.
     std::vector<int> locks, frozen, chests, jam, poison, lightningAuras;
+    // Board-anchored: rock layers take one hit per strike; nature-vine timers
+    // pin their gem until the source-defined two-turn aura expires.
+    std::vector<int> rockLayers, vineAuras;
     int locksCleared=0, chestsCleared=0, jamCleared=0, iceActivations=0, turns=0;
     int earthActivations=0, windActivations=0, lightningActivations=0, lightningDetonations=0;
     std::vector<int> pendingIce;
