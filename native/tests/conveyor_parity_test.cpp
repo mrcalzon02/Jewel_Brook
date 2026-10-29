@@ -23,7 +23,7 @@ int main(int argc,char** argv){
     std::ifstream in(argv[1]);
     std::string magic;int cases=0;
     if(!(in>>magic>>cases)||magic!="RRCONVEYOR1"||cases<10)return 3;
-    int integrated=0,pendingPinnedLayer=0;
+    int integrated=0,pinnedLayerIntegrated=0;
     for(int test=0;test<cases;++test){
         std::string marker,name;int level,w,h,turn,n,belts;
         if(!(in>>marker>>name>>level>>w>>h>>turn>>n)||marker!="CASE"||n!=w*h)return 4;
@@ -57,13 +57,13 @@ int main(int argc,char** argv){
 
         // Exercise the production Game adapter against the same Android
         // fixtures, not just the standalone conveyor implementation.
-        // Rock/vines require new anchored native layers and remain a gate.
+        // Rock and nature-vine cells are now integrated into production Game.
         bool unsupportedPinnedLayer=false;
         for(const auto& belt:computed)
             for(int at:belt.indices)
                 if(before[at].rock>0||before[at].vines>0)
                     unsupportedPinnedLayer=true;
-        if(unsupportedPinnedLayer){++pendingPinnedLayer;continue;}
+        if(unsupportedPinnedLayer)++pinnedLayerIntegrated;
         rupee::Game game(7919);
         game.startLevel(level);
         if(game.width!=w||game.height!=h)return 13;
@@ -73,6 +73,8 @@ int main(int argc,char** argv){
             game.locks[j]=before[j].lock;
             game.chests[j]=before[j].chest;
             game.frozen[j]=before[j].frozen;
+            game.rockLayers[j]=before[j].rock;
+            game.vineAuras[j]=before[j].vines ? 2 : 0;
             game.jam[j]=before[j].jam;
             game.poison[j]=before[j].poison;
             game.specials[j]=before[j].special;
@@ -96,6 +98,8 @@ int main(int argc,char** argv){
                game.ice[j]!=after[j].ice||
                game.locks[j]!=after[j].lock||
                game.chests[j]!=after[j].chest||
+               game.rockLayers[j]!=after[j].rock||
+               (game.vineAuras[j]>0)!=(after[j].vines>0)||
                game.frozen[j]!=after[j].frozen||
                game.jam[j]!=after[j].jam||
                game.poison[j]!=after[j].poison){
@@ -104,9 +108,9 @@ int main(int argc,char** argv){
             }
         ++integrated;
     }
-    if(integrated<7||pendingPinnedLayer<2){
-        std::cerr<<"Insufficient supported/unsupported conveyor integration cases\n";return 16;
+    if(integrated!=cases||pinnedLayerIntegrated<2){
+        std::cerr<<"Insufficient integrated rock/vine conveyor cases\n";return 16;
     }
-    std::cout<<"Source-equivalent stage-125 conveyor: "<<cases<<" Android/C++ cases, "<<integrated<<" Game bridge cases, "<<pendingPinnedLayer<<" rock/vines gated\n";
+    std::cout<<"Source-equivalent stage-125 conveyor: "<<cases<<" Android/C++ cases, "<<integrated<<" Game bridge cases, "<<pinnedLayerIntegrated<<" anchored rock/vine cases verified\n";
     return 0;
 }
