@@ -1,7 +1,7 @@
 #pragma once
 // Native gameplay adapter for the source-equivalent conveyor primitive.
-// This deliberately does not unlock Android stage 125: native stage import,
-// anchored rock/vine state and full turn/goal parity still need acceptance.
+// This deliberately does not unlock Android stage 125: authored stage import,
+// complete objectives, and full gameplay/visual acceptance remain gated.
 #include "game_logic.h"
 #include "conveyor_motion.hpp"
 #include <cstddef>
@@ -17,7 +17,8 @@ inline bool advanceConveyor(Game& game, int oneBasedTurn) {
         game.chests.size() != n || game.frozen.size() != n ||
         game.jam.size() != n || game.poison.size() != n ||
         game.elementals.size() != n || game.specials.size() != n ||
-        game.holds.size() != n) return false;
+        game.holds.size() != n || game.rockLayers.size() != n ||
+        game.vineAuras.size() != n) return false;
 
     std::vector<conveyor::Tile> tiles(n);
     for (size_t i = 0; i < n; ++i) {
@@ -26,6 +27,8 @@ inline bool advanceConveyor(Game& game, int oneBasedTurn) {
         t.ice = game.ice[i];
         t.lock = game.locks[i];
         t.chest = game.chests[i];
+        t.rock = game.rockLayers[i];
+        t.vines = game.vineAuras[i] > 0 ? 1 : 0;
         t.frozen = game.frozen[i];
         t.jam = game.jam[i];
         t.poison = game.poison[i];
