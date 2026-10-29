@@ -14,7 +14,10 @@ static void deterministicBoard(Game& game) {
     for(int y=0;y<game.height;++y)
         for(int x=0;x<game.width;++x)
             game.cells[y*game.width+x]=(x+y)%3;
-    assert(game.matchedCells()==0);
+    // The diagonal pattern alone has no legal moves; one authored-style
+    // variation keeps a move available without creating a starting match.
+    game.cells[0]=2;
+    assert(game.matchedCells()==0&&game.hasMove());
 }
 int main() {
     // Native source stage 125 remains deliberately NOT importable.
@@ -37,7 +40,8 @@ int main() {
     assert(blocked.adjacent(rock,rock+1)); // unpinned when last layer breaks
 
     Game vine(7919);
-    vine.startLevel(125);
+    // Isolate timed vines from the still-gated stage-125 conveyor turn.
+    vine.startLevel(124);
     deterministicBoard(vine);
     const int origin=2*vine.width+2, north=origin-vine.width;
     const int oldNorth=vine.cells[north];
