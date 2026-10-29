@@ -231,6 +231,11 @@ target_link_libraries(rupee_conveyor_parity_tests PRIVATE rupee_native_logic)
 add_test(NAME native_stage_125_conveyor_source_prerequisite
     COMMAND rupee_conveyor_parity_tests "${CONVEYOR_FIXTURES}")
 
+add_executable(rupee_anchored_tests tests/anchored_blockers_test.cpp)
+target_link_libraries(rupee_anchored_tests PRIVATE rupee_native_logic)
+add_test(NAME native_rock_vines_turn_and_save
+    COMMAND rupee_anchored_tests)
+
 add_executable(rupee_mine_tests tests/mine_economy_test.cpp)
 target_link_libraries(rupee_mine_tests PRIVATE rupee_mine_logic)
 add_test(NAME native_mining_source_parity_and_economy
