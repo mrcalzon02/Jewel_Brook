@@ -55,6 +55,34 @@ for(const c of cases){
   for(const belt of c.belts)lines.push([belt.indices.length,belt.direction==='right'?1:0,belt.every,...belt.indices].join(' '));
   lines.push('BEFORE',...c.before.map(row=>row.join(' ')),'AFTER',...c.after.map(row=>row.join(' ')));
 }
+
+// Export stage 125's ACTUAL starting objective, roster and board from Android.
+// This is a native-import prerequisite, not authorization to unlock stage 125.
+const sourceStage=Engine.create(125,125*7919);
+const sourceSnapshot=Engine.snapshot(sourceStage);
+const sourceCfg=sourceStage.cfg;
+const sourceObjective=sourceCfg.objectives[0];
+if(sourceCfg.number!==125||sourceCfg.width!==7||sourceCfg.height!==8||
+   sourceCfg.objectives.length!==1||sourceObjective.kind!=='collect'||
+   !sourceCfg.roster.includes(sourceObjective.color)||sourceSnapshot.cells.length!==56||
+   !Number.isInteger(sourceObjective.target)||sourceObjective.target<1)
+  throw Error('Source stage 125 objective/geometry changed: native importer review required');
+const authoredTiles=sourceSnapshot.cells.map(c=>{
+  if(!c)return [-2,...Array(12).fill(0)];
+  if(c.fuse||c.ward||(c.aura!==null&&c.aura!=='fire'&&c.aura!=='nature-vines'))
+    throw Error('Stage 125 has an unsupported authored status');
+  const fields=[c.type,c.ice,c.lock,c.chest,c.jam,c.poison,c.rock,c.frozen,
+    c.aura==='nature-vines'?c.auraTurns:0,c.aura==='fire'?c.auraTurns:0,
+    specialId(c.special),elementalId(c.elemental),c.hold];
+  if(fields.some(v=>!Number.isInteger(v)))throw Error('Stage 125 has a non-integer tile');
+  return fields;
+});
+lines.push(['AUTHORED125',125,sourceCfg.width,sourceCfg.height,sourceCfg.moves,
+  sourceCfg.goal,sourceObjective.target,sourceObjective.color,
+  sourceSnapshot.rngState,authoredTiles.length].join(' '));
+lines.push('ROSTER '+sourceCfg.roster.length+' '+sourceCfg.roster.join(' '));
+lines.push('TILES '+authoredTiles.map(row=>row.join(' ')).join(' '));
+
 fs.mkdirSync(path.dirname(destination),{recursive:true});
 fs.writeFileSync(destination,lines.join('\n')+'\n');
 console.log('Android board-features conveyor fixtures:',cases.length,'cases including source-authored stage 125');

@@ -1,6 +1,9 @@
 #include "conveyor_motion.hpp"
 #include "game_conveyor_bridge.hpp"
+#include <algorithm>
+#include <cstdint>
 #include <fstream>
+#include <sstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -111,6 +114,72 @@ int main(int argc,char** argv){
     if(integrated!=cases||pinnedLayerIntegrated<2){
         std::cerr<<"Insufficient integrated rock/vine conveyor cases\n";return 16;
     }
-    std::cout<<"Source-equivalent stage-125 conveyor: "<<cases<<" Android/C++ cases, "<<integrated<<" Game bridge cases, "<<pinnedLayerIntegrated<<" anchored rock/vine cases verified\n";
+
+    // Import the *actual* stage-125 starting board/objective into a native
+    // Game for parity checks. Do not enable Game::startIntro(125) or the UI:
+    // full objective-turn and visual acceptance is still outstanding.
+    std::string tag;int level,w,h,moves,goal,target,color,n,rosterCount;
+    std::uint32_t rng;
+    if(!(in>>tag>>level>>w>>h>>moves>>goal>>target>>color>>rng>>n)||
+       tag!="AUTHORED125"||level!=125||w!=7||h!=8||n!=w*h||
+       moves<12||moves>36||goal<1||target<1||rng==0)return 17;
+    if(!(in>>tag>>rosterCount)||tag!="ROSTER"||rosterCount!=6)return 18;
+    std::vector<int> roster;
+    for(int j=0;j<rosterCount;++j){
+        int gem=-1;
+        if(!(in>>gem)||gem<0||gem>=19||
+           std::find(roster.begin(),roster.end(),gem)!=roster.end())return 19;
+        roster.push_back(gem);
+    }
+    if(std::find(roster.begin(),roster.end(),color)==roster.end())return 20;
+    if(!(in>>tag)||tag!="TILES")return 21;
+    rupee::Game authored(7919);
+    authored.startLevel(125);
+    authored.moves=moves;authored.goal=goal;
+    authored.objectiveKind=2;authored.objectiveTarget=target;
+    authored.collectColor=color;authored.activeRoster=roster;
+    authored.randomState=rng;
+    for(int j=0;j<n;++j){
+        int type,ice,lock,chest,jam,poison,rock,frozen,vine,fire,special,elemental,hold;
+        if(!(in>>type>>ice>>lock>>chest>>jam>>poison>>rock>>frozen>>
+             vine>>fire>>special>>elemental>>hold))return 22;
+        if(type < -2||type >= 19||type == -1||
+           ice<0||ice>5||lock<0||lock>5||chest<0||chest>5||
+           jam<0||jam>1||poison<0||poison>2||rock<0||rock>5||
+           frozen<0||frozen>5||vine<0||vine>2||(fire!=0&&fire!=2)||
+           special<0||special>2||elemental<0||elemental>6||hold<0||hold>4)return 23;
+        if(type==-2){
+            if(ice||lock||chest||jam||poison||rock||frozen||vine||fire||special||elemental||hold)return 24;
+        }else if(std::find(roster.begin(),roster.end(),type)==roster.end())return 25;
+        authored.cells[j]=type;authored.ice[j]=ice;authored.locks[j]=lock;
+        authored.chests[j]=chest;authored.jam[j]=jam;authored.poison[j]=poison;
+        authored.rockLayers[j]=rock;authored.frozen[j]=frozen;
+        authored.vineAuras[j]=vine;authored.fireAuras[j]=fire;
+        authored.specials[j]=special;authored.elementals[j]=elemental;
+        authored.holds[j]=hold;
+    }
+    if(in>>tag)return 26; // reject trailing unreviewed source fields
+    if(authored.matchedCells()!=0||!authored.hasMove())return 27;
+    std::stringstream persisted;
+    if(!authored.save(persisted))return 28;
+    rupee::Game reloaded;
+    if(!reloaded.load(persisted)||reloaded.level!=125||
+       reloaded.cells!=authored.cells||reloaded.ice!=authored.ice||
+       reloaded.locks!=authored.locks||reloaded.chests!=authored.chests||
+       reloaded.jam!=authored.jam||reloaded.poison!=authored.poison||
+       reloaded.rockLayers!=authored.rockLayers||
+       reloaded.vineAuras!=authored.vineAuras||
+       reloaded.fireAuras!=authored.fireAuras||
+       reloaded.specials!=authored.specials||
+       reloaded.elementals!=authored.elementals||
+       reloaded.holds!=authored.holds||
+       reloaded.activeRoster!=roster||reloaded.objectiveKind!=2||
+       reloaded.objectiveTarget!=target||reloaded.collectColor!=color||
+       reloaded.randomState!=rng)return 29;
+    rupee::Game gated;
+    std::istringstream noCatalog("");
+    if(gated.startIntro(125,noCatalog))return 30;
+
+    std::cout<<"Source-equivalent stage-125 conveyor: "<<cases<<" Android/C++ cases, "<<integrated<<" Game bridge cases, "<<pinnedLayerIntegrated<<" anchored rock/vine cases plus authored stage-125 objective/board/save verified (stage gated)\n";
     return 0;
 }
