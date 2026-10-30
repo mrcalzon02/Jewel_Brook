@@ -504,3 +504,9 @@ html,body{max-width:100%;overflow-x:hidden}
  .home-menu-grid .btn{font-size:10px;padding:7px 3px}
 }
 @media(prefers-reduced-motion:reduce){#jewelbrook-loading-splash{transition:none}}
+
+/* Player-level JSON import/export is an early, usable serialization surface. */
+.custom-level-json{display:block;width:100%;min-height:17rem;max-height:50vh;resize:vertical;box-sizing:border-box;margin:.65rem 0;padding:.75rem;background:#161526;color:#e9e6f8;border:1px solid #686184;border-radius:.65rem;font:12px/1.5 monospace;white-space:pre;overflow:auto}
+.custom-level-actions,.custom-level-entry{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.65rem 0}
+.custom-level-entry{border-top:1px solid #4c4468;padding:.5rem 0}
+.custom-level-entry small{opacity:.8}

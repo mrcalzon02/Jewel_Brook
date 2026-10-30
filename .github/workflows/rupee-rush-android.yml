@@ -36,6 +36,7 @@ jobs:
             tests/cross-platform-release-identity.test.js \
             tests/github-apk-release-contract.test.js \
             tests/rupee-rush.test.js \
+            tests/custom-levels.test.js \
             tests/royal-artwork-contract.test.js \
             tests/mining-import-assets.test.js \
             tests/economy-market.test.js \

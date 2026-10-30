@@ -1,20 +1,20 @@
 /* Jewelbrook standalone playable shell around reused deterministic systems. */
 (function(){'use strict';
-const E=window.RupeeEngine,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
+const E=window.RupeeEngine,Custom=window.JewelBrookCustomLevels,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
  Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownCharacter=window.RupeeTownCharacter,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen,Royal=window.JewelbrookRoyalChronicle,Guide=window.JewelBrookWorldGuide;
-if(![E,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook,Royal,Guide].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
+if(![E,Custom,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook,Royal,Guide].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
 let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null,storySelected=null;
 let guideTab='calendar',guideDay=Math.min(1000,Math.max(1,saved.unlocked));
-let page='home',active=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmCategory='all',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
+let page='home',active=null,customActiveId=null,customDraft=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmCategory='all',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems'),styles=document.getElementById('style-shards');
 if(!root)throw Error('Missing #screen');
 // Restore only validated, unfinished Jewelbrook boards. Never touch Nut Buster saves.
 try{if(saved.activeBoard){const s=saved.activeBoard;const allowed=s.level>=T.FIRST?T.available(saved,s.level):s.level<=saved.unlocked;if(allowed)active=E.restore(s);if(!active)delete saved.activeBoard;}}catch(_){delete saved.activeBoard;}
-function save(){try{if(active&&!active.won&&!active.lost)saved.activeBoard=E.snapshot(active);else delete saved.activeBoard;localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){message('Unable to save on this device');}}
+function save(){try{if(active&&!customActiveId&&!active.won&&!active.lost)saved.activeBoard=E.snapshot(active);else delete saved.activeBoard;localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){message('Unable to save on this device');}}
 function number(x){return Number(x||0).toLocaleString('en-US');}
 function escape(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function icon(id,size=30){return '<img class="icon" width="'+size+'" height="'+size+'" alt="" src="'+(Icons.get(id)||Shared.icons[id]||Art.icon(id))+'">';}
@@ -233,6 +233,12 @@ function start(id){
  if(id<T.FIRST&&(id>saved.unlocked||id<1))return message('Stage locked.');
  active=E.create(id,id*7919+saved.unlocked*17);selected=-1;visualImpact=null;outcome=null;page='game';save();Audio.play('chapter-enter');Audio.speak('levelStart');render();window.RupeeUpdates?.autoCheck();
 }
+function startCustom(spec){
+ if(!Custom.unlocked(saved))return message('Clear Level 500 to unlock custom levels.');
+ if(active)return message('Finish or leave the current board first.');
+ try{const g=Custom.instantiate(spec);active=g;customActiveId=g.customLevelId;selected=-1;visualImpact=null;outcome=null;page='game';save();Audio.play('chapter-enter');render();}
+ catch(e){message(e.message);}
+}
 function payload(c){
  if(!c||c.type===null)return '<span class="void"></span>';
  const specialArt={'line-h':'row','line-v':'column',blast:'blast',rainbow:'spectrum'}[c.special]||'starburst';
@@ -302,11 +308,11 @@ function animateMove(result,before){
 }
 function performSwap(a,b){
  if(animating||!active||page!=='game')return;
- if(bank().remaining<1)return message('Daily moves exhausted. Mine for a move pack.');
+ if(!customActiveId&&bank().remaining<1)return message('Daily moves exhausted. Mine for a move pack.');
  const before=E.snapshot(active).cells,result=E.swap(active,a,b);
  selectCell(-1);
  if(!result.valid){Audio.play('blocked');return message('That pair cannot be swapped.');}
- D.spend(saved,1,Date.now(),dailyCap());
+ if(!customActiveId)D.spend(saved,1,Date.now(),dailyCap());
  visualImpact=null;save();
  if(result.loops>=3)Audio.speak('cascade');
  animateMove(result,before);
@@ -316,19 +322,24 @@ function gameplay(){
  const objective=E.objectiveState(g).map(o=>escape(o.label)+' '+number(Math.min(o.value,o.target))+'/'+number(o.target)).join(' · ');
  const boardVw=(100*g.cfg.height/g.cfg.width).toFixed(3),maxBoardH=Math.round(550*g.cfg.height/g.cfg.width);
  return '<section class="play-layout" style="--board-w:'+g.cfg.width+';--board-h:'+g.cfg.height+';--board-vw:'+boardVw+'vw;--board-max-h:'+maxBoardH+'px">'+
- '<div class="play-hud"><div class="play-title" title="'+escape(g.cfg.stageTitle)+'"><b>LV '+g.level+'</b><span>'+escape(g.cfg.stageTitle)+'</span></div>'+
+ '<div class="play-hud"><div class="play-title" title="'+escape(g.cfg.stageTitle)+'"><b>'+(customActiveId?'CUSTOM':'LV '+g.level)+'</b><span>'+escape(g.cfg.stageTitle)+'</span></div>'+
  '<div class="play-count"><small>SCORE</small><b>'+number(g.score)+'</b></div><div class="play-count"><small>MOVES</small><b>'+g.moves+'</b></div>'+
- '<div class="play-count"><small>TODAY</small><b>'+number(bank().remaining)+'</b></div><div class="play-count"><small>LIVES</small><b>'+saved.hearts+'/5</b></div>'+
+ (customActiveId?'<div class="play-count"><small>MODE</small><b>PLAYTEST</b></div>':'<div class="play-count"><small>TODAY</small><b>'+number(bank().remaining)+'</b></div><div class="play-count"><small>LIVES</small><b>'+saved.hearts+'/5</b></div>')+
  '<button class="play-exit" data-action="abandon" aria-label="Leave level" title="Leave level">×</button></div>'+
  '<div class="play-objective"><small>GOAL</small><b title="'+objective+'">'+objective+'</b><span>'+number(g.score)+'/'+number(g.cfg.goal)+'</span>'+
  '<details class="play-help"><summary aria-label="Level hint">?</summary><p>'+escape(g.cfg.hint)+'</p></details></div>'+
  '<div class="board-frame"><div class="board" role="group" aria-label="Match-three gem board" style="--columns:'+g.cfg.width+'">'+g.cells.map((c,i)=>'<button class="cell '+(!c?'hole ':'')+(selected===i?'selected':'')+'" data-action="cell" data-cell="'+i+'" '+(!c?'disabled':'')+' aria-label="Tile '+(i+1)+(c?' '+E.TYPES[c.type]+(Shared.label(c)?', '+escape(Shared.label(c)):''):' empty')+'">'+piece(c,i)+(c?featureMarkup(g,i):'')+'</button>').join('')+'</div>'+impactMarkup(g)+'</div>'+
  '<p class="play-instruction">Drag to swap · Tap to target a booster</p>'+
- '<div class="booster-grid" role="group" aria-label="Match-three boosters">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+boosterIcon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div></section>';
+ (customActiveId?'<p class="play-instruction">Custom playtest: boosters and campaign rewards are disabled.</p>':'<div class="booster-grid" role="group" aria-label="Match-three boosters">'+E.BOOSTERS.filter(id=>P.unlocked(saved,id)).map(id=>'<button class="booster" data-action="booster" data-booster="'+id+'" '+(P.count(saved,id)<1?'disabled':'')+' title="'+escape(E.BOOSTER_META[id].tip)+'">'+boosterIcon(id,36)+'<b>'+escape(E.BOOSTER_META[id].label)+'</b><small>×'+P.count(saved,id)+'</small></button>').join('')+'</div>')+'</section>';
 }
 function settle(){
  if(!active)return;
  const g=active;
+ if(customActiveId){
+  if(!g.won&&!g.lost)return;
+  outcome={won:g.won,id:customActiveId,score:g.score,custom:true};
+  Audio.play(g.won?'victory':'defeat');active=null;customActiveId=null;selected=-1;page='result';save();return;
+ }
  if(g.won){
   const id=g.level,trial=id>=T.FIRST;
   let earned=0,bonus=0,storyNew=[],gownNew=[];
@@ -347,6 +358,8 @@ function settle(){
 }
 function results(){
  const x=outcome;if(!x)return home();
+ if(x.custom)return header(x.won?'Custom level cleared':'Custom playtest ended','No campaign rewards or calendar advancement.')+
+  '<div class="hero"><h2>Score: '+number(x.score)+'</h2>'+button('return-custom','RETURN TO CUSTOM LEVELS','primary')+'</div>';
  return header(x.won?'Brilliant!':'Try again',x.won?'The vault yields its treasures.':'The crystal board held firm this time.')+
  '<div class="hero"><div class="hero-art">'+(x.won?'<img class="result-vfx" src="'+Assets.effect('victory')+'" alt="">':'')+[0,1,6].map(i=>gem(i)).join('')+'</div><h2>Score: '+number(x.score)+'</h2>'+
  (x.won?'<p>+'+number(x.earned)+' Rupees · +'+number(x.bonus)+' Star Gems</p>':'<p>One life used. Mine resources or claim a refill to keep playing.</p>')+
@@ -536,20 +549,36 @@ function rewards(){
  '<section class="panel">'+icon('extra',40)+'<h2>Move Refill</h2><p>Add five to the current daily move bank.</p>'+button('claim-moves',m?timer(m):'CLAIM +5 MOVES','primary',m?'disabled':'')+'</section></div>'+
  (saved.rewardHistory.length?'<div class="panel reward-history"><h2>Recent Finds</h2>'+saved.rewardHistory.slice(0,6).map(h=>'<p><b>'+escape(h.label)+'</b> · '+h.items.map(escape).join(', ')+'</p>').join('')+'</div>':'');
 }
+function customLevelsPanel(){
+ if(!Custom.unlocked(saved))return '';
+ let levels=[],error='';
+ try{levels=Custom.listLevels(localStorage);}catch(e){error=e.message;}
+ const draft=customDraft||Custom.encode(Custom.template());
+ return '<section class="panel custom-levels"><h2>Custom levels · Early access</h2>'+
+  '<p>Level 500 completed. Edit a versioned JSON board, save it independently of the campaign, and playtest using the actual Jewel Brook match-three engine. Visual placement tools are still in development.</p>'+
+  (error?'<p class="warning">'+escape(error)+'</p>':'')+
+  '<label for="custom-level-json">Level JSON (copy to export; paste to import)</label>'+
+  '<textarea id="custom-level-json" class="custom-level-json" spellcheck="false" aria-label="Custom level JSON">'+escape(draft)+'</textarea>'+
+  '<div class="custom-level-actions">'+button('custom-new','NEW TEMPLATE')+button('custom-save','VALIDATE & SAVE','primary')+button('custom-play-draft','PLAYTEST DRAFT')+'</div>'+
+  '<div class="custom-level-list">'+levels.map(x=>'<div class="custom-level-entry"><b>'+escape(x.title)+'</b><small>'+x.width+'×'+x.height+'</small>'+
+   button('custom-load','LOAD','secondary','data-id="'+escape(x.id)+'"')+
+   button('custom-play','PLAYTEST','secondary','data-id="'+escape(x.id)+'"')+
+   button('custom-delete','DELETE','quiet','data-id="'+escape(x.id)+'"')+'</div>').join('')+'</div></section>';
+}
 function settings(){
  return header('Settings','Independent local game data. No Nut Buster saves or accounts are accessed.')+
  '<div class="panel sound-controls"><h2>Embryon sound</h2>'+button('toggle-sfx',Audio.settings().sfx?'SOUND EFFECTS: ON':'SOUND EFFECTS: OFF')+button('toggle-music',Music.settings().music?'MUSIC: ON':'MUSIC: OFF')+button('toggle-voice',Audio.settings().voice?'EMBRYON ANNOUNCER: ON':'EMBRYON ANNOUNCER: OFF')+'<p>Frozen Glow 2 plays as looping, offline background music independently of original crystal sound effects and optional device narration.</p></div>'+
  '<div class="panel app-updates"><h2>Android updates</h2><p>Signed Android builds check GitHub test releases automatically. Both downloading and installation require your approval; installing over this app preserves saved progress.</p>'+button('check-updates','CHECK FOR UPDATES','primary')+button('view-releases','VIEW GITHUB RELEASES','secondary')+'<p class="hint" role="status" data-update-status></p></div>'+
  '<div class="panel"><h2>Game data</h2><p>Your progress, mine equipment, balances and boosters are saved locally on this device.</p>'+button('advanced',advanced?'HIDE ADVANCED SETTINGS':'ADVANCED SETTINGS','secondary')+
  (advanced?'<div class="danger"><h3>Account maintenance</h3><p>Emergency testing only. Reset deletes all Jewel Brook progress from this device.</p>'+
- button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE JEWEL BROOK DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>';
+ button('reset-start','ACCOUNT RESET','quiet')+(resetStep?'<p class="warning">This deletes every stage clear, item, currency and mining upgrade.</p>'+button('reset-confirm',resetStep===1?'CONTINUE TO FINAL CONFIRMATION':'ERASE JEWEL BROOK DATA','danger')+button('reset-cancel','CANCEL','secondary'):'')+'</div>':'')+'</div>'+customLevelsPanel();
 }
 function render(){
  P.migrate(saved);Mining.ensure(saved);Garden.ensure(saved);Cook.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);bank();
  wallet.textContent=number(saved.coins);stars.textContent=number(saved.gems);if(styles)styles.textContent=number(saved.styleShards);
  document.getElementById('app')?.classList?.toggle?.('playing',page==='game');
  root.classList?.toggle?.('game-active',page==='game');
- root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board','RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
+ root.innerHTML=(active&&page!=='game'?'<div class="resume-bar">'+button('resume-board',customActiveId?'RESUME CUSTOM PLAYTEST':'RESUME LEVEL '+active.level,'primary')+'</div>':'')+(page==='home'?home():page==='campaign'?campaign():page==='chapter'?chapter():page==='trials'?trials():page==='game'?gameplay():
   page==='result'?results():page==='shop'?shop():page==='mine'?mine():page==='farm'?farm():page==='manor'?manor():page==='chronicle'?chronicle():page==='guide'?worldGuide():page==='rewards'?rewards():settings());
  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===page));
  if(page==='settings')window.RupeeUpdates?.syncStatus();
@@ -571,6 +600,24 @@ function handle(b){
  if(a==='go-shop'){nav('shop');return;}if(a==='go-rewards'){nav('rewards');return;}
  if(a==='go-guide'){guideDay=Number.isInteger(Number(info.level))&&Number(info.level)>=1&&Number(info.level)<=1000?Number(info.level):Math.min(1000,Math.max(1,saved.unlocked));nav('guide');return;}if(a==='guide-day'){const n=Number(info.day);if(Number.isInteger(n)&&n>=1&&n<=1000&&Royal.cleared(saved)>=n){guideTab='calendar';guideDay=n;render();}return;}if(a==='guide-tab'){if(Guide.TABS.some(t=>t.id===info.tab)){guideTab=info.tab;render();}return;}if(a==='guide-prev'){guideDay=Math.max(1,guideDay-1);render();return;}if(a==='guide-next'){guideDay=Math.min(1000,guideDay+1);render();return;}if(a==='guide-today'){guideDay=Math.min(1000,Math.max(1,saved.unlocked));render();return;}
  if(a==='go-farm'){nav('farm');return;}if(a==='go-manor'){nav('manor');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}if(a==='go-chronicle'){storySelected=outcome?.storyNew?.[0]?.id||null;nav('chronicle');return;}if(a==='story-open'){const story=Royal.EVENTS.find(e=>e.id===info.story);if(story&&Royal.unlocked(saved,story)){storySelected=story.id;render();}return;}
+ if(a==='custom-new'){if(!Custom.unlocked(saved))return;customDraft=Custom.encode(Custom.template());render();return;}
+ if(a==='custom-save'||a==='custom-play-draft'){
+  if(!Custom.unlocked(saved))return;
+  try{const spec=Custom.normalize(document.getElementById('custom-level-json')?.value||'');
+   customDraft=Custom.encode(spec);
+   if(a==='custom-save'){Custom.saveLevel(localStorage,spec);render();message('Custom level saved separately from the campaign.');}
+   else startCustom(spec);
+  }catch(e){message(e.message);}return;
+ }
+ if(a==='custom-load'||a==='custom-play'||a==='custom-delete'){
+  if(!Custom.unlocked(saved))return;
+  try{if(a==='custom-delete'){if(Custom.removeLevel(localStorage,info.id)){render();message('Custom level deleted.');}return;}
+   const spec=Custom.loadLevel(localStorage,info.id);if(!spec)return message('Custom level not found.');
+   if(a==='custom-load'){customDraft=Custom.encode(spec);render();}
+   else startCustom(spec);
+  }catch(e){message(e.message);}return;
+ }
+ if(a==='return-custom'){outcome=null;nav('settings');return;}
  if(a==='check-updates'){window.RupeeUpdates?.check();return;}
  if(a==='view-releases'){window.RupeeUpdates?.openReleases();return;}
  if(a==='toggle-sfx'){Audio.configure({sfx:!Audio.settings().sfx});render();return;}if(a==='toggle-music'){Music.configure({music:!Music.settings().music});render();return;}if(a==='toggle-voice'){Audio.configure({voice:!Audio.settings().voice});render();return;}
@@ -581,7 +628,7 @@ function handle(b){
  if(a==='campaign-next'){const c=Chapters.byId(chapterId)||Chapters.CHAPTERS[0];campaignPage=Math.min(Guide.monthsForRange(c.start,c.end).length-1,campaignPage+1);render();return;}
  if(a==='campaign-month'){const c=Chapters.byId(chapterId)||Chapters.CHAPTERS[0],m=Number(info.month),months=Guide.monthsForRange(c.start,c.end);if(Number.isInteger(m)&&m>=0&&m<months.length){campaignPage=m;render();}return;}
  if(a==='result-next'){const id=outcome?.won?(outcome.id>=T.FIRST?saved.unlocked:Math.min(1000,outcome.id+1)):outcome?.id;outcome=null;start(id||saved.unlocked);return;}
- if(a==='abandon'){active=null;visualImpact=null;save();nav('campaign');return;}
+ if(a==='abandon'){const custom=!!customActiveId;active=null;customActiveId=null;visualImpact=null;save();nav(custom?'settings':'campaign');return;}
  if(a==='cell'){
   if(!active)return;
   // Tapping selects a booster target; dragging is the only way to swap.
@@ -589,6 +636,7 @@ function handle(b){
  }
  if(a==='booster'){
   if(!active)return;
+  if(customActiveId)return message('Boosters are not enabled in custom playtests.');
   const id=info.booster,meta=E.BOOSTER_META[id];if(!meta||!P.unlocked(saved,id)||P.count(saved,id)<1)return;
   if(meta.targeted&&selected<0)return message('Select a gem first to target this booster.');
   const before=E.snapshot(active).cells,target=meta.targeted?selected:-1;
