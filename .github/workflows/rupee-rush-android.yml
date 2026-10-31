@@ -37,6 +37,7 @@ jobs:
             tests/github-apk-release-contract.test.js \
             tests/rupee-rush.test.js \
             tests/custom-levels.test.js \
+            tests/custom-level-editor.test.js \
             tests/royal-artwork-contract.test.js \
             tests/mining-import-assets.test.js \
             tests/economy-market.test.js \
