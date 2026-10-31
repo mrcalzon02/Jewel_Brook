@@ -5,6 +5,7 @@ const path=require('node:path');
 const vm=require('node:vm');
 const E=require('../web/engine.js');
 const Custom=require('../web/custom-levels.js');
+const CustomEditor=require('../web/custom-level-editor.js');
 const P=require('../web/progression.js');
 const D=require('../web/daily-moves.js');
 const B=require('../web/benefits.js');
@@ -155,7 +156,7 @@ const doc={
  querySelectorAll:()=>[],
  addEventListener:(event,fn)=>{if(event==='click')handler=fn;}
 };
-const gameWindow={RupeeEngine:E,JewelBrookCustomLevels:Custom,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
+const gameWindow={RupeeEngine:E,JewelBrookCustomLevels:Custom,JewelBrookCustomEditor:CustomEditor,RupeeProgress:P,RupeeDailyMoves:D,RupeeBenefits:B,
  RupeeElementalChallenges:Trials,RupeeElementalRewards:Rewards,RupeeMining:Mining,
  RupeeMiningGear:Gear,RupeeMineBridge:Bridge,RupeeArt:Art,RupeeSharedArt:Shared,RupeeChapters:Chapters,JewelbrookRoyalChronicle:Royal,JewelBrookWorldGuide:Guide,RupeeAudio:Audio,RupeeMusic:Music,RupeeBoardMotion:Motion,RupeeBoardFeatures:Features,RupeeEmbryonAssets:EmbryonAssets,RupeeSystemIcons:SystemIcons,RupeeEconomy:require('../web/economy.js'),RupeeMiningEconomyArt:require('../web/mining-economy-art.js'),RupeeTownGarden:TownGarden,RupeeModePowerups:require('../web/mode-powerups.js'),RupeeFarmingArt:FarmArt,RupeeTownAvatars:require('../web/town-avatars.js'),RupeeTownCharacter:require('../web/town-character.js'),RupeeTownHouses:require('../web/town-houses.js'),RupeeTownYards:require('../web/town-yards.js'),RupeeCropGrowthArt:require('../web/crop-growth-art.js'),RupeeKitchenCatalog:Kitchen,RupeeKitchen:Cooking,MineOreAtlas:require('../web/mine-ore-atlas.js')};
 const ctx={window:gameWindow,document:doc,localStorage:{
@@ -351,7 +352,10 @@ const customContext={window:customWindow,document:customDoc,localStorage:{
 vm.runInNewContext(fs.readFileSync(path.join(root,'game.js'),'utf8'),customContext,{filename:'custom-game.js'});
 const customClick=dataset=>customHandler({target:{closest:()=>({dataset,disabled:false})}});
 customClick({nav:'settings'});
-assert.match(customViews.screen.innerHTML,/custom-level-json/,'Clearing Level 500 exposes actual custom-level import and save controls');
+assert.match(customViews.screen.innerHTML,/custom-level-json/,'Clearing Level 500 exposes custom-level import and save controls');
+assert.match(customViews.screen.innerHTML,/custom-editor-board/,'Unlocked editor renders the actual board cell painter');
+assert.match(customViews.screen.innerHTML,/data-action="custom-undo"/,'Undo is present');
+assert.match(customViews.screen.innerHTML,/data-action="custom-redo"/,'Redo is present');
 customClick({action:'custom-save'});
 assert.ok(customStore[Custom.KEY],'Custom level is saved to a separate key');
 customClick({action:'custom-play-draft'});
