@@ -510,3 +510,14 @@ html,body{max-width:100%;overflow-x:hidden}
 .custom-level-actions,.custom-level-entry{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.65rem 0}
 .custom-level-entry{border-top:1px solid #4c4468;padding:.5rem 0}
 .custom-level-entry small{opacity:.8}
+
+/* Player-level visual editor uses live board cells and approved gem assets. */
+.custom-editor-palette{display:flex;flex-wrap:wrap;gap:5px;max-height:145px;overflow-y:auto}
+.custom-editor-swatch{display:flex;align-items:center;gap:4px;min-height:44px;border:1px solid #8971a9;border-radius:8px;padding:3px 7px;color:#f9edff;background:#302548}
+.custom-editor-swatch.chosen{outline:2px solid #ffe08a;outline-offset:-2px}
+.custom-editor-swatch .gem{width:34px;height:34px;object-fit:contain}
+.custom-editor-swatch small{font-size:11px}
+.custom-editor-frame{max-width:500px}
+.custom-editor-board .custom-editor-cell{cursor:crosshair;touch-action:none}
+.custom-editor-board .custom-editor-cell:focus-visible{outline:3px solid #ffe08a;outline-offset:-3px}
+@media(max-width:620px){.custom-editor-swatch small{display:none}.custom-editor-swatch{padding:3px}}

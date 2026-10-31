@@ -1,15 +1,15 @@
 /* Jewelbrook standalone playable shell around reused deterministic systems. */
 (function(){'use strict';
-const E=window.RupeeEngine,Custom=window.JewelBrookCustomLevels,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
+const E=window.RupeeEngine,Custom=window.JewelBrookCustomLevels,CustomEditor=window.JewelBrookCustomEditor,P=window.RupeeProgress,D=window.RupeeDailyMoves,B=window.RupeeBenefits,
  T=window.RupeeElementalChallenges,R=window.RupeeElementalRewards,
  Mining=window.RupeeMining,G=window.RupeeMiningGear,Bridge=window.RupeeMineBridge,Art=window.RupeeArt,Shared=window.RupeeSharedArt,Chapters=window.RupeeChapters,Audio=window.RupeeAudio,Music=window.RupeeMusic,Assets=window.RupeeEmbryonAssets,Motion=window.RupeeBoardMotion,Features=window.RupeeBoardFeatures,Icons=window.RupeeSystemIcons,Economy=window.RupeeEconomy,MineArt=window.RupeeMiningEconomyArt,Garden=window.RupeeTownGarden,Powerups=window.RupeeModePowerups,FarmArt=window.RupeeFarmingArt,TownAvatars=window.RupeeTownAvatars,TownCharacter=window.RupeeTownCharacter,TownHouses=window.RupeeTownHouses,TownYards=window.RupeeTownYards,CropGrowth=window.RupeeCropGrowthArt,Kitchen=window.RupeeKitchenCatalog,Cook=window.RupeeKitchen,Royal=window.JewelbrookRoyalChronicle,Guide=window.JewelBrookWorldGuide;
-if(![E,Custom,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook,Royal,Guide].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
+if(![E,Custom,CustomEditor,P,D,B,T,R,Mining,G,Bridge,Art,Shared,Chapters,Audio,Music,Assets,Motion,Features,Icons,Economy,MineArt,Garden,Powerups,FarmArt,TownAvatars,TownCharacter,TownHouses,TownYards,CropGrowth,Kitchen,Cook,Royal,Guide].every(Boolean))throw Error('Jewelbrook gameplay dependencies missing');
 const KEY='rupeerush.save.v1',defaultSave=()=>({unlocked:1,stars:{},coins:250,gems:25,styleShards:0,hearts:5,vip:false,claimed:0});
 let saved=defaultSave();try{const data=JSON.parse(localStorage.getItem(KEY)||'null');if(data&&typeof data==='object'&&!Array.isArray(data))saved={...saved,...data,stars:data.stars||{}};}catch(_){}
 P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,Date.now(),E.makeLevel(Math.min(1000,Math.max(1,saved.unlocked))).moves);
 let visualImpact=null,animating=false,swipeGuard=0,pointerStart=null,storySelected=null;
 let guideTab='calendar',guideDay=Math.min(1000,Math.max(1,saved.unlocked));
-let page='home',active=null,customActiveId=null,customDraft=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmCategory='all',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
+let page='home',active=null,customActiveId=null,customDraft=null,customSession=null,customBrush=0,editorPointer=null,selected=-1,mineTab='dig',mineMode='dig',mineFocus=null,farmPlot=0,farmCrop='carrot',farmCategory='all',farmFeed='',shopTab='packs',shopReceipt=null,campaignPage=0,chapterId=1,toast='',toastT=null,resetStep=0,advanced=false,outcome=null;
 const root=document.getElementById('screen'),wallet=document.getElementById('wallet'),stars=document.getElementById('stargems'),styles=document.getElementById('style-shards');
 if(!root)throw Error('Missing #screen');
 // Restore only validated, unfinished Jewelbrook boards. Never touch Nut Buster saves.
@@ -549,21 +549,39 @@ function rewards(){
  '<section class="panel">'+icon('extra',40)+'<h2>Move Refill</h2><p>Add five to the current daily move bank.</p>'+button('claim-moves',m?timer(m):'CLAIM +5 MOVES','primary',m?'disabled':'')+'</section></div>'+
  (saved.rewardHistory.length?'<div class="panel reward-history"><h2>Recent Finds</h2>'+saved.rewardHistory.slice(0,6).map(h=>'<p><b>'+escape(h.label)+'</b> · '+h.items.map(escape).join(', ')+'</p>').join('')+'</div>':'');
 }
+function openCustomDraft(input){
+ customDraft=typeof input==='string'?input:Custom.encode(input);
+ try{customSession=CustomEditor.create(customDraft);}catch(_){customSession=null;}
+}
+function paintCustomCell(i){
+ if(!Custom.unlocked(saved)||!customSession||!CustomEditor.paint(customSession,i,customBrush))return false;
+ customDraft=CustomEditor.encode(customSession);
+ const tile=root.querySelector?.('.custom-editor-cell[data-cell="'+i+'"]');
+ if(tile){tile.innerHTML=piece(customSession.document.cells[i],i);tile.setAttribute('aria-label','Paint tile '+(i+1)+' '+E.TYPES[customBrush]);}
+ return true;
+}
 function customLevelsPanel(){
  if(!Custom.unlocked(saved))return '';
  let levels=[],error='';
  try{levels=Custom.listLevels(localStorage);}catch(e){error=e.message;}
- const draft=customDraft||Custom.encode(Custom.template());
- return '<section class="panel custom-levels"><h2>Custom levels · Early access</h2>'+
-  '<p>Level 500 completed. Edit a versioned JSON board, save it independently of the campaign, and playtest using the actual Jewel Brook match-three engine. Visual placement tools are still in development.</p>'+
-  (error?'<p class="warning">'+escape(error)+'</p>':'')+
+ if(customDraft===null)openCustomDraft(Custom.template());
+ const palette=E.TYPES.map((name,i)=>E.RETIRED_NUTS.includes(name)?'':
+  '<button type="button" class="custom-editor-swatch '+(customBrush===i?'chosen':'')+'" data-action="custom-brush" data-gem="'+i+'" aria-pressed="'+(customBrush===i)+'">'+gem(i)+'<small>'+escape(name)+'</small></button>').join('');
+ const visual=customSession?
+  '<div class="custom-editor-palette" role="group" aria-label="Gem paint brush">'+palette+'</div>'+
+  '<div class="custom-level-actions">'+button('custom-undo','UNDO','secondary',customSession.undo.length?'':'disabled')+button('custom-redo','REDO','secondary',customSession.redo.length?'':'disabled')+'</div>'+
+  '<div class="board-frame custom-editor-frame">'+CustomEditor.boardHtml(customSession,piece)+'</div>'+
+  '<p class="hint">Select a gemstone, then tap or drag on occupied tiles. Holes stay masked. Save or playtest validates the board.</p>':
+  '<p class="warning">JSON must describe a valid playable board before visual editing is available.</p>';
+ return '<section class="panel custom-levels"><h2>Custom levels · Visual editor</h2>'+
+  '<p>Level 500 completed. Paint with original gem art, undo/redo, save and playtest in the actual match-three engine. JSON import/export remains available.</p>'+
+  (error?'<p class="warning">'+escape(error)+'</p>':'')+visual+
   '<label for="custom-level-json">Level JSON (copy to export; paste to import)</label>'+
-  '<textarea id="custom-level-json" class="custom-level-json" spellcheck="false" aria-label="Custom level JSON">'+escape(draft)+'</textarea>'+
+  '<textarea id="custom-level-json" class="custom-level-json" spellcheck="false" aria-label="Custom level JSON">'+escape(customDraft)+'</textarea>'+
   '<div class="custom-level-actions">'+button('custom-new','NEW TEMPLATE')+button('custom-save','VALIDATE & SAVE','primary')+button('custom-play-draft','PLAYTEST DRAFT')+'</div>'+
   '<div class="custom-level-list">'+levels.map(x=>'<div class="custom-level-entry"><b>'+escape(x.title)+'</b><small>'+x.width+'×'+x.height+'</small>'+
-   button('custom-load','LOAD','secondary','data-id="'+escape(x.id)+'"')+
-   button('custom-play','PLAYTEST','secondary','data-id="'+escape(x.id)+'"')+
-   button('custom-delete','DELETE','quiet','data-id="'+escape(x.id)+'"')+'</div>').join('')+'</div></section>';
+  button('custom-load','LOAD','secondary','data-id="'+escape(x.id)+'"')+button('custom-play','PLAYTEST','secondary','data-id="'+escape(x.id)+'"')+
+  button('custom-delete','DELETE','quiet','data-id="'+escape(x.id)+'"')+'</div>').join('')+'</div></section>';
 }
 function settings(){
  return header('Settings','Independent local game data. No Nut Buster saves or accounts are accessed.')+
@@ -600,11 +618,14 @@ function handle(b){
  if(a==='go-shop'){nav('shop');return;}if(a==='go-rewards'){nav('rewards');return;}
  if(a==='go-guide'){guideDay=Number.isInteger(Number(info.level))&&Number(info.level)>=1&&Number(info.level)<=1000?Number(info.level):Math.min(1000,Math.max(1,saved.unlocked));nav('guide');return;}if(a==='guide-day'){const n=Number(info.day);if(Number.isInteger(n)&&n>=1&&n<=1000&&Royal.cleared(saved)>=n){guideTab='calendar';guideDay=n;render();}return;}if(a==='guide-tab'){if(Guide.TABS.some(t=>t.id===info.tab)){guideTab=info.tab;render();}return;}if(a==='guide-prev'){guideDay=Math.max(1,guideDay-1);render();return;}if(a==='guide-next'){guideDay=Math.min(1000,guideDay+1);render();return;}if(a==='guide-today'){guideDay=Math.min(1000,Math.max(1,saved.unlocked));render();return;}
  if(a==='go-farm'){nav('farm');return;}if(a==='go-manor'){nav('manor');return;}if(a==='resume-board'){if(!active)return message('No active level.');page='game';render();return;}if(a==='go-mine'){nav('mine');return;}if(a==='go-campaign'){nav('campaign');return;}if(a==='go-trials'){nav('trials');return;}if(a==='go-chronicle'){storySelected=outcome?.storyNew?.[0]?.id||null;nav('chronicle');return;}if(a==='story-open'){const story=Royal.EVENTS.find(e=>e.id===info.story);if(story&&Royal.unlocked(saved,story)){storySelected=story.id;render();}return;}
- if(a==='custom-new'){if(!Custom.unlocked(saved))return;customDraft=Custom.encode(Custom.template());render();return;}
+ if(a==='custom-new'){if(!Custom.unlocked(saved))return;openCustomDraft(Custom.template());render();return;}
+  if(a==='custom-brush'){if(!Custom.unlocked(saved)||!customSession)return;const t=Number(info.gem);if(!Number.isInteger(t)||t<0||t>=E.TYPES.length||E.RETIRED_NUTS.includes(E.TYPES[t]))return;customBrush=t;render();return;}
+  if(a==='custom-paint'){if(paintCustomCell(Number(info.cell)))render();return;}
+  if(a==='custom-undo'||a==='custom-redo'){if(!Custom.unlocked(saved)||!customSession)return;const changed=a==='custom-undo'?CustomEditor.undo(customSession):CustomEditor.redo(customSession);if(changed){customDraft=CustomEditor.encode(customSession);render();}return;}
  if(a==='custom-save'||a==='custom-play-draft'){
   if(!Custom.unlocked(saved))return;
   try{const spec=Custom.normalize(document.getElementById('custom-level-json')?.value||'');
-   customDraft=Custom.encode(spec);
+   openCustomDraft(spec);
    if(a==='custom-save'){Custom.saveLevel(localStorage,spec);render();message('Custom level saved separately from the campaign.');}
    else startCustom(spec);
   }catch(e){message(e.message);}return;
@@ -613,7 +634,7 @@ function handle(b){
   if(!Custom.unlocked(saved))return;
   try{if(a==='custom-delete'){if(Custom.removeLevel(localStorage,info.id)){render();message('Custom level deleted.');}return;}
    const spec=Custom.loadLevel(localStorage,info.id);if(!spec)return message('Custom level not found.');
-   if(a==='custom-load'){customDraft=Custom.encode(spec);render();}
+   if(a==='custom-load'){openCustomDraft(spec);render();}
    else startCustom(spec);
   }catch(e){message(e.message);}return;
  }
@@ -705,6 +726,22 @@ function handle(b){
   if(resetStep===2){localStorage.removeItem(KEY);saved=defaultSave();P.migrate(saved);R.ensure(saved);Mining.ensure(saved);Garden.ensure(saved);Cook.ensure(saved);Powerups.ensure(saved);Economy.ensure(saved);D.ensure(saved,now,dailyCap());active=null;outcome=null;mineTab='dig';advanced=false;resetStep=0;page='home';save();render();message('Jewel Brook local data reset.');return;}
  }
 }
+root.addEventListener('input',e=>{
+ if(e.target?.id==='custom-level-json'&&Custom.unlocked(saved))openCustomDraft(e.target.value);
+});
+root.addEventListener('pointerdown',e=>{
+ if(page!=='settings'||!Custom.unlocked(saved)||!customSession||e.isPrimary===false||(e.button!==undefined&&e.button!==0))return;
+ const tile=e.target.closest?.('.custom-editor-cell');if(!tile||tile.disabled)return;
+ editorPointer=e.pointerId;paintCustomCell(Number(tile.dataset.cell));root.setPointerCapture?.(e.pointerId);e.preventDefault?.();
+});
+root.addEventListener('pointermove',e=>{
+ if(editorPointer!==e.pointerId||page!=='settings')return;
+ const tile=document.elementFromPoint?.(e.clientX,e.clientY)?.closest?.('.custom-editor-cell');
+ if(tile&&!tile.disabled)paintCustomCell(Number(tile.dataset.cell));
+});
+function finishEditorPointer(e){if(editorPointer!==e.pointerId)return;editorPointer=null;if(page==='settings')render();}
+root.addEventListener('pointerup',finishEditorPointer);
+root.addEventListener('pointercancel',finishEditorPointer);
 document.addEventListener('click',e=>{
  const b=e.target.closest('button');
  if(!b||b.disabled||animating||Date.now()<swipeGuard)return;
